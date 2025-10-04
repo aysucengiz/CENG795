@@ -9,8 +9,8 @@
 
 SceneInput sceneInput;
 
-
 int main(void) {
     Parser::parseScene("jsonFiles/test.json");
+    std::cout << sceneInput;
     return 0;
 }

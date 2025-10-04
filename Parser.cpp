@@ -3,7 +3,6 @@
 //
 
 #include "Parser.h"
-#define PRINTINIT true
 
 
 std::ostream& operator<<(std::ostream& os, const Color& c) {
@@ -62,6 +61,43 @@ std::ostream& operator<<(std::ostream& os, const Camera& c) {
        << "\n\tplane:" << c.l << " "<< c.r << " "<< c.t << " "<< c.b << " "<< c.z
        << "\n\tImageResolution:" << c.ImageResolution[0] << " "<< c.ImageResolution[1]
        << "\n\tImageName:" << c.ImageName;
+    return os;
+}
+
+
+// copied from chatgpt because Im sick from writing the others
+std::ostream& operator<<(std::ostream& os, const SceneInput& s) {
+    os << "MaxRecursionDepth: " << s.MaxRecursionDepth << "\n";
+    os << "BackgroundColor: " << s.BackgroundColor << "\n";
+    os << "ShadowRayEpsilon: " << s.ShadowRayEpsilon << "\n";
+    os << "IntersectionTestEpsilon: " << s.IntersectionTestEpsilon << "\n";
+
+    os << "AmbientLight: " << s.AmbientLight << "\n";
+
+    os << "Cameras:\n";
+    for (const auto& cam : s.Cameras)
+        os << "  " << cam << "\n";
+
+    os << "PointLights:\n";
+    for (const auto& pl : s.PointLights)
+        os << "  " << pl << "\n";
+
+    os << "Materials:\n";
+    for (const auto& mat : s.Materials)
+        os << "  " << mat << "\n";
+
+    os << "Vertices:\n";
+    for (const auto& v : s.Vertices)
+        os << "  " << v << "\n";
+
+    os << "Triangles:\n";
+    for (const auto& t : s.Triangles)
+        os << "  " << t << "\n";
+
+    os << "Spheres:\n";
+    for (const auto& sph : s.Spheres)
+        os << "  " << sph << "\n";
+
     return os;
 }
 

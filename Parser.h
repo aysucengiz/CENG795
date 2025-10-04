@@ -12,6 +12,7 @@
 #include "dataTypes/DataTypes.h"
 #include <jsoncpp/json/json.h>
 
+#define PRINTINIT false
 
 
 extern SceneInput sceneInput;
@@ -32,6 +33,6 @@ std::ostream& operator<<(std::ostream& os, const Color& c);
 std::ostream& operator<<(std::ostream& os, const Vector& v);
 std::ostream& operator<<(std::ostream& os, const Vertex& v);
 std::ostream& operator<<(std::ostream& os, const PointLight & pl);
-
+std::ostream& operator<<(std::ostream& os, const SceneInput& s);
 
 #endif //CENG477_PARSER_H
