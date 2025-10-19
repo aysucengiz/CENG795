@@ -14,15 +14,6 @@ void Raytracer::writeColorToImage()
 }
 
 
-Vec3r Raytracer::triangleNormal(Triangle &t)
-{
-    Vertex &a = scene.Vertices[t.indices[0]];
-    Vertex &b = scene.Vertices[t.indices[1]];
-    Vertex &c = scene.Vertices[t.indices[2]];
-    return x_product((b-a), (c-a)).normalize();
-}
-// TODO: bu indexlerin hepsini initlerken -1 koy
-
 Vec3r Raytracer::sphereNormal(Sphere &s, Vertex &v)
 {
     Vertex &c = scene.Vertices[s.center];
@@ -125,6 +116,8 @@ Color Raytracer::computeColor(int depth)
 
     if (hit_record.type != ObjectType::NONE &&  scene.Materials[hit_record.matID].materialType != MaterialType::NONE)
     {
+
+        // std::cout << " A hit!" << std::endl;
         computeHitRecord();
 
         Material &m = scene.Materials[hit_record.matID];
@@ -133,13 +126,20 @@ Color Raytracer::computeColor(int depth)
 
         for (int i=0; i < numLights; i++)
         {
+
             compute_shadow_ray(i);
+            //curr_color += Color(255, 0, 0);
+            std::cout << "I can see you" << std::endl;
             if (!isUnderShadow())
             {
+
+                std::cout << "You are under the light" << std::endl;
                 real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal);
                 Color I_R_2 = scene.PointLights[i].Intensity / dot_product(shadow_ray.dir, shadow_ray.dir);
                 if ( cos_theta > 0)
                 {
+
+                    std::cout << "You are looking at me" << std::endl;
                     curr_color += diffuseTerm(cos_theta,I_R_2) + specularTerm(cos_theta,I_R_2);
                 }
 
@@ -171,7 +171,7 @@ Color Raytracer::specularTerm(real cos_theta, Color I_R_2)
 
 void Raytracer::compute_shadow_ray(uint32_t i)
 {
-    shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon; // TODO: epsilon tanımlı değilse dosyalarda kendimiz tanımlayacağız
+    shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
     shadow_ray.dir = scene.PointLights[i].Position - shadow_ray.pos;
 }
 
@@ -220,6 +220,7 @@ void Raytracer::checkObjIntersection()
 
 Color Raytracer::reflect(int depth, Color &reflectance)
 {
+    std::cout << "Reflecting" << std::endl;
     Ray reflected_ray;
     reflected_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
     reflected_ray.dir = viewing_ray.dir + hit_record.normal*2*dot_product(hit_record.normal,-viewing_ray.dir);
@@ -230,8 +231,8 @@ Color Raytracer::reflect(int depth, Color &reflectance)
 void Raytracer::computeHitRecord()
 {
     hit_record.intersection_point = viewing_ray.pos + viewing_ray.dir * t_min;
-    if (hit_record.type == ObjectType::TRIANGLE) hit_record.normal = triangleNormal(scene.Triangles[hit_record.objID]);
-    else if (hit_record.type == ObjectType::MESH) hit_record.normal = triangleNormal(scene.Meshes[hit_record.meshID].Faces[hit_record.objID]);
+    if (hit_record.type == ObjectType::TRIANGLE) hit_record.normal = scene.Triangles[hit_record.objID].n;
+    else if (hit_record.type == ObjectType::MESH) hit_record.normal = scene.Meshes[hit_record.meshID].Faces[hit_record.objID].n;
     else if (hit_record.type == ObjectType::SPHERE) hit_record.normal = sphereNormal(scene.Spheres[hit_record.objID], hit_record.intersection_point);
 }
 
@@ -259,7 +260,7 @@ real Raytracer::checkSphereIntersection(Ray &r, uint32_t i)
         else  t_temp = res_2;
     }
     else if (BB_AC == 0) t_temp = B_A;
-    else /*BB_AC < 0*/   t_temp = MAXFLOAT;
+    else /*BB_AC < 0*/   t_temp = INFINITY;
 
     return t_temp;
 }
@@ -302,7 +303,7 @@ real Raytracer::checkTriangleIntersection(Ray &r, uint32_t j, int32_t i)
     if(beta >= 0 && gamma >= 0 && beta+gamma <= 1){ // there is an intersection
         t_temp = t;
     }else{
-        t_temp = MAXFLOAT;
+        t_temp = INFINITY;
     }
 
     return t_temp;

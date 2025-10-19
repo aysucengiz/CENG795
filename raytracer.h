@@ -49,7 +49,6 @@ public:
     real checkSphereIntersection(Ray &r, uint32_t i);
     bool checkMeshIntersection(Ray &r, uint32_t i);
     void computeHitRecord();
-    Vec3r triangleNormal(Triangle &t);
     Vec3r sphereNormal(Sphere &s, Vertex &v);
     Color reflect(int depth, Color &reflectance);
     void compute_shadow_ray(uint32_t i);

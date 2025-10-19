@@ -11,7 +11,7 @@
         "Up": "-0.40759915113449097 0.4075987935066223 0.8171451687812805",
         "NearPlane": "-1 1 -1.0 1.0",
         "NearDistance": "3",
-        "ImageResolution": "1024 1024",
+        "ImageResolution": "512 512",
         "ImageName": "low_poly_scene_smooth.png"
       }
     },

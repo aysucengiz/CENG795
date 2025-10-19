@@ -42,20 +42,38 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
 void Parser::getCameras(json inp, SceneInput &sceneInput){
     json& Cameras = inp["Camera"];
     int numCameras = Cameras.size();
-    for(int i = 0; i < numCameras; i++){
+    if (Cameras.is_object())
+    {
         Camera c(
-            std::stoi(Cameras["_id"].get<std::string>()),
-            Vertex(Cameras["Position"]),
-            Vec3r(Cameras["Gaze"]),
-            Vec3r(Cameras["Up"]),
-            Cameras["NearPlane"],
-            std::stoi(Cameras["NearDistance"].get<std::string>()),
-            Cameras["ImageResolution"],
-            Cameras["ImageName"]
-        );
+                std::stoi(Cameras["_id"].get<std::string>()),
+                Vertex(Cameras["Position"]),
+                Vec3r(Cameras["Gaze"]),
+                Vec3r(Cameras["Up"]),
+                Cameras["NearPlane"],
+                std::stoi(Cameras["NearDistance"].get<std::string>()),
+                Cameras["ImageResolution"],
+                Cameras["ImageName"]
+            );
         sceneInput.Cameras.push_back(c);
         if(PRINTINIT) std::cout << c << std::endl;
+    }else
+    {
+        for(int i = 0; i < numCameras; i++){
+            Camera c(
+                std::stoi(Cameras[i]["_id"].get<std::string>()),
+                Vertex(Cameras[i]["Position"]),
+                Vec3r(Cameras[i]["Gaze"]),
+                Vec3r(Cameras[i]["Up"]),
+                Cameras[i]["NearPlane"],
+                std::stoi(Cameras[i]["NearDistance"].get<std::string>()),
+                Cameras[i]["ImageResolution"],
+                Cameras[i]["ImageName"]
+            );
+            sceneInput.Cameras.push_back(c);
+            if(PRINTINIT) std::cout << c << std::endl;
+        }
     }
+
 
 
 }
@@ -106,7 +124,7 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
     while (verticesStream >> x >> y >> z) {
         sceneInput.Vertices.push_back(Vertex(x, y, z));
-        if(PRINTINIT) std::cout << x << " " << y <<" " <<  z << std::endl;
+        // if(PRINTINIT) std::cout << x << " " << y <<" " <<  z << std::endl;
     }
 
 }
@@ -154,31 +172,34 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
         int numMeshes = Meshes.size();
         for(int i=0; i < numMeshes; i++){
             std::string typeString = "";
-            if (Meshes[i]["Faces"].contains("_plyFile"))
+            if (sceneInput.Materials[std::stoi(Meshes[i]["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
             {
-                Mesh m(
-                        std::stoi(Meshes[i]["_id"].get<std::string>()),
-                        Meshes[i]["_shadingMode"].get<std::string>(),
-                        std::stoi(Meshes[i]["Material"].get<std::string>()) - 1,
-                        Meshes[i]["Faces"]["_plyFile"].get<std::string>(),
-                        true
-                    );
+                if (Meshes[i]["Faces"].contains("_plyFile"))
+                {
+                    Mesh m(
+                            std::stoi(Meshes[i]["_id"].get<std::string>()),
+                            Meshes[i]["_shadingMode"].get<std::string>(),
+                            std::stoi(Meshes[i]["Material"].get<std::string>()) - 1,
+                            Meshes[i]["Faces"]["_plyFile"].get<std::string>(),
+                            true
+                        );
 
-                sceneInput.Meshes.push_back(m);
-                if(PRINTINIT) std::cout << m << std::endl;
-            }
-            else
-            {
-                Mesh m(
-                        std::stoi(Meshes[i]["_id"].get<std::string>()),
-                        Meshes[i]["_shadingMode"].get<std::string>(),
-                        std::stoi(Meshes[i]["Material"].get<std::string>()) - 1,
-                        Meshes[i]["Faces"]["_data"].get<std::string>(),
-                        false
-                    );
+                    sceneInput.Meshes.push_back(m);
+                    if(PRINTINIT) std::cout << m << std::endl;
+                }
+                else
+                {
+                    Mesh m(
+                            std::stoi(Meshes[i]["_id"].get<std::string>()),
+                            Meshes[i]["_shadingMode"].get<std::string>(),
+                            std::stoi(Meshes[i]["Material"].get<std::string>()) - 1,
+                            Meshes[i]["Faces"]["_data"].get<std::string>(),
+                            false
+                        );
 
-                sceneInput.Meshes.push_back(m);
-                if(PRINTINIT) std::cout << m << std::endl;
+                    sceneInput.Meshes.push_back(m);
+                    // if(PRINTINIT) std::cout << m << std::endl;
+                }
             }
 
 
@@ -187,10 +208,10 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
 }
 void Parser::computeTriangleValues(Triangle &t, SceneInput &scene)
 {
-    Vertex a = scene.Vertices[t.indices[0]];
-    Vertex b = scene.Vertices[t.indices[1]];
-    Vertex c = scene.Vertices[t.indices[2]];
+    Vertex &a = scene.Vertices[t.indices[0]];
+    Vertex &b = scene.Vertices[t.indices[1]];
+    Vertex &c = scene.Vertices[t.indices[2]];
     t.a_b = a - b;
     t.a_c = a - c;
-    // TODO: şu an normal hesaplamıyoruz
+    t.n =  x_product((b-a), (c-a)).normalize();
 }

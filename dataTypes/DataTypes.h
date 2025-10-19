@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 
 typedef float real;
@@ -85,7 +86,7 @@ struct Vec3r{
     }
 
     Vec3r normalize();
-    real mag() const { return i*i + j*j + k*k;}
+    real mag() const { return sqrt(i*i + j*j + k*k);}
 
 
 };

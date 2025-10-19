@@ -1,0 +1,69 @@
+{
+  "Scene": {
+    "BackgroundColor": "0 0 0",
+    "ShadowRayEpsilon": "1e-3",
+    "IntersectionTestEpsilon": "1e-6",
+    "Cameras": {
+      "Camera": {
+        "_id": "1",
+        "Position": "0 0 5",
+        "Gaze": "0 0 -1",
+        "Up": "0 1 0",
+        "NearPlane": "-1 1 -1 1",
+        "NearDistance": "1",
+        "ImageResolution": "512 512",
+        "ImageName": "test_scene.png"
+      }
+    },
+    "Lights": {
+      "AmbientLight": "0.2 0.2 0.2",
+      "PointLight": [
+        {
+          "_id": "1",
+          "Position": "5 5 5",
+          "Intensity": "100000 100 100"
+        }
+      ]
+    },
+    "Materials": {
+      "Material": [
+        {
+          "_id": "1",
+          "AmbientReflectance": "0.1 0.1 0.1",
+          "DiffuseReflectance": "0.7 0.2 0.2",
+          "SpecularReflectance": "0.5 0.5 0.5",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "10"
+        },
+        {
+          "_id": "2",
+          "AmbientReflectance": "0.1 0.1 0.1",
+          "DiffuseReflectance": "0.2 0.7 0.2",
+          "SpecularReflectance": "0.5 0.5 0.5",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "10"
+        }
+      ]
+    },
+    "VertexData": {
+      "_data": "0 0 -1  1 0 -1  0 1 -1 0 0 -1"
+    },
+    "Objects": {
+      "Triangle": [
+        {
+          "_id": "1",
+          "Material": "1",
+          "Indices": "1 2 3"
+        }
+      ],
+      "Sphere": [
+        {
+          "_id": "2",
+          "Material": "2",
+          "Center": "4",
+          "Radius": "0.5"
+        }
+      ]
+    }
+  }
+}
