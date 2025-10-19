@@ -41,19 +41,19 @@ public:
     void drawScene(uint32_t camID);
     void drawAllScenes();
     void computeViewingRay(Camera &cam, uint32_t x, uint32_t y);
-    Color computeColor(int depth);
+    Color computeColor(Ray &ray, int depth);
     void writeColorToImage();
-    void checkObjIntersection();
+    void checkObjIntersection(Ray &ray);
     bool isUnderShadow();
     real checkTriangleIntersection(Ray &r, uint32_t j, int32_t i=-1);
     real checkSphereIntersection(Ray &r, uint32_t i);
-    bool checkMeshIntersection(Ray &r, uint32_t i);
-    void computeHitRecord();
+    bool checkMeshIntersection(Ray &r, uint32_t i, bool shadow_checking = false);
+    void computeHitRecord(Ray &ray);
     Vec3r sphereNormal(Sphere &s, Vertex &v);
-    Color reflect(int depth, Color &reflectance);
+    Color reflect(Ray &ray, int depth);
     void compute_shadow_ray(uint32_t i);
     Color diffuseTerm(real cos_theta, Color I_R_2);
-    Color specularTerm(real cos_theta, Color I_R_2);
+    Color specularTerm(Ray &ray, real cos_theta, Color I_R_2);
 };
 
 

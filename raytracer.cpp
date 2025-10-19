@@ -56,7 +56,7 @@ void Raytracer::drawScene(uint32_t camID){
         std::cout << y << std::endl;
         for (uint32_t x = 0; x < width; x++){
             computeViewingRay(cam, x, y);
-            final_color = computeColor(0);
+            final_color = computeColor(viewing_ray, 0);
             writeColorToImage();
         }
     }
@@ -89,7 +89,7 @@ bool Raytracer::isUnderShadow()
 
     for (int j = 0; j < numMesh; j++)
     {
-        return checkMeshIntersection(shadow_ray, j);
+        if ( checkMeshIntersection(shadow_ray, j, true)) return true;
     }
 
     for (int j = 0; j < numTriangle; j++)
@@ -108,41 +108,38 @@ bool Raytracer::isUnderShadow()
 }
 
 
-Color Raytracer::computeColor(int depth)
+Color Raytracer::computeColor(Ray &ray, int depth)
 {
     Color curr_color;
     hit_record.type = ObjectType::NONE;
 
     if (depth > scene.MaxRecursionDepth) return curr_color;
 
-    checkObjIntersection();
+    checkObjIntersection(ray);
 
     if (hit_record.type != ObjectType::NONE &&  scene.Materials[hit_record.matID].materialType != MaterialType::NONE)
     {
 
-        computeHitRecord();
+        computeHitRecord(ray);
 
         Material &m = scene.Materials[hit_record.matID];
         curr_color = scene.AmbientLight * m.AmbientReflectance;
-        if (m.materialType == MaterialType::MIRROR) curr_color += reflect(depth, m.MirrorReflectance);
-
+        if (m.materialType == MaterialType::MIRROR)
+        {
+            //std::cout << m._id << " " << m.MirrorReflectance << std::endl;
+            curr_color += reflect(ray, depth) * m.MirrorReflectance;
+        }
         for (int i=0; i < numLights; i++)
         {
 
             compute_shadow_ray(i);
-            //curr_color += Color(255, 0, 0);
-            //std::cout << "I can see you" << std::endl;
             if (!isUnderShadow())
             {
-
-                //std::cout << "You are under the light" << std::endl;
                 real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal);
                 Color I_R_2 = scene.PointLights[i].Intensity / dot_product(shadow_ray.dir, shadow_ray.dir);
                 if ( cos_theta > 0)
                 {
-
-                    //std::cout << "You are looking at me" << std::endl;
-                    curr_color += diffuseTerm(cos_theta,I_R_2) + specularTerm(cos_theta,I_R_2);
+                    curr_color += diffuseTerm(cos_theta,I_R_2) + specularTerm(ray, cos_theta,I_R_2);
                 }
 
             }
@@ -162,10 +159,10 @@ Color Raytracer::diffuseTerm(real cos_theta, Color I_R_2){
     return scene.Materials[hit_record.matID].DiffuseReflectance * I_R_2 * cos_theta;
 }
 
-Color Raytracer::specularTerm(real cos_theta, Color I_R_2)
+Color Raytracer::specularTerm(Ray &ray, real cos_theta, Color I_R_2)
 {
     Material &m = scene.Materials[hit_record.matID];
-    Vec3r h = (shadow_ray.dir.normalize() - viewing_ray.dir).normalize();
+    Vec3r h = (shadow_ray.dir.normalize() - ray.dir).normalize();
     real cos_alpha = dot_product(hit_record.normal, h);
     if (cos_alpha < 0) return Color();
     return m.SpecularReflectance * I_R_2 * pow(cos_alpha, m.PhongExponent);
@@ -178,14 +175,14 @@ void Raytracer::compute_shadow_ray(uint32_t i)
 }
 
 
-void Raytracer::checkObjIntersection()
+void Raytracer::checkObjIntersection(Ray &ray)
 {
     real t_temp;
     t_min = INFINITY;
 
     for(int i = 0; i < numTriangle; i++)
     {
-        t_temp = checkTriangleIntersection(viewing_ray,i);
+        t_temp = checkTriangleIntersection(ray,i);
         if( t_temp < t_min && t_temp>0 )
         {
             t_min = t_temp;
@@ -197,7 +194,7 @@ void Raytracer::checkObjIntersection()
 
     for(int i = 0; i < numSphere; i++)
     {
-        t_temp = checkSphereIntersection(viewing_ray,i);
+        t_temp = checkSphereIntersection(ray,i);
         if( t_temp < t_min && t_temp>0 )
         {
             t_min = t_temp;
@@ -210,7 +207,7 @@ void Raytracer::checkObjIntersection()
     for(int i = 0; i < numMesh; i++)
     {
 
-        if (checkMeshIntersection(viewing_ray,i))
+        if (checkMeshIntersection(ray,i))
         {
             hit_record.type = ObjectType::MESH;
             hit_record.meshID = i;
@@ -220,22 +217,21 @@ void Raytracer::checkObjIntersection()
 }
 
 
-Color Raytracer::reflect(int depth, Color &reflectance)
+Color Raytracer::reflect(Ray &ray, int depth)
 {
     //std::cout << "Reflecting" << std::endl;
     Ray reflected_ray;
     reflected_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    reflected_ray.dir = viewing_ray.dir + hit_record.normal*2*dot_product(hit_record.normal,-viewing_ray.dir);
-    Ray temp_ray = viewing_ray;
-    viewing_ray = reflected_ray;
-    Color comp = computeColor(depth+1);
-    viewing_ray = temp_ray;
-    return comp * reflectance;
+    reflected_ray.dir = ray.dir + hit_record.normal*2*dot_product(hit_record.normal,-ray.dir);
+    HitRecord temp_hit_record = hit_record;
+    Color temp = computeColor(reflected_ray, depth+1);
+    hit_record = temp_hit_record;
+    return  temp;
 }
 
-void Raytracer::computeHitRecord()
+void Raytracer::computeHitRecord(Ray &ray)
 {
-    hit_record.intersection_point = viewing_ray.pos + viewing_ray.dir * t_min;
+    hit_record.intersection_point = ray.pos + ray.dir * t_min;
     if (hit_record.type == ObjectType::TRIANGLE) hit_record.normal = scene.Triangles[hit_record.objID].n;
     else if (hit_record.type == ObjectType::MESH) hit_record.normal = scene.Meshes[hit_record.meshID].Faces[hit_record.objID].n;
     else if (hit_record.type == ObjectType::SPHERE) hit_record.normal = sphereNormal(scene.Spheres[hit_record.objID], hit_record.intersection_point);
@@ -258,19 +254,19 @@ real Raytracer::checkSphereIntersection(Ray &r, uint32_t i)
     if (BB_AC > 0)
     {
         real sqrt_BB_AC_A = sqrt(BB_AC)/A;
-        real res_1 = B_A + sqrt_BB_AC_A; // TODO: burası floating point farklılığına yol açabilir
-        real res_2 = B_A - sqrt_BB_AC_A;
+        real res_1 = (-B + sqrt(BB_AC) )/ A; // TODO: burası floating point farklılığına yol açabilir
+        real res_2 = (-B - sqrt(BB_AC) )/ A;
 
         if (res_1 <= res_2 && res_1 > 0)  t_temp = res_1;
         else  t_temp = res_2;
     }
-    else if (BB_AC == 0) t_temp = B_A;
+    else if (BB_AC == 0) t_temp =  -B/A;
     else /*BB_AC < 0*/   t_temp = INFINITY;
 
     return t_temp;
 }
 
-bool Raytracer::checkMeshIntersection(Ray &r, uint32_t meshID)
+bool Raytracer::checkMeshIntersection(Ray &r, uint32_t meshID, bool shadow_checking)
 {
     bool result = false;
     Mesh &mesh = scene.Meshes[meshID];
@@ -278,10 +274,14 @@ bool Raytracer::checkMeshIntersection(Ray &r, uint32_t meshID)
     for (int triID = 0; triID < numTriangleMesh; triID++)
     {
         real t_temp = checkTriangleIntersection(r,triID,meshID);
-
-        if( t_temp < t_min && t_temp>0 ){
+        if (!shadow_checking && t_temp < t_min && t_temp>0 )
+        {
             t_min = t_temp;
             hit_record.objID = triID;
+            result = true;
+        }
+        else if (shadow_checking && t_temp < 1 && t_temp >= 0)
+        {
             result = true;
         }
 
