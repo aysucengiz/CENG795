@@ -27,6 +27,8 @@ struct Triangle{
     Triangle(uint32_t id, uint32_t ind[3], uint32_t material) :
             _id(id), material(material) {indices[0] = ind[0]; indices[1] = ind[1]; indices[2] = ind[2];}
 
+
+
 };
 
 struct Mesh{

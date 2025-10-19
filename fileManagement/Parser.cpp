@@ -141,8 +141,9 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
                     Triangles[i]["Indices"],
                     std::stoi(Triangles[i]["Material"].get<std::string>()) - 1
             );
-            computeTriangleValues(t,sceneInput); // TODO: would this work
+
             sceneInput.Triangles.push_back(t);
+            computeTriangleValues(sceneInput.Triangles[i],sceneInput); // TODO: would this work
 
             if(PRINTINIT) std::cout << t << std::endl;
         }
@@ -198,6 +199,11 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
                         );
 
                     sceneInput.Meshes.push_back(m);
+                    int siz = m.Faces.size();
+                    for (int k = 0; k < siz; k++)
+                    {
+                        computeTriangleValues(sceneInput.Meshes[i].Faces[k],sceneInput);
+                    }
                     // if(PRINTINIT) std::cout << m << std::endl;
                 }
             }

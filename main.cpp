@@ -8,7 +8,7 @@
 
 int main(void) {
     Raytracer raytracer;
-    raytracer.parseScene("jsonFiles/akif_uslu/low_poly_smooth.json");
-    raytracer.drawAllScenes();
+    raytracer.parseScene("jsonFiles/akif_uslu/car_smooth_fixed.json");
+    raytracer.drawScene(0);
     return 0;
 }

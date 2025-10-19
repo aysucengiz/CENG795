@@ -121,6 +121,8 @@ typedef struct Ray{
     }
 } Ray;
 
+Vec3r x_product(const Vec3r &v, const Vec3r &w);
+
 
 struct Camera{
     uint32_t _id;
@@ -137,8 +139,10 @@ struct Camera{
     std::string ImageName;
 
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::string locs, real nd, std::string res, std::string imname)
-    : _id(id), Position(pos), Gaze(g), Up(u), nearDistance(nd), ImageName(imname)
+    : _id(id), Position(pos), nearDistance(nd), ImageName(imname)
     {
+        Gaze = g.normalize();
+        Up = x_product(-Gaze,x_product(u.normalize(),-Gaze)).normalize();
         std::istringstream s1(locs);
         s1 >> l >> r >> b >> t;
         std::istringstream s2(res);

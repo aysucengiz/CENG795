@@ -11,7 +11,6 @@
 
 int clamp(real c, int from, int to);
 
-Vec3r x_product(const Vec3r &v, const Vec3r &w);
 real dot_product(const Vec3r &a, const Vec3r &b);
 real determinant(const Vec3r &first, const Vec3r &second, const Vec3r &third );
 
