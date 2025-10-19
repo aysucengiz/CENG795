@@ -2,15 +2,13 @@
 #include <fstream>
 #include <iostream>
 
-#include "dataTypes/DataTypes.h"
-#include <jsoncpp/json/json.h>
-#include "Parser.h"
 
+#include "raytracer.h"
 
-SceneInput sceneInput;
 
 int main(void) {
-    Parser::parseScene("jsonFiles/test.json");
-    std::cout << sceneInput;
+    Raytracer raytracer;
+    raytracer.parseScene("jsonFiles/akif_uslu/low_poly_smooth.json");
+    raytracer.drawAllScenes();
     return 0;
 }

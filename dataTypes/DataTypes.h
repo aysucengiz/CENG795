@@ -8,20 +8,39 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Object.h"
 
-typedef enum MaterialType{
+
+typedef float real;
+
+enum class MaterialType{
     NONE,
+    NORMAL,
     MIRROR
-}MaterialType;
+};
+
+enum class ObjectType{
+    NONE,
+    TRIANGLE,
+    SPHERE,
+    MESH
+};
+
+enum class ShadingType{
+    NONE,
+    SMOOTH,
+    FLAT
+};
 
 
-typedef struct Color{
-    double r;
-    double g;
-    double b;
+
+
+struct Color{
+    real r;
+    real g;
+    real b;
 
     Color(){r = 0; g = 0; b = 0;}
+    Color(real r, real g, real b) : r(r), g(g), b(b) {}
 
     Color(std::string inp) {
         std::istringstream ss(inp);
@@ -30,28 +49,54 @@ typedef struct Color{
             throw std::invalid_argument("Invalid color string: " + inp);
         }
     }
-} Color;
 
-typedef struct Vector{
-    double i;
-    double j;
-    double k;
-    Vector(){}
+    Color& operator+=(const Color& other) {
+        r += other.r;
+        g += other.g;
+        b += other.b;
+        return *this;  // Return the modified object
+    }
 
-    Vector(std::string inp) {
+    bool isWhite()
+    {
+        if(r == 0.0 && g == 0.0 && b == 0.0) return true;
+        return false;
+
+    }
+};
+
+struct Vec3r{
+    real i;
+    real j;
+    real k;
+    Vec3r(){}
+    Vec3r(real i, real j, real k) : i(i), j(j), k(k){}
+
+    Vec3r(std::string inp) {
         std::istringstream ss(inp);
         ss >> i >> j >> k;
         if (ss.fail()) {
-            throw std::invalid_argument("Invalid Vector string: " + inp);
+            throw std::invalid_argument("Invalid Vec3r string: " + inp);
         }
     }
-} Vector;
+
+    Vec3r operator-() const {
+        return Vec3r{-i, -j, -k};
+    }
+
+    Vec3r normalize();
+    real mag() const { return i*i + j*j + k*k;}
+
+
+};
 
 typedef struct Vertex{
-    double x;
-    double y;
-    double z;
-    Vertex(double x,double y,double z) : x(x), y(y), z(z){}
+    real x;
+    real y;
+    real z;
+
+    Vertex(){}
+    Vertex(real x,real y,real z) : x(x), y(y), z(z){}
 
     Vertex(std::string inp) {
         std::istringstream ss(inp);
@@ -62,41 +107,55 @@ typedef struct Vertex{
     }
 } Vertex;
 
-typedef struct Camera{
+typedef struct Ray{
+    Vertex pos;
+    Vec3r dir;
+
+    Ray(){}
+    Ray(Ray &r) : pos(r.pos), dir(r.dir){}
+    Ray& operator=(const Ray &r)
+    {
+        if (this != &r) {pos = r.pos; dir = r.dir;}
+        return *this;
+    }
+} Ray;
+
+
+struct Camera{
     uint32_t _id;
     Vertex Position;
-    Vector Gaze;
-    Vector Up;
-    int l;
-    int r;
-    int t;
-    int b;
-    int z;
-    uint32_t ImageResolution[2];
+    Vec3r Gaze;
+    Vec3r Up;
+    real l;
+    real r;
+    real b;
+    real t;
+    real nearDistance;
+    uint32_t width;
+    uint32_t height;
     std::string ImageName;
 
-    Camera(uint32_t id, Vertex pos, Vector g, Vector u, std::string locs, std::string res, std::string imname)
-    : _id(id), Position(pos), Gaze(g), Up(u), ImageName(imname)
+    Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::string locs, real nd, std::string res, std::string imname)
+    : _id(id), Position(pos), Gaze(g), Up(u), nearDistance(nd), ImageName(imname)
     {
         std::istringstream s1(locs);
-        s1 >> l >> r >> t >> b >> z;
-
+        s1 >> l >> r >> b >> t;
         std::istringstream s2(res);
-        s2 >> ImageResolution[0] >> ImageResolution[1];
+        s2 >> width >> height;
     }
 
-} Camera;
+};
 
-typedef struct PointLight{
+struct PointLight{
     uint32_t _id;
     Vertex Position;
     Color Intensity;
 
     PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
 
-} PointLight;
+};
 
-typedef struct Material{
+struct Material{
     uint32_t _id;
     Color AmbientReflectance;
     Color DiffuseReflectance;
@@ -105,29 +164,15 @@ typedef struct Material{
     MaterialType materialType;
     Color MirrorReflectance;
 
-    Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe, std::string t, Color mr)
+    Material(uint32_t id, Color ar, Color dr, Color sr, Color mr, uint32_t pe)
     : _id(id), AmbientReflectance(ar), DiffuseReflectance(dr), SpecularReflectance(sr), PhongExponent(pe), MirrorReflectance(mr)
     {
-        if(t == "mirror") materialType = MIRROR;
-        else materialType = NONE;
+        if(!mr.isWhite()) materialType = MaterialType::MIRROR;
+        else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()) materialType = MaterialType::NONE;
+        else materialType = MaterialType::NORMAL;
     }
 
-} Material;
-
-typedef struct SceneInput{
-    unsigned int MaxRecursionDepth;
-    Color BackgroundColor;
-    double ShadowRayEpsilon;
-    double IntersectionTestEpsilon;
-    std::vector<Camera> Cameras;
-    Color AmbientLight;
-    std::vector<PointLight> PointLights;
-    std::vector<Material> Materials;
-    std::vector<Vertex> Vertices;
-    std::vector<Triangle> Triangles;
-    std::vector<Sphere> Spheres;
-} SceneInput;
-
+};
 
 
 

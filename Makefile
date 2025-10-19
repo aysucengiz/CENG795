@@ -1,5 +1,8 @@
+MAIN_FILES = main.cpp raytracer.cpp
+DATA_FILES = dataTypes/helpers.cpp
+FILE_FILES = fileManagement/Parser.cpp fileManagement/PPM.cpp
 all:
-	g++ *.cpp -o raytracer -std=c++17 -O3 -ljsoncpp
+	g++ $(MAIN_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer -std=c++17 -O3
 
 clean:
 	rm main
