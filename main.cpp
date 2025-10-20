@@ -6,17 +6,13 @@
 #include "raytracer.h"
 
 
-int main(void) {
+int main(int argc, char* argv[])
+{
     Raytracer raytracer;
-    //raytracer.parseScene("jsonFiles/deneme.json");
-    //raytracer.drawAllScenes();
-    raytracer.parseScene("jsonFiles/akif_uslu/low_poly_smooth.json");
-    raytracer.drawAllScenes();
-    //raytracer.parseScene("jsonFiles/akif_uslu/berserker_smooth.json");
-    //raytracer.drawAllScenes();
-    //raytracer.parseScene("jsonFiles/akif_uslu/tower_smooth.json");
-    //raytracer.drawAllScenes();
-    //raytracer.parseScene("jsonFiles/akif_uslu/car_smooth_fixed.json");
-    //raytracer.drawAllScenes();
+    std::cout << "Raytracer" << std::endl;
+    raytracer.parseScene(argv[1]);
+    if (argc > 2) raytracer.drawScene(std::stoi(argv[2]));
+    else          raytracer.drawAllScenes();
+
     return 0;
 }
