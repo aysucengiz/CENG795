@@ -4,39 +4,19 @@
 
 #include "PPM.h"
 
+
 void PPM::write_ppm(const char* filename, unsigned char* data, int width, int height)
 {
-    FILE *outfile;
+    FILE* outfile = fopen(filename, "wb");
+    if (!outfile) throw std::runtime_error("Error: The ppm file cannot be opened for writing.");
+    fprintf(outfile, "P6\n%d %d\n255\n", width, height);
+    size_t written = fwrite(data, 3, width * height, outfile);
 
-    if ((outfile = fopen(filename, "w")) == NULL)
+    if (written != static_cast<size_t>(width * height))
     {
-        throw std::runtime_error("Error: The ppm file cannot be opened for writing.");
+        fclose(outfile);
+        throw std::runtime_error("Error: incomplete write to file.");
     }
 
-    (void) fprintf(outfile, "P3\n%d %d\n255\n", width, height);
-
-    unsigned char color;
-    for (size_t j = 0, idx = 0; j < height; ++j)
-    {
-        for (size_t i = 0; i < width; ++i)
-        {
-            for (size_t c = 0; c < 3; ++c, ++idx)
-            {
-                color = data[idx];
-
-                if (i == width - 1 && c == 2)
-                {
-                    (void) fprintf(outfile, "%d", color);
-                }
-                else
-                {
-                    (void) fprintf(outfile, "%d ", color);
-                }
-            }
-        }
-
-        (void) fprintf(outfile, "\n");
-    }
-
-    (void) fclose(outfile);
+    fclose(outfile);
 }

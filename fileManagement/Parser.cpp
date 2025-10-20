@@ -101,13 +101,12 @@ void Parser::getMaterials(json inp, SceneInput &sceneInput){
 
     int numMaterials = inp.size();
     for(int i=0; i < numMaterials; i++){
-
         Material m(
                 std::stoi(inp[i]["_id"].get<std::string>()),
                 Color(inp[i]["AmbientReflectance"]),
                 Color(inp[i]["DiffuseReflectance"]),
                 Color(inp[i]["SpecularReflectance"]),
-                Color(inp[i]["MirrorReflectance"]),
+                inp[i].contains("MirrorReflectance") ? Color(inp[i]["MirrorReflectance"]) : Color(),
                 std::stoi(inp[i]["PhongExponent"].get<std::string>())
         );
         sceneInput.Materials.push_back(m);

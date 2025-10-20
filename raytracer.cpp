@@ -21,6 +21,13 @@ Vec3r Raytracer::sphereNormal(Sphere &s, Vertex &v)
 }
 
 void Raytracer::parseScene(std::string input_path){
+    scene.Cameras.clear();
+    scene.PointLights.clear();
+    scene.Triangles.clear();
+    scene.Spheres.clear();
+    scene.Materials.clear();
+    scene.Meshes.clear();
+    scene.Vertices.clear();
     Parser::parseScene(input_path, scene);
     num_cameras = scene.Cameras.size();
     numTriangle = scene.Triangles.size();
@@ -53,7 +60,7 @@ void Raytracer::drawScene(uint32_t camID){
     curr_pixel = 0;
     image = new unsigned char[width * height * 3];
     for (uint32_t y = 0; y < height; y++){
-        std::cout << y << std::endl;
+        if (y% 10 == 0) std::cout << y << std::endl;
         for (uint32_t x = 0; x < width; x++){
             computeViewingRay(cam, x, y);
             final_color = computeColor(viewing_ray, 0);
