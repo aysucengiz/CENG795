@@ -237,6 +237,8 @@ std::ostream& operator<<(std::ostream& os, Object *s)
         os << "  " << *dynamic_cast<Triangle*>(s) << "\n";
     else if (s->getObjectType() == ObjectType::MESH)
         os << "  " << *dynamic_cast<Mesh*>(s) << "\n";
+    else if (s->getObjectType() == ObjectType::PLANE)
+        os << "  " << *dynamic_cast<Plane*>(s) << "\n";
     return os;
 }
 
@@ -248,6 +250,16 @@ std::ostream& operator<<(std::ostream& os, const Camera& c) {
        << "\n\tplane:" << c.l << " "<< c.r << " "<< c.b << " "<< c.t << " "<< c.nearDistance
        << "\n\tImageResolution:" << c.width << " "<< c.height
        << "\n\tImageName:" << c.ImageName;
+    return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Plane& p)
+{
+    os << "Plane:\n\t_id:" << p._id
+          << "\n\tpoint:" << p.point
+          << "\n\tnormal:" << p.n
+          << "\n\tmaterial:" << p.material._id;
     return os;
 }
 

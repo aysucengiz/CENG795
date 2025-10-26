@@ -39,6 +39,27 @@ public:
 
 };
 
+class Plane : public Object
+{
+public:
+    Vertex point;
+    Vec3r n;
+
+    ObjectType getObjectType() override {return ObjectType::PLANE;};
+    Object *checkIntersection(const Ray& r, real &t_min, bool shadow_test) override;
+    Vec3r getNormal(Vertex &v) override { return n;}
+
+    Plane(uint32_t id, Vertex &v, std::string normal, Material &material) : Object(material,id), point(v)
+    {
+        std::istringstream ss(normal);
+        ss >> n.i >> n.j >> n.k;
+        if (ss.fail()) {
+            throw std::invalid_argument("Invalid Normal string for plane: " + normal);
+        }
+    }
+
+};
+
 
 class Mesh : public Object
 {

@@ -127,5 +127,26 @@ Object *Mesh::checkIntersection(const Ray& ray, real &t_min, bool shadow_test)
 
 
 
+Object *Plane::checkIntersection(const Ray& r, real &t_min, bool shadow_test){
+    real dot_r_n = dot_product(r.dir, n);
+    if (dot_r_n == 0) return nullptr;
+
+    real t_temp = dot_product((point - r.pos),n) / dot_r_n;
+
+    if (!shadow_test && t_temp < t_min && t_temp>0 )
+    {
+        t_min = t_temp;
+        return this;
+    }
+
+    if (shadow_test && t_temp < 1 && t_temp >= 0)
+    {
+        return this;
+    }
+
+    return nullptr;
+}
+
+
 
 

@@ -14,6 +14,8 @@
 class RayTracer
 {
 public:
+    std::string input_path;
+    std::chrono::high_resolution_clock::time_point start_time;
     SceneInput scene;
     void parseScene(std::string input_path);
     void drawScene(uint32_t camID);

@@ -5,6 +5,8 @@
 #include "Parser.h"
 
 
+// TODO: material tipleri, bazılarında mesela _type : mirror olayı söz konusu
+
 
 
 json Parser::getJsonDataFromFile(std::string inpFile){
@@ -42,41 +44,24 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
 void Parser::getCameras(json inp, SceneInput &sceneInput){
     json& Cameras = inp["Camera"];
     int numCameras = Cameras.size();
-    if (Cameras.is_object())
-    {
-        Camera c(
-                std::stoi(Cameras["_id"].get<std::string>()) - 1,
-                Vertex(Cameras["Position"]),
-                Vec3r(Cameras["Gaze"]),
-                Vec3r(Cameras["Up"]),
-                Cameras["NearPlane"],
-                std::stoi(Cameras["NearDistance"].get<std::string>()),
-                Cameras["ImageResolution"],
-                Cameras["ImageName"]
-            );
-        sceneInput.Cameras.push_back(c);
-        if(PRINTINIT) std::cout << c << std::endl;
-    }else
-    {
-        for(int i = 0; i < numCameras; i++){
-            Camera c(
-                std::stoi(Cameras[i]["_id"].get<std::string>()),
-                Vertex(Cameras[i]["Position"]),
-                Vec3r(Cameras[i]["Gaze"]),
-                Vec3r(Cameras[i]["Up"]),
-                Cameras[i]["NearPlane"],
-                std::stoi(Cameras[i]["NearDistance"].get<std::string>()),
-                Cameras[i]["ImageResolution"],
-                Cameras[i]["ImageName"]
-            );
-            sceneInput.Cameras.push_back(c);
-            if(PRINTINIT) std::cout << c << std::endl;
-        }
-    }
-
-
-
+    if (Cameras.is_object()) addCamera(Cameras, sceneInput);
+    else  for(int i = 0; i < numCameras; i++) addCamera(Cameras[i], sceneInput);
 }
+
+
+void Parser::addLight(json pointLights, SceneInput &sceneInput)
+{
+    PointLight pl(
+            std::stoi(pointLights["_id"].get<std::string>()) - 1,
+            Vertex(pointLights["Position"]),
+            Color(pointLights["Intensity"])
+    );
+    sceneInput.PointLights.push_back(pl);
+
+    if(PRINTINIT) std::cout << pl << std::endl;
+}
+
+
 void Parser::getLights(json inp, SceneInput &sceneInput){
     if (inp.contains("AmbientLight"))
     {
@@ -86,69 +71,40 @@ void Parser::getLights(json inp, SceneInput &sceneInput){
     if (inp.contains("PointLight"))
     {
         json& pointLights = inp["PointLight"];
-        if (pointLights.is_object())
-        {
-            std::cout <<"here" << std::endl;
-            PointLight pl(
-                        std::stoi(pointLights["_id"].get<std::string>()) - 1,
-                        Vertex(pointLights["Position"]),
-                        Color(pointLights["Intensity"])
-                );
-            sceneInput.PointLights.push_back(pl);
-        }
-        else
-        {
-            std::cout <<"why here" << std::endl;
-            int numPointLights = pointLights.size();
-            for(int i=0; i < numPointLights; i++){
-                PointLight pl(
-                        std::stoi(pointLights[i]["_id"].get<std::string>()) - 1,
-                        Vertex(pointLights[i]["Position"]),
-                        Color(pointLights[i]["Intensity"])
-                );
-                sceneInput.PointLights.push_back(pl);
-
-                if(PRINTINIT) std::cout << pl << std::endl;
-            }
-        }
+        int numPointLights = pointLights.size();
+        if (pointLights.is_object()) addLight(pointLights, sceneInput);
+        else for(int i=0; i < numPointLights; i++) addLight(pointLights[i], sceneInput);
     }
 
 
 }
 
-void Parser::getMaterials(json inp, SceneInput &sceneInput){
 
+
+void Parser::getMaterials(json inp, SceneInput &sceneInput)
+{
     int numMaterials = inp.size();
-    for(int i=0; i < numMaterials; i++){
-        Material m(
-                std::stoi(inp[i]["_id"].get<std::string>()) - 1,
-                Color(inp[i]["AmbientReflectance"]),
-                Color(inp[i]["DiffuseReflectance"]),
-                Color(inp[i]["SpecularReflectance"]),
-                inp[i].contains("MirrorReflectance") ? Color(inp[i]["MirrorReflectance"]) : Color(),
-                std::stoi(inp[i]["PhongExponent"].get<std::string>())
-        );
-        sceneInput.Materials.push_back(m);
-
-        if(PRINTINIT) std::cout << m << std::endl;
-    }
-
-
+    if (inp.is_object()) addMaterial(inp, sceneInput);
+    else for(int i=0; i < numMaterials; i++) addMaterial(inp[i], sceneInput);
 }
 
 void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
     std::istringstream verticesStream(inp["VertexData"]["_data"].get<std::string>());
     real x,y,z;
-
     while (verticesStream >> x >> y >> z) {
         sceneInput.Vertices.push_back(CVertex(sceneInput.Vertices.size(),x, y, z));
 
-        // if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
+        //if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
     }
 
-
 }
+
+
+
+
+
+
 
 void Parser::getObjects(json inp, SceneInput &sceneInput){
     // getTriangles
@@ -157,102 +113,38 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
     normal_counts.resize(sceneInput.Vertices.size());
 
     if(inp.contains("Triangle")){
+        std::cout << "here" << std::endl;
         json& Triangles = inp["Triangle"];
-        uint32_t numTriangles = Triangles.size();
-        for(int i=0; i < numTriangles; i++){
-
-            std::istringstream ss(Triangles[i]["Indices"].get<std::string>());
-            uint32_t ind[3];
-            ss >> ind[0] >> ind[1] >> ind[2];
-            if (ss.fail()) {
-                throw std::invalid_argument("Invalid triangle indices string: " + Triangles[i]["Indices"].get<std::string>());
-            }
-
-
-            sceneInput.objects.push_back(new Triangle(
-                                                    curr_id,
-                                                    sceneInput.Vertices[ind[0] - 1],
-                                                    sceneInput.Vertices[ind[1] - 1],
-                                                    sceneInput.Vertices[ind[2] - 1],
-                                                    sceneInput.Materials[std::stoi(Triangles[i]["Material"].get<std::string>()) - 1]));
-            computeTriangleValues(*dynamic_cast<Triangle*>(sceneInput.objects[curr_id]), normal_counts);
-
-            if(PRINTINIT) std::cout << *dynamic_cast<Triangle*>(sceneInput.objects[curr_id]) << std::endl;
-            curr_id++;
-        }
+            uint32_t numTriangles = Triangles.size();
+        if (Triangles.is_object())  addTriangle(Triangles, sceneInput, curr_id, normal_counts);
+        else  for(int i=0; i < numTriangles; i++) addTriangle(Triangles[i], sceneInput, curr_id, normal_counts);
     }
-
 
     // getSpheres
     if(inp.contains("Sphere")){
+        std::cout << "here1" << std::endl;
         json& Spheres = inp["Sphere"];
         uint32_t numSpheres = Spheres.size();
-        for(int i=0; i < numSpheres; i++){
-            sceneInput.objects.push_back(new Sphere(
-                                                curr_id,
-                                                sceneInput.Vertices[std::stoi(Spheres[i]["Center"].get<std::string>()) - 1],
-                                                std::stod(Spheres[i]["Radius"].get<std::string>()),
-                                                sceneInput.Materials[std::stoi(Spheres[i]["Material"].get<std::string>()) - 1]
-                                        ));
-
-            if(PRINTINIT) std::cout << curr_id << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
-
-            curr_id++;
-        }
+        if (Spheres.is_object())              addSphere(Spheres, sceneInput, curr_id);
+        else for(int i=0; i < numSpheres; i++) addSphere(Spheres[i], sceneInput, curr_id);
     }
 
     // getMeshes
     if(inp.contains("Mesh")){
+        std::cout << "here2" << std::endl;
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
-        for(int i=0; i < numMeshes; i++){
-            std::string typeString = "";
-            if (sceneInput.Materials[std::stoi(Meshes[i]["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
-            {
-                std::string dataLine;
-                bool read_from_file;
-                uint32_t numVerticesUntilNow = sceneInput.Vertices.size();
-                if (Meshes[i]["Faces"].contains("_plyFile"))
-                {
-                    read_from_file = true;
-                    dataLine = JSON_FILES + Meshes[i]["Faces"]["_plyFile"].get<std::string>();
+        if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id, normal_counts);
+        else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id, normal_counts);
+    }
 
-                    happly::PLYData plyIn(dataLine);
-                    std::vector<float> xs = plyIn.getElement("vertex").getProperty<float>("x");
-                    std::vector<float> ys = plyIn.getElement("vertex").getProperty<float>("y");
-                    std::vector<float> zs = plyIn.getElement("vertex").getProperty<float>("z");
-
-                    for (int j=0; j<xs.size(); j++)
-                    {
-                        sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,xs[j],ys[j],zs[j]));
-                        normal_counts.push_back(0);
-                    }
-                }
-                else
-                {
-                    read_from_file = false;
-                    dataLine = Meshes[i]["Faces"]["_data"].get<std::string>();
-                }
-
-
-                sceneInput.objects.push_back(new Mesh(curr_id,
-                        Meshes[i]["_shadingMode"].get<std::string>(),
-                        sceneInput.Materials[std::stoi(Meshes[i]["Material"].get<std::string>()) - 1],
-                        dataLine,
-                        read_from_file,
-                        sceneInput.Vertices,
-                        numVerticesUntilNow));
-                int siz = dynamic_cast<Mesh*>(sceneInput.objects[curr_id])->Faces.size();
-                Mesh *temp_m = dynamic_cast<Mesh*>(sceneInput.objects[curr_id]);
-                for (int k = 0; k < siz; k++)
-                {
-                    computeTriangleValues(temp_m->Faces[k], normal_counts);
-                }
-                //if(PRINTINIT) std::cout <<  temp_m << std::endl;
-            }
-
-
-        }
+    // getPlanes
+    if(inp.contains("Plane")){
+        std::cout << "here3" << std::endl;
+        json& planes = inp["Plane"];
+        int numPlanes = planes.size();
+        if (planes.is_object())              addPlane(planes, sceneInput, curr_id);
+        else for(int i=0; i < numPlanes; i++) addPlane(planes[i],sceneInput, curr_id);
     }
 
 
@@ -275,4 +167,145 @@ void Parser::computeVertexNormals(SceneInput &scene, const std::vector<uint32_t>
             scene.VertexNormals[i] /= normal_counts[i];
     }
 }
+
+
+
+
+void Parser::addCamera(json Cameras, SceneInput &sceneInput)
+{
+    Camera c(
+               std::stoi(Cameras["_id"].get<std::string>()) - 1,
+               Vertex(Cameras["Position"]),
+               Vec3r(Cameras["Gaze"]),
+               Vec3r(Cameras["Up"]),
+               Cameras["NearPlane"],
+               std::stoi(Cameras["NearDistance"].get<std::string>()),
+               Cameras["ImageResolution"],
+               Cameras["ImageName"]
+           );
+    sceneInput.Cameras.push_back(c);
+    if(PRINTINIT) std::cout << c << std::endl;
+}
+
+
+void Parser::addMaterial(json inp, SceneInput &sceneInput)
+{
+
+    Material m(
+            std::stoi(inp["_id"].get<std::string>()) - 1,
+            Color(inp["AmbientReflectance"]),
+            Color(inp["DiffuseReflectance"]),
+            Color(inp["SpecularReflectance"]),
+            inp.contains("_type") ? inp["_type"].get<std::string>() :  "",
+            inp.contains("MirrorReflectance") ? Color(inp["MirrorReflectance"]) : Color(),
+            inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
+            std::stoi(inp["PhongExponent"].get<std::string>())
+            );
+    sceneInput.Materials.push_back(m);
+
+    if(PRINTINIT) std::cout << m << std::endl;
+}
+
+void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts)
+{
+
+    std::istringstream ss(tri["Indices"].get<std::string>());
+    uint32_t ind[3];
+    ss >> ind[0] >> ind[1] >> ind[2];
+    if (ss.fail()) {
+        throw std::invalid_argument("Invalid triangle indices string: " + tri["Indices"].get<std::string>());
+    }
+
+
+    sceneInput.objects.push_back(new Triangle(
+                                            curr_id,
+                                            sceneInput.Vertices[ind[0] - 1],
+                                            sceneInput.Vertices[ind[1] - 1],
+                                            sceneInput.Vertices[ind[2] - 1],
+                                            sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]));
+    computeTriangleValues(*dynamic_cast<Triangle*>(sceneInput.objects[curr_id]), normal_counts);
+
+    if(PRINTINIT) std::cout << *dynamic_cast<Triangle*>(sceneInput.objects[curr_id]) << std::endl;
+    curr_id++;
+}
+
+void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
+{
+    sceneInput.objects.push_back(new Sphere(
+                                    curr_id,
+                                    sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
+                                    std::stod(s["Radius"].get<std::string>()),
+                                    sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
+                            ));
+
+    if(PRINTINIT) std::cout << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
+
+    curr_id++;
+}
+
+void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts)
+{
+    std::string typeString = "";
+    if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
+    {
+        std::string dataLine;
+        bool read_from_file;
+        uint32_t numVerticesUntilNow = sceneInput.Vertices.size();
+        if (mes["Faces"].contains("_plyFile"))
+        {
+
+            read_from_file = true;
+            dataLine = JSON_FILES + mes["Faces"]["_plyFile"].get<std::string>();
+
+            happly::PLYData plyIn(dataLine);
+            std::vector<float> xs = plyIn.getElement("vertex").getProperty<float>("x");
+            std::vector<float> ys = plyIn.getElement("vertex").getProperty<float>("y");
+            std::vector<float> zs = plyIn.getElement("vertex").getProperty<float>("z");
+
+            for (int j=0; j<xs.size(); j++)
+            {
+                sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,xs[j],ys[j],zs[j]));
+                normal_counts.push_back(0);
+            }
+        }
+        else
+        {
+
+            read_from_file = false;
+            dataLine = mes["Faces"]["_data"].get<std::string>();
+        }
+
+
+        sceneInput.objects.push_back(new Mesh(curr_id,
+                mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat",
+                sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
+                dataLine,
+                read_from_file,
+                sceneInput.Vertices,
+                numVerticesUntilNow));
+        int siz = dynamic_cast<Mesh*>(sceneInput.objects[curr_id])->Faces.size();
+        Mesh *temp_m = dynamic_cast<Mesh*>(sceneInput.objects[curr_id]);
+        for (int k = 0; k < siz; k++)
+        {
+            computeTriangleValues(temp_m->Faces[k], normal_counts);
+        }
+        //if(PRINTINIT) std::cout <<  temp_m << std::endl;
+    }
+}
+
+
+void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
+{
+    sceneInput.objects.push_back(new Plane(
+                                curr_id,
+                                sceneInput.Vertices[std::stoi(p["Point"].get<std::string>()) - 1].v,
+                                p["Normal"].get<std::string>(),
+                                sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
+                        ));
+
+    if(PRINTINIT) std::cout <<  sceneInput.objects[curr_id]<< std::endl;
+
+    curr_id++;
+}
+
 

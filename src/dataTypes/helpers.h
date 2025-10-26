@@ -48,6 +48,7 @@ std::ostream& operator<<(std::ostream& os, const Material& m);
 std::ostream& operator<<(std::ostream& os, const Triangle& t);
 std::ostream& operator<<(std::ostream& os, const Sphere& s);
 std::ostream& operator<<(std::ostream& os, const Mesh& m);
+std::ostream& operator<<(std::ostream& os, const Plane& m);
 std::ostream& operator<<(std::ostream& os, const MaterialType& mt);
 std::ostream& operator<<(std::ostream& os, const ObjectType& ot);
 std::ostream& operator<<(std::ostream& os, Object *s);

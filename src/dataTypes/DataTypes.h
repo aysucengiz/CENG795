@@ -26,7 +26,8 @@ enum class ObjectType{
     NONE,
     TRIANGLE,
     SPHERE,
-    MESH
+    MESH,
+    PLANE
 };
 
 enum class ShadingType{
@@ -185,11 +186,13 @@ struct Material{
     MaterialType materialType;
     Color MirrorReflectance;
 
-    Material(uint32_t id, Color ar, Color dr, Color sr, Color mr, uint32_t pe)
+    Material(uint32_t id, Color ar, Color dr, Color sr, std::string type, Color mr, Color ac, uint32_t pe)
     : _id(id), AmbientReflectance(ar), DiffuseReflectance(dr), SpecularReflectance(sr), PhongExponent(pe), MirrorReflectance(mr)
     {
-        if(!mr.isWhite()) materialType = MaterialType::MIRROR;
-        else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()) materialType = MaterialType::NONE;
+        if (type == "dielectric") materialType = MaterialType::DIELECTRIC;
+        else if (type == "mirror") materialType = MaterialType::MIRROR;
+        else if(!mr.isWhite()) materialType = MaterialType::MIRROR;
+        else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()&& mr.isWhite() && ac.isWhite()) materialType = MaterialType::NONE;
         else materialType = MaterialType::NORMAL;
     }
 
