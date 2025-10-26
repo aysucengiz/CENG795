@@ -11,7 +11,7 @@
         "Up": "0 1 0",
         "NearPlane": "-1 1 -1 1",
         "NearDistance": "1",
-        "ImageResolution": "512 512",
+        "ImageResolution": "256 256",
         "ImageName": "test_scene.png"
       }
     },

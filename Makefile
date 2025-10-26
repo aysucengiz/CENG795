@@ -1,14 +1,14 @@
-TEST_FILE = main_for_test.cpp
-MAIN_FILE = main.cpp
-RAYTRACER_FILES = raytracer.cpp
-DATA_FILES = dataTypes/helpers.cpp
-FILE_FILES = fileManagement/Parser.cpp fileManagement/PPM.cpp
+TEST_FILE = src/main_for_test.cpp
+MAIN_FILE = src/main.cpp
+RAYTRACER_FILES = src/rayTracer/RayTracer.cpp src/rayTracer/raytracerThread.cpp
+DATA_FILES = src/dataTypes/helpers.cpp src/dataTypes/Object.cpp
+FILE_FILES = src/fileManagement/Parser.cpp src/fileManagement/PPM.cpp
 all:
-	g++ $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer -std=c++17 -O3
+	g++ -Isrc $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer -std=c++20 -O3
 test:
-	g++ $(TEST_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer_test -std=c++17 -O3
+	g++ -Isrc $(TEST_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer_test -std=c++20 -O3
 raytracer:
-	g++ $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer -std=c++17 -O3
+	g++ -Isrc $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer -std=c++20 -O3
 
 clean:
 	rm raytracer raytracer_test
