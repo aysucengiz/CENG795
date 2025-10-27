@@ -5,6 +5,8 @@
 #include "RayTracer.h"
 
 
+int RaytracerThread::done_threads = 0;
+
 void RayTracer::parseScene(std::string input_path){
     std::cout << "----- Parsing scene from " << input_path << " -----" <<std::endl;
     start_time = std::chrono::high_resolution_clock::now();
@@ -34,6 +36,8 @@ void RayTracer::drawAllScenes(){
 
 
 void RayTracer::drawScene(uint32_t camID){
+
+    RaytracerThread::done_threads = 0;
     Camera cam = scene.Cameras[camID];
     std::cout << "----- Drawing " << cam.ImageName << " -----" << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
@@ -49,10 +53,14 @@ void RayTracer::drawScene(uint32_t camID){
 
     scene.image = new unsigned char[width * height * 3];
 
+    std::vector<RaytracerThread> raytracers;
+    for (uint32_t y = 0; y < height; y++){
+        raytracers.push_back(RaytracerThread(scene,y,cam));
+    }
+
     #pragma omp parallel for
     for (uint32_t y = 0; y < height; y++){
-        RaytracerThread r(scene,y,cam);
-        r.drawRow();
+        raytracers[y].drawRow();
     }
 
     PPM::write_ppm(("outputs/" + cam.ImageName).c_str(), scene.image, width, height);

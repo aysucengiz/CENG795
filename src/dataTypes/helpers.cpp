@@ -7,6 +7,10 @@
 
 Vec3r Vec3r::normalize() const{return (*this)/this->mag();}
 
+Color exponent(Color c)
+{
+    return Color(std::exp(c.r), std::exp(c.g), std::exp(c.b));
+}
 
 
 int clamp(real c, int from, int to){
@@ -167,7 +171,7 @@ std::ostream& operator<<(std::ostream& os, const CVertex& cv) {
 }
 
 std::ostream& operator<<(std::ostream& os, const PointLight& pl) {
-    os << "Point light:\n\t_id:" << pl._id
+    os << "Point light " << pl._id << ":"
                    << "\n\tPosition:" << pl.Position
                    << "\n\tIntensity:" << pl.Intensity;
     return os;
@@ -194,18 +198,29 @@ std::ostream& operator<<(std::ostream& os, const MaterialType& mt)
 }
 
 std::ostream& operator<<(std::ostream& os, const Material& m) {
-    os << "Material:\n\t_id:" << m._id
-       << "\n\ttype:" << m.materialType
-       << "\n\tAmbientReflectance:" << m.AmbientReflectance
-       << "\n\tDiffuseReflectance:" << m.DiffuseReflectance
-       << "\n\tSpecularReflectance:" << m.SpecularReflectance
-       << "\n\tPhongExponent:" << m.PhongExponent
-       << "\n\tMirrorReflectance:" << m.MirrorReflectance;
+    os << "Material " << m._id << ":"
+       << "\n\ttype: " << m.materialType
+       << "\n\tAmbientReflectance: " << m.AmbientReflectance
+       << "\n\tDiffuseReflectance: " << m.DiffuseReflectance
+       << "\n\tSpecularReflectance: " << m.SpecularReflectance
+       << "\n\tPhongExponent: " << m.PhongExponent;
+    if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::DIELECTRIC || m.materialType == MaterialType::CONDUCTOR)
+        os << "\n\tMirrorReflectance: " << m.MirrorReflectance;
+    if (m.materialType == MaterialType::DIELECTRIC)
+    {
+        os << "\n\tAbsorptionCoefficient: " << m.AbsorptionCoefficient;
+        os << "\n\tRefractionIndex: " << m.RefractionIndex;
+    }
+    if (m.materialType == MaterialType::CONDUCTOR)
+    {
+        os << "\n\tAbsorptionIndex: " << m.AbsorptionIndex;
+        os << "\n\tRefractionIndex: " << m.RefractionIndex;
+    }
     return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const Mesh& m) {
-    os << "Mesh:\n\t_id:" << m._id
+    os << "Mesh " << m._id << ":"
        << "\n\tshading type:" << (int) m.shadingtype
        << "\n\tmaterial:" << m.material._id;
     for (const auto& f : m.Faces)
@@ -214,7 +229,7 @@ std::ostream& operator<<(std::ostream& os, const Mesh& m) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Triangle& t) {
-    os << "Triangle:\n\t_id:" << t._id
+    os << "Triangle " << t._id << ":"
        << "\n\tindices:" << t.a.id << " " << t.b.id << " "  << t.c.id
        << "\n\ta_b:" << t.a_b << " a_c: " << t.a_c << " "  << t.c.id
        << "\n\tmaterial:" << t.material._id;
@@ -222,7 +237,7 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Sphere& s) {
-    os << "Sphere:\n\t_id:" << s._id
+    os << "Sphere " << s._id << ":"
               << "\n\tcenter:" << s.center
               << "\n\tradius:" << s.radius
               << "\n\tmaterial:" << s.material._id;
@@ -243,7 +258,7 @@ std::ostream& operator<<(std::ostream& os, Object *s)
 }
 
 std::ostream& operator<<(std::ostream& os, const Camera& c) {
-    os << "Camera:\n\t_id:" << c._id
+    os << "Camera " << c._id << ":"
        << "\n\tPosition:" << c.Position
        << "\n\tGaze:" << c.Gaze
        << "\n\tUp:" << c.Up
@@ -256,7 +271,7 @@ std::ostream& operator<<(std::ostream& os, const Camera& c) {
 
 std::ostream& operator<<(std::ostream& os, const Plane& p)
 {
-    os << "Plane:\n\t_id:" << p._id
+    os << "Plane " << p._id << ":"
           << "\n\tpoint:" << p.point
           << "\n\tnormal:" << p.n
           << "\n\tmaterial:" << p.material._id;

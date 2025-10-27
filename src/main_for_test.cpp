@@ -9,12 +9,12 @@
 //round to nearest integer during clamping
 
 // TODO: planelere bak
-// TODO: ppm'e yazmayı hocanın dediği gibi yap
-// TODO: smooth or flat shading
 // TODO: .ply file management
+// TODO: ppm'e yazmayı hocanın dediği gibi yap
+// TODO: parser should check for degenerate triangles
+// TODO: smooth or flat shading
 // TODO: conductors and dialectrics (Fresnel reflection) (simple mirrors do not follow fresnel)
 // TODO: dialectrics -> isotropic, Beer's law
-// TODO: parser should check for degenerate triangles
 // TODO: bu yapılıyor mu -> shadowrayepsilon for reglections/refractions
 // TODO: cameras, lookAt These cameras assume a symmetric image plane centered along the gaze direction. These cameras take a \GazePoint"
 //       to specify the point that the camera is looking at. You can nd the gaze direction by sub-
@@ -26,13 +26,13 @@
 
 int main(void) {
     RayTracer raytracer;
-    /*raytracer.parseScene("jsonFiles/deneme.json");
-    raytracer.drawAllScenes();
+    //raytracer.parseScene("jsonFiles/deneme.json");
+    //raytracer.drawAllScenes();
 
 
     raytracer.parseScene("jsonFiles/inputs/simple.json");
     raytracer.drawAllScenes();
-    raytracer.parseScene("jsonFiles/inputs/spheres.json");
+    /*raytracer.parseScene("jsonFiles/inputs/spheres.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/spheres_mirror.json");
     raytracer.drawAllScenes();

@@ -18,7 +18,7 @@
 using json = nlohmann::json;
 
 
-#define PRINTINIT true
+#define PRINTINIT false
 #define DEFAULT_MAX_DEPTH 10
 #define DEFAULT_SHADOW_EPS 1e-3
 #define DEFAULT_INTERS_EPS 1e-6

@@ -98,6 +98,9 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
         //if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
     }
 
+
+    std::istringstream (inp["VertexData"]["_data"].get<std::string>());
+
 }
 
 
@@ -113,7 +116,6 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
     normal_counts.resize(sceneInput.Vertices.size());
 
     if(inp.contains("Triangle")){
-        std::cout << "here" << std::endl;
         json& Triangles = inp["Triangle"];
             uint32_t numTriangles = Triangles.size();
         if (Triangles.is_object())  addTriangle(Triangles, sceneInput, curr_id, normal_counts);
@@ -122,7 +124,6 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
 
     // getSpheres
     if(inp.contains("Sphere")){
-        std::cout << "here1" << std::endl;
         json& Spheres = inp["Sphere"];
         uint32_t numSpheres = Spheres.size();
         if (Spheres.is_object())              addSphere(Spheres, sceneInput, curr_id);
@@ -131,7 +132,6 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
 
     // getMeshes
     if(inp.contains("Mesh")){
-        std::cout << "here2" << std::endl;
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
         if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id, normal_counts);
@@ -140,7 +140,6 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
 
     // getPlanes
     if(inp.contains("Plane")){
-        std::cout << "here3" << std::endl;
         json& planes = inp["Plane"];
         int numPlanes = planes.size();
         if (planes.is_object())              addPlane(planes, sceneInput, curr_id);
@@ -196,10 +195,12 @@ void Parser::addMaterial(json inp, SceneInput &sceneInput)
             Color(inp["AmbientReflectance"]),
             Color(inp["DiffuseReflectance"]),
             Color(inp["SpecularReflectance"]),
+            std::stoi(inp["PhongExponent"].get<std::string>()),
             inp.contains("_type") ? inp["_type"].get<std::string>() :  "",
             inp.contains("MirrorReflectance") ? Color(inp["MirrorReflectance"]) : Color(),
             inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
-            std::stoi(inp["PhongExponent"].get<std::string>())
+            inp.contains("RefractionIndex") ? std::stod(inp["RefractionIndex"].get<std::string>()) : 0.0,
+            inp.contains("AbsorptionIndex") ? std::stod(inp["AbsorptionIndex"].get<std::string>()) : 0.0
             );
     sceneInput.Materials.push_back(m);
 
@@ -289,7 +290,8 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::v
         {
             computeTriangleValues(temp_m->Faces[k], normal_counts);
         }
-        //if(PRINTINIT) std::cout <<  temp_m << std::endl;
+        curr_id++;
+        if(PRINTINIT) std::cout <<  "Mesh " << temp_m->_id << " has " << temp_m->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
     }
 }
 

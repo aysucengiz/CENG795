@@ -111,9 +111,9 @@ Object *Mesh::checkIntersection(const Ray& ray, real &t_min, bool shadow_test)
     int numFaces = Faces.size();
     Triangle *temp_obj = nullptr;
     Triangle *return_obj = nullptr;
-    //std::cout << "numFaces: " << numFaces << std::endl;
     for (int i=0; i< numFaces; i++)
     {
+
         temp_obj = dynamic_cast<Triangle*>(Faces[i].checkIntersection(ray, t_min, shadow_test));
         if (temp_obj != nullptr)
         {

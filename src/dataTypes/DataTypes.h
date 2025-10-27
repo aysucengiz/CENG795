@@ -62,7 +62,7 @@ struct Color{
         return *this;  // Return the modified object
     }
 
-    bool isWhite()
+    bool isWhite() const
     {
         if(r == 0.0 && g == 0.0 && b == 0.0) return true;
         return false;
@@ -185,11 +185,24 @@ struct Material{
     uint32_t PhongExponent;
     MaterialType materialType;
     Color MirrorReflectance;
+    Color AbsorptionCoefficient;
+    real RefractionIndex;
+    real AbsorptionIndex;
 
-    Material(uint32_t id, Color ar, Color dr, Color sr, std::string type, Color mr, Color ac, uint32_t pe)
-    : _id(id), AmbientReflectance(ar), DiffuseReflectance(dr), SpecularReflectance(sr), PhongExponent(pe), MirrorReflectance(mr)
+    Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
+        std::string type = "", Color mr = Color(), Color ac = Color(), real refrIndex = 0, real ai = 0)
+    : _id(id),
+    AmbientReflectance(ar),
+    DiffuseReflectance(dr),
+    SpecularReflectance(sr),
+    PhongExponent(pe),
+    MirrorReflectance(mr),
+    AbsorptionCoefficient(ac),
+    RefractionIndex(refrIndex),
+    AbsorptionIndex(ai)
     {
         if (type == "dielectric") materialType = MaterialType::DIELECTRIC;
+        else if (type == "conductor") materialType = MaterialType::CONDUCTOR;
         else if (type == "mirror") materialType = MaterialType::MIRROR;
         else if(!mr.isWhite()) materialType = MaterialType::MIRROR;
         else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()&& mr.isWhite() && ac.isWhite()) materialType = MaterialType::NONE;

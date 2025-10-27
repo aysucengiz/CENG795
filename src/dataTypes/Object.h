@@ -5,6 +5,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 #include <memory>
+#include <deque>
 
 #include "DataTypes.h"
 #include "../fileManagement/happly.h"
@@ -72,7 +73,7 @@ public:
 
 
 
-    Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::vector<CVertex> &vertices, uint32_t start_index=0)
+    Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, uint32_t start_index=0)
     : Object(m,id) {
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
@@ -82,11 +83,12 @@ public:
         {
             happly::PLYData plyIn(s);
             std::vector<std::vector<int>> f = plyIn.getElement("face").getListProperty<int>("vertex_indices");
-            for (int i = 0; i < f.size(); i++)
+            std::cout << "First face indices: "
+          << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;for (int i = 0; i < f.size(); i++)
             {
-                if (vertices.size() <= start_index-1+f[i][0])std::cout << vertices.size() <<" : " << start_index-1+f[i][0]<< std::endl;
-                if (vertices.size() <= start_index-1+f[i][1])std::cout << vertices.size() <<" : " << start_index-1+f[i][1]<< std::endl;
-                if (vertices.size() <= start_index-1+f[i][2])std::cout << vertices.size() <<" : " << start_index-1+f[i][2]<< std::endl;
+                if (vertices.size() <= start_index+f[i][0])std::cout << vertices.size() <<" : " << start_index-1+f[i][0]<< std::endl;
+                if (vertices.size() <= start_index+f[i][1])std::cout << vertices.size() <<" : " << start_index-1+f[i][1]<< std::endl;
+                if (vertices.size() <= start_index+f[i][2])std::cout << vertices.size() <<" : " << start_index-1+f[i][2]<< std::endl;
 
                 if (f[i].size() == 3)
                     Faces.push_back(Triangle(Faces.size(),
@@ -142,7 +144,7 @@ typedef struct SceneInput{
     std::vector<Camera> Cameras;
 
     // vertex info
-    std::vector<CVertex> Vertices;
+    std::deque<CVertex> Vertices;
     std::vector<Vec3r> VertexNormals;
 
     // light info
@@ -169,6 +171,7 @@ struct HitRecord{
     Vertex intersection_point;
     Vec3r normal;
     Object *obj;
+    Mesh *mesh;
 };
 
 
