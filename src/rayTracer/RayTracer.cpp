@@ -63,7 +63,7 @@ void RayTracer::drawScene(uint32_t camID){
         raytracers[y].drawRow();
     }
 
-    PPM::write_ppm(("outputs/" + cam.ImageName).c_str(), scene.image, width, height);
+    PPM::write_stb(("outputs/" + cam.ImageName).c_str(), scene.image, width, height);
     delete[] scene.image;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();

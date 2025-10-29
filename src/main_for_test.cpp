@@ -5,34 +5,24 @@
 
 #include "rayTracer/RayTracer.h"
 
-// add time record
-//round to nearest integer during clamping
-// conductors and dialectrics (Fresnel reflection) (simple mirrors do not follow fresnel)
-// smooth or flat shading
-//planelere bak
-// back-face culling (bu zaten yapılıyor mu?) Experiment with enabling and disabling it in your ray tracers and report your time measurements in your blog post.
-// bu yapılıyor mu -> shadowrayepsilon for reglections/refractions
-// .ply file management
+// back-face culling (yapıyoruz) Experiment with enabling and disabling it in your ray tracers and report your time measurements in your blog post.
 
+// lookAt cams -> test edemedim
+// dialectrics -> isotropic, Beer's law -> saç baş yolucim
 
-// TODO: lookAt cams
-// TODO: dialectrics -> isotropic, Beer's law
+// çok mühim olmayanlar -> bunlar silinmiş :( deadlinedan sonra kontrol etmek lazım -> hallettim herhalde
 
-// çok mühim olmayanlar
-// TODO: vertices, orientation
-// TODO: degenerate triangles
-// TODO: ppm'e yazmayı hocanın dediği gibi yap
 
 
 int main(void) {
     RayTracer raytracer;
 
     // simple ones
-    //raytracer.parseScene("jsonFiles/deneme.json");
-    //raytracer.drawAllScenes();
-    //raytracer.parseScene("jsonFiles/inputs/simple.json");
-    //raytracer.drawAllScenes();
-    /*raytracer.parseScene("jsonFiles/inputs/spheres.json");
+    /*raytracer.parseScene("jsonFiles/deneme.json");
+    raytracer.drawAllScenes();
+    raytracer.parseScene("jsonFiles/inputs/simple.json");
+    raytracer.drawAllScenes();
+    raytracer.parseScene("jsonFiles/inputs/spheres.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/spheres_mirror.json");
     raytracer.drawAllScenes();
@@ -41,24 +31,24 @@ int main(void) {
     raytracer.parseScene("jsonFiles/inputs/two_spheres.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/bunny.json");
-    raytracer.drawAllScenes();*/
-    /*raytracer.parseScene("jsonFiles/inputs/bunny_with_plane.json");
+    raytracer.drawAllScenes();
+    raytracer.parseScene("jsonFiles/inputs/bunny_with_plane.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/chinese_dragon.json");
-    raytracer.drawAllScenes();
+    raytracer.drawAllScenes();*/
     raytracer.parseScene("jsonFiles/inputs/cornellbox.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/scienceTree.json");
-    raytracer.drawAllScenes();*/
+    raytracer.drawAllScenes();
     /*raytracer.parseScene("jsonFiles/inputs/raven/rt_david.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/raven/rt_raven.json");
-    raytracer.drawAllScenes();
-    raytracer.parseScene("jsonFiles/inputs/raven/rt_utahteapot_mug_ceng.json");
     raytracer.drawAllScenes();*/
+    raytracer.parseScene("jsonFiles/inputs/raven/rt_utahteapot_mug_ceng.json");
+    raytracer.drawAllScenes();
 
     // smooth ones
-    /*
+
     raytracer.parseScene("jsonFiles/inputs/akif_uslu/low_poly_smooth.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/akif_uslu/berserker_smooth.json");
@@ -68,7 +58,7 @@ int main(void) {
     raytracer.parseScene("jsonFiles/inputs/akif_uslu/car_smooth_fixed.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/akif_uslu/windmill_smooth.json");
-    raytracer.drawAllScenes();*/
+    raytracer.drawAllScenes();
 
 
     // revursive ones
@@ -85,12 +75,12 @@ int main(void) {
     raytracer.drawAllScenes();*/
 
     // lookat ones
-    /*
+
     raytracer.parseScene("jsonFiles/inputs/other_dragon.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/deniz_sayin/lobster.json");
     raytracer.drawAllScenes();
-    */
+
 
 
     return 0;

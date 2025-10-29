@@ -90,7 +90,7 @@ public:
                 if (vertices.size() <= start_index+f[i][1])std::cout << vertices.size() <<" : " << start_index-1+f[i][1]<< std::endl;
                 if (vertices.size() <= start_index+f[i][2])std::cout << vertices.size() <<" : " << start_index-1+f[i][2]<< std::endl;
 
-                if (f[i].size() == 3)
+                if (f[i].size() == 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2] )
                     Faces.push_back(Triangle(Faces.size(),
                           vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                         m, shadingtype));
@@ -104,9 +104,12 @@ public:
 
             while (verticesStream >>vert[0]>>vert[1]>> vert[2]) {
                 vert[0]--; vert[1]--; vert[2]--;
-                Faces.push_back(Triangle(Faces.size(),
-                    vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
-                    m, shadingtype));
+                if (vert[0] != vert[1] && vert[0] != vert[2] && vert[1] !=vert[2])
+                {
+                    Faces.push_back(Triangle(Faces.size(),
+                        vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
+                        m, shadingtype));
+                }
 
             }
         }

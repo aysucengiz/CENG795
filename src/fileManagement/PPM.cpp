@@ -3,7 +3,8 @@
 //
 
 #include "PPM.h"
-
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 void PPM::write_ppm(const char* filename, unsigned char* data, int width, int height)
 {
@@ -19,4 +20,12 @@ void PPM::write_ppm(const char* filename, unsigned char* data, int width, int he
     }
 
     fclose(outfile);
+}
+
+
+void PPM::write_stb(const char* filename, unsigned char* data, int width, int height)
+{
+    if (stbi_write_png(filename, width, height, 3, data, width * 3)) return;
+
+    std::runtime_error("Failed to save image!");
 }

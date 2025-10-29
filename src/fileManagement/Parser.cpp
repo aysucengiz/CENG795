@@ -93,9 +93,14 @@ void Parser::getMaterials(json inp, SceneInput &sceneInput)
 void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
     std::istringstream verticesStream(inp["VertexData"]["_data"].get<std::string>());
-    real x,y,z;
-    while (verticesStream >> x >> y >> z) {
-        sceneInput.Vertices.push_back(CVertex(sceneInput.Vertices.size(),x, y, z));
+    std::string ori = "xyz";
+    if (inp["VertexData"].contains("_type")) ori = inp["VertexData"]["_type"].get<std::string>();
+    int x = ori.find('x');
+    int y = ori.find('y');
+    int z = ori.find('z');
+    real mapped[3];
+    while (verticesStream >> mapped[0] >> mapped[1] >> mapped[2]) {
+        sceneInput.Vertices.push_back(CVertex(sceneInput.Vertices.size(),mapped[x],mapped[y],mapped[z]));
 
         //if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
     }
@@ -227,7 +232,7 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
         throw std::invalid_argument("Invalid triangle indices string: " + tri["Indices"].get<std::string>());
     }
 
-
+    if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2] ) return;
     sceneInput.objects.push_back(new Triangle(
                                             curr_id,
                                             sceneInput.Vertices[ind[0] - 1],
