@@ -96,8 +96,11 @@ Object *Sphere::checkIntersection(const Ray& r, real &t_min, bool shadow_test)
         real res_1 = (-B + sqrt(BB_AC) )/ A; // TODO: burası floating point farklılığına yol açabilir
         real res_2 = (-B - sqrt(BB_AC) )/ A;
 
-        if (res_1 <= res_2 && res_1 > 0)  t_temp = res_1;
-        else  t_temp = res_2;
+        if (res_1 <= res_2 && res_1 > 0 && res_2 > 0)  t_temp = res_1;
+        else if (res_1 > 0 && res_2 > 0)  t_temp = res_2;
+        else if (res_1 > 0)  t_temp = res_1;
+        else if (res_2 > 0)  t_temp = res_2;
+        else  t_temp = INFINITY;
     }
     else if (BB_AC == 0) t_temp =  -B/A;
     else /*BB_AC < 0*/   t_temp = INFINITY;

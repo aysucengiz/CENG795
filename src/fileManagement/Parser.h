@@ -23,8 +23,7 @@ using json = nlohmann::json;
 #define DEFAULT_SHADOW_EPS 1e-3
 #define DEFAULT_INTERS_EPS 1e-6
 
-// TODO: dosya içindeki tüm dosyaları halletme, ve bu pathi otomatik bulma ekle
-#define JSON_FILES "jsonFiles/inputs/akif_uslu/"
+
 
 #include <chrono>
 
@@ -37,12 +36,12 @@ namespace Parser {
     void getLights(json inp, SceneInput &sceneInput);
     void getMaterials(json inp, SceneInput &sceneInput);
     void getVertexData(json inp, SceneInput &sceneInput);
-    void getObjects(json inp, SceneInput &sceneInput);
+    void getObjects(json inp, SceneInput &sceneInput, std::string root);
 
 
     void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
     void addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id);
-    void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id);
+    void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root);
     void addMaterial(json inp, SceneInput &sceneInput);
     void addLight(json pointLights, SceneInput &sceneInput);
     void addCamera(json Camera, SceneInput &sceneInput);

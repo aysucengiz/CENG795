@@ -72,17 +72,17 @@ int main(void) {
 
 
     // revursive ones
-    /*raytracer.parseScene("jsonFiles/inputs/cornellbox_recursive.json");
+    raytracer.parseScene("jsonFiles/inputs/cornellbox_recursive.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/scienceTree_glass.json");
-    raytracer.drawAllScenes();*/
+    raytracer.drawAllScenes();
 
 
     // ply ones
-    raytracer.parseScene("jsonFiles/inputs/akif_uslu/ton_Roosendaal_smooth.json");
+    /*raytracer.parseScene("jsonFiles/inputs/akif_uslu/ton_Roosendaal_smooth.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/akif_uslu/trex_smooth.json");
-    raytracer.drawAllScenes();
+    raytracer.drawAllScenes();*/
 
     // lookat ones
     /*

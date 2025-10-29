@@ -68,6 +68,11 @@ struct Color{
         return false;
 
     }
+
+    Color operator-()
+    {
+        return Color(-r,-g,-b);
+    }
 };
 
 struct Vec3r{

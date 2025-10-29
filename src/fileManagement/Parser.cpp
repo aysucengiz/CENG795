@@ -19,6 +19,8 @@ json Parser::getJsonDataFromFile(std::string inpFile){
 
 void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
     json inp = getJsonDataFromFile(inpFile);
+    std::string root = inpFile.substr(0, inpFile.find_last_of('/')) + "/";
+
     if(PRINTINIT) std::cout << "Scene Input: " << std::endl;
 
     sceneInput.MaxRecursionDepth =  inp["Scene"].contains("MaxRecursionDepth") ? std::stoi(inp["Scene"]["MaxRecursionDepth"].get<std::string>()) : DEFAULT_MAX_DEPTH ;
@@ -37,7 +39,7 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
     getLights(inp["Scene"]["Lights"], sceneInput);
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
     getVertexData(inp["Scene"], sceneInput);
-    getObjects(inp["Scene"]["Objects"], sceneInput);
+    getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
 
 
@@ -109,7 +111,7 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
 
 
-void Parser::getObjects(json inp, SceneInput &sceneInput){
+void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     // getTriangles
     uint32_t curr_id = sceneInput.objects.size();
 
@@ -132,8 +134,8 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
     if(inp.contains("Mesh")){
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
-        if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id);
-        else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id);
+        if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id,root);
+        else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id,root);
     }
 
     // getPlanes
@@ -251,7 +253,7 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
     curr_id++;
 }
 
-void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id)
+void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root)
 {
     std::string typeString = "";
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
@@ -263,7 +265,7 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id)
         {
 
             read_from_file = true;
-            dataLine = JSON_FILES + mes["Faces"]["_plyFile"].get<std::string>();
+            dataLine = root + mes["Faces"]["_plyFile"].get<std::string>();
 
             happly::PLYData plyIn(dataLine);
             std::vector<float> xs = plyIn.getElement("vertex").getProperty<float>("x");

@@ -41,7 +41,7 @@ public:
 
     void drawRow();
     void computeViewingRay(uint32_t x);
-    Color computeColor(Ray &ray, int depth, real n1 = 1.0);
+    Color computeColor(Ray &ray, int depth, real n1 = 1.0, Color ac = Color(0,0,0));
     void writeColorToImage();
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record);
     bool isUnderShadow();
@@ -49,8 +49,8 @@ public:
     static Color diffuseTerm(const HitRecord &hit_record, real cos_theta, Color I_R_2);
     Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2) const;
 
-    Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record);
-    Color refract(Ray &ray, int depth, real n1, HitRecord &hit_record);
+    Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, real n1, Color ac);
+    Color refract(Ray &ray, int depth, real n1, HitRecord &hit_record, Color ac);
     Ray refractionRay(Ray &ray, real n1, real n2, Vertex point,  Vec3r n, real &Fr, real &Ft);
 };
 
