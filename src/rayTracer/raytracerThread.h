@@ -22,39 +22,36 @@ private:
     uint32_t y;
     Ray viewing_ray;
     Ray shadow_ray;
-    HitRecord hit_record;
-    real t_min;
 
     // for recursive refraction
-    real n1;
+    //real n1;
     int mID;
 
 public:
     static int done_threads;
 
     RaytracerThread(SceneInput &_scene, const uint32_t _y, Camera &c) :
-    scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y), hit_record(),
-    t_min(INFINITY), n1(1.0), mID(-1)
+    scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y),
+     mID(-1)
     {viewing_ray.pos = c.Position;}
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), curr_pixel(rt.y*rt.cam.width*3), y(rt.y),
-                                                                   hit_record(), t_min(INFINITY), n1(1.0)
+                                                                     mID(-1)
     {viewing_ray.pos = rt.cam.Position;}
 
     void drawRow();
     void computeViewingRay(uint32_t x);
-    Color computeColor(Ray &ray, int depth);
+    Color computeColor(Ray &ray, int depth, real n1 = 1.0);
     void writeColorToImage();
-    void checkObjIntersection(Ray &ray);
+    void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record);
     bool isUnderShadow();
-    void computeHitRecord(Ray &ray);
-    void compute_shadow_ray(uint32_t i);
-    Color diffuseTerm(real cos_theta, Color I_R_2);
-    Color specularTerm(Ray &ray, real cos_theta, Color I_R_2);
+    void compute_shadow_ray(const HitRecord &hit_record,uint32_t i);
+    static Color diffuseTerm(const HitRecord &hit_record, real cos_theta, Color I_R_2);
+    Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2) const;
 
-    Color reflect(Ray &ray, int depth);
-    Color refract(Ray &ray, int depth);
-    Ray refractionRay(Ray &ray, Material &m2, Vec3r &n, real &Fr, real &Ft);
+    Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record);
+    Color refract(Ray &ray, int depth, real n1, HitRecord &hit_record);
+    Ray refractionRay(Ray &ray, real n1, real n2, Vertex point,  Vec3r n, real &Fr, real &Ft);
 };
 
 

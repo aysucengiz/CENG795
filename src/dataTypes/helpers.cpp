@@ -314,12 +314,13 @@ std::ostream& operator<<(std::ostream& os, const SceneInput& s) {
 }
 
 Triangle::Triangle(uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, ShadingType st):
-            Object(material, id),  shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v),
-            n(x_product((b.v-a.v), (c.v-a.v)).normalize())
+            Object(material, id),  shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
 {
+    n = x_product((b.v-a.v), (c.v-a.v));
     a.n = n + a.n;
     b.n = n + b.n;
     c.n = n + c.n;
+    n = n.normalize();
 }
 
 

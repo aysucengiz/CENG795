@@ -111,15 +111,13 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
 void Parser::getObjects(json inp, SceneInput &sceneInput){
     // getTriangles
-    std::vector<uint32_t> normal_counts;
     uint32_t curr_id = sceneInput.objects.size();
-    normal_counts.resize(sceneInput.Vertices.size());
 
     if(inp.contains("Triangle")){
         json& Triangles = inp["Triangle"];
             uint32_t numTriangles = Triangles.size();
-        if (Triangles.is_object())  addTriangle(Triangles, sceneInput, curr_id, normal_counts);
-        else  for(int i=0; i < numTriangles; i++) addTriangle(Triangles[i], sceneInput, curr_id, normal_counts);
+        if (Triangles.is_object())  addTriangle(Triangles, sceneInput, curr_id);
+        else  for(int i=0; i < numTriangles; i++) addTriangle(Triangles[i], sceneInput, curr_id);
     }
 
     // getSpheres
@@ -134,8 +132,8 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
     if(inp.contains("Mesh")){
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
-        if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id, normal_counts);
-        else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id, normal_counts);
+        if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id);
+        else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id);
     }
 
     // getPlanes
@@ -146,38 +144,48 @@ void Parser::getObjects(json inp, SceneInput &sceneInput){
         else for(int i=0; i < numPlanes; i++) addPlane(planes[i],sceneInput, curr_id);
     }
 
-
-    computeVertexNormals(sceneInput,normal_counts);
-}
-void Parser::computeTriangleValues(Triangle &t, std::vector<uint32_t> &normal_counts)
-{
-    normal_counts[t.a.id]++;
-    normal_counts[t.b.id]++;
-    normal_counts[t.c.id]++;
-
-}
-
-void Parser::computeVertexNormals(SceneInput &scene, const std::vector<uint32_t> &normal_counts)
-{
-    uint32_t verNum = scene.VertexNormals.size();
-    for(int i=0; i < verNum; i++)
+    for(int i=0; i < sceneInput.Vertices.size(); i++)
     {
-        if (normal_counts[i] > 0)
-            scene.VertexNormals[i] /= normal_counts[i];
+        sceneInput.Vertices[i].n = sceneInput.Vertices[i].n.normalize();
     }
 }
 
 
 
 
+
+
 void Parser::addCamera(json Cameras, SceneInput &sceneInput)
 {
+    std::string nearPlane = "";
+    Vec3r Gaze;
+    if (Cameras.contains("_type") && Cameras["_type"].get<std::string>() == "lookAt")
+    {
+        // compute near plane here
+        std::istringstream ss(Cameras["ImageResolution"].get<std::string>());
+        real width, height;
+        ss >> width >> height;
+        real aspect = width/height;
+        int FovY = std::stoi(Cameras["FovY"].get<std::string>());
+        real t = tan(FovY*0.5/180*M_PI) *  std::stoi(Cameras["NearDistance"].get<std::string>());
+        nearPlane = std::to_string(-t*aspect) + " "
+                   +std::to_string(t*aspect) + " "
+                   +std::to_string(-t) + " "
+                   +std::to_string(t);
+        Gaze = Vertex(Cameras["GazePoint"]) - Vertex(Cameras["Position"]);
+    }
+    else
+    {
+        nearPlane = Cameras["NearPlane"];
+        Gaze = Vec3r(Cameras["Gaze"]);
+    }
+
     Camera c(
                std::stoi(Cameras["_id"].get<std::string>()) - 1,
                Vertex(Cameras["Position"]),
-               Vec3r(Cameras["Gaze"]),
+               Gaze,
                Vec3r(Cameras["Up"]),
-               Cameras["NearPlane"],
+               nearPlane,
                std::stoi(Cameras["NearDistance"].get<std::string>()),
                Cameras["ImageResolution"],
                Cameras["ImageName"]
@@ -195,7 +203,7 @@ void Parser::addMaterial(json inp, SceneInput &sceneInput)
             Color(inp["AmbientReflectance"]),
             Color(inp["DiffuseReflectance"]),
             Color(inp["SpecularReflectance"]),
-            std::stoi(inp["PhongExponent"].get<std::string>()),
+            inp.contains("PhongExponent") ? std::stoi(inp["PhongExponent"].get<std::string>()) : 1.0,
             inp.contains("_type") ? inp["_type"].get<std::string>() :  "",
             inp.contains("MirrorReflectance") ? Color(inp["MirrorReflectance"]) : Color(),
             inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
@@ -207,7 +215,7 @@ void Parser::addMaterial(json inp, SceneInput &sceneInput)
     if(PRINTINIT) std::cout << m << std::endl;
 }
 
-void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts)
+void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
 {
 
     std::istringstream ss(tri["Indices"].get<std::string>());
@@ -224,7 +232,6 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id, st
                                             sceneInput.Vertices[ind[1] - 1],
                                             sceneInput.Vertices[ind[2] - 1],
                                             sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]));
-    computeTriangleValues(*dynamic_cast<Triangle*>(sceneInput.objects[curr_id]), normal_counts);
 
     if(PRINTINIT) std::cout << *dynamic_cast<Triangle*>(sceneInput.objects[curr_id]) << std::endl;
     curr_id++;
@@ -244,7 +251,7 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
     curr_id++;
 }
 
-void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts)
+void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id)
 {
     std::string typeString = "";
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
@@ -266,7 +273,6 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::v
             for (int j=0; j<xs.size(); j++)
             {
                 sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,xs[j],ys[j],zs[j]));
-                normal_counts.push_back(0);
             }
         }
         else
@@ -284,12 +290,7 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::v
                 read_from_file,
                 sceneInput.Vertices,
                 numVerticesUntilNow));
-        int siz = dynamic_cast<Mesh*>(sceneInput.objects[curr_id])->Faces.size();
         Mesh *temp_m = dynamic_cast<Mesh*>(sceneInput.objects[curr_id]);
-        for (int k = 0; k < siz; k++)
-        {
-            computeTriangleValues(temp_m->Faces[k], normal_counts);
-        }
         curr_id++;
         if(PRINTINIT) std::cout <<  "Mesh " << temp_m->_id << " has " << temp_m->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
     }

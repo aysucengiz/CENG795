@@ -92,7 +92,7 @@ public:
 
                 if (f[i].size() == 3)
                     Faces.push_back(Triangle(Faces.size(),
-                          vertices[start_index-1+f[i][0]], vertices[start_index-1+f[i][1]], vertices[start_index-1+f[i][2]],
+                          vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                         m, shadingtype));
             }
 
@@ -145,7 +145,6 @@ typedef struct SceneInput{
 
     // vertex info
     std::deque<CVertex> Vertices;
-    std::vector<Vec3r> VertexNormals;
 
     // light info
     Color AmbientLight;

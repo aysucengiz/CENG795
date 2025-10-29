@@ -39,12 +39,10 @@ namespace Parser {
     void getVertexData(json inp, SceneInput &sceneInput);
     void getObjects(json inp, SceneInput &sceneInput);
 
-    void computeTriangleValues(Triangle &t, std::vector<uint32_t> &normal_counts);
-    void computeVertexNormals(SceneInput &scene, const std::vector<uint32_t> &normal_counts);
 
-    void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts);
+    void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
     void addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id);
-    void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::vector<uint32_t> &normal_counts);
+    void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id);
     void addMaterial(json inp, SceneInput &sceneInput);
     void addLight(json pointLights, SceneInput &sceneInput);
     void addCamera(json Camera, SceneInput &sceneInput);

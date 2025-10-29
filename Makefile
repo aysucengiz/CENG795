@@ -3,7 +3,8 @@ MAIN_FILE = src/main.cpp
 RAYTRACER_FILES = src/rayTracer/RayTracer.cpp src/rayTracer/raytracerThread.cpp
 DATA_FILES = src/dataTypes/helpers.cpp src/dataTypes/Object.cpp
 FILE_FILES = src/fileManagement/Parser.cpp src/fileManagement/PPM.cpp
-FLAGS = -Isrc -fopenmp -O3 -std=c++20
+PARALLEL = -fopenmp
+FLAGS = -Isrc  -O3 -std=c++20 -fopenmp
 all:
 	g++ $(FLAGS) $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer
 test:
