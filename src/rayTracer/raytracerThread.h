@@ -20,8 +20,6 @@ private:
     Color final_color;
     uint32_t curr_pixel;
     uint32_t y;
-    Ray viewing_ray;
-    Ray shadow_ray;
 
     // for recursive refraction
     //real n1;
@@ -33,21 +31,20 @@ public:
     RaytracerThread(SceneInput &_scene, const uint32_t _y, Camera &c) :
     scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y),
      mID(-1)
-    {viewing_ray.pos = c.Position;}
+    {}
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), curr_pixel(rt.y*rt.cam.width*3), y(rt.y),
-                                                                     mID(-1)
-    {viewing_ray.pos = rt.cam.Position;}
+                                                                     mID(-1) {}
 
     void drawRow();
-    void computeViewingRay(uint32_t x);
+    Ray computeViewingRay(uint32_t x);
     Color computeColor(Ray &ray, int depth, real n1 = 1.0, Color ac = Color(0,0,0));
     void writeColorToImage();
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record);
-    bool isUnderShadow();
-    void compute_shadow_ray(const HitRecord &hit_record,uint32_t i);
+    bool isUnderShadow(Ray &shadow_ray);
+    Ray compute_shadow_ray(const HitRecord &hit_record,uint32_t i);
     static Color diffuseTerm(const HitRecord &hit_record, real cos_theta, Color I_R_2);
-    Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2) const;
+    Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2, Ray &shadow_ray) const;
 
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, real n1, Color ac);
     Color refract(Ray &ray, int depth, real n1, HitRecord &hit_record, Color ac);

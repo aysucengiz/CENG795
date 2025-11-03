@@ -114,6 +114,8 @@ struct Vec3r{
 
 };
 
+
+
 typedef struct Vertex{
     real x;
     real y;
@@ -144,6 +146,63 @@ typedef struct Ray{
 } Ray;
 
 Vec3r x_product(const Vec3r &v, const Vec3r &w);
+
+
+struct Vec4r{
+    real x, y, z, w;
+    Vec4r(real x, real y, real z, real w) : x(x), y(y), z(z), w(w) {}
+    Vec4r(Vec3r &v) : x(v.i), y(v.j), z(v.k), w(0.0) {}
+    Vec4r(Vertex &v) : x(v.x), y(v.y), z(v.z), w(1.0) {}
+
+    Vec4r operator-() const {
+        return Vec4r{-x, -y, -z, -w};
+    }
+
+    Vec4r& operator+=(const Vec3r& other) {
+        x += other.i;
+        y += other.j;
+        z += other.k;
+        w += 1.0;
+        return *this;  // Return the modified object
+    }
+
+    Vec4r& operator+=(const Vertex& other) {
+        x += other.x;
+        y += other.y;
+        z += other.z;
+        // w += 0.0;
+        return *this;  // Return the modified object
+    }
+
+    Vec4r& operator+=(const Vec4r& other) {
+        x += other.x;
+        y += other.y;
+        z += other.z;
+        w += other.w;
+        return *this;  // Return the modified object
+    }
+
+    Vec4r& operator/=(const uint32_t& other) {
+        x /= static_cast<real>(other);
+        y /= static_cast<real>(other);
+        z /= static_cast<real>(other);
+        w /= static_cast<real>(other);
+        return *this;  // Return the modified object
+    }
+
+    Vec4r& operator/=(const real& other) {
+        x /= other;
+        y /= other;
+        z /= other;
+        w /= other;
+        return *this;  // Return the modified object
+    }
+
+    //Vec3r normalize() const;
+    //real mag() const { return sqrt(i*i + j*j + k*k);}
+
+
+};
 
 
 struct Camera{
@@ -209,7 +268,6 @@ struct Material{
         if (type == "dielectric") materialType = MaterialType::DIELECTRIC;
         else if (type == "conductor") materialType = MaterialType::CONDUCTOR;
         else if (type == "mirror") materialType = MaterialType::MIRROR;
-        else if(!mr.isWhite()) materialType = MaterialType::MIRROR;
         else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()&& mr.isWhite() && ac.isWhite()) materialType = MaterialType::NONE;
         else materialType = MaterialType::NORMAL;
     }

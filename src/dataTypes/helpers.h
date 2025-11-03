@@ -7,6 +7,7 @@
 
 #include "DataTypes.h"
 #include "Object.h"
+#include "Matrix.h"
 #include <cmath>
 
 int clamp(real c, int from, int to);
@@ -38,6 +39,22 @@ Vertex operator -(const Vertex &a, const Vec3r &b);
 Vec3r operator +(const Vec3r &a, const Vec3r &b);
 Vec3r operator -(const Vec3r &a, const Vec3r &b);
 Vec3r operator -(const Vertex &a, const Vertex &b);
+
+// overload vec4r
+Vec4r operator *(const Vec4r &a, const real &b);
+Vec4r operator /(const Vec4r &a, const real &b);
+Vec4r operator -(const Vec4r &a, const Vec4r &b);
+Vec4r operator -(const Vertex &a, const Vec4r &b);
+Vec4r operator -(const Vec4r &b, const Vertex &a);
+Vec4r operator -(const Vec3r &a, const Vec4r &b);
+Vec4r operator -(const Vec4r &b, const Vec3r &a);
+Vec4r operator +(const Vec4r &a, const Vec4r &b);
+Vec4r operator +(const Vertex &a, const Vec4r &b);
+Vec4r operator +(const Vec4r &b, const Vertex &a);
+Vec4r operator +(const Vec3r &a, const Vec4r &b);
+Vec4r operator +(const Vec4r &b, const Vec3r &a);
+
+Vec4r operator *(const M4trix &a, const Vec4r &b);
 
 // print
 std::ostream& operator<<(std::ostream& os, const Color& c);

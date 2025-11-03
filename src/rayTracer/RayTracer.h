@@ -10,16 +10,25 @@
 #include "../dataTypes/Object.h"
 #include "../fileManagement/Parser.h"
 #include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <ctime>
+
 
 class RayTracer
 {
 public:
+    RayTracer();
+    std::ofstream logFile;
     std::string input_path;
+    std::ostringstream filename;
     std::chrono::high_resolution_clock::time_point start_time;
     SceneInput scene;
     void parseScene(std::string input_path);
     void drawScene(uint32_t camID);
     void drawAllScenes();
+    void log(std::string logText);
+    ~RayTracer();
 
 };
 

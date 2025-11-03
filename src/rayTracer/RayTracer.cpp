@@ -7,8 +7,41 @@
 
 int RaytracerThread::done_threads = 0;
 
+RayTracer::RayTracer()
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t time_now = std::chrono::system_clock::to_time_t(now);
+    std::tm local_tm = *std::localtime(&time_now);
+
+    filename << "logs/render_log_"
+             << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
+
+
+    log("Log started.");
+}
+
+RayTracer::~RayTracer()
+{
+    log("The end :)");
+}
+
+
+void RayTracer::log(std::string logText)
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t time_now = std::chrono::system_clock::to_time_t(now);
+    std::tm local_tm = *std::localtime(&time_now);
+
+    logFile.open(filename.str(), std::ios::out | std::ios::app);
+    if (logFile.is_open()) {
+        logFile << "[" <<std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S") << "] " << logText << "\n";
+        logFile.close();
+    }
+    std::cout << "[" <<std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S") << "] " << logText << "\n";
+}
+
 void RayTracer::parseScene(std::string input_path){
-    std::cout << "----- Parsing scene from " << input_path << " -----" <<std::endl;
+    //log("----- Parsing scene from " + input_path + " -----");
     start_time = std::chrono::high_resolution_clock::now();
     scene.Cameras.clear();
     scene.PointLights.clear();
@@ -19,11 +52,9 @@ void RayTracer::parseScene(std::string input_path){
     scene.numCameras = scene.Cameras.size();
     scene.numObjects = scene.objects.size();
     scene.numLights = scene.PointLights.size();
-    std::cout << "Parsing done." << std::endl;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    std::cout << input_path << ": "
-              << duration / 1000.0 << " s" << std::endl;
+    log( input_path + ": " +  std::to_string(duration / 1000.0) + " s");
 
 }
 
@@ -39,10 +70,10 @@ void RayTracer::drawScene(uint32_t camID){
 
     RaytracerThread::done_threads = 0;
     Camera cam = scene.Cameras[camID];
-    std::cout << "----- Drawing " << cam.ImageName << " -----" << std::endl;
+    //log("----- Drawing " + cam.ImageName + " -----");
     auto start = std::chrono::high_resolution_clock::now();
     scene.u = x_product(cam.Up, -cam.Gaze);
-    scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t; // TODO: near plane verileri doğru mu?
+    scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t;
     scene.s_u_0 = (cam.r - cam.l) / cam.width;
     scene.s_v_0 = (cam.t - cam.b) / cam.height;
     // scene.s_v = s_v_0 * 0.5;
@@ -67,10 +98,8 @@ void RayTracer::drawScene(uint32_t camID){
     delete[] scene.image;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    std::cout << cam.ImageName << " all: "
-    << duration_all / 1000.0 << " s" << std::endl;
+    log(cam.ImageName + " all: " + std::to_string(duration_all / 1000.0) + " s");
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start).count();
-    std::cout << cam.ImageName << " drawing: "
-              << duration / 1000.0 << " s" << std::endl;
+    log(cam.ImageName + " drawing: " + std::to_string(duration / 1000.0) + " s");
 
 }

@@ -4,12 +4,14 @@
 
 #include "raytracerThread.h"
 
+// TODO: add back face culling
+
 void RaytracerThread::drawRow()
 {
     uint32_t width = cam.width;
     for (uint32_t x = 0; x < width; x++)
     {
-        computeViewingRay(x);
+        Ray viewing_ray = computeViewingRay(x);
         final_color = computeColor(viewing_ray, 0);
         writeColorToImage();
     }
@@ -33,18 +35,20 @@ void RaytracerThread::writeColorToImage()
 
 
 
-void RaytracerThread::computeViewingRay(uint32_t x)
+Ray RaytracerThread::computeViewingRay(uint32_t x)
 {
-
+    Ray viewing_ray;
     real s_u = (x + 0.5) *(cam.r - cam.l) / cam.width;
     real s_v = (y + 0.5) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u*s_u - cam.Up * s_v;
 
     viewing_ray.dir = s - cam.Position;
     viewing_ray.dir = viewing_ray.dir.normalize();
+    viewing_ray.pos = cam.Position;
+    return viewing_ray;
 }
 
-bool RaytracerThread::isUnderShadow()
+bool RaytracerThread::isUnderShadow(Ray &shadow_ray)
 {
     real t_min = INFINITY;
     for (int j = 0; j < scene.numObjects; j++)
@@ -65,8 +69,8 @@ Color RaytracerThread::computeColor(Ray &ray, int depth, real n1, Color ac)
     if (depth > scene.MaxRecursionDepth) return curr_color;
     checkObjIntersection(ray, t_min, hit_record);
 
-
-    if (hit_record.obj != nullptr &&  hit_record.obj->material.materialType != MaterialType::NONE)
+    if (hit_record.obj != nullptr &&
+        hit_record.obj->material.materialType != MaterialType::NONE)
     {
 
         Material &m = hit_record.obj->material;
@@ -85,8 +89,8 @@ Color RaytracerThread::computeColor(Ray &ray, int depth, real n1, Color ac)
         {
             for (int i=0; i < scene.numLights; i++)
             {
-                compute_shadow_ray(hit_record, i);
-                if (!isUnderShadow())
+                Ray shadow_ray = compute_shadow_ray(hit_record, i);
+                if (!isUnderShadow(shadow_ray))
                 {
 
                     real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal);
@@ -94,7 +98,7 @@ Color RaytracerThread::computeColor(Ray &ray, int depth, real n1, Color ac)
                     if ( cos_theta > 0)
                     {
                         //std::cout << "Draw" << std::endl;
-                        curr_color += diffuseTerm(hit_record, cos_theta,I_R_2) + specularTerm(hit_record, ray, cos_theta,I_R_2);
+                        curr_color += diffuseTerm(hit_record, cos_theta,I_R_2) + specularTerm(hit_record, ray, cos_theta,I_R_2, shadow_ray);
                         //if (!ac.isWhite()) curr_color = curr_color * exponent(ac * -(hit_record.intersection_point - ray.pos).mag());
                     }// else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
 
@@ -116,7 +120,7 @@ Color RaytracerThread::diffuseTerm(const HitRecord &hit_record, real cos_theta, 
     return hit_record.obj->material.DiffuseReflectance * I_R_2 * cos_theta;
 }
 
-Color RaytracerThread::specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2) const
+Color RaytracerThread::specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2, Ray & shadow_ray) const
 {
     Material &m = hit_record.obj->material;
     if (m.SpecularReflectance.isWhite()) return Color();
@@ -126,10 +130,12 @@ Color RaytracerThread::specularTerm(const HitRecord &hit_record, const Ray &ray,
     return m.SpecularReflectance * I_R_2 * pow(cos_alpha, m.PhongExponent);
 }
 
-void RaytracerThread::compute_shadow_ray(const HitRecord &hit_record, uint32_t i)
+Ray RaytracerThread::compute_shadow_ray(const HitRecord &hit_record, uint32_t i)
 {
+    Ray shadow_ray;
     shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
     shadow_ray.dir = scene.PointLights[i].Position - shadow_ray.pos;
+    return shadow_ray;
 }
 
 
@@ -143,6 +149,7 @@ void RaytracerThread::checkObjIntersection(Ray &ray, real &t_min, HitRecord &hit
 
     for(int i = 0; i < scene.numObjects; i++)
     {
+
         temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
 
         if (temp_obj != nullptr)

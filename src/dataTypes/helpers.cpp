@@ -9,11 +9,11 @@ Vec3r Vec3r::normalize() const{return (*this)/this->mag();}
 
 Color exponent(Color c)
 {
-    return Color(std::exp(c.r), std::exp(c.g), std::exp(c.b));
+    return {std::exp(c.r), std::exp(c.g), std::exp(c.b)};
 }
 
 
-int clamp(real c, int from, int to){
+int clamp(const real c, const int from, const int to){
     int temp = static_cast<int>(std::round(c));
     if(temp > to) return to;
     if(temp< from) return from;
@@ -126,6 +126,52 @@ Vec3r operator *(const Vec3r &a, real mult)
                  a.j * mult,
                  a.k * mult);
 }
+
+
+// overload vec4r and m4trix
+
+Vec4r operator *(const Vec4r &a, const real &b)
+{return Vec4r(a.x *b,a.y *b, a.z *b, a.w *b);}
+
+Vec4r operator /(const Vec4r &a, const real &b)
+{return Vec4r(a.x /b,a.y /b, a.z /b, a.w /b);}
+
+Vec4r operator -(const Vec4r &a, const Vec4r &b)
+{return Vec4r(a.x - b.x,a.y - b.y, a.z - b.z, a.w - b.w);}
+
+Vec4r operator +(const Vec4r &a, const Vec4r &b)
+{return Vec4r(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);}
+
+Vec4r operator +(const Vec3r &a, const Vec4r &b)
+{return Vec4r(a.i + b.x,a.j + b.y, a.k + b.z, 0.0 + b.w);}
+
+Vec4r operator +(const Vec4r &b, const Vec3r &a)
+{return Vec4r(a.i + b.x, a.j + b.y, a.k + b.z, 0.0 + b.w);}
+
+Vec4r operator -(const Vec3r &a, const Vec4r &b)
+{return Vec4r(a.i - b.x,a.j - b.y, a.k - b.z, 0.0 - b.w);}
+
+Vec4r operator -(const Vec4r &b, const Vec3r &a)
+{return Vec4r(a.i - b.x, a.j - b.y, a.k - b.z, 0.0 - b.w);}
+
+Vec4r operator +(const Vertex &a, const Vec4r &b)
+{return Vec4r(a.x + b.x,a.y + b.y, a.z + b.z, 1.0 + b.w);}
+
+Vec4r operator +(const Vec4r &b, const Vertex &a)
+{return Vec4r(a.x + b.x, a.y + b.y, a.z + b.z, 1.0 + b.w);}
+
+Vec4r operator -(const Vertex &a, const Vec4r &b)
+{return Vec4r(a.x - b.x,a.y - b.y, a.z - b.z, 1.0 - b.w);}
+
+Vec4r operator -(const Vec4r &b, const Vertex &a)
+{return Vec4r(a.x - b.x, a.y - b.y, a.z - b.z, 1.0 - b.w);}
+
+
+
+
+
+
+
 
 Vec3r x_product(const Vec3r &v, const Vec3r &w)
 {
@@ -313,7 +359,7 @@ std::ostream& operator<<(std::ostream& os, const SceneInput& s) {
     return os;
 }
 
-Triangle::Triangle(uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, ShadingType st):
+Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st):
             Object(material, id),  shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
 {
     n = x_product((b.v-a.v), (c.v-a.v));

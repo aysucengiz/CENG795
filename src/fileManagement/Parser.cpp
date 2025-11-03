@@ -65,11 +65,9 @@ void Parser::addLight(json pointLights, SceneInput &sceneInput)
 
 
 void Parser::getLights(json inp, SceneInput &sceneInput){
-    if (inp.contains("AmbientLight"))
-    {
-        sceneInput.AmbientLight = Color(inp["AmbientLight"]);
+    sceneInput.AmbientLight =inp.contains("AmbientLight") ? Color(inp["AmbientLight"]) : Color();
     if(PRINTINIT) std::cout << "AmbientLight: " << sceneInput.AmbientLight << std::endl;
-    }
+
     if (inp.contains("PointLight"))
     {
         json& pointLights = inp["PointLight"];

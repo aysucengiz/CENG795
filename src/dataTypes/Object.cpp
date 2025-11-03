@@ -12,6 +12,7 @@ ObjectType Triangle::getObjectType() { return ObjectType::TRIANGLE; }
 
 Object *Triangle::checkIntersection(const Ray& r, real &t_min, bool shadow_test)
 {
+    //if (dot_product(r.dir,n) >=0 ) return nullptr;
     Vec3r a_o = a.v - r.pos;
     real det_A = determinant(a_b,a_c,r.dir);
     if (det_A == 0)
