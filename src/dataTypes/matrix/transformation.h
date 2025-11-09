@@ -1,0 +1,75 @@
+//
+// Created by vicy on 11/01/25.
+//
+
+#ifndef CENG795_TRANSFORMATION_H
+#define CENG795_TRANSFORMATION_H
+
+#include "../base/typedefs.h"
+#include "../base/SceneData.h"
+#include "Matrix.h"
+
+
+class Transformation: public M4trix
+{
+public:
+    M4trix normalTransform;
+    virtual ~Transformation() = default;
+    virtual TransformationType getTransformationType() const = 0;
+    virtual Transformation *inv() const = 0;
+};
+
+class Rotate : public Transformation
+{
+public:
+    Ray axis;
+    real angle;
+    Rotate(Ray ax, double ang);
+    Rotate(Axes ax, double ang);
+    Rotate(const Rotate& rotate);
+    TransformationType getTransformationType() const override;
+    Transformation *inv() const override;
+};
+
+class Translate : public Transformation
+{
+private:
+public:
+    real x,y,z;
+    Translate(Vertex v);
+    Translate(real x, real y, real z);
+    TransformationType getTransformationType() const override;
+    Translate InverseTranslate() const;
+    Transformation *inv() const override;
+};
+
+
+class Scale : public Transformation
+{
+private:
+public:
+    Vertex center;
+    real x, y, z;
+    Scale(real x, real y, real z);
+    Scale(Vertex center, real x, real y, real z);
+    TransformationType getTransformationType() const override;
+    Scale InverseScale() const;
+    Transformation *inv() const override;
+};
+
+class Composite : public Transformation
+{
+public:
+    Composite(const std::vector<Transformation>& transformations);
+    Composite(M4trix m);
+    TransformationType getTransformationType() const override;
+    Composite();
+    Transformation *inv() const override;
+};
+
+
+
+
+
+
+#endif //CENG795_TRANSFORMATION_H

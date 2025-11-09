@@ -1,21 +1,14 @@
 //
-// Created by vicy on 10/18/25.
+// Created by vicy on 11/08/25.
 //
 
-#ifndef CENG795_HELPERS_H
-#define CENG795_HELPERS_H
+#ifndef CENG795_OVERLOADS_H
+#define CENG795_OVERLOADS_H
 
-#include "DataTypes.h"
-#include "Object.h"
-#include "Matrix.h"
-#include <cmath>
-
-int clamp(real c, int from, int to);
-Color exponent(Color c);
-
-real dot_product(const Vec3r &a, const Vec3r &b);
-real determinant(const Vec3r &first, const Vec3r &second, const Vec3r &third );
-
+#include "../base/SceneData.h"
+#include "../base/Vectors.h"
+#include "../object/Object.h"
+#include "../../acceleration/BVH.h"
 
 
 // overload - color
@@ -30,6 +23,8 @@ Vec3r operator *(const Vec3r &a, const real mult);
 Vec3r operator /(const Vec3r &a, const real denum);
 
 // overload - return Vertex
+Vertex operator /(const Vertex &a, real other);
+Vertex operator +(const Vertex &a, const Vertex &b);
 Vertex operator +(const Vec3r &a, const Vertex &b);
 Vertex operator +(const Vertex &a, const Vec3r &b);
 Vertex operator -(const Vec3r &a, const Vertex &b);
@@ -54,7 +49,6 @@ Vec4r operator +(const Vec4r &b, const Vertex &a);
 Vec4r operator +(const Vec3r &a, const Vec4r &b);
 Vec4r operator +(const Vec4r &b, const Vec3r &a);
 
-Vec4r operator *(const M4trix &a, const Vec4r &b);
 
 // print
 std::ostream& operator<<(std::ostream& os, const Color& c);
@@ -72,4 +66,22 @@ std::ostream& operator<<(std::ostream& os, const Plane& m);
 std::ostream& operator<<(std::ostream& os, const MaterialType& mt);
 std::ostream& operator<<(std::ostream& os, const ObjectType& ot);
 std::ostream& operator<<(std::ostream& os, Object *s);
-#endif //CENG795_HELPERS_H
+
+std::ostream& operator<<(std::ostream& os, TransformationType t);
+std::ostream& operator<<(std::ostream& os, PivotType t);
+std::ostream& operator<<(std::ostream& os, BVHnodeType t);
+std::ostream& operator<<(std::ostream& os, Axes x);
+std::ostream& operator<<(std::ostream& os, BVH &bvh);
+std::ostream& operator<<(std::ostream& os, BVHNode &node);
+std::ostream& operator<<(std::ostream& os, BBox &bbox);
+std::ostream& operator<<(std::ostream& os, const Instance& m);
+
+std::ostream& operator<<(std::ostream& os, Transformation *t);
+std::ostream& operator<<(std::ostream& os, Rotate &t);
+std::ostream& operator<<(std::ostream& os, Translate &t);
+std::ostream& operator<<(std::ostream& os, Scale &t);
+std::ostream& operator<<(std::ostream& os, Composite &t);
+
+
+
+#endif //CENG795_OVERLOADS_H

@@ -52,6 +52,7 @@ void RayTracer::parseScene(std::string input_path){
     scene.numCameras = scene.Cameras.size();
     scene.numObjects = scene.objects.size();
     scene.numLights = scene.PointLights.size();
+    if (ACCELERATE) bvh.getScene(scene);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
     log( input_path + ": " +  std::to_string(duration / 1000.0) + " s");
@@ -86,7 +87,7 @@ void RayTracer::drawScene(uint32_t camID){
 
     std::vector<RaytracerThread> raytracers;
     for (uint32_t y = 0; y < height; y++){
-        raytracers.push_back(RaytracerThread(scene,y,cam));
+        raytracers.push_back(RaytracerThread(scene,y,cam, bvh));
     }
 
     #pragma omp parallel for

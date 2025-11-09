@@ -7,8 +7,9 @@
 
 #include "raytracerThread.h"
 #include "../fileManagement/PPM.h"
-#include "../dataTypes/Object.h"
+#include "../dataTypes/object/Object.h"
 #include "../fileManagement/Parser.h"
+#include "../dataTypes/functions/overloads.h"
 #include <chrono>
 #include <fstream>
 #include <iomanip>
@@ -24,6 +25,7 @@ public:
     std::ostringstream filename;
     std::chrono::high_resolution_clock::time_point start_time;
     SceneInput scene;
+    BVH bvh;
     void parseScene(std::string input_path);
     void drawScene(uint32_t camID);
     void drawAllScenes();

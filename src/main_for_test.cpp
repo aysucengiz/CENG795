@@ -22,12 +22,12 @@ int main(void) {
     // simple ones
     /*raytracer.log("\n\nThe following are the rather simple scenes:");
     raytracer.parseScene("jsonFiles/inputs/simple.json");
-    raytracer.drawAllScenes();
+    raytracer.drawAllScenes();*/
     raytracer.parseScene("jsonFiles/inputs/spheres.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/spheres_mirror.json");
     raytracer.drawAllScenes();
-    raytracer.parseScene("jsonFiles/inputs/spheres_with_plane.json");
+    /*raytracer.parseScene("jsonFiles/inputs/spheres_with_plane.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/two_spheres.json");
     raytracer.drawAllScenes();
@@ -43,11 +43,11 @@ int main(void) {
     raytracer.drawAllScenes();
 
     // revursive ones
-    */raytracer.log("\n\nDielectic and conductor scenes:");
+    raytracer.log("\n\nDielectic and conductor scenes:");
     raytracer.parseScene("jsonFiles/inputs/cornellbox_recursive.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/inputs/scienceTree_glass.json");
-    raytracer.drawAllScenes();/*
+    raytracer.drawAllScenes();
 
     // smooth ones
     raytracer.log("\n\nAkif Uslu ones (smooth):");

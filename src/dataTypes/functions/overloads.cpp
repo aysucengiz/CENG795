@@ -1,24 +1,9 @@
 //
-// Created by vicy on 10/18/25.
+// Created by vicy on 11/08/25.
 //
 
-#include "helpers.h"
+#include "overloads.h"
 
-
-Vec3r Vec3r::normalize() const{return (*this)/this->mag();}
-
-Color exponent(Color c)
-{
-    return {std::exp(c.r), std::exp(c.g), std::exp(c.b)};
-}
-
-
-int clamp(const real c, const int from, const int to){
-    int temp = static_cast<int>(std::round(c));
-    if(temp > to) return to;
-    if(temp< from) return from;
-    return temp;
-}
 
 // overload - color
 
@@ -62,6 +47,20 @@ Color operator *(const Color &a, const real b)
 
 
 // overload - return vertex
+
+Vertex operator/(const Vertex &a, const real& other) {
+    return Vertex(a.x / other,
+                  a.y / other,
+                  a.z / other);
+}
+
+Vertex operator+(const Vertex &a, const Vertex &b)
+{
+    return Vertex(a.x + b.x,
+                 a.y + b.y,
+                 a.z + b.z);
+}
+
 
 Vertex operator +(const Vec3r &a, const Vertex &b)
 {
@@ -167,30 +166,6 @@ Vec4r operator -(const Vec4r &b, const Vertex &a)
 {return Vec4r(a.x - b.x, a.y - b.y, a.z - b.z, 1.0 - b.w);}
 
 
-
-
-
-
-
-
-Vec3r x_product(const Vec3r &v, const Vec3r &w)
-{
-    return Vec3r(v.j * w.k - v.k * w.j,
-                 v.k * w.i - v.i * w.k,
-                 v.i * w.j - v.j * w.i);
-}
-
-real dot_product(const Vec3r &a, const Vec3r &b){
-    return a.i*b.i + a.j*b.j + a.k*b.k;
-}
-
-real determinant(const Vec3r &first, const Vec3r &second, const Vec3r &third ){
-    //  a  d  g
-    //  b  e  h
-    //  c  f  i
-    // return a*(e*i - h*f) + b*(g*f - d*i) + c*(d*h -e*g);
-    return first.i*(second.j*third.k - third.j*second.k) + first.j*(third.i*second.k - second.i*third.k) + first.k*(second.i*third.j -second.j*third.i);
-}
 
 
 
@@ -359,15 +334,111 @@ std::ostream& operator<<(std::ostream& os, const SceneInput& s) {
     return os;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st):
-            Object(material, id),  shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
+
+std::ostream& operator<<(std::ostream& os, TransformationType t)
 {
-    n = x_product((b.v-a.v), (c.v-a.v));
-    a.n = n + a.n;
-    b.n = n + b.n;
-    c.n = n + c.n;
-    n = n.normalize();
+    if (t == TransformationType::NONE) os<<  "none";
+    else if (t == TransformationType::ROTATE) os<<  "rotate";
+    else if (t == TransformationType::TRANSLATE) os<< "translate";
+    else if (t == TransformationType::SCALE) os<<  "scale";
+    else if (t == TransformationType::COMPOSITE) os<<  "composite";
+    else os << "unknown";
+    return os;
 }
 
+
+std::ostream& operator<<(std::ostream& os, PivotType t)
+{
+    if (t == PivotType::MEDIAN) os<<  "median";
+    else if (t == PivotType::MIDDLE) os<<  "middle";
+    else if (t == PivotType::SAH) os<< "SAH";
+    else os << "unknown";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, BVHnodeType t)
+{
+    if (t == BVHnodeType::LEAF) os<<  "leaf \t\t";
+    else if (t == BVHnodeType::INT_W_LEFT) os<<  "w/ left \t";
+    else if (t == BVHnodeType::INT_W_RIGHT) os<< "w/ right \t";
+    else if (t == BVHnodeType::INT_W_BOTH) os<<  "w/ left right";
+    else os << "unknown";
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, Axes x)
+{
+    if (x == Axes::x) os<<  "x";
+    else if (x == Axes::y) os<<  "y";
+    else if (x == Axes::z) os<< "z";
+    else os << "unknown";
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, BVHNode &node)
+{
+    os << "Node: "
+      << "  type:" << node.type <<"\t"
+      <<  node.bbox
+      << "\tobjCount: " << node.objCount;
+    if (node.type == BVHnodeType::LEAF) os << "\tfirstObjID: " << node.firstObjID;
+    else os << "\trightOffset: " << node.rightOffset;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, BVH &bvh)
+{
+    os << "BVH: "
+       << "pivotType: " << bvh.pivotType
+       << "\nNodes: ";
+    for (auto node : bvh.nodes) os << node << "\n";
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, BBox &bbox)
+{
+    os << "BBox: Max: " << bbox.vMax << " Min: " << bbox.vMin;
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, const Instance& i)
+{
+    os << "Instance " << i._id << ":"
+      << "\n\tObject:" << i.original->getObjectType() << " " <<i.original->_id
+      << "\n\tforwardTrans:" << i.forwardTrans->getTransformationType() << " " << i.forwardTrans
+      << "\n\tbackwardTrans:" << i.forwardTrans->getTransformationType() << " "  << i.backwardTrans;
+    return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, Transformation *t)
+{
+    if (t->getTransformationType()  == TransformationType::ROTATE) os<<  dynamic_cast<Rotate*>(t);
+    else if (t->getTransformationType()  == TransformationType::TRANSLATE) os<<  dynamic_cast<Translate*>(t);
+    else if (t->getTransformationType()  == TransformationType::SCALE) os<<   dynamic_cast<Scale*>(t);
+    else if (t->getTransformationType()  == TransformationType::COMPOSITE) os<<   dynamic_cast<Composite*>(t);
+    else os << "type unknown";
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, Rotate &r)
+{
+    os << "Rotate: axis:" << r.axis.pos << " " << r.axis.dir  << " angle: " << r.angle
+    << "\n arr:" << r.arr << "\n";
+return os;
+}
+std::ostream& operator<<(std::ostream& os, Translate &r)
+{
+    os << "Translate: " << r.x << " " << r.y  << "  " << r.z
+    << "\n arr:" << r.arr << "\n";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, Scale &r)
+{
+    os << "Scale: " << r.x << " " << r.y  << "  " << r.z << " around: " << r.center
+    << "\n arr:" << r.arr << "\n";
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, Composite &t)
+{
+    os << "Composite: " << "\n arr:" << t.arr << "\n";
+    return os;
+}
 
 

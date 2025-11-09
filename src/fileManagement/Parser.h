@@ -9,9 +9,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "../dataTypes/DataTypes.h"
-#include "../dataTypes/Object.h"
-#include "../dataTypes/helpers.h"
+#include "../dataTypes/base/SceneData.h"
+#include "../dataTypes/object/Object.h"
+#include "../dataTypes/functions/helpers.h"
 
 #include "json.hpp"
 
@@ -22,10 +22,6 @@ using json = nlohmann::json;
 #define DEFAULT_MAX_DEPTH 20
 #define DEFAULT_SHADOW_EPS 1e-3
 #define DEFAULT_INTERS_EPS 1e-6
-
-
-
-#include <chrono>
 
 namespace Parser {
     void parseScene(std::string inpFile, SceneInput &sceneInput);

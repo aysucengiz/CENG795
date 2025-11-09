@@ -3,8 +3,8 @@
 //
 
 #include "raytracerThread.h"
-
-// TODO: add back face culling
+#include "dataTypes/functions/overloads.h"
+#include "../dataTypes/functions/helpers.h"
 
 void RaytracerThread::drawRow()
 {
@@ -51,12 +51,24 @@ Ray RaytracerThread::computeViewingRay(uint32_t x)
 bool RaytracerThread::isUnderShadow(Ray &shadow_ray)
 {
     real t_min = INFINITY;
-    for (int j = 0; j < scene.numObjects; j++)
+
+    if (ACCELERATE)
     {
-        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
-            return true;
+        if (bvh.traverse(shadow_ray,t_min, scene.objects, true) == nullptr)
+            return false;
+        else return true;
     }
-    return false;
+    else
+    {
+        for (int j = 0; j < scene.numObjects; j++)
+        {
+            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
+                return true;
+        }
+        return false;
+    }
+
+
 }
 
 
@@ -143,23 +155,32 @@ void RaytracerThread::checkObjIntersection(Ray &ray, real &t_min, HitRecord &hit
 {
     t_min = INFINITY;
     hit_record.obj = nullptr;
-    hit_record.mesh = nullptr;
-    mID = -1;
     Object *temp_obj = nullptr;
 
-    for(int i = 0; i < scene.numObjects; i++)
+    if (ACCELERATE)
     {
-
-        temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
-
-        if (temp_obj != nullptr)
+        Object *obj = bvh.traverse(ray,t_min,scene.objects);
+        if (obj != nullptr)
         {
-            hit_record.obj = temp_obj;
-            if (temp_obj->getObjectType() == ObjectType::MESH)
-                hit_record.mesh = dynamic_cast<Mesh*> (scene.objects[i]);
-            mID = temp_obj->material._id;
+            hit_record.obj = obj;
+            hit_record.intersection_point = ray.pos + ray.dir * t_min;
+            hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point);
         }
     }
+    else
+    {
+        for(int i = 0; i < scene.numObjects; i++)
+        {
+
+            temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
+
+            if (temp_obj != nullptr)
+            {
+                hit_record.obj = temp_obj;
+            }
+        }
+    }
+
 
     if (hit_record.obj != nullptr)
     {
@@ -230,7 +251,7 @@ Color RaytracerThread::refract(Ray &ray, int depth, real n1, HitRecord &hit_reco
 
            // obje içinden çıkıyoruz, computecolor ve attenuationyapılacak
             real Fr2, Ft2;
-            Color eCx = exponent(-hit_record.obj->material.AbsorptionCoefficient * (hit_record.intersection_point - new_hit_record.intersection_point).mag());
+            Color eCx = (-hit_record.obj->material.AbsorptionCoefficient * (hit_record.intersection_point - new_hit_record.intersection_point).mag()).exponent();
             Ray refractedRay2 = refractionRay(refractedRay, n2, n1, new_hit_record.intersection_point,new_hit_record.normal, Fr2, Ft2);
             if (Fr2 > 0.0) refracted += reflect(refractedRay, depth, MaterialType::DIELECTRIC, new_hit_record, n2, hit_record.obj->material.AbsorptionCoefficient) * Fr2;
             if (Ft2 > 0.0) refracted += computeColor(refractedRay2, depth +1, n1, ac) * Ft2 * eCx;

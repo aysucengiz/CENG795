@@ -5,11 +5,13 @@
 #ifndef CENG795_RAYTRACERTHREAD_H
 #define CENG795_RAYTRACERTHREAD_H
 
-#include "../dataTypes/Object.h"
-#include "../dataTypes/DataTypes.h"
-#include "../dataTypes/helpers.h"
+#include "../dataTypes/object/Object.h"
+#include "../dataTypes/base/SceneData.h"
+#include "../dataTypes/functions/helpers.h"
 #include <iostream>
 #include <cmath>
+
+#include "acceleration/BVH.h"
 
 
 class RaytracerThread
@@ -17,6 +19,7 @@ class RaytracerThread
 private:
     const SceneInput &scene;
     const Camera &cam;
+    const BVH &bvh;
     Color final_color;
     uint32_t curr_pixel;
     uint32_t y;
@@ -28,13 +31,13 @@ private:
 public:
     static int done_threads;
 
-    RaytracerThread(SceneInput &_scene, const uint32_t _y, Camera &c) :
-    scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y),
+    RaytracerThread(SceneInput &_scene, const uint32_t _y, Camera &c, BVH &_bvh) :
+    scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y), bvh(_bvh),
      mID(-1)
     {}
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), curr_pixel(rt.y*rt.cam.width*3), y(rt.y),
-                                                                     mID(-1) {}
+                                                                     mID(-1), bvh(rt.bvh) {}
 
     void drawRow();
     Ray computeViewingRay(uint32_t x);

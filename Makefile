@@ -1,16 +1,37 @@
+CXX = g++
+
 TEST_FILE = src/main_for_test.cpp
 MAIN_FILE = src/main.cpp
-RAYTRACER_FILES = src/rayTracer/RayTracer.cpp src/rayTracer/raytracerThread.cpp
-DATA_FILES = src/dataTypes/helpers.cpp src/dataTypes/Object.cpp
-FILE_FILES = src/fileManagement/Parser.cpp src/fileManagement/PPM.cpp
+ACC_FILES = $(wildcard src/acceleration/*.cpp)
+RAYTRACER_FILES = $(wildcard src/rayTracer/*.cpp)
+MATRIX_FILES    = $(wildcard src/dataTypes/matrix/*.cpp)
+BASE_FILES      = $(wildcard src/dataTypes/base/*.cpp)
+OBJECT_FILES = $(wildcard src/dataTypes/object/*.cpp)
+FUNCTION_FILES = $(wildcard src/dataTypes/functions/*.cpp)
+DATA_FILES = $(MATRIX_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FUNCTION_FILES)
+FILE_FILES = $(wildcard src/fileManagement/*.cpp)
 PARALLEL = -fopenmp
-FLAGS = -Isrc  -O3 -std=c++20 -fopenmp
-all:
-	g++ $(FLAGS) $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer
-test:
-	g++ $(FLAGS) $(TEST_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer_test
-raytracer:
-	g++ $(FLAGS) $(MAIN_FILE) $(RAYTRACER_FILES) $(DATA_FILES) $(FILE_FILES) -o raytracer
+FLAGS = -Isrc  -O3 -std=c++20 $(PARALLEL)
+
+SRC_FILES = $(DATA_FILES) $(FILE_FILES) $(RAYTRACER_FILES) $(ACC_FILES)
+TEST_FILES = $(TEST_FILE) $(SRC_FILES)
+RT_FILES = $(MAIN_FILE) $(SRC_FILES)
+
+OBJ_DIR = obj
+RT_OBJ = $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(RT_FILES))
+TEST_OBJ = $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(TEST_FILES))
+
+$(OBJ_DIR)/%.o: src/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(FLAGS) -c $< -o $@
+
+all: raytracer
+
+raytracer_test: $(TEST_OBJ)
+	$(CXX) $(FLAGS) $^ -o $@
+raytracer: $(RT_OBJ)
+	$(CXX) $(FLAGS) $^ -o $@
+
 
 clean:
-	rm raytracer raytracer_test
+	rm -rf $(OBJ_DIR) raytracer raytracer_test
