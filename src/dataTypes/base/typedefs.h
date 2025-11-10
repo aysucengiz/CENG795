@@ -4,10 +4,17 @@
 
 #ifndef CENG795_TYPEDEFS_H
 #define CENG795_TYPEDEFS_H
+#include <cstdint>
 
 typedef float real;
 
 #define ACCELERATE true
+#define MAX_OBJ_IN_NODE 3
+
+#define PRINTINIT true
+#define DEFAULT_MAX_DEPTH 20
+#define DEFAULT_SHADOW_EPS 1e-3
+#define DEFAULT_INTERS_EPS 1e-6
 
 enum class MaterialType{
     NONE,
@@ -48,13 +55,15 @@ enum class Axes
     z
 };
 
-enum class BVHnodeType : uint8_t
+enum class BVHNodeType : uint8_t
 {
     LEAF,
     INT_W_LEFT,
     INT_W_RIGHT,
     INT_W_BOTH
 };
+
+
 
 enum class PivotType
 {

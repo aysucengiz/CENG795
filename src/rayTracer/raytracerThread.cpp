@@ -54,9 +54,8 @@ bool RaytracerThread::isUnderShadow(Ray &shadow_ray)
 
     if (ACCELERATE)
     {
-        if (bvh.traverse(shadow_ray,t_min, scene.objects, true) == nullptr)
-            return false;
-        else return true;
+        if (bvh.traverse(shadow_ray,t_min, scene.objects, true) != nullptr)
+            return true;
     }
     else
     {
@@ -65,10 +64,14 @@ bool RaytracerThread::isUnderShadow(Ray &shadow_ray)
             if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
                 return true;
         }
-        return false;
     }
 
-
+    for (int j = scene.numObjects; j < scene.numObjects + scene.numPlanes; j++)
+    {
+        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
+            return true;
+    }
+    return false;
 }
 
 
@@ -157,14 +160,23 @@ void RaytracerThread::checkObjIntersection(Ray &ray, real &t_min, HitRecord &hit
     hit_record.obj = nullptr;
     Object *temp_obj = nullptr;
 
+    for(int i = scene.numObjects; i < scene.numObjects + scene.numPlanes; i++)
+    {
+
+        temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
+
+        if (temp_obj != nullptr)
+        {
+            hit_record.obj = temp_obj;
+        }
+    }
+
     if (ACCELERATE)
     {
         Object *obj = bvh.traverse(ray,t_min,scene.objects);
         if (obj != nullptr)
         {
             hit_record.obj = obj;
-            hit_record.intersection_point = ray.pos + ray.dir * t_min;
-            hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point);
         }
     }
     else

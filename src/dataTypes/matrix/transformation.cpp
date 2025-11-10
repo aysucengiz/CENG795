@@ -11,6 +11,8 @@
 TransformationType Transformation::getTransformationType() const
 {return TransformationType::NONE;};
 
+
+
 ////////////////////////////////////////////////
 ///////////////// Rotate /////////////////////
 ////////////////////////////////////////////////
@@ -131,6 +133,23 @@ Transformation *Translate::inv() const
 }
 
 
+Scale::Scale(Vertex v) : center(Vertex()), x(v.x), y(v.y), z(v.z)
+{
+    arr = {
+        v.x, 0, 0, 0,
+        0, v.y, 0, 0,
+        0, 0, v.z, 0,
+        0, 0, 0, 1
+    };
+    normalTransform.arr = {
+        1.0/v.x, 0, 0, 0,
+        0, 1.0/v.y, 0, 0,
+        0, 0, 1.0/v.z, 0,
+        0, 0, 0, 1
+    };
+}
+
+
 Scale::Scale(real x, real y, real z) : center(Vertex()), x(x), y(y), z(z)
 {
     arr = {
@@ -160,12 +179,12 @@ Transformation *Scale::inv() const
 }
 
 
-Composite::Composite(const std::vector<Transformation>& transformations)
+Composite::Composite(const std::vector<Transformation *>& transformations)
 {
     arr = Identity().arr;
     for (int i=0; i < transformations.size(); i++)
     {
-        arr = (transformations[i] * M4trix(arr)).arr;
+        arr = (*transformations[i] * M4trix(arr)).arr;
     }
     normalTransform = (this->Transpose()).Inverse();
 }

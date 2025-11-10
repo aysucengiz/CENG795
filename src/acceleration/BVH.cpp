@@ -47,13 +47,13 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 
     for (int i=start; i< end; i++)
     {
-        nodes[curr_idx].bbox.vMax = maxVert2(objects[i]->bbox.vMax, nodes[curr_idx].bbox.vMax);
-        nodes[curr_idx].bbox.vMin = minVert2(objects[i]->bbox.vMin, nodes[curr_idx].bbox.vMin);
+        nodes[curr_idx].bbox.vMax = maxVert2(objects[i]->globalBbox.vMax, nodes[curr_idx].bbox.vMax);
+        nodes[curr_idx].bbox.vMin = minVert2(objects[i]->globalBbox.vMin, nodes[curr_idx].bbox.vMin);
     }
 
     if (end - start <= MAX_OBJ_IN_NODE)
     {
-        nodes[curr_idx].type = BVHnodeType::LEAF;
+        nodes[curr_idx].type = BVHNodeType::LEAF;
         nodes[curr_idx].firstObjID = start;
         nodes[curr_idx].objCount = end - start;
     }
@@ -74,19 +74,19 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
                 swap_pos++;
             }
         }
-        if      (swap_pos == end)    nodes[curr_idx].type = BVHnodeType::INT_W_LEFT;
-        else if (swap_pos == start)  nodes[curr_idx].type = BVHnodeType::INT_W_RIGHT;
-        else                         nodes[curr_idx].type = BVHnodeType::INT_W_BOTH;
+        if      (swap_pos == end)    nodes[curr_idx].type = BVHNodeType::INT_W_LEFT;
+        else if (swap_pos == start)  nodes[curr_idx].type = BVHNodeType::INT_W_RIGHT;
+        else                         nodes[curr_idx].type = BVHNodeType::INT_W_BOTH;
 
 
-        if (nodes[curr_idx].type == BVHnodeType::INT_W_LEFT ||
-            nodes[curr_idx].type == BVHnodeType::INT_W_BOTH)
+        if (nodes[curr_idx].type == BVHNodeType::INT_W_LEFT ||
+            nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
         {
             partition(start,swap_pos,next(a),objects);
         }
 
-        if (nodes[curr_idx].type == BVHnodeType::INT_W_RIGHT ||
-            nodes[curr_idx].type == BVHnodeType::INT_W_BOTH)
+        if (nodes[curr_idx].type == BVHNodeType::INT_W_RIGHT ||
+            nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
         {
             nodes[curr_idx].rightOffset = partition(swap_pos,end,next(a),objects);
         }
@@ -94,9 +94,7 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 
 
     // std::cout << "--------------------------\n";
-    // std::cout << nodes[curr_idx] << std::endl;
-
-
+    // std::cout << curr_idx << " " <<nodes[curr_idx] << std::endl;
     return curr_idx;
 }
 
@@ -104,6 +102,7 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 void BVH::getScene(SceneInput &scene)
 {
     partition(0, scene.numObjects, Axes::x, scene.objects);
+    nodes.clear();
 
     for (int i=0; i< scene.numObjects; i++)
     {
@@ -127,7 +126,7 @@ Object *BVH::traverse(Ray &ray, real &t_min, const std::vector<Object *> &object
         traverseIDs.pop();
         if (node.bbox.intersects(ray))
         {
-            if (node.type == BVHnodeType::LEAF)
+            if (node.type == BVHNodeType::LEAF)
             {
                 Object *temp_obj = nullptr;
                 int finID = node.firstObjID + node.objCount;
@@ -140,11 +139,11 @@ Object *BVH::traverse(Ray &ray, real &t_min, const std::vector<Object *> &object
             }
             else
             {
-                if (node.type == BVHnodeType::INT_W_BOTH ||
-                    node.type == BVHnodeType::INT_W_LEFT)
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_LEFT)
                     traverseIDs.push(id + 1);
-                if (node.type == BVHnodeType::INT_W_BOTH ||
-                    node.type == BVHnodeType::INT_W_RIGHT)
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_RIGHT)
                     traverseIDs.push(node.rightOffset);
             }
         }

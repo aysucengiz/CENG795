@@ -46,11 +46,11 @@ void RayTracer::parseScene(std::string input_path){
     scene.Cameras.clear();
     scene.PointLights.clear();
     scene.Materials.clear();
+    for (int i=0; i< scene.objects.size(); i++){delete scene.objects[i];}
     scene.objects.clear();
     scene.Vertices.clear();
     Parser::parseScene(input_path, scene);
     scene.numCameras = scene.Cameras.size();
-    scene.numObjects = scene.objects.size();
     scene.numLights = scene.PointLights.size();
     if (ACCELERATE) bvh.getScene(scene);
     auto stop = std::chrono::high_resolution_clock::now();

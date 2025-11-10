@@ -356,12 +356,12 @@ std::ostream& operator<<(std::ostream& os, PivotType t)
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, BVHnodeType t)
+std::ostream& operator<<(std::ostream& os, BVHNodeType t)
 {
-    if (t == BVHnodeType::LEAF) os<<  "leaf \t\t";
-    else if (t == BVHnodeType::INT_W_LEFT) os<<  "w/ left \t";
-    else if (t == BVHnodeType::INT_W_RIGHT) os<< "w/ right \t";
-    else if (t == BVHnodeType::INT_W_BOTH) os<<  "w/ left right";
+    if (t == BVHNodeType::LEAF) os<<  "leaf \t\t";
+    else if (t == BVHNodeType::INT_W_LEFT) os<<  "w/ left \t";
+    else if (t == BVHNodeType::INT_W_RIGHT) os<< "w/ right \t";
+    else if (t == BVHNodeType::INT_W_BOTH) os<<  "w/ left right";
     else os << "unknown";
     return os;
 }
@@ -379,7 +379,7 @@ std::ostream& operator<<(std::ostream& os, BVHNode &node)
       << "  type:" << node.type <<"\t"
       <<  node.bbox
       << "\tobjCount: " << node.objCount;
-    if (node.type == BVHnodeType::LEAF) os << "\tfirstObjID: " << node.firstObjID;
+    if (node.type == BVHNodeType::LEAF) os << "\tfirstObjID: " << node.firstObjID;
     else os << "\trightOffset: " << node.rightOffset;
     return os;
 }

@@ -7,7 +7,18 @@
 
 // TODO: material tipleri, bazılarında mesela _type : mirror olayı söz konusu
 
+namespace Parser
+{
+    uint32_t type1_triStartID;
+    uint32_t type2_sphereStartID;
+    uint32_t type3_meshStartID;
+    uint32_t type4_instStartID;
+    uint32_t type5_planeStartID;
 
+    uint32_t trans1_transStartID;
+    uint32_t trans2_scaleStartID;
+    uint32_t trans3_rotStartID;
+}
 
 json Parser::getJsonDataFromFile(std::string inpFile){
 
@@ -38,6 +49,13 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
     getCameras(inp["Scene"]["Cameras"], sceneInput);
     getLights(inp["Scene"]["Lights"], sceneInput);
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
+
+    if (inp["Scene"].contains("Transformations"))
+    {
+        std::cout <<inp["Scene"] <<std::endl;
+        getTransformations(inp["Scene"]["Transformations"], sceneInput);
+    }
+
     getVertexData(inp["Scene"], sceneInput);
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
@@ -88,6 +106,41 @@ void Parser::getMaterials(json inp, SceneInput &sceneInput)
     else for(int i=0; i < numMaterials; i++) addMaterial(inp[i], sceneInput);
 }
 
+void Parser::getTransformations(json inp, SceneInput &sceneInput)
+{
+    // getTriangles
+    trans1_transStartID = sceneInput.transforms.size();
+    if(inp.contains("Translation")){
+        json& Translations = inp["Translation"];
+        uint32_t numTranslation = Translations.size();
+        if (Translations.is_object())  addTranslation(Translations, sceneInput);
+        else  for(int i=0; i < numTranslation; i++) addTranslation(Translations[i], sceneInput);
+    }
+
+    // getSpheres
+    trans2_scaleStartID = sceneInput.transforms.size();
+    if(inp.contains("Scaling")){
+        json& Scalings = inp["Scaling"];
+        uint32_t numScalings = Scalings.size();
+        if (Scalings.is_object())              addScaling(Scalings, sceneInput);
+        else for(int i=0; i < numScalings; i++) addScaling(Scalings[i], sceneInput);
+    }
+
+    // getMeshes
+    trans3_rotStartID = sceneInput.transforms.size();
+    if(inp.contains("Rotation")){
+        json& Rotations = inp["Rotation"];
+        int numRotations = Rotations.size();
+        if (Rotations.is_object())              addRotation(Rotations, sceneInput);
+        else for(int i=0; i < numRotations; i++) addRotation(Rotations[i],sceneInput);
+    }
+
+}
+
+
+
+
+
 void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
     std::istringstream verticesStream(inp["VertexData"]["_data"].get<std::string>());
@@ -102,10 +155,6 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 
         //if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
     }
-
-
-    std::istringstream (inp["VertexData"]["_data"].get<std::string>());
-
 }
 
 
@@ -117,13 +166,15 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     // getTriangles
     uint32_t curr_id = sceneInput.objects.size();
-
+    std::cout << "getobjects: " << curr_id << std::endl;
+    type1_triStartID = curr_id;
     if(inp.contains("Triangle")){
         json& Triangles = inp["Triangle"];
             uint32_t numTriangles = Triangles.size();
         if (Triangles.is_object())  addTriangle(Triangles, sceneInput, curr_id);
         else  for(int i=0; i < numTriangles; i++) addTriangle(Triangles[i], sceneInput, curr_id);
     }
+    type2_sphereStartID = curr_id;
 
     // getSpheres
     if(inp.contains("Sphere")){
@@ -132,6 +183,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         if (Spheres.is_object())              addSphere(Spheres, sceneInput, curr_id);
         else for(int i=0; i < numSpheres; i++) addSphere(Spheres[i], sceneInput, curr_id);
     }
+    type3_meshStartID = curr_id;
 
     // getMeshes
     if(inp.contains("Mesh")){
@@ -140,6 +192,19 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         if (Meshes.is_object())              addMesh(Meshes, sceneInput, curr_id,root);
         else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id,root);
     }
+    type4_instStartID = curr_id;
+
+
+    // getMeshInstances
+    if(inp.contains("MeshInstance")){
+        json& MeshInstances = inp["MeshInstance"];
+        int numMeshInstances = MeshInstances.size();
+        if (MeshInstances.is_object())              addInstance(MeshInstances, sceneInput, curr_id);
+        else for(int i=0; i < numMeshInstances; i++) addInstance(MeshInstances[i],sceneInput, curr_id);
+    }
+
+    sceneInput.numObjects = sceneInput.objects.size();
+    type5_planeStartID= curr_id;
 
     // getPlanes
     if(inp.contains("Plane")){
@@ -148,6 +213,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         if (planes.is_object())              addPlane(planes, sceneInput, curr_id);
         else for(int i=0; i < numPlanes; i++) addPlane(planes[i],sceneInput, curr_id);
     }
+    sceneInput.numPlanes = sceneInput.objects.size();
 
     for(int i=0; i < sceneInput.Vertices.size(); i++)
     {
@@ -231,12 +297,14 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
     }
 
     if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2] ) return;
-    sceneInput.objects.push_back(new Triangle(
-                                            curr_id,
-                                            sceneInput.Vertices[ind[0] - 1],
-                                            sceneInput.Vertices[ind[1] - 1],
-                                            sceneInput.Vertices[ind[2] - 1],
-                                            sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]));
+    Triangle *tempt = new Triangle(curr_id,
+                                sceneInput.Vertices[ind[0] - 1],
+                                sceneInput.Vertices[ind[1] - 1],
+                                sceneInput.Vertices[ind[2] - 1],
+                                sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]);
+
+    if (tri.contains("Transformations")) addInstance(tri["Transformations"].get<std::string>(), tempt, sceneInput);
+    else                                   sceneInput.objects.push_back(tempt);
 
     if(PRINTINIT) std::cout << *dynamic_cast<Triangle*>(sceneInput.objects[curr_id]) << std::endl;
     curr_id++;
@@ -244,12 +312,15 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    sceneInput.objects.push_back(new Sphere(
-                                    curr_id,
-                                    sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
-                                    std::stod(s["Radius"].get<std::string>()),
-                                    sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
-                            ));
+    Sphere *temps = new Sphere(
+                                curr_id,
+                                sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
+                                std::stod(s["Radius"].get<std::string>()),
+                                sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
+                            );
+
+    if (s.contains("Transformations")) addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
+    else                                   sceneInput.objects.push_back(temps);
 
     if(PRINTINIT) std::cout << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
 
@@ -288,18 +359,45 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
         }
 
 
-        sceneInput.objects.push_back(new Mesh(curr_id,
+        Mesh *tempm = new Mesh(curr_id,
                 mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat",
                 sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
                 dataLine,
                 read_from_file,
                 sceneInput.Vertices,
-                numVerticesUntilNow));
-        Mesh *temp_m = dynamic_cast<Mesh*>(sceneInput.objects[curr_id]);
+                numVerticesUntilNow);
+        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput);
+        else                                   sceneInput.objects.push_back(tempm);
+
         curr_id++;
-        if(PRINTINIT) std::cout <<  "Mesh " << temp_m->_id << " has " << temp_m->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
+        if(PRINTINIT) std::cout <<  "Mesh " << tempm->_id << " has " << tempm->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
     }
 }
+
+void Parser::addInstance(std::string transformations, Object *original, SceneInput &sceneInput)
+{
+    sceneInput.objects.push_back(new Instance(
+                                    original->_id,
+                                    original,
+                                    getTransFromStr(transformations, sceneInput.transforms),
+                                    true
+                                    ));
+}
+
+void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
+{
+    sceneInput.objects.push_back(new Instance(
+                                    curr_id,
+                                    getOriginalObjPtr(ObjectType::MESH,std::stoi(s["Transformations"].get<std::string>()), sceneInput.objects),
+                                    getTransFromStr(s["Transformations"].get<std::string>(), sceneInput.transforms),
+                                    false
+                                    ));
+
+    if(PRINTINIT) std::cout << *dynamic_cast<Instance*>(sceneInput.objects[curr_id])<< std::endl;
+
+    curr_id++;
+}
+
 
 
 void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
@@ -315,5 +413,82 @@ void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 
     curr_id++;
 }
+
+
+void Parser::addTranslation(json t, SceneInput &sceneInput)
+{
+    std::cout << "here" << std::endl;
+    sceneInput.transforms.push_back(new Translate(Vertex(t["_data"])));
+    if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
+}
+
+void Parser::addScaling(json t, SceneInput &sceneInput)
+{
+    sceneInput.transforms.push_back(new Scale(Vertex(t["_data"])));
+    if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
+}
+
+void Parser::addRotation(json t, SceneInput &sceneInput)
+{
+    std::istringstream ss(t["_data"].get<std::string>());
+    double angle, x, y, z;
+    ss >> angle >>  x >> y >> z;
+    angle = angle * M_PI / 180;
+    if (ss.fail()) {
+        throw std::invalid_argument("Invalid Vertex string: " + t["_data"].get<std::string>());
+    }
+    sceneInput.transforms.push_back(new Rotate(Ray(Vertex(0,0,0),Vec3r(x,y,z)), angle));
+    if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
+
+}
+
+Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transformation *>& transforms)
+{
+    std::istringstream ss(transStr);
+    std::vector<Transformation *> temp;
+    char transChar;
+    int transID;
+    while (ss >> transChar >> transID) {
+        int startID;
+        if (transChar == 't') startID =trans1_transStartID;
+        else if (transChar == 's') startID =trans2_scaleStartID;
+        else if (transChar == 'r') startID =trans3_rotStartID;
+        else startID = 0;
+
+        temp.push_back(transforms[startID+transID - 1]);
+    }
+
+    Transformation *transformation = new Composite(temp);
+    return transformation;
+}
+
+Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::vector<Object *>& objs)
+{
+    int startID;
+    switch (ot)
+    {
+    case ObjectType::TRIANGLE:
+        startID = type1_triStartID;
+        break;
+    case ObjectType::SPHERE:
+        startID = type2_sphereStartID;
+        break;
+    case ObjectType::MESH:
+        startID = type3_meshStartID;
+        break;
+    case ObjectType::INSTANCE:
+        startID = type4_instStartID;
+        break;
+    case ObjectType::PLANE:
+        startID = type5_planeStartID;
+        break;
+    default:
+        startID = 0;
+
+    }
+    return objs[startID + ot_id];
+
+}
+
 
 

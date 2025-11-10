@@ -12,12 +12,11 @@
 #include "../dataTypes/base/typedefs.h"
 #include "../dataTypes/object/Object.h"
 
-#define MAX_OBJ_IN_NODE 3
 
 struct alignas(32) BVHNode
 {
     BBox bbox; // 24 byte
-    BVHnodeType type; // 1 byte
+    BVHNodeType type; // 1 byte
     union// 4 byte
     {
         uint32_t firstObjID;

@@ -15,7 +15,7 @@ class Transformation: public M4trix
 public:
     M4trix normalTransform;
     virtual ~Transformation() = default;
-    virtual TransformationType getTransformationType() const = 0;
+    virtual TransformationType getTransformationType() const;
     virtual Transformation *inv() const = 0;
 };
 
@@ -50,6 +50,7 @@ private:
 public:
     Vertex center;
     real x, y, z;
+    Scale(Vertex v);
     Scale(real x, real y, real z);
     Scale(Vertex center, real x, real y, real z);
     TransformationType getTransformationType() const override;
@@ -60,7 +61,7 @@ public:
 class Composite : public Transformation
 {
 public:
-    Composite(const std::vector<Transformation>& transformations);
+    Composite(const std::vector<Transformation *>& transformations);
     Composite(M4trix m);
     TransformationType getTransformationType() const override;
     Composite();

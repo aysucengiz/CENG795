@@ -69,7 +69,7 @@ std::ostream& operator<<(std::ostream& os, Object *s);
 
 std::ostream& operator<<(std::ostream& os, TransformationType t);
 std::ostream& operator<<(std::ostream& os, PivotType t);
-std::ostream& operator<<(std::ostream& os, BVHnodeType t);
+std::ostream& operator<<(std::ostream& os, BVHNodeType t);
 std::ostream& operator<<(std::ostream& os, Axes x);
 std::ostream& operator<<(std::ostream& os, BVH &bvh);
 std::ostream& operator<<(std::ostream& os, BVHNode &node);

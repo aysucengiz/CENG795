@@ -15,9 +15,9 @@
 
 Object::~Object() = default;
 Object::Object(Material &m, uint32_t id,
-        Vertex vMax, Vertex vMin)
+        Vertex vMax, Vertex vMin, bool v)
         : material(m), _id(id),
-          bbox(vMax, vMin){}
+          globalBbox(vMax, vMin), visible(v){}
 
 
 ////////////////////////////////////////////////
@@ -26,10 +26,11 @@ Object::Object(Material &m, uint32_t id,
 
 ObjectType Triangle::getObjectType() { return ObjectType::TRIANGLE; }
 
-Object *Triangle::checkIntersection(const Ray& r, real &t_min, bool shadow_test)
+Object *Triangle::checkIntersection(Ray& r, real& t_min, bool shadow_test)
 {
+    if (!visible) return nullptr;
     if (!shadow_test && dot_product(r.dir,n) >=0 ) return nullptr;
-    if (bbox.intersects(r))
+    if (globalBbox.intersects(r))
     {
         Vec3r a_o = a.v - r.pos;
         real det_A = determinant(a_b,a_c,r.dir);
@@ -93,10 +94,10 @@ Vec3r Triangle::getNormal(Vertex &v)
     else return n;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st):
+Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st, bool v):
             Object(material, id,
                 maxVert3(v1.v,v2.v,v3.v),
-                minVert3(v1.v,v2.v,v3.v)
+                minVert3(v1.v,v2.v,v3.v), v
                 ),
                 shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
 {
@@ -114,9 +115,9 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
 ////////////////// SPHERE /////////////////////
 ////////////////////////////////////////////////
 ///
-Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m)
+Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, bool v)
         : Object(m,id, Vertex(c.v.x+r, c.v.y+r,c.v.z+r),
-            Vertex(c.v.x-r, c.v.y-r,c.v.z-r)),  center(c), radius(r)
+            Vertex(c.v.x-r, c.v.y-r,c.v.z-r), v),  center(c), radius(r)
 {
     radius2 = radius * radius;
     main_center = c.v;
@@ -126,9 +127,11 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m)
 ObjectType Sphere::getObjectType() { return ObjectType::SPHERE; }
 
 
-Object *Sphere::checkIntersection(const Ray& r, real &t_min, bool shadow_test)
+Object *Sphere::checkIntersection(Ray& r, real& t_min, bool shadow_test)
 {
-    if (bbox.intersects(r)){
+
+    if (!visible) return nullptr;
+    if (globalBbox.intersects(r)){
         real t_temp;
         Vec3r o_c = r.pos - center.v;
 
@@ -178,8 +181,8 @@ Vec3r Sphere::getNormal(Vertex &v)
 //////////////////// MESH //////////////////////
 ////////////////////////////////////////////////
 
-Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, uint32_t start_index)
-    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY) ){
+Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, bool v, uint32_t start_index)
+    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),v ){
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
@@ -188,8 +191,8 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
         {
             happly::PLYData plyIn(s);
             std::vector<std::vector<int>> f = plyIn.getElement("face").getListProperty<int>("vertex_indices");
-            std::cout << "First face indices: "
-          << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;for (int i = 0; i < f.size(); i++)
+            //std::cout << "First face indices: " << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;
+            for (int i = 0; i < f.size(); i++)
             {
                 if (vertices.size() <= start_index+f[i][0])std::cout << vertices.size() <<" : " << start_index-1+f[i][0]<< std::endl;
                 if (vertices.size() <= start_index+f[i][1])std::cout << vertices.size() <<" : " << start_index-1+f[i][1]<< std::endl;
@@ -199,8 +202,8 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 {
                     Vertex minv = minVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
                     Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
-                    bbox.vMax = maxVert3(maxv,bbox.vMax,bbox.vMax);
-                    bbox.vMin = minVert3(minv,bbox.vMin,bbox.vMin);
+                    globalBbox.vMax = maxVert3(maxv,globalBbox.vMax,globalBbox.vMax);
+                    globalBbox.vMin = minVert3(minv,globalBbox.vMin,globalBbox.vMin);
                     Faces.push_back(Triangle(Faces.size(),
                         vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                       m, shadingtype));
@@ -219,8 +222,8 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 {
                     Vertex minv = minVert3(vertices[vert[0]].v,vertices[vert[1]].v,vertices[vert[2]].v);
                     Vertex maxv = maxVert3(vertices[vert[0]].v,vertices[vert[1]].v,vertices[vert[2]].v);
-                    bbox.vMax = maxVert3(maxv,bbox.vMax,bbox.vMax);
-                    bbox.vMin = minVert3(minv,bbox.vMin,bbox.vMin);
+                    globalBbox.vMax = maxVert3(maxv,globalBbox.vMax,globalBbox.vMax);
+                    globalBbox.vMin = minVert3(minv,globalBbox.vMin,globalBbox.vMin);
 
                     Faces.push_back(Triangle(Faces.size(),
                         vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
@@ -230,18 +233,20 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
             }
         }
 
-    main_center.x = (bbox.vMax.x + bbox.vMin.x) / 2.0;
-    main_center.y = (bbox.vMax.y + bbox.vMin.y) / 2.0;
-    main_center.z = (bbox.vMax.z + bbox.vMin.z) / 2.0;
+    main_center.x = (globalBbox.vMax.x + globalBbox.vMin.x) / 2.0;
+    main_center.y = (globalBbox.vMax.y + globalBbox.vMin.y) / 2.0;
+    main_center.z = (globalBbox.vMax.z + globalBbox.vMin.z) / 2.0;
 
 
     }
 
 ObjectType Mesh::getObjectType(){ return ObjectType::MESH; }
 
-Object *Mesh::checkIntersection(const Ray& ray, real &t_min, bool shadow_test)
+Object *Mesh::checkIntersection(Ray& ray, real& t_min, bool shadow_test)
 {
-    if (bbox.intersects(ray))
+
+    if (!visible) return nullptr;
+    if (globalBbox.intersects(ray))
     {
         int numFaces = Faces.size();
         Triangle *temp_obj = nullptr;
@@ -268,21 +273,22 @@ Object *Mesh::checkIntersection(const Ray& ray, real &t_min, bool shadow_test)
 /////////////////// PLANE /////////////////////
 ////////////////////////////////////////////////
 
-Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material) : Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY)), point(v)
+Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material, bool vis) :
+Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY),vis), point(v)
 {
     std::istringstream ss(normal);
     ss >> n.i >> n.j >> n.k;
     if (ss.fail()) {
         throw std::invalid_argument("Invalid Normal string for plane: " + normal);
     }
-    if (n.i ==0.0 && n.j ==0.0){ bbox.vMax.z = v.z + M4T_EPS; bbox.vMin.z = v.z - M4T_EPS; }
-    else if (n.i ==0.0 && n.k ==0.0){ bbox.vMax.y = v.y + M4T_EPS; bbox.vMin.y = v.y - M4T_EPS; }
-    else if (n.k ==0.0 && n.j ==0.0){ bbox.vMax.x = v.x + M4T_EPS; bbox.vMin.x = v.x - M4T_EPS; }
+    if (n.i ==0.0 && n.j ==0.0){ globalBbox.vMax.z = v.z + M4T_EPS; globalBbox.vMin.z = v.z - M4T_EPS; }
+    else if (n.i ==0.0 && n.k ==0.0){ globalBbox.vMax.y = v.y + M4T_EPS; globalBbox.vMin.y = v.y - M4T_EPS; }
+    else if (n.k ==0.0 && n.j ==0.0){ globalBbox.vMax.x = v.x + M4T_EPS; globalBbox.vMin.x = v.x - M4T_EPS; }
 }
 
 ObjectType Plane::getObjectType() {return ObjectType::PLANE;}
 
-Object *Plane::checkIntersection(const Ray& r, real &t_min, bool shadow_test){
+Object *Plane::checkIntersection(Ray& r, real& t_min, bool shadow_test){
     real dot_r_n = dot_product(r.dir, n);
     if (dot_r_n == 0) return nullptr;
 
@@ -311,45 +317,41 @@ Vec3r Plane::getNormal(Vertex &v) { return n;}
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, Object *original, Transformation *trans) : original(original),
+Instance::Instance(uint32_t id, Object *original, Transformation *trans, bool orig, bool v) : original(original),
 Object(original->material,id,
-    Vertex(),Vertex())
+    Vertex(),Vertex(),v)
 {
-    if (trans->getTransformationType() == TransformationType::ROTATE)
+    switch (trans->getTransformationType())
     {
+    case TransformationType::ROTATE:
         forwardTrans = new Rotate(dynamic_cast<Rotate&>(*trans));
-    }
-    else if (trans->getTransformationType() == TransformationType::TRANSLATE)
-    {
-        forwardTrans = new Translate(dynamic_cast<Translate&>(*trans));
-    }
-    else if (trans->getTransformationType() == TransformationType::SCALE)
-    {
+        break;
+    case TransformationType::SCALE:
         forwardTrans = new Scale(dynamic_cast<Scale&>(*trans));
-    }
-    else if (trans->getTransformationType() == TransformationType::COMPOSITE)
-    {
+        break;
+    case TransformationType::TRANSLATE:
+        forwardTrans = new Translate(dynamic_cast<Translate&>(*trans));
+        break;
+    case TransformationType::COMPOSITE:
+    default:
         forwardTrans = new Composite(dynamic_cast<Composite&>(*trans));
+        break;
     }
-    else
-    {
-        forwardTrans = new Composite(Identity());
-    }
-
     backwardTrans = forwardTrans->inv();
-    bbox.vMax = ((*forwardTrans) * Vec4r(bbox.vMax)).getVertex();
-    bbox.vMin = ((*forwardTrans) * Vec4r(bbox.vMin)).getVertex();
+    globalBbox.vMax = ((*forwardTrans) * Vec4r(globalBbox.vMax)).getVertex();
+    globalBbox.vMin = ((*forwardTrans) * Vec4r(globalBbox.vMin)).getVertex();
 }
 
 Instance::~Instance()
 {
     delete forwardTrans;
     delete backwardTrans;
+    if (orig && original != nullptr) delete original;
 }
 
 ObjectType Instance::getObjectType() { return ObjectType::INSTANCE; }
 
-Object* Instance::checkIntersection(const Ray& ray, real& t_min, bool shadow_test){
+Object* Instance::checkIntersection(Ray& ray, real& t_min, bool shadow_test){
     Ray localRay = (*backwardTrans) * ray;
     return original->checkIntersection(localRay, t_min, shadow_test);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
 }
@@ -358,6 +360,62 @@ Vec3r Instance::getNormal(Vertex &v){
     Vertex localV = ((*backwardTrans) * Vec4r(v)).getVertex();
     Vec3r res = original->getNormal(localV);
     return  ((*forwardTrans) * Vec4r(res)).getVec3r();
+}
+
+
+void Instance::addTransformation(Transformation *trans)
+{
+    if (trans->getTransformationType() == TransformationType::ROTATE)
+    {
+        Rotate tempR(Ray(main_center,dynamic_cast<Rotate*>(trans)->axis.dir),dynamic_cast<Rotate*>(trans)->angle);
+        forwardTrans->arr = (tempR * (*forwardTrans)).arr;
+    }
+    else if  (trans->getTransformationType() == TransformationType::SCALE)
+    {
+        Scale tempS(main_center,dynamic_cast<Scale*>(trans)->x,dynamic_cast<Scale*>(trans)->y,dynamic_cast<Scale*>(trans)->z );
+        forwardTrans->arr = (tempS * (*forwardTrans)).arr;
+    }
+    else forwardTrans->arr = ((*trans) * (*forwardTrans)).arr;
+}
+
+void Instance::computeGlobal()
+{
+    if (forwardTrans != nullptr)
+    {
+        backwardTrans = dynamic_cast<Composite*>(forwardTrans->inv());
+        globalBbox.vMax = ((*forwardTrans) * Vec4r(globalBbox.vMax)).getVertex();
+        globalBbox.vMin = ((*forwardTrans) * Vec4r(globalBbox.vMin)).getVertex();
+    }
+}
+
+Ray Instance::getLocal(Ray &r)
+{
+    Ray result;
+    result.pos = ((*backwardTrans) * Vec4r(r.pos)).getVertex();
+    result.dir = ((*backwardTrans) * Vec4r(r.dir)).getVec3r();
+    return result;
+}
+
+Vertex Instance::getLocal(Vertex &v)
+{
+    Vertex result;
+    result = ((*backwardTrans) * Vec4r(v)).getVertex();
+    return result;
+}
+
+
+Vec3r Instance::getGlobal(Vec3r &v)
+{
+    Vec3r result;
+    result = ((*forwardTrans) * Vec4r(v)).getVec3r();
+    return result;
+}
+
+Vertex Instance::getGlobal(Vertex &v)
+{
+    Vertex result;
+    result = ((*forwardTrans) * Vec4r(v)).getVertex();
+    return result;
 }
 
 
