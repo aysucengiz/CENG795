@@ -17,6 +17,7 @@ public:
     virtual ~Transformation() = default;
     virtual TransformationType getTransformationType() const;
     virtual Transformation *inv() const = 0;
+    void getNormalTransform();
 };
 
 class Rotate : public Transformation
@@ -27,6 +28,7 @@ public:
     Rotate(Ray ax, double ang);
     Rotate(Axes ax, double ang);
     Rotate(const Rotate& rotate);
+    Rotate operator=(const Rotate& rotate);
     TransformationType getTransformationType() const override;
     Transformation *inv() const override;
 };
@@ -38,8 +40,9 @@ public:
     real x,y,z;
     Translate(Vertex v);
     Translate(real x, real y, real z);
+    Translate(const Translate &c);
+    Translate operator=(const Translate &c);
     TransformationType getTransformationType() const override;
-    Translate InverseTranslate() const;
     Transformation *inv() const override;
 };
 
@@ -53,8 +56,9 @@ public:
     Scale(Vertex v);
     Scale(real x, real y, real z);
     Scale(Vertex center, real x, real y, real z);
+    Scale(const Scale &c);
+    Scale operator=(const Scale &c);
     TransformationType getTransformationType() const override;
-    Scale InverseScale() const;
     Transformation *inv() const override;
 };
 
@@ -63,6 +67,8 @@ class Composite : public Transformation
 public:
     Composite(const std::vector<Transformation *>& transformations);
     Composite(M4trix m);
+    Composite(const Composite &c);
+    Composite operator=(const Composite &other);
     TransformationType getTransformationType() const override;
     Composite();
     Transformation *inv() const override;

@@ -13,12 +13,6 @@
 
 #include "../fileManagement/Parser.h"
 
-/*
-BVHNode::BVHNode(BVHnodeType t, uint32_t unionID, uint16_t objCount) : type(t),objCount(objCount)
-{
-    if (t == BVHnodeType::LEAF) firstObjID = unionID;
-    else rightOffset = unionID;
-}*/
 
 real BVH::getPivot(BBox bbox, Axes a, int start, int end, std::vector<Object *> &objects)
 {
@@ -41,7 +35,12 @@ real BVH::getPivot(BBox bbox, Axes a, int start, int end, std::vector<Object *> 
 int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 {
     int curr_idx = nodes.size();
+
     nodes.push_back(BVHNode());
+
+    //std::cout << curr_idx << " "<< nodes.size() << std::endl;
+    //std::cout << start<< " "<< end << std::endl;
+
     nodes[curr_idx].bbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
     nodes[curr_idx].bbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
 
@@ -101,8 +100,12 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 
 void BVH::getScene(SceneInput &scene)
 {
-    partition(0, scene.numObjects, Axes::x, scene.objects);
+//std::cout << "getScene" << std::endl;
+// std::cout << scene.numObjects << " " << scene.objects.size()<< std::endl;
     nodes.clear();
+    partition(0, scene.numObjects, Axes::x, scene.objects);
+
+    //std::cout << "partitioned" << std::endl;
 
     for (int i=0; i< scene.numObjects; i++)
     {
@@ -122,6 +125,7 @@ Object *BVH::traverse(Ray &ray, real &t_min, const std::vector<Object *> &object
     while (traverseIDs.size() > 0)
     {
         int id = traverseIDs.top();
+        //std::cout << id << std::endl;
         BVHNode const &node = nodes[id];
         traverseIDs.pop();
         if (node.bbox.intersects(ray))

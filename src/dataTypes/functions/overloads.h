@@ -73,7 +73,7 @@ std::ostream& operator<<(std::ostream& os, BVHNodeType t);
 std::ostream& operator<<(std::ostream& os, Axes x);
 std::ostream& operator<<(std::ostream& os, BVH &bvh);
 std::ostream& operator<<(std::ostream& os, BVHNode &node);
-std::ostream& operator<<(std::ostream& os, BBox &bbox);
+std::ostream& operator<<(std::ostream& os, const BBox &bbox);
 std::ostream& operator<<(std::ostream& os, const Instance& m);
 
 std::ostream& operator<<(std::ostream& os, Transformation *t);
@@ -82,6 +82,7 @@ std::ostream& operator<<(std::ostream& os, Translate &t);
 std::ostream& operator<<(std::ostream& os, Scale &t);
 std::ostream& operator<<(std::ostream& os, Composite &t);
 
+std::ostream& operator<<(std::ostream& os, std::array<std::array<double,4>,4> &arr);
 
 
 #endif //CENG795_OVERLOADS_H

@@ -3,7 +3,7 @@
 //
 
 #include "Matrix.h"
-
+#include "../functions/overloads.h"
 
 
 
@@ -22,7 +22,11 @@ M4trix::M4trix(real a)
 {
     for (int i=0; i<4; i++)
     {
-        arr[i][i]= a;
+        for (int j=0; j<4; j++)
+        {
+            if (i== j) arr[i][j]= a;
+            else arr[i][j]=0;
+        }
     }
 }
 
@@ -119,6 +123,10 @@ real M4trix::Determinant() const
     Vec3r v2(arr[1][1], arr[2][1], arr[3][1]);
     Vec3r v3(arr[1][2], arr[2][2], arr[3][2]);
     Vec3r v4(arr[1][3], arr[2][3], arr[3][3]);
+    /*std::cout << "v1: " << v1 << std::endl;
+    std::cout << "v2: " << v2 << std::endl;
+    std::cout << "v3: " << v3 << std::endl;
+    std::cout << "v4: " << v4 << std::endl;*/
     return arr[0][0] * determinant(v2,v3,v4)
          - arr[0][1] * determinant(v1,v3,v4)
          + arr[0][2] * determinant(v1,v2,v4)
@@ -128,6 +136,7 @@ real M4trix::Determinant() const
 
 M4trix M4trix::Inverse() const
 {
+    double x = Determinant();
     return Adjugate() * (1.0/Determinant());
 }
 

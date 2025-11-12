@@ -242,6 +242,12 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
 
 ObjectType Mesh::getObjectType(){ return ObjectType::MESH; }
 
+
+Vec3r Mesh::getNormal(Vertex &v)
+{
+    return Faces[currTri].getNormal(v);
+}
+
 Object *Mesh::checkIntersection(Ray& ray, real& t_min, bool shadow_test)
 {
 
@@ -259,6 +265,7 @@ Object *Mesh::checkIntersection(Ray& ray, real& t_min, bool shadow_test)
             {
                 if (shadow_test) return temp_obj;
                 return_obj = temp_obj;
+                currTri = i;
             }
         }
 
@@ -317,29 +324,29 @@ Vec3r Plane::getNormal(Vertex &v) { return n;}
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, Object *original, Transformation *trans, bool orig, bool v) : original(original),
-Object(original->material,id,
+Instance::Instance(uint32_t id, Object *original, Transformation *trans, Material &mat, bool orig, bool v) : original(original),
+Object(mat,id,
     Vertex(),Vertex(),v)
 {
     switch (trans->getTransformationType())
     {
     case TransformationType::ROTATE:
-        forwardTrans = new Rotate(dynamic_cast<Rotate&>(*trans));
+        forwardTrans = new Rotate(*dynamic_cast<Rotate*>(trans));
         break;
     case TransformationType::SCALE:
-        forwardTrans = new Scale(dynamic_cast<Scale&>(*trans));
+        forwardTrans = new Scale(*dynamic_cast<Scale*>(trans));
         break;
     case TransformationType::TRANSLATE:
-        forwardTrans = new Translate(dynamic_cast<Translate&>(*trans));
+        forwardTrans = new Translate(*dynamic_cast<Translate*>(trans));
         break;
     case TransformationType::COMPOSITE:
     default:
-        forwardTrans = new Composite(dynamic_cast<Composite&>(*trans));
+        forwardTrans = new Composite(*dynamic_cast<Composite*>(trans));
         break;
     }
     backwardTrans = forwardTrans->inv();
-    globalBbox.vMax = ((*forwardTrans) * Vec4r(globalBbox.vMax)).getVertex();
-    globalBbox.vMin = ((*forwardTrans) * Vec4r(globalBbox.vMin)).getVertex();
+    computeGlobal();
+    main_center =((*forwardTrans) * Vec4r(original->main_center)).getVertex();
 }
 
 Instance::~Instance()
@@ -352,14 +359,33 @@ Instance::~Instance()
 ObjectType Instance::getObjectType() { return ObjectType::INSTANCE; }
 
 Object* Instance::checkIntersection(Ray& ray, real& t_min, bool shadow_test){
-    Ray localRay = (*backwardTrans) * ray;
-    return original->checkIntersection(localRay, t_min, shadow_test);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
+
+    //std::cout << "Check Intersection of Instance" << std::endl;
+    if (!shadow_test)
+    {
+        Ray localRay = (*backwardTrans) * ray;
+        Object *temp = original->checkIntersection(localRay, t_min, shadow_test);
+        return temp ? this : nullptr;
+    }
+    else
+    {
+        Ray localRay = (*backwardTrans) * ray; // get the local light point
+        Object *temp = original->checkIntersection(localRay, t_min, shadow_test);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
+        if (temp)
+        {
+            Vertex intersect = localRay.pos + localRay.dir * t_min;
+            Vertex globalIntersect = getGlobal(intersect); // o + t*d
+            t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+            return this;
+        }
+        return nullptr;
+    }
 }
 
 Vec3r Instance::getNormal(Vertex &v){
     Vertex localV = ((*backwardTrans) * Vec4r(v)).getVertex();
     Vec3r res = original->getNormal(localV);
-    return  ((*forwardTrans) * Vec4r(res)).getVec3r();
+    return  ((forwardTrans->normalTransform) * Vec4r(res)).getVec3r().normalize();
 }
 
 
@@ -380,11 +406,23 @@ void Instance::addTransformation(Transformation *trans)
 
 void Instance::computeGlobal()
 {
-    if (forwardTrans != nullptr)
+    if (forwardTrans != nullptr && backwardTrans != nullptr)
     {
-        backwardTrans = dynamic_cast<Composite*>(forwardTrans->inv());
-        globalBbox.vMax = ((*forwardTrans) * Vec4r(globalBbox.vMax)).getVertex();
-        globalBbox.vMin = ((*forwardTrans) * Vec4r(globalBbox.vMin)).getVertex();
+
+        globalBbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
+        globalBbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
+        Vertex v[2] = {original->globalBbox.vMax,original->globalBbox.vMin};
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                for (int k = 0; k < 2; k++)
+                {
+                    globalBbox.vMax = maxVert2(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z)));
+                    globalBbox.vMin = minVert2(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z)));
+                }
+            }
+        }
     }
 }
 
@@ -403,6 +441,13 @@ Vertex Instance::getLocal(Vertex &v)
     return result;
 }
 
+Vec3r Instance::getLocal(Vec3r &v)
+{
+    Vec3r result;
+    result = ((*backwardTrans) * Vec4r(v)).getVec3r();
+    return result;
+}
+
 
 Vec3r Instance::getGlobal(Vec3r &v)
 {
@@ -411,11 +456,13 @@ Vec3r Instance::getGlobal(Vec3r &v)
     return result;
 }
 
-Vertex Instance::getGlobal(Vertex &v)
+Vertex Instance::getGlobal(Vertex v)
 {
     Vertex result;
     result = ((*forwardTrans) * Vec4r(v)).getVertex();
     return result;
 }
+
+
 
 

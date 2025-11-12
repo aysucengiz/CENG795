@@ -89,7 +89,7 @@ void RayTracer::drawScene(uint32_t camID){
     for (uint32_t y = 0; y < height; y++){
         raytracers.push_back(RaytracerThread(scene,y,cam, bvh));
     }
-
+    std::cout << "Start Parallelization" << std::endl;
     #pragma omp parallel for
     for (uint32_t y = 0; y < height; y++){
         raytracers[y].drawRow();

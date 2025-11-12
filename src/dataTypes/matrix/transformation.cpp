@@ -3,6 +3,7 @@
 //
 
 #include "transformation.h"
+#include "../functions/overloads.h"
 
 ////////////////////////////////////////////////
 ///////// Transformation /////////////////////
@@ -12,6 +13,10 @@ TransformationType Transformation::getTransformationType() const
 {return TransformationType::NONE;};
 
 
+void Transformation::getNormalTransform()
+{
+    normalTransform = this->Inverse().Transpose();
+}
 
 ////////////////////////////////////////////////
 ///////////////// Rotate /////////////////////
@@ -28,7 +33,7 @@ Rotate::Rotate(Ray ax, double ang) : axis(ax), angle(ang)
               a*c*K - b* sin(ang),       b*c*K + a* sin(ang), cos(ang) + pow(c,2)*K, 0,
                                 0,                         0,                         0, 1
     };
-    normalTransform = this->Transpose().Inverse();
+    getNormalTransform();
 }
 
 Rotate::Rotate(Axes ax, double ang)
@@ -65,6 +70,7 @@ Rotate::Rotate(Axes ax, double ang)
     }
 
     angle = ang;
+    getNormalTransform();
 }
 
 
@@ -77,9 +83,19 @@ Rotate::Rotate(const Rotate& rotate)
 }
 
 
+Rotate Rotate::operator=(const Rotate& rotate)
+{
+    if (this == &rotate) return *this;
+    axis.pos = rotate.axis.pos;
+    axis.dir = rotate.axis.dir;
+    angle = rotate.angle;
+    normalTransform = rotate.normalTransform;
+    return *this;
+}
+
+
 Transformation *Rotate::inv() const
 {
-
     return new Rotate(axis,-angle);
 }
 
@@ -94,17 +110,14 @@ TransformationType Rotate::getTransformationType() const { return Transformation
 Translate::Translate(Vertex v) : x(v.x), y(v.y), z(v.z)
 {
     arr = {
-        1, 0, 0, x,
-        0, 1, 0, y,
-        0, 0, 1, z,
-        0, 0, 0, 1
+        {
+            {{1, 0, 0, x}},
+            {{0, 1, 0, y}},
+            {{0, 0, 1, z}},
+            {{0, 0, 0, 1}}
+        }
     };
-    normalTransform.arr = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        -x, -y, -z, 1
-    };
+    normalTransform = Identity();
 }
 
 Translate::Translate(real x, real y, real z) : x(x), y(y), z(z)
@@ -115,12 +128,7 @@ Translate::Translate(real x, real y, real z) : x(x), y(y), z(z)
         0, 0, 1, z,
         0, 0, 0, 1
     };
-    normalTransform.arr = {
-        1, 0, 0, x,
-        0, 1, 0, y,
-        0, 0, 1, z,
-        -x, -y, -z, 1
-    };
+    normalTransform = Identity();
 }
 
 
@@ -141,12 +149,7 @@ Scale::Scale(Vertex v) : center(Vertex()), x(v.x), y(v.y), z(v.z)
         0, 0, v.z, 0,
         0, 0, 0, 1
     };
-    normalTransform.arr = {
-        1.0/v.x, 0, 0, 0,
-        0, 1.0/v.y, 0, 0,
-        0, 0, 1.0/v.z, 0,
-        0, 0, 0, 1
-    };
+    getNormalTransform();
 }
 
 
@@ -158,18 +161,13 @@ Scale::Scale(real x, real y, real z) : center(Vertex()), x(x), y(y), z(z)
         0, 0, z, 0,
         0, 0, 0, 1
     };
-    normalTransform.arr = {
-        1.0/x, 0, 0, 0,
-        0, 1.0/y, 0, 0,
-        0, 0, 1.0/z, 0,
-        0, 0, 0, 1
-    };
+    getNormalTransform();
 }
 
 Scale::Scale(Vertex center, real x, real y, real z) : center(center), x(x), y(y), z(z), Transformation()
 {
     arr = (Translate(-center)*Scale(x,y,z)*Translate(center)).arr;
-    normalTransform = (this->Transpose()).Inverse();
+    getNormalTransform();
 }
 TransformationType Scale::getTransformationType() const   { return TransformationType::SCALE; }
 
@@ -184,15 +182,18 @@ Composite::Composite(const std::vector<Transformation *>& transformations)
     arr = Identity().arr;
     for (int i=0; i < transformations.size(); i++)
     {
-        arr = (*transformations[i] * M4trix(arr)).arr;
+        //std::cout << *transformations[i];
+        arr = (*transformations[i] * *this).arr;
     }
-    normalTransform = (this->Transpose()).Inverse();
+
+    getNormalTransform();
 }
 
 
 Composite::Composite(M4trix m)
 {
     arr = m.arr;
+    getNormalTransform();
 }
 
 TransformationType Composite::getTransformationType() const  { return TransformationType::COMPOSITE; }
@@ -200,10 +201,72 @@ TransformationType Composite::getTransformationType() const  { return Transforma
 Composite::Composite()
 {
     arr = Identity().arr;
+    getNormalTransform();
 }
 
 Transformation *Composite::inv() const
 {
-    return new Composite(Inverse());
+    return new Composite(this->Inverse());
+}
+
+
+Composite::Composite(const Composite &c)
+{
+    arr = c.arr;
+    normalTransform = c.normalTransform;
+}
+
+Scale Scale::operator=(const Scale &c)
+{
+    if (this == &c) return *this;
+    arr = c.arr;
+    center = c.center;
+    x = c.x;
+    y = c.y;
+    z = c.z;
+    normalTransform = c.normalTransform;
+    return *this;
+}
+
+Scale::Scale(const Scale &c)
+{
+    arr = c.arr;
+    center = c.center;
+    x = c.x;
+    y = c.y;
+    z = c.z;
+    normalTransform = c.normalTransform;
+}
+
+
+Translate::Translate(const Translate &c)
+{
+    arr = c.arr;
+    x = c.x;
+    y = c.y;
+    z = c.z;
+    normalTransform = Identity();
+}
+
+
+Translate Translate::operator=(const Translate &c)
+{
+    if (this == &c) return *this;
+    arr = c.arr;
+    x = c.x;
+    y = c.y;
+    z = c.z;
+    normalTransform = c.normalTransform;
+    return *this;
+}
+
+
+Composite Composite::operator=(const Composite &other)
+{
+    if (this == &other) return *this;
+    arr = other.arr;
+    normalTransform = other.normalTransform;
+    return *this;
+
 }
 

@@ -46,18 +46,20 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
     sceneInput.IntersectionTestEpsilon = inp["Scene"].contains("IntersectionTestEpsilon") ?  std::stod(inp["Scene"]["IntersectionTestEpsilon"].get<std::string>()) : DEFAULT_INTERS_EPS;
     if(PRINTINIT) std::cout << "IntersectionTestEpsilon: " << sceneInput.IntersectionTestEpsilon << std::endl;
 
+    if (inp["Scene"].contains("Transformations"))
+    {
+        getTransformations(inp["Scene"]["Transformations"], sceneInput);
+    }
+
     getCameras(inp["Scene"]["Cameras"], sceneInput);
     getLights(inp["Scene"]["Lights"], sceneInput);
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
 
-    if (inp["Scene"].contains("Transformations"))
-    {
-        std::cout <<inp["Scene"] <<std::endl;
-        getTransformations(inp["Scene"]["Transformations"], sceneInput);
-    }
+
 
     getVertexData(inp["Scene"], sceneInput);
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
+
 }
 
 
@@ -71,9 +73,19 @@ void Parser::getCameras(json inp, SceneInput &sceneInput){
 
 void Parser::addLight(json pointLights, SceneInput &sceneInput)
 {
+    Transformation *t;
+    if (pointLights.contains("Transformations"))
+    {
+        t = getTransFromStr(pointLights["Transformation"].get<std::string>(),sceneInput.transforms);
+        t->getNormalTransform();
+    }
+    else
+    {
+        t = new Composite();
+    }
     PointLight pl(
             std::stoi(pointLights["_id"].get<std::string>()) - 1,
-            Vertex(pointLights["Position"]),
+            (*t * Vec4r(Vertex(pointLights["Position"]))).getVertex(),
             Color(pointLights["Intensity"])
     );
     sceneInput.PointLights.push_back(pl);
@@ -166,7 +178,6 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
 void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     // getTriangles
     uint32_t curr_id = sceneInput.objects.size();
-    std::cout << "getobjects: " << curr_id << std::endl;
     type1_triStartID = curr_id;
     if(inp.contains("Triangle")){
         json& Triangles = inp["Triangle"];
@@ -197,6 +208,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
 
     // getMeshInstances
     if(inp.contains("MeshInstance")){
+        std::cout << "mesh inst exists" << std::endl;
         json& MeshInstances = inp["MeshInstance"];
         int numMeshInstances = MeshInstances.size();
         if (MeshInstances.is_object())              addInstance(MeshInstances, sceneInput, curr_id);
@@ -215,9 +227,20 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     }
     sceneInput.numPlanes = sceneInput.objects.size();
 
+
     for(int i=0; i < sceneInput.Vertices.size(); i++)
     {
         sceneInput.Vertices[i].n = sceneInput.Vertices[i].n.normalize();
+    }
+
+
+    for(int i=0; i < sceneInput.objects.size(); i++)
+    {
+        if (sceneInput.objects[i]->getObjectType() == ObjectType::INSTANCE)
+        {
+            dynamic_cast<Instance *>(sceneInput.objects[i])->forwardTrans->getNormalTransform();
+            dynamic_cast<Instance *>(sceneInput.objects[i])->backwardTrans->getNormalTransform();
+        }
     }
 }
 
@@ -251,11 +274,21 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
         Gaze = Vec3r(Cameras["Gaze"]);
     }
 
+    Transformation *t;
+    if (Cameras.contains("Transformations"))
+    {
+        t = getTransFromStr(Cameras["Transformation"].get<std::string>(),sceneInput.transforms);
+        t->getNormalTransform();
+    }
+    else
+    {
+        t = new Composite();
+    }
     Camera c(
                std::stoi(Cameras["_id"].get<std::string>()) - 1,
-               Vertex(Cameras["Position"]),
-               Gaze,
-               Vec3r(Cameras["Up"]),
+               (*t *Vec4r(Vertex(Cameras["Position"]))).getVertex(),
+               (*t *Vec4r(Vec3r(Gaze))).getVec3r(),
+               (t->normalTransform * Vec4r( Vec3r(Cameras["Up"]))).getVec3r(),
                nearPlane,
                std::stoi(Cameras["NearDistance"].get<std::string>()),
                Cameras["ImageResolution"],
@@ -263,6 +296,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
            );
     sceneInput.Cameras.push_back(c);
     if(PRINTINIT) std::cout << c << std::endl;
+    delete t;
 }
 
 
@@ -319,10 +353,18 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
                                 sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
                             );
 
-    if (s.contains("Transformations")) addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
-    else                                   sceneInput.objects.push_back(temps);
+    if (s.contains("Transformations"))
+    {
+        addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
 
-    if(PRINTINIT) std::cout << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
+        if(PRINTINIT) std::cout << *dynamic_cast<Instance*>(sceneInput.objects[curr_id])<< std::endl;
+    }
+    else
+    {
+        sceneInput.objects.push_back(temps);
+        if(PRINTINIT) std::cout << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
+
+    }
 
     curr_id++;
 }
@@ -376,20 +418,24 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
 
 void Parser::addInstance(std::string transformations, Object *original, SceneInput &sceneInput)
 {
+
     sceneInput.objects.push_back(new Instance(
                                     original->_id,
                                     original,
                                     getTransFromStr(transformations, sceneInput.transforms),
+                                    original->material,
                                     true
                                     ));
+
 }
 
 void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
     sceneInput.objects.push_back(new Instance(
                                     curr_id,
-                                    getOriginalObjPtr(ObjectType::MESH,std::stoi(s["Transformations"].get<std::string>()), sceneInput.objects),
+                                    getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects),
                                     getTransFromStr(s["Transformations"].get<std::string>(), sceneInput.transforms),
+                                    sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1],
                                     false
                                     ));
 
@@ -417,9 +463,9 @@ void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addTranslation(json t, SceneInput &sceneInput)
 {
-    std::cout << "here" << std::endl;
-    sceneInput.transforms.push_back(new Translate(Vertex(t["_data"])));
-    if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
+    Translate *temp = new Translate(Vertex(t["_data"]));
+    sceneInput.transforms.push_back(temp);
+    if(PRINTINIT) std::cout << sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 }
 
 void Parser::addScaling(json t, SceneInput &sceneInput)
@@ -454,6 +500,7 @@ Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transf
         else if (transChar == 's') startID =trans2_scaleStartID;
         else if (transChar == 'r') startID =trans3_rotStartID;
         else startID = 0;
+        // std::cout << transChar << " " << startID << std::endl;
 
         temp.push_back(transforms[startID+transID - 1]);
     }

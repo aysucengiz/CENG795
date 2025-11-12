@@ -68,6 +68,7 @@ class Mesh : public Object
 public:
     std::vector<Triangle> Faces;
     ShadingType shadingtype;
+    uint32_t currTri;
 
     Mesh(uint32_t id, std::string st, Material &m, std::string s,
         bool read_from_file,
@@ -75,8 +76,8 @@ public:
         uint32_t start_index=0);
 
     ObjectType getObjectType() override;
-    Vec3r getNormal(Vertex &v) override {return Vec3r();}
-    Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
+    Vec3r getNormal(Vertex &v) override;
+Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
 
 
 
@@ -105,7 +106,7 @@ public:
     Transformation *forwardTrans;
     Transformation *backwardTrans;
 
-    Instance(uint32_t id, Object *original, Transformation *trans, bool orig, bool v=true);
+    Instance(uint32_t id, Object *original, Transformation *trans, Material &mat, bool orig, bool v=true);
     ~Instance();
 
     ObjectType getObjectType() override;
@@ -118,7 +119,8 @@ public:
     Ray getLocal(Ray &r);
     Vertex getLocal(Vertex &v);
     Vec3r getGlobal(Vec3r &v);
-    Vertex getGlobal(Vertex &v);
+    Vertex getGlobal(Vertex v);
+    Vec3r getLocal(Vec3r &v);
 
 
 };
@@ -144,7 +146,7 @@ struct SceneInput{
     std::vector<PointLight> PointLights;
 
     // object info
-    std::vector<Object *> objects;
+    std::deque<Object *> objects;
 
     // num info
     uint32_t numCameras;

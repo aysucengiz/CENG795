@@ -95,7 +95,7 @@ Vec4r& Vec4r::operator+=(const Vec3r& other) {
     x += other.i;
     y += other.j;
     z += other.k;
-    w += 1.0;
+    w += 0.0;
     return *this;  // Return the modified object
 }
 
@@ -103,7 +103,7 @@ Vec4r& Vec4r::operator+=(const Vertex& other) {
     x += other.x;
     y += other.y;
     z += other.z;
-    // w += 0.0;
+    w += 1.0;
     return *this;  // Return the modified object
 }
 

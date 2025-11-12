@@ -66,7 +66,7 @@ bool RaytracerThread::isUnderShadow(Ray &shadow_ray)
         }
     }
 
-    for (int j = scene.numObjects; j < scene.numObjects + scene.numPlanes; j++)
+    for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
         if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
             return true;
@@ -90,7 +90,6 @@ Color RaytracerThread::computeColor(Ray &ray, int depth, real n1, Color ac)
 
         Material &m = hit_record.obj->material;
         curr_color = scene.AmbientLight * m.AmbientReflectance;
-        //std::cout << "Before anything" << std::endl;
         if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::CONDUCTOR)
         {
             curr_color += reflect(ray, depth, m.materialType, hit_record, n1,ac);
@@ -117,6 +116,9 @@ Color RaytracerThread::computeColor(Ray &ray, int depth, real n1, Color ac)
                         //if (!ac.isWhite()) curr_color = curr_color * exponent(ac * -(hit_record.intersection_point - ray.pos).mag());
                     }// else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
 
+                    //curr_color.r = hit_record.normal.i * 255.0;
+                    //curr_color.g = hit_record.normal.j * 255.0;
+                    //curr_color.b = hit_record.normal.k * 255.0;
                 }
             }
         }
@@ -160,7 +162,7 @@ void RaytracerThread::checkObjIntersection(Ray &ray, real &t_min, HitRecord &hit
     hit_record.obj = nullptr;
     Object *temp_obj = nullptr;
 
-    for(int i = scene.numObjects; i < scene.numObjects + scene.numPlanes; i++)
+    for(int i = scene.numObjects; i < scene.numPlanes; i++)
     {
 
         temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
@@ -173,17 +175,16 @@ void RaytracerThread::checkObjIntersection(Ray &ray, real &t_min, HitRecord &hit
 
     if (ACCELERATE)
     {
-        Object *obj = bvh.traverse(ray,t_min,scene.objects);
-        if (obj != nullptr)
+        temp_obj = bvh.traverse(ray,t_min,scene.objects);
+        if (temp_obj != nullptr)
         {
-            hit_record.obj = obj;
+            hit_record.obj = temp_obj;
         }
     }
     else
     {
         for(int i = 0; i < scene.numObjects; i++)
         {
-
             temp_obj = scene.objects[i]->checkIntersection(ray, t_min,  false);
 
             if (temp_obj != nullptr)

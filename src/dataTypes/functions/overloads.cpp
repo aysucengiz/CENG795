@@ -245,7 +245,8 @@ std::ostream& operator<<(std::ostream& os, const Mesh& m) {
        << "\n\tshading type:" << (int) m.shadingtype
        << "\n\tmaterial:" << m.material._id;
     for (const auto& f : m.Faces)
-        os << "  " << f << "\n";
+        os << "  " << f << "\n"
+    << "\n\tglobalBbox:" << m.globalBbox;
     return os;
 }
 
@@ -253,7 +254,8 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t) {
     os << "Triangle " << t._id << ":"
        << "\n\tindices:" << t.a.id << " " << t.b.id << " "  << t.c.id
        << "\n\ta_b:" << t.a_b << " a_c: " << t.a_c << " "  << t.c.id
-       << "\n\tmaterial:" << t.material._id;
+       << "\n\tmaterial:" << t.material._id
+    << "\n\tglobalBbox:" << t.globalBbox;
     return os;
 }
 
@@ -261,7 +263,8 @@ std::ostream& operator<<(std::ostream& os, const Sphere& s) {
     os << "Sphere " << s._id << ":"
               << "\n\tcenter:" << s.center
               << "\n\tradius:" << s.radius
-              << "\n\tmaterial:" << s.material._id;
+              << "\n\tmaterial:" << s.material._id
+    << "\n\tglobalBbox:" << s.globalBbox;
     return os;
 }
 
@@ -275,6 +278,8 @@ std::ostream& operator<<(std::ostream& os, Object *s)
         os << "  " << *dynamic_cast<Mesh*>(s) << "\n";
     else if (s->getObjectType() == ObjectType::PLANE)
         os << "  " << *dynamic_cast<Plane*>(s) << "\n";
+    else if (s->getObjectType() == ObjectType::INSTANCE)
+        os << "  " << *dynamic_cast<Instance*>(s) << "\n";
     return os;
 }
 
@@ -392,7 +397,7 @@ std::ostream& operator<<(std::ostream& os, BVH &bvh)
     for (auto node : bvh.nodes) os << node << "\n";
     return os;
 }
-std::ostream& operator<<(std::ostream& os, BBox &bbox)
+std::ostream& operator<<(std::ostream& os,const BBox &bbox)
 {
     os << "BBox: Max: " << bbox.vMax << " Min: " << bbox.vMin;
     return os;
@@ -402,29 +407,46 @@ std::ostream& operator<<(std::ostream& os, const Instance& i)
     os << "Instance " << i._id << ":"
       << "\n\tObject:" << i.original->getObjectType() << " " <<i.original->_id
       << "\n\tforwardTrans:" << i.forwardTrans->getTransformationType() << " " << i.forwardTrans
-      << "\n\tbackwardTrans:" << i.forwardTrans->getTransformationType() << " "  << i.backwardTrans;
+      << "\tbackwardTrans:" << i.backwardTrans->getTransformationType() << " "  << i.backwardTrans
+      << "\n\tglobalBbox:" << i.globalBbox;
     return os;
 }
 
 
 std::ostream& operator<<(std::ostream& os, Transformation *t)
 {
-    if (t->getTransformationType()  == TransformationType::ROTATE) os<<  dynamic_cast<Rotate*>(t);
-    else if (t->getTransformationType()  == TransformationType::TRANSLATE) os<<  dynamic_cast<Translate*>(t);
-    else if (t->getTransformationType()  == TransformationType::SCALE) os<<   dynamic_cast<Scale*>(t);
-    else if (t->getTransformationType()  == TransformationType::COMPOSITE) os<<   dynamic_cast<Composite*>(t);
+    if (t->getTransformationType()  == TransformationType::ROTATE) os<<  *dynamic_cast<Rotate*>(t);
+    else if (t->getTransformationType()  == TransformationType::TRANSLATE) os<<  *dynamic_cast<Translate*>(t);
+    else if (t->getTransformationType()  == TransformationType::SCALE) os<<   *dynamic_cast<Scale*>(t);
+    else if (t->getTransformationType()  == TransformationType::COMPOSITE) os<<   *dynamic_cast<Composite*>(t);
     else os << "type unknown";
     return os;
 }
 std::ostream& operator<<(std::ostream& os, Rotate &r)
 {
     os << "Rotate: axis:" << r.axis.pos << " " << r.axis.dir  << " angle: " << r.angle
-    << "\n arr:" << r.arr << "\n";
+    << "\n arr: " << r.arr << "\n";
 return os;
 }
+
+
+std::ostream& operator<<(std::ostream& os, std::array<std::array<double,4>,4> &arr)
+{
+    os << "\n";
+    for (const auto& row : arr) {
+        os << "[ ";
+        for (double v : row) {
+            os << v << " ";
+        }
+        os << "]\n";
+    }
+    return os;
+
+}
+
 std::ostream& operator<<(std::ostream& os, Translate &r)
 {
-    os << "Translate: " << r.x << " " << r.y  << "  " << r.z
+    os << "Translate: " << r.x << " " << r.y  << " " << r.z
     << "\n arr:" << r.arr << "\n";
     return os;
 }

@@ -14,14 +14,13 @@
 
 
 
-
 int main(void) {
     RayTracer raytracer;
 
     raytracer.log("\n\nThe following are instancing scenes:");
     raytracer.parseScene("jsonFiles/hw2/inputs/ellipsoids.json");
     raytracer.drawAllScenes();
-    raytracer.parseScene("jsonFiles/hw2/inputs/marching_dragons.json");
+    raytracer.parseScene("jsonFiles/hw2/inputs/spheres.json");
     raytracer.drawAllScenes();
     raytracer.parseScene("jsonFiles/hw2/inputs/marching_dragons.json");
     raytracer.drawAllScenes();
