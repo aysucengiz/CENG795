@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "../dataTypes/object/BBox.h"
-#include "../dataTypes/base/typedefs.h"
+#include "../typedefs.h"
 #include "../dataTypes/object/Object.h"
 
 
@@ -34,10 +34,10 @@ class BVH
 public:
     std::vector<BVHNode> nodes;
     PivotType pivotType;
-    real getPivot(BBox bbox, Axes a, int start, int end, std::vector<Object *> &objects);
-    int partition(int start, int end, Axes a, std::vector<Object *> &objects);
+    real getPivot(BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects);
+    int partition(int start, int end, Axes a, std::deque<Object *> &objects);
     void getScene(SceneInput &scene);
-    Object *traverse(Ray &ray, real &t_min, const std::vector<Object *> &objects, bool shadow_test = false ) const;
+    Object *traverse(Ray &ray, real &t_min, const std::deque<Object *> &objects, bool shadow_test = false ) const;
 
 };
 

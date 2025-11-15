@@ -6,8 +6,8 @@
 
 #include <complex.h>
 
-#include "../functions/helpers.h"
-#include "../functions/overloads.h"
+#include "../../functions/helpers.h"
+#include "../../functions/overloads.h"
 
 ////////////////////////////////////////////////
 /////////////////// OBJECT /////////////////////
@@ -94,7 +94,7 @@ Vec3r Triangle::getNormal(Vertex &v)
     else return n;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st, bool v):
+Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st, bool v, bool computeVNormals):
             Object(material, id,
                 maxVert3(v1.v,v2.v,v3.v),
                 minVert3(v1.v,v2.v,v3.v), v
@@ -102,9 +102,12 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
                 shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
 {
     n = x_product((b.v-a.v), (c.v-a.v));
-    a.n = n + a.n;
-    b.n = n + b.n;
-    c.n = n + c.n;
+    if (computeVNormals)
+    {
+        a.n = n + a.n;
+        b.n = n + b.n;
+        c.n = n + c.n;
+    }
     n = n.normalize();
     main_center.x = (a.v + b.v + c.v).x / 3.0;
     main_center.y = (a.v + b.v + c.v).y / 3.0;
@@ -181,17 +184,21 @@ Vec3r Sphere::getNormal(Vertex &v)
 //////////////////// MESH //////////////////////
 ////////////////////////////////////////////////
 
-Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, bool v, uint32_t start_index)
+Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, bool v, uint32_t start_index, bool computeVNormals)
     : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),v ){
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
 
+
+    globalBbox.vMax = Vertex(-INFINITY,-INFINITY,-INFINITY);
+    globalBbox.vMin = Vertex(INFINITY,INFINITY,INFINITY);
         if (read_from_file)
         {
             happly::PLYData plyIn(s);
             std::vector<std::vector<int>> f = plyIn.getElement("face").getListProperty<int>("vertex_indices");
             //std::cout << "First face indices: " << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;
+            start_index -= f[0][0];
             for (int i = 0; i < f.size(); i++)
             {
                 if (vertices.size() <= start_index+f[i][0])std::cout << vertices.size() <<" : " << start_index-1+f[i][0]<< std::endl;
@@ -202,11 +209,14 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 {
                     Vertex minv = minVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
                     Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
-                    globalBbox.vMax = maxVert3(maxv,globalBbox.vMax,globalBbox.vMax);
-                    globalBbox.vMin = minVert3(minv,globalBbox.vMin,globalBbox.vMin);
+                    globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
+                    globalBbox.vMin = minVert2(minv,globalBbox.vMin);
                     Faces.push_back(Triangle(Faces.size(),
-                        vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
-                      m, shadingtype));
+                                                vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
+                                                m,
+                                                shadingtype,
+                                                v,
+                                                computeVNormals));
                 }
             }
 
@@ -215,19 +225,20 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
         {
             std::istringstream verticesStream(s);
             uint32_t vert[3];
-
             while (verticesStream >>vert[0]>>vert[1]>> vert[2]) {
                 vert[0]--; vert[1]--; vert[2]--;
                 if (vert[0] != vert[1] && vert[0] != vert[2] && vert[1] !=vert[2])
                 {
                     Vertex minv = minVert3(vertices[vert[0]].v,vertices[vert[1]].v,vertices[vert[2]].v);
                     Vertex maxv = maxVert3(vertices[vert[0]].v,vertices[vert[1]].v,vertices[vert[2]].v);
-                    globalBbox.vMax = maxVert3(maxv,globalBbox.vMax,globalBbox.vMax);
-                    globalBbox.vMin = minVert3(minv,globalBbox.vMin,globalBbox.vMin);
+                    globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
+                    globalBbox.vMin = minVert2(minv,globalBbox.vMin);
 
                     Faces.push_back(Triangle(Faces.size(),
                         vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
-                        m, shadingtype));
+                        m, shadingtype,
+                        v,
+                        computeVNormals));
                 }
 
             }
@@ -238,7 +249,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
     main_center.z = (globalBbox.vMax.z + globalBbox.vMin.z) / 2.0;
 
 
-    }
+}
 
 ObjectType Mesh::getObjectType(){ return ObjectType::MESH; }
 

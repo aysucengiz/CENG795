@@ -7,7 +7,7 @@
 
 #include "../dataTypes/object/Object.h"
 #include "../dataTypes/base/SceneData.h"
-#include "../dataTypes/functions/helpers.h"
+#include "../functions/helpers.h"
 #include <iostream>
 #include <cmath>
 
@@ -20,9 +20,6 @@ private:
     const SceneInput &scene;
     const Camera &cam;
     const BVH &bvh;
-    Color final_color;
-    uint32_t curr_pixel;
-    uint32_t y;
 
     // for recursive refraction
     //real n1;
@@ -31,18 +28,18 @@ private:
 public:
     static int done_threads;
 
-    RaytracerThread(SceneInput &_scene, const uint32_t _y, Camera &c, BVH &_bvh) :
-    scene(_scene), cam(c), curr_pixel(_y*c.width*3), y(_y), bvh(_bvh),
+    RaytracerThread(SceneInput &_scene, Camera &camID, BVH &_bvh) :
+    scene(_scene), cam(camID), bvh(_bvh),
      mID(-1)
     {}
 
-    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), curr_pixel(rt.y*rt.cam.width*3), y(rt.y),
+    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam),
                                                                      mID(-1), bvh(rt.bvh) {}
 
-    void drawRow();
-    Ray computeViewingRay(uint32_t x);
+    void drawRow(uint32_t y);
+    void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
+    Ray computeViewingRay(uint32_t x, uint32_t y);
     Color computeColor(Ray &ray, int depth, real n1 = 1.0, Color ac = Color(0,0,0));
-    void writeColorToImage();
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record);
     bool isUnderShadow(Ray &shadow_ray);
     Ray compute_shadow_ray(const HitRecord &hit_record,uint32_t i);

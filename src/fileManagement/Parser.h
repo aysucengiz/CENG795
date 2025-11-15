@@ -11,7 +11,7 @@
 
 #include "../dataTypes/base/SceneData.h"
 #include "../dataTypes/object/Object.h"
-#include "../dataTypes/functions/helpers.h"
+#include "../functions/helpers.h"
 
 #include "json.hpp"
 
@@ -41,16 +41,12 @@ namespace Parser {
     void addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id);
     void addInstance(std::string transformations, Object *original, SceneInput &sceneInput);
     void addInstance(json p, SceneInput &sceneInput, uint32_t &curr_id);
-
     void addTranslation(json Camera, SceneInput &sceneInput);
     void addScaling(json p, SceneInput &sceneInput);
     void addRotation(json p, SceneInput &sceneInput);
 
     Transformation *getTransFromStr(std::string transStr, std::vector<Transformation *> &transforms);
-    Object *getOriginalObjPtr(ObjectType ot, int ot_id, std::vector<Object *> &objs);
-
-
-
+    Object *getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *> &objs);
 };
 
 

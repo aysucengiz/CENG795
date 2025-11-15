@@ -10,9 +10,8 @@
 #include <vector>
 #include <iostream>
 
-#include "typedefs.h"
+#include "../../typedefs.h"
 #include "Vectors.h"
-#include "../functions/helpers.h"
 
 struct Color{
     real r;
@@ -85,7 +84,7 @@ struct CVertex
     Vertex v;
     Vec3r n;
 
-    CVertex(uint32_t i, real x,real y,real z);
+    CVertex(uint32_t i, Vertex v, Vec3r n);
     CVertex(uint32_t i, const std::string& inp);
 };
 

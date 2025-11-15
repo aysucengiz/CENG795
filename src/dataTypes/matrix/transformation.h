@@ -5,7 +5,7 @@
 #ifndef CENG795_TRANSFORMATION_H
 #define CENG795_TRANSFORMATION_H
 
-#include "../base/typedefs.h"
+#include "../../typedefs.h"
 #include "../base/SceneData.h"
 #include "Matrix.h"
 

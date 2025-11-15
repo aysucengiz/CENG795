@@ -204,6 +204,8 @@ std::ostream& operator<<(std::ostream& os, const ObjectType& ot)
     else if (ot == ObjectType::SPHERE) os<<  "sphere";
     else if (ot == ObjectType::TRIANGLE) os<<  "triangle";
     else if (ot == ObjectType::MESH) os<<  "mesh";
+    else if (ot == ObjectType::INSTANCE) os<<  "instance";
+    else if (ot == ObjectType::PLANE) os<<  "plane";
     else os << "unknown";
     return os;
 }
@@ -392,8 +394,7 @@ std::ostream& operator<<(std::ostream& os, BVHNode &node)
 std::ostream& operator<<(std::ostream& os, BVH &bvh)
 {
     os << "BVH: "
-       << "pivotType: " << bvh.pivotType
-       << "\nNodes: ";
+       << "pivotType: " << bvh.pivotType;
     for (auto node : bvh.nodes) os << node << "\n";
     return os;
 }

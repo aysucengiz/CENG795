@@ -9,6 +9,8 @@
 #include <cmath>
 #include <iostream>
 #include "SceneData.h"
+#include "../../functions/helpers.h"
+#include "../matrix/Matrix.h"
 
 
 ////////////////////////////////////////////////
@@ -105,7 +107,7 @@ Material::Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
 ////////////////////////////////////////////////
 
 
-CVertex::CVertex(uint32_t i, real x,real y,real z) : v(Vertex(x,y,z)), n(Vec3r()), id(i){}
+CVertex::CVertex(uint32_t i, Vertex v, Vec3r n) : v(v), n(n),  id(i){}
 CVertex::CVertex(uint32_t i, const std::string& inp) : n(Vec3r()), id(i)
 {
     std::istringstream ss(inp);

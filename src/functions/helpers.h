@@ -5,8 +5,7 @@
 #ifndef CENG795_HELPERS_H
 #define CENG795_HELPERS_H
 
-#include "../base/Vectors.h"
-#include "../matrix/Matrix.h"
+#include "../dataTypes/base/Vectors.h"
 
 int clamp(real c, int from, int to);
 real max3(real a, real b, real c);

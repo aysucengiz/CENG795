@@ -5,10 +5,10 @@
 #ifndef CENG795_OVERLOADS_H
 #define CENG795_OVERLOADS_H
 
-#include "../base/SceneData.h"
-#include "../base/Vectors.h"
-#include "../object/Object.h"
-#include "../../acceleration/BVH.h"
+#include "../dataTypes/base/SceneData.h"
+#include "../dataTypes/base/Vectors.h"
+#include "../dataTypes/object/Object.h"
+#include "../dataTypes/../acceleration/BVH.h"
 
 
 // overload - color

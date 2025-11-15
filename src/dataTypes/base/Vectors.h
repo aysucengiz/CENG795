@@ -9,7 +9,7 @@
 #include <string>
 #include <cmath>
 
-#include "typedefs.h"
+#include "../../typedefs.h"
 
 struct Vec3r{
     real i, j, k;

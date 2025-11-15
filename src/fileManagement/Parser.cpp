@@ -3,7 +3,7 @@
 //
 
 #include "Parser.h"
-#include "../dataTypes/functions/overloads.h"
+#include "../functions/overloads.h"
 
 // TODO: material tipleri, bazılarında mesela _type : mirror olayı söz konusu
 
@@ -58,6 +58,7 @@ void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
 
 
     getVertexData(inp["Scene"], sceneInput);
+    if (PRINTINIT) std::cout << "vertices done" << std::endl;
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 
 }
@@ -163,7 +164,7 @@ void Parser::getVertexData(json inp, SceneInput &sceneInput){
     int z = ori.find('z');
     real mapped[3];
     while (verticesStream >> mapped[0] >> mapped[1] >> mapped[2]) {
-        sceneInput.Vertices.push_back(CVertex(sceneInput.Vertices.size(),mapped[x],mapped[y],mapped[z]));
+        sceneInput.Vertices.push_back(CVertex(sceneInput.Vertices.size(),Vertex(mapped[x],mapped[y],mapped[z]),Vec3r()));
 
         //if(PRINTINIT) std::cout << sceneInput.Vertices[sceneInput.Vertices.size()-1] << std::endl;
     }
@@ -208,7 +209,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
 
     // getMeshInstances
     if(inp.contains("MeshInstance")){
-        std::cout << "mesh inst exists" << std::endl;
+        if (PRINTINIT) std::cout << "mesh inst exists" << std::endl;
         json& MeshInstances = inp["MeshInstance"];
         int numMeshInstances = MeshInstances.size();
         if (MeshInstances.is_object())              addInstance(MeshInstances, sceneInput, curr_id);
@@ -338,9 +339,8 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
                                 sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]);
 
     if (tri.contains("Transformations")) addInstance(tri["Transformations"].get<std::string>(), tempt, sceneInput);
-    else                                   sceneInput.objects.push_back(tempt);
-
-    if(PRINTINIT) std::cout << *dynamic_cast<Triangle*>(sceneInput.objects[curr_id]) << std::endl;
+    else sceneInput.objects.push_back(tempt);
+    if(PRINTINIT) std::cout << sceneInput.objects[curr_id] << std::endl;
     curr_id++;
 }
 
@@ -353,24 +353,17 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
                                 sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
                             );
 
-    if (s.contains("Transformations"))
-    {
-        addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
+    if (s.contains("Transformations"))addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
+    else  sceneInput.objects.push_back(temps);
+    if(PRINTINIT) std::cout << sceneInput.objects[curr_id]<< std::endl;
 
-        if(PRINTINIT) std::cout << *dynamic_cast<Instance*>(sceneInput.objects[curr_id])<< std::endl;
-    }
-    else
-    {
-        sceneInput.objects.push_back(temps);
-        if(PRINTINIT) std::cout << *dynamic_cast<Sphere*>(sceneInput.objects[curr_id])<< std::endl;
-
-    }
 
     curr_id++;
 }
 
 void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root)
 {
+    std::string sm = mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat";
     std::string typeString = "";
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
     {
@@ -384,13 +377,30 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
             dataLine = root + mes["Faces"]["_plyFile"].get<std::string>();
 
             happly::PLYData plyIn(dataLine);
-            std::vector<float> xs = plyIn.getElement("vertex").getProperty<float>("x");
-            std::vector<float> ys = plyIn.getElement("vertex").getProperty<float>("y");
-            std::vector<float> zs = plyIn.getElement("vertex").getProperty<float>("z");
+            auto& vertexElem = plyIn.getElement("vertex");
+            bool hasNormals = vertexElem.hasProperty("nx") && vertexElem.hasProperty("ny") && vertexElem.hasProperty("nz");
 
-            for (int j=0; j<xs.size(); j++)
+            std::vector<float> xs = vertexElem.getProperty<float>("x");
+            std::vector<float> ys = vertexElem.getProperty<float>("y");
+            std::vector<float> zs = vertexElem.getProperty<float>("z");
+            if (hasNormals)
             {
-                sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,xs[j],ys[j],zs[j]));
+                sm = "smooth";
+                std::vector<float> nxs = vertexElem.getProperty<float>("nx");
+                std::vector<float> nys = vertexElem.getProperty<float>("ny");
+                std::vector<float> nzs = vertexElem.getProperty<float>("nz");
+
+                for (int j=0; j<xs.size(); j++)
+                {
+                    sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,Vertex(xs[j],ys[j],zs[j]),Vec3r(nxs[j],nys[j],nzs[j])));
+                }
+            }
+            else
+            {
+                for (int j=0; j<xs.size(); j++)
+                {
+                    sceneInput.Vertices.push_back(CVertex(numVerticesUntilNow+j,Vertex(xs[j],ys[j],zs[j]),Vec3r()));
+                }
             }
         }
         else
@@ -402,11 +412,12 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
 
 
         Mesh *tempm = new Mesh(curr_id,
-                mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat",
+                sm,
                 sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
                 dataLine,
                 read_from_file,
                 sceneInput.Vertices,
+                true,
                 numVerticesUntilNow);
         if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput);
         else                                   sceneInput.objects.push_back(tempm);
@@ -426,16 +437,20 @@ void Parser::addInstance(std::string transformations, Object *original, SceneInp
                                     original->material,
                                     true
                                     ));
-
+    Instance *i = dynamic_cast<Instance*>(sceneInput.objects[sceneInput.objects.size()-1]);
+    if (PRINTINIT) std::cout << "Instance. Center: " << i->main_center << "/ Original center: "<< i->original->main_center << std::endl;
 }
 
 void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
+    Object *orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()) - 1, sceneInput.objects);
+    std::string resetTransform = s.contains("_resetTransform") ? s["_resetTransform"].get<std::string>() : "false";
+    if (resetTransform == "true" && orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = dynamic_cast<Instance*>(orig_obj)->original;
     sceneInput.objects.push_back(new Instance(
                                     curr_id,
-                                    getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects),
+                                    orig_obj,
                                     getTransFromStr(s["Transformations"].get<std::string>(), sceneInput.transforms),
-                                    sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1],
+                                    s.contains("Materials") ? sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1] : orig_obj->material,
                                     false
                                     ));
 
@@ -448,13 +463,15 @@ void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    sceneInput.objects.push_back(new Plane(
+    Plane *tempp= new Plane(
                                 curr_id,
                                 sceneInput.Vertices[std::stoi(p["Point"].get<std::string>()) - 1].v,
                                 p["Normal"].get<std::string>(),
                                 sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
-                        ));
+                        );
 
+    if (p.contains("Transformations"))addInstance(p["Transformations"].get<std::string>(), tempp, sceneInput);
+    else sceneInput.objects.push_back(tempp);
     if(PRINTINIT) std::cout <<  sceneInput.objects[curr_id]<< std::endl;
 
     curr_id++;
@@ -509,7 +526,7 @@ Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transf
     return transformation;
 }
 
-Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::vector<Object *>& objs)
+Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *>& objs)
 {
     int startID;
     switch (ot)
@@ -533,6 +550,7 @@ Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::vector<Object *
         startID = 0;
 
     }
+    if (PRINTINIT) std::cout << objs.size() << " " << startID +ot_id << std::endl;
     return objs[startID + ot_id];
 
 }

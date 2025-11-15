@@ -42,7 +42,7 @@ public:
     Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
     Vec3r getNormal(Vertex &v) override;
 
-    Triangle(uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, ShadingType st = ShadingType::NONE, bool v=true);
+    Triangle(uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, ShadingType st = ShadingType::NONE, bool v=true, bool computeVNormals = true);
 
 };
 
@@ -73,7 +73,8 @@ public:
     Mesh(uint32_t id, std::string st, Material &m, std::string s,
         bool read_from_file,
         std::deque<CVertex> &vertices, bool v=true,
-        uint32_t start_index=0);
+        uint32_t start_index=0,
+        bool computeVNormals = true);
 
     ObjectType getObjectType() override;
     Vec3r getNormal(Vertex &v) override;

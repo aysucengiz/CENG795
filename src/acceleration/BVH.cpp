@@ -7,14 +7,13 @@
 #include <algorithm>
 #include <compare>
 
-#include "../dataTypes/functions/overloads.h"
-
+#include "../functions/overloads.h"
 #include <stack>
 
 #include "../fileManagement/Parser.h"
 
 
-real BVH::getPivot(BBox bbox, Axes a, int start, int end, std::vector<Object *> &objects)
+real BVH::getPivot(BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects)
 {
     switch (pivotType)
     {
@@ -32,14 +31,14 @@ real BVH::getPivot(BBox bbox, Axes a, int start, int end, std::vector<Object *> 
 
 }
 
-int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
+int BVH::partition(int start, int end, Axes a, std::deque<Object *> &objects)
 {
     int curr_idx = nodes.size();
 
     nodes.push_back(BVHNode());
 
-    //std::cout << curr_idx << " "<< nodes.size() << std::endl;
-    //std::cout << start<< " "<< end << std::endl;
+    if (PRINTBVH)std::cout << "-------------------" << std::endl;
+    if (PRINTBVH)std::cout << "start: " << start<< " end: "<< end << std::endl;
 
     nodes[curr_idx].bbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
     nodes[curr_idx].bbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
@@ -49,6 +48,8 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
         nodes[curr_idx].bbox.vMax = maxVert2(objects[i]->globalBbox.vMax, nodes[curr_idx].bbox.vMax);
         nodes[curr_idx].bbox.vMin = minVert2(objects[i]->globalBbox.vMin, nodes[curr_idx].bbox.vMin);
     }
+    // std::cout << nodes[curr_idx].bbox.vMax<< std::endl;
+    // std::cout << nodes[curr_idx].bbox.vMin<< std::endl;
 
     if (end - start <= MAX_OBJ_IN_NODE)
     {
@@ -60,35 +61,62 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
     {
         nodes[curr_idx].objCount = 0;
 
-
-
-        real pivot = getPivot(nodes[curr_idx].bbox,a,start,end,objects);
         int swap_pos = start;
-
-        for (int runn_idx = start; runn_idx< end; runn_idx++)
+        Axes curr_axis = a;
+        for (int i=0; i<3; i++)
         {
-            if (pivot > objects[runn_idx]->main_center[a])
+            real pivot = getPivot(nodes[curr_idx].bbox,curr_axis,start,end,objects);
+            swap_pos = start;
+            for (int runn_idx = start; runn_idx< end; runn_idx++)
             {
-                std::swap(objects[runn_idx], objects[swap_pos]);
-                swap_pos++;
+                // if (PRINTBVH)std::cout << objects[runn_idx]->main_center[curr_axis] << " ";
+                if (pivot >= objects[runn_idx]->main_center[curr_axis])
+                {
+                    std::swap(objects[runn_idx], objects[swap_pos]);
+                    swap_pos++;
+                }
+            }
+            // if (PRINTBVH)std::cout << std::endl;
+
+
+            if (PRINTBVH)std::cout << "curr_axis: "<<curr_axis << " pivot: " << pivot << " start: " <<start << " swap_pos: " <<  swap_pos<< " end: " << end <<std::endl;
+            if (swap_pos != end && swap_pos != start) break;
+            curr_axis = next(curr_axis);
+        }
+
+        if      ((swap_pos == end || swap_pos == start) && (end - start != 2))
+        {
+            nodes[curr_idx].type = BVHNodeType::LEAF;
+            nodes[curr_idx].firstObjID = start;
+            nodes[curr_idx].objCount = end - start;
+            //if (PRINTBVH)
+            {
+                for (int runn_idx = start; runn_idx< end; runn_idx++)
+                {
+                    std::cout << objects[runn_idx]->getObjectType() <<": "<< objects[runn_idx]->main_center << " | ";
+                }
+                std::cout << std::endl;
             }
         }
-        if      (swap_pos == end)    nodes[curr_idx].type = BVHNodeType::INT_W_LEFT;
-        else if (swap_pos == start)  nodes[curr_idx].type = BVHNodeType::INT_W_RIGHT;
-        else                         nodes[curr_idx].type = BVHNodeType::INT_W_BOTH;
-
-
-        if (nodes[curr_idx].type == BVHNodeType::INT_W_LEFT ||
-            nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
+        else
         {
-            partition(start,swap_pos,next(a),objects);
+            if (end - start == 2) swap_pos = start + 1;
+
+            nodes[curr_idx].type = BVHNodeType::INT_W_BOTH;
+
+            if (nodes[curr_idx].type == BVHNodeType::INT_W_LEFT ||
+                nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
+            {
+                partition(start,swap_pos,next(curr_axis),objects);
+            }
+
+            if (nodes[curr_idx].type == BVHNodeType::INT_W_RIGHT ||
+                nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
+            {
+                nodes[curr_idx].rightOffset = partition(swap_pos,end,next(curr_axis),objects);
+            }
         }
 
-        if (nodes[curr_idx].type == BVHNodeType::INT_W_RIGHT ||
-            nodes[curr_idx].type == BVHNodeType::INT_W_BOTH)
-        {
-            nodes[curr_idx].rightOffset = partition(swap_pos,end,next(a),objects);
-        }
     }
 
 
@@ -100,22 +128,24 @@ int BVH::partition(int start, int end, Axes a, std::vector<Object *> &objects)
 
 void BVH::getScene(SceneInput &scene)
 {
-//std::cout << "getScene" << std::endl;
+if (PRINTBVH)std::cout << "getScene" << std::endl;
 // std::cout << scene.numObjects << " " << scene.objects.size()<< std::endl;
     nodes.clear();
     partition(0, scene.numObjects, Axes::x, scene.objects);
 
-    //std::cout << "partitioned" << std::endl;
 
     for (int i=0; i< scene.numObjects; i++)
     {
         scene.objects[i]->_id = i;
     }
 
-    if (PRINTINIT) std::cout << *this;
+    //if (PRINTBVH)
+        std::cout << *this;
+
+    if (PRINTBVH) std::cout << "gotScene" << std::endl;
 }
 
-Object *BVH::traverse(Ray &ray, real &t_min, const std::vector<Object *> &objects, bool shadow_test ) const
+Object *BVH::traverse(Ray &ray, real &t_min, const std::deque<Object *> &objects, bool shadow_test ) const
 {
     //std::cout << "BVH::traverse" << std::endl;
     std::stack<int> traverseIDs;
@@ -124,6 +154,7 @@ Object *BVH::traverse(Ray &ray, real &t_min, const std::vector<Object *> &object
 
     while (traverseIDs.size() > 0)
     {
+        //std::cout << traverseIDs.top() << std::endl;
         int id = traverseIDs.top();
         //std::cout << id << std::endl;
         BVHNode const &node = nodes[id];

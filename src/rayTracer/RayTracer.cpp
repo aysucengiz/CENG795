@@ -3,9 +3,22 @@
 //
 
 #include "RayTracer.h"
-
+#include <filesystem>
+#include <string>
+#include <iostream>
 
 int RaytracerThread::done_threads = 0;
+
+
+
+std::string RayTracer::timeString(long duration)
+{
+    std::string s;
+    s= std::to_string(duration / 1000.0) + " s";
+    if (duration > 60000) s+= std::to_string(duration / 60000.0) + " m ";
+    if (duration > 3600000) s+= std::to_string(duration / 3600000.0) + " h ";
+    return s;
+}
 
 RayTracer::RayTracer()
 {
@@ -15,7 +28,7 @@ RayTracer::RayTracer()
 
     filename << "logs/render_log_"
              << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
-
+    bvh.pivotType = PivotType::MEDIAN;
 
     log("Log started.");
 }
@@ -46,7 +59,7 @@ void RayTracer::parseScene(std::string input_path){
     scene.Cameras.clear();
     scene.PointLights.clear();
     scene.Materials.clear();
-    for (int i=0; i< scene.objects.size(); i++){delete scene.objects[i];}
+    //for (int i=0; i< scene.objects.size(); i++){if (scene.objects[i]) delete scene.objects[i];}
     scene.objects.clear();
     scene.Vertices.clear();
     Parser::parseScene(input_path, scene);
@@ -55,9 +68,26 @@ void RayTracer::parseScene(std::string input_path){
     if (ACCELERATE) bvh.getScene(scene);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    log( input_path + ": " +  std::to_string(duration / 1000.0) + " s");
+    log( input_path + ": " +  timeString(duration));
 
 }
+
+
+void RayTracer::drawFile(std::string input_path){
+    parseScene(input_path);
+    drawAllScenes();
+}
+
+void RayTracer::drawAllFiles(std::string path_to_dir){
+    for (const auto& file: std::filesystem::directory_iterator(path_to_dir))
+    {
+        if (file.is_regular_file() && file.path().extension() == ".json") {
+            parseScene(file.path());
+            drawAllScenes();
+        }
+    }
+}
+
 
 void RayTracer::drawAllScenes(){
     for(int i = 0; i < scene.numCameras; i++)
@@ -67,8 +97,8 @@ void RayTracer::drawAllScenes(){
 }
 
 
-void RayTracer::drawScene(uint32_t camID){
-
+void RayTracer::drawScene(uint32_t c){
+    this->camID = c;
     RaytracerThread::done_threads = 0;
     Camera cam = scene.Cameras[camID];
     //log("----- Drawing " + cam.ImageName + " -----");
@@ -85,22 +115,41 @@ void RayTracer::drawScene(uint32_t camID){
 
     scene.image = new unsigned char[width * height * 3];
 
-    std::vector<RaytracerThread> raytracers;
-    for (uint32_t y = 0; y < height; y++){
-        raytracers.push_back(RaytracerThread(scene,y,cam, bvh));
+    if (ROW_THREAD)
+    {
+        std::vector<RaytracerThread> raytracers;
+        for (uint32_t y = 0; y < height; y++){
+            raytracers.push_back(RaytracerThread(scene,cam, bvh));
+        }
+        std::cout << "Start Parallelization" << std::endl;
+#pragma omp parallel for
+        for (uint32_t y = 0; y < height; y++){
+            raytracers[y].drawRow(y);
+        }
     }
-    std::cout << "Start Parallelization" << std::endl;
-    #pragma omp parallel for
-    for (uint32_t y = 0; y < height; y++){
-        raytracers[y].drawRow();
-    }
+    else if (BATCH_THREAD)
+    {
+        uint32_t rowcount = (height + batch_h -1) /  batch_h;
+        uint32_t colcount = (width + batch_w -1) /  batch_w;
+        uint32_t batchcount = rowcount * colcount;
+        log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
 
-    PPM::write_stb(("outputs/" + cam.ImageName).c_str(), scene.image, width, height);
+        thread_local RaytracerThread threadLocalRaytracer(scene, scene.Cameras[camID], bvh);
+        #pragma omp parallel for schedule(dynamic, 1)
+        for (uint32_t i = 0; i < batchcount; i++){
+                threadLocalRaytracer.drawBatch((i/colcount)*batch_h*width + (i%colcount)*batch_w, batch_w, batch_h);
+        }
+    }
+    std::cout << std::endl;
+
+
+    PPM::write_stb(("outputs" + output_path + "/" + cam.ImageName).c_str(), scene.image, width, height);
     delete[] scene.image;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    log(cam.ImageName + " all: " + std::to_string(duration_all / 1000.0) + " s");
+    log(cam.ImageName + " all: " +  timeString(duration_all));
+
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start).count();
-    log(cam.ImageName + " drawing: " + std::to_string(duration / 1000.0) + " s");
+    log(cam.ImageName + " drawing: " +  timeString(duration));
 
 }

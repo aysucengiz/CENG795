@@ -4,7 +4,7 @@
 
 #include "helpers.h"
 #include "overloads.h"
-#include "../object/Object.h"
+#include "../dataTypes/object/Object.h"
 
 
 real max3(real a, real b, real c)
