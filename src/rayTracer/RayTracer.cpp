@@ -7,16 +7,16 @@
 #include <string>
 #include <iostream>
 
-int RaytracerThread::done_threads = 0;
+long RaytracerThread::done_threads = 0;
 
 
 
 std::string RayTracer::timeString(long duration)
 {
     std::string s;
-    s= std::to_string(duration / 1000.0) + " s";
-    if (duration > 60000) s+= std::to_string(duration / 60000.0) + " m ";
-    if (duration > 3600000) s+= std::to_string(duration / 3600000.0) + " h ";
+    s= std::to_string(duration / 1000.0) + " s ";
+    if (duration > 60000) s= std::to_string(duration % 60000) + " m " + s;
+    if (duration > 3600000) s= std::to_string(duration % 3600000) + " h " + s;
     return s;
 }
 
@@ -79,9 +79,11 @@ void RayTracer::drawFile(std::string input_path){
 }
 
 void RayTracer::drawAllFiles(std::string path_to_dir){
+    std::string orig_out = output_path;
     for (const auto& file: std::filesystem::directory_iterator(path_to_dir))
     {
         if (file.is_regular_file() && file.path().extension() == ".json") {
+            std::filesystem::path dir(file.path());
             parseScene(file.path());
             drawAllScenes();
         }
@@ -133,11 +135,12 @@ void RayTracer::drawScene(uint32_t c){
         uint32_t colcount = (width + batch_w -1) /  batch_w;
         uint32_t batchcount = rowcount * colcount;
         log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
+        RaytracerThread rtt(scene, scene.Cameras[camID], bvh);
 
-        thread_local RaytracerThread threadLocalRaytracer(scene, scene.Cameras[camID], bvh);
-        #pragma omp parallel for schedule(dynamic, 1)
+#pragma omp parallel for schedule(dynamic,1) firstprivate(rtt)
         for (uint32_t i = 0; i < batchcount; i++){
-                threadLocalRaytracer.drawBatch((i/colcount)*batch_h*width + (i%colcount)*batch_w, batch_w, batch_h);
+            RaytracerThread rtt(scene, scene.Cameras[camID], bvh);
+            rtt.drawBatch((i/colcount)*batch_h*width + (i%colcount)*batch_w, batch_w, batch_h);
         }
     }
     std::cout << std::endl;

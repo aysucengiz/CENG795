@@ -37,7 +37,6 @@ public:
     real getPivot(BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects);
     int partition(int start, int end, Axes a, std::deque<Object *> &objects);
     void getScene(SceneInput &scene);
-    Object *traverse(Ray &ray, real &t_min, const std::deque<Object *> &objects, bool shadow_test = false ) const;
 
 };
 

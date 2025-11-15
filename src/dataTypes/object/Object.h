@@ -16,16 +16,24 @@
 class Object
 {
 public:
+
+    struct intersectResult
+    {
+        Object const* obj;
+        real t_min;
+        uint32_t currTri;
+    };
     uint32_t _id;
-    Material &material;
+    Material& material;
     BBox globalBbox;
     Vertex main_center;
     bool visible;
-    virtual ObjectType getObjectType() = 0;
-    virtual Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) = 0;
-    virtual Vec3r getNormal(Vertex &v) = 0;
+    virtual ObjectType getObjectType() const = 0;
+    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const = 0;
+    virtual Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const = 0;
     virtual ~Object();
-    Object(Material &m, uint32_t id,Vertex vMax, Vertex vMin, bool v = true);
+    Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, bool v = true);
+
 };
 
 ///////////////////////////////////////////////
@@ -38,12 +46,12 @@ public:
     Vec3r a_b, a_c;
     ShadingType shadingType;
 
-    ObjectType getObjectType() override;
-    Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
-    Vec3r getNormal(Vertex &v) override;
+    ObjectType getObjectType() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
 
-    Triangle(uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, ShadingType st = ShadingType::NONE, bool v=true, bool computeVNormals = true);
-
+    Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material, ShadingType st = ShadingType::NONE,
+             bool v = true, bool computeVNormals = true);
 };
 
 class Plane : public Object
@@ -52,14 +60,11 @@ public:
     Vertex point;
     Vec3r n;
 
-    Plane(uint32_t id, Vertex &v, std::string normal, Material &material, bool vis=true);
+    Plane(uint32_t id, Vertex& v, std::string normal, Material& material, bool vis = true);
 
-    ObjectType getObjectType() override;
-    Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
-    Vec3r getNormal(Vertex &v) override;
-
-
-
+    ObjectType getObjectType() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
 };
 
 
@@ -70,66 +75,61 @@ public:
     ShadingType shadingtype;
     uint32_t currTri;
 
-    Mesh(uint32_t id, std::string st, Material &m, std::string s,
-        bool read_from_file,
-        std::deque<CVertex> &vertices, bool v=true,
-        uint32_t start_index=0,
-        bool computeVNormals = true);
+    Mesh(uint32_t id, std::string st, Material& m, std::string s,
+         bool read_from_file,
+         std::deque<CVertex>& vertices, bool v = true,
+         uint32_t start_index = 0,
+         bool computeVNormals = true);
 
-    ObjectType getObjectType() override;
-    Vec3r getNormal(Vertex &v) override;
-Object *checkIntersection(Ray& r, real& t_min, bool shadow_test) override;
-
-
-
+    ObjectType getObjectType() const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
 };
 
-class  Sphere: public Object
+class Sphere : public Object
 {
 public:
-    CVertex &center;
+    CVertex& center;
     real radius;
     real radius2;
 
-    Sphere(uint32_t id, CVertex& c, real r, Material &m, bool v=true);
+    Sphere(uint32_t id, CVertex& c, real r, Material& m, bool v = true);
 
-    ObjectType getObjectType() override;
-    Object *checkIntersection(Ray& ray, real& t_min, bool shadow_test) override;
-    Vec3r getNormal(Vertex &v) override;
-
+    ObjectType getObjectType() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
 };
 
-class  Instance: public Object
+class Instance : public Object
 {
 public:
     bool orig;
-    Object *original;
-    Transformation *forwardTrans;
-    Transformation *backwardTrans;
+    Object* original;
+    Transformation* forwardTrans;
+    Transformation* backwardTrans;
 
-    Instance(uint32_t id, Object *original, Transformation *trans, Material &mat, bool orig, bool v=true);
+    Instance(uint32_t id, Object* original, Transformation* trans, Material& mat, bool orig, bool v = true);
     ~Instance();
 
-    ObjectType getObjectType() override;
-    Object *checkIntersection(Ray& ray, real& t_min, bool shadow_test) override;
-    Vec3r getNormal(Vertex &v) override;
+    ObjectType getObjectType() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
 
 
-    void addTransformation(Transformation *trans);
+    void addTransformation(Transformation* trans);
     void computeGlobal();
-    Ray getLocal(Ray &r);
-    Vertex getLocal(Vertex &v);
-    Vec3r getGlobal(Vec3r &v);
-    Vertex getGlobal(Vertex v);
-    Vec3r getLocal(Vec3r &v);
-
-
+    Ray getLocal(Ray& r);
+    Vertex getLocal(const Vertex& v);
+    Vec3r getGlobal(Vec3r& v);
+    Vertex getGlobal(Vertex v) const;
+    Vec3r getLocal(Vec3r& v);
 };
 
 
-struct SceneInput{
+struct SceneInput
+{
     // info about image
-    unsigned char *image;
+    unsigned char* image;
     uint32_t MaxRecursionDepth;
     Color BackgroundColor;
     real ShadowRayEpsilon;
@@ -147,7 +147,7 @@ struct SceneInput{
     std::vector<PointLight> PointLights;
 
     // object info
-    std::deque<Object *> objects;
+    std::deque<Object*> objects;
 
     // num info
     uint32_t numCameras;
@@ -156,7 +156,7 @@ struct SceneInput{
     uint32_t numLights;
 
     // transformations
-    std::vector<Transformation *> transforms;
+    std::vector<Transformation*> transforms;
 
     // precomputed near plane info
     Vec3r u;
@@ -166,16 +166,13 @@ struct SceneInput{
 };
 
 
-struct HitRecord{
+struct HitRecord
+{
     Vertex intersection_point;
     Vec3r normal;
-    Object *obj;
+    Object const* obj;
+    uint32_t currTri;
 };
-
-
-
-
-
 
 
 #endif //OBJECT_H

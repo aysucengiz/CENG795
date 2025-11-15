@@ -77,7 +77,7 @@ void Parser::addLight(json pointLights, SceneInput &sceneInput)
     Transformation *t;
     if (pointLights.contains("Transformations"))
     {
-        t = getTransFromStr(pointLights["Transformation"].get<std::string>(),sceneInput.transforms);
+        t = getTransFromStr(pointLights["Transformations"].get<std::string>(),sceneInput.transforms);
         t->getNormalTransform();
     }
     else
@@ -278,7 +278,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
     Transformation *t;
     if (Cameras.contains("Transformations"))
     {
-        t = getTransFromStr(Cameras["Transformation"].get<std::string>(),sceneInput.transforms);
+        t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
         t->getNormalTransform();
     }
     else
@@ -332,7 +332,7 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
     }
 
     if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2] ) return;
-    Triangle *tempt = new Triangle(curr_id,
+    Triangle *tempt = new Triangle(std::stoi(tri["_id"].get<std::string>()),
                                 sceneInput.Vertices[ind[0] - 1],
                                 sceneInput.Vertices[ind[1] - 1],
                                 sceneInput.Vertices[ind[2] - 1],
@@ -347,7 +347,7 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
 void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
     Sphere *temps = new Sphere(
-                                curr_id,
+                                std::stoi(s["_id"].get<std::string>()),
                                 sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
                                 std::stod(s["Radius"].get<std::string>()),
                                 sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
@@ -411,7 +411,7 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
         }
 
 
-        Mesh *tempm = new Mesh(curr_id,
+        Mesh *tempm = new Mesh(std::stoi(mes["_id"].get<std::string>()),
                 sm,
                 sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
                 dataLine,
@@ -438,23 +438,24 @@ void Parser::addInstance(std::string transformations, Object *original, SceneInp
                                     true
                                     ));
     Instance *i = dynamic_cast<Instance*>(sceneInput.objects[sceneInput.objects.size()-1]);
-    if (PRINTINIT) std::cout << "Instance. Center: " << i->main_center << "/ Original center: "<< i->original->main_center << std::endl;
+    if (PRINTINIT) std::cout << "Instance " << i->_id << " of " << i->original->getObjectType() << std::endl;
 }
 
 void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    Object *orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()) - 1, sceneInput.objects);
+    Object *orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects);
+    std::cout << "original: " << orig_obj->_id << std::endl;
     std::string resetTransform = s.contains("_resetTransform") ? s["_resetTransform"].get<std::string>() : "false";
-    if (resetTransform == "true" && orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = dynamic_cast<Instance*>(orig_obj)->original;
+    if (resetTransform == "true") while (orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = dynamic_cast<Instance*>(orig_obj)->original;
     sceneInput.objects.push_back(new Instance(
-                                    curr_id,
+                                    std::stoi(s["_id"].get<std::string>()),
                                     orig_obj,
                                     getTransFromStr(s["Transformations"].get<std::string>(), sceneInput.transforms),
-                                    s.contains("Materials") ? sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1] : orig_obj->material,
+                                    s.contains("Material") ? sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1] : orig_obj->material,
                                     false
                                     ));
 
-    if(PRINTINIT) std::cout << *dynamic_cast<Instance*>(sceneInput.objects[curr_id])<< std::endl;
+    if(PRINTINIT) std::cout << "Instance " <<sceneInput.objects[curr_id]->_id << " of " << dynamic_cast<Instance*>(sceneInput.objects[curr_id])->original->_id<< std::endl;
 
     curr_id++;
 }
@@ -464,7 +465,7 @@ void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 {
     Plane *tempp= new Plane(
-                                curr_id,
+                                std::stoi(p["_id"].get<std::string>()),
                                 sceneInput.Vertices[std::stoi(p["Point"].get<std::string>()) - 1].v,
                                 p["Normal"].get<std::string>(),
                                 sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
@@ -528,30 +529,17 @@ Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transf
 
 Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *>& objs)
 {
-    int startID;
-    switch (ot)
+    for(int startID = 0; startID < objs.size(); startID++)
     {
-    case ObjectType::TRIANGLE:
-        startID = type1_triStartID;
-        break;
-    case ObjectType::SPHERE:
-        startID = type2_sphereStartID;
-        break;
-    case ObjectType::MESH:
-        startID = type3_meshStartID;
-        break;
-    case ObjectType::INSTANCE:
-        startID = type4_instStartID;
-        break;
-    case ObjectType::PLANE:
-        startID = type5_planeStartID;
-        break;
-    default:
-        startID = 0;
-
+        if ((objs[startID]->getObjectType() == ot || (objs[startID]->getObjectType() == ObjectType::INSTANCE))
+            && objs[startID]->_id == ot_id)
+        {
+            if (PRINTINIT) std::cout << objs.size() << " " << startID << std::endl;
+            return objs[startID];
+        }
     }
-    if (PRINTINIT) std::cout << objs.size() << " " << startID +ot_id << std::endl;
-    return objs[startID + ot_id];
+    return nullptr;
+
 
 }
 

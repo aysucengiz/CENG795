@@ -7,55 +7,49 @@
 
 
 // Hw 1
-// back-face culling (yapıyoruz) Experiment with enabling and disabling it in your ray tracers and report your time measurements in your blog post.
 // dialectrics -> isotropic, Beer's law -> saç baş yolucim
 
 // Hw 2
 // ply dosyalarındaki vektör normallerini kullan
 // TODO: mirrorda epsilona bak
 // TODO: dialectricleri düzelt
-// batch thread
+// TODO: Surface area heuristics ile pivot belirleme
 
 
 int main(void) {
     RayTracer raytracer;
-    raytracer.output_path = "/hw2";
+    raytracer.output_path = "";
 
-    raytracer.log("\n\nThe following are simple scenes:");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/ellipsoids.json");
+    // raytracer.log("\n\nThe following are simple scenes:");
+    // // raytracer.drawFile("jsonFiles/hw2/inputs/ellipsoids.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/spheres.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/simple_transform.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/mirror_room.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/mirror_room.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/akif_uslu/berserker/two_berserkers.json");
 
 
-    raytracer.log("\n\nThe following contain dielectric or conductors:");
-    raytracer.drawFile("jsonFiles/hw2/inputs/metal_glass_plates.json");
-    raytracer.drawFile("jsonFiles/hw1/inputs/cornellbox_recursive.json");
-    raytracer.drawFile("jsonFiles/hw1/inputs/scienceTree_glass.json");
+    // raytracer.log("\n\nThe following contain dielectric or conductors:");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/metal_glass_plates.json");
+    // raytracer.drawFile("jsonFiles/hw1/inputs/cornellbox_recursive.json");
+    // raytracer.drawFile("jsonFiles/hw1/inputs/scienceTree_glass.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/dragon_metal.json");
 
-    raytracer.log("\n\nThe following are moving/dynamic scenes:");
-    raytracer.drawAllFiles("jsonFiles/hw2/inputs/akif_uslu/windmill/input/");
-    // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_around_david/");
-    // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_zoom_david/");
+    // raytracer.log("\n\nThe following are moving/dynamic scenes:");
+    //raytracer.drawAllFiles("jsonFiles/hw2/inputs/akif_uslu/windmill/input/");
+    //raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_around_david/");
     // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/light_around_david/");
-    //
-    //
-    // raytracer.log("\n\nThe following are time consuming scenes:");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json");
+    // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_zoom_david/");
 
 
+    raytracer.log("\n\nThe following are time consuming scenes:");
+    raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json");
+    raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json");
 
 
-    /*
-    raytracer.log("\n\nThe ones under the raven folder:");
-    raytracer.drawFile("jsonFiles/hw2/inputs/raven/mirror_room.json");*/
 
     return 0;
 

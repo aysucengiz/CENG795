@@ -89,7 +89,7 @@ int BVH::partition(int start, int end, Axes a, std::deque<Object *> &objects)
             nodes[curr_idx].type = BVHNodeType::LEAF;
             nodes[curr_idx].firstObjID = start;
             nodes[curr_idx].objCount = end - start;
-            //if (PRINTBVH)
+            if (PRINTBVH)
             {
                 for (int runn_idx = start; runn_idx< end; runn_idx++)
                 {
@@ -139,51 +139,9 @@ if (PRINTBVH)std::cout << "getScene" << std::endl;
         scene.objects[i]->_id = i;
     }
 
-    //if (PRINTBVH)
+    if (PRINTBVH)
         std::cout << *this;
 
     if (PRINTBVH) std::cout << "gotScene" << std::endl;
 }
 
-Object *BVH::traverse(Ray &ray, real &t_min, const std::deque<Object *> &objects, bool shadow_test ) const
-{
-    //std::cout << "BVH::traverse" << std::endl;
-    std::stack<int> traverseIDs;
-    traverseIDs.push(0);
-    Object *return_obj = nullptr;
-
-    while (traverseIDs.size() > 0)
-    {
-        //std::cout << traverseIDs.top() << std::endl;
-        int id = traverseIDs.top();
-        //std::cout << id << std::endl;
-        BVHNode const &node = nodes[id];
-        traverseIDs.pop();
-        if (node.bbox.intersects(ray))
-        {
-            if (node.type == BVHNodeType::LEAF)
-            {
-                Object *temp_obj = nullptr;
-                int finID = node.firstObjID + node.objCount;
-                for (int i=node.firstObjID; i< finID; i++)
-                {
-                    temp_obj = objects[i]->checkIntersection(ray, t_min,  shadow_test);
-                    if (shadow_test && temp_obj != nullptr) return temp_obj;
-                    if (temp_obj != nullptr) return_obj = temp_obj;
-                }
-            }
-            else
-            {
-                if (node.type == BVHNodeType::INT_W_BOTH ||
-                    node.type == BVHNodeType::INT_W_LEFT)
-                    traverseIDs.push(id + 1);
-                if (node.type == BVHNodeType::INT_W_BOTH ||
-                    node.type == BVHNodeType::INT_W_RIGHT)
-                    traverseIDs.push(node.rightOffset);
-            }
-        }
-    }
-
-
-    return return_obj;
-}

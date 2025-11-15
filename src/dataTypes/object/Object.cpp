@@ -24,12 +24,16 @@ Object::Object(Material &m, uint32_t id,
 ///////////////// TRIANGLE /////////////////////
 ////////////////////////////////////////////////
 
-ObjectType Triangle::getObjectType() { return ObjectType::TRIANGLE; }
+ObjectType Triangle::getObjectType()  const{ return ObjectType::TRIANGLE; }
 
-Object *Triangle::checkIntersection(Ray& r, real& t_min, bool shadow_test)
+Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull) const
 {
-    if (!visible) return nullptr;
-    if (!shadow_test && dot_product(r.dir,n) >=0 ) return nullptr;
+    intersectResult result;
+    result.currTri = 0;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    if (!visible) return result;
+    if (back_cull&& !shadow_test && dot_product(r.dir,n) >=0 ) return result;
     if (globalBbox.intersects(r))
     {
         Vec3r a_o = a.v - r.pos;
@@ -38,14 +42,14 @@ Object *Triangle::checkIntersection(Ray& r, real& t_min, bool shadow_test)
         {
             //std::cout << "a_b: " << a_b << " a_c: " << a_c << " a: " << a.v << " b: " << b.v << " c: " << c.v  <<  std::endl;
             //std::cout << "rdir: " << r.dir  <<  std::endl;
-            return nullptr;
+            return result;
         }
 
         real beta = determinant(a_o,a_c,r.dir) / det_A;
-        if (beta > 1)  return nullptr;
+        if (beta > 1)  return result;
 
         real gamma = determinant(a_b,a_o,r.dir) / det_A;
-        if (gamma > 1) return nullptr;
+        if (gamma > 1) return result;
 
         if(beta >= 0 && gamma >= 0 && beta+gamma <= 1)
         { // there is an intersection
@@ -53,21 +57,24 @@ Object *Triangle::checkIntersection(Ray& r, real& t_min, bool shadow_test)
 
             if (!shadow_test && t_temp < t_min && t_temp>0 )
             {
-                t_min = t_temp;
-                return this;
+                result.t_min = t_temp;
+                result.obj = this;
+                return result;
             }
 
             if (shadow_test && t_temp < 1 && t_temp >= 0)
             {
-                return this;
+                result.t_min = t_temp;
+                result.obj = this;
+                return result;
             }
         }
     }
 
-    return nullptr;
+    return result;
 }
 
-Vec3r Triangle::getNormal(Vertex &v)
+Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID)  const
 {
     if (shadingType == ShadingType::SMOOTH)
     {
@@ -127,13 +134,16 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, bool v)
 }
 
 
-ObjectType Sphere::getObjectType() { return ObjectType::SPHERE; }
+ObjectType Sphere::getObjectType()  const{ return ObjectType::SPHERE; }
 
 
-Object *Sphere::checkIntersection(Ray& r, real& t_min, bool shadow_test)
+Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull)  const
 {
-
-    if (!visible) return nullptr;
+    intersectResult result;
+    result.currTri = 0;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    if (!visible) return result;
     if (globalBbox.intersects(r)){
         real t_temp;
         Vec3r o_c = r.pos - center.v;
@@ -162,19 +172,22 @@ Object *Sphere::checkIntersection(Ray& r, real& t_min, bool shadow_test)
 
         if (!shadow_test && t_temp < t_min && t_temp>0 )
         {
-            t_min = t_temp;
-            return this;
+            result.t_min = t_temp;
+            result.obj = this;
+            return result;
         }
         else if (shadow_test && t_temp < 1 && t_temp >= 0)
         {
-            return this;
+            result.t_min = t_temp;
+            result.obj = this;
+            return result;
         }
     }
 
-    return nullptr;
+    return result;
 }
 
-Vec3r Sphere::getNormal(Vertex &v)
+Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID) const
 {
     return (v-center.v).normalize();
 }
@@ -251,38 +264,42 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
 
 }
 
-ObjectType Mesh::getObjectType(){ return ObjectType::MESH; }
+ObjectType Mesh::getObjectType() const{ return ObjectType::MESH; }
 
 
-Vec3r Mesh::getNormal(Vertex &v)
+Vec3r Mesh::getNormal(const Vertex &v, uint32_t triID) const
 {
-    return Faces[currTri].getNormal(v);
+    return Faces[triID].getNormal(v,triID);
 }
 
-Object *Mesh::checkIntersection(Ray& ray, real& t_min, bool shadow_test)
+Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test, bool back_cull) const
 {
-
-    if (!visible) return nullptr;
+    intersectResult result;
+    result.currTri = 0;
+    result.obj = nullptr;
+    result.t_min = t_min;
+    if (!visible) return result;
     if (globalBbox.intersects(ray))
     {
         int numFaces = Faces.size();
-        Triangle *temp_obj = nullptr;
-        Triangle *return_obj = nullptr;
+        intersectResult temp;
+        temp.obj = result.obj;
+        temp.t_min = result.t_min;
         for (int i=0; i< numFaces; i++)
         {
 
-            temp_obj = dynamic_cast<Triangle*>(Faces[i].checkIntersection(ray, t_min, shadow_test));
-            if (temp_obj != nullptr)
+            temp = Faces[i].checkIntersection(ray, temp.t_min, shadow_test,back_cull);
+            result.t_min = temp.t_min;
+            if (temp.obj != nullptr)
             {
-                if (shadow_test) return temp_obj;
-                return_obj = temp_obj;
-                currTri = i;
+                result.obj = temp.obj;
+                if (shadow_test) return result;
+                result.currTri = i;
             }
         }
-
-        return return_obj;
+        return result;
     }
-    return nullptr;
+    return result;
 
 }
 
@@ -304,29 +321,35 @@ Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINI
     else if (n.k ==0.0 && n.j ==0.0){ globalBbox.vMax.x = v.x + M4T_EPS; globalBbox.vMin.x = v.x - M4T_EPS; }
 }
 
-ObjectType Plane::getObjectType() {return ObjectType::PLANE;}
+ObjectType Plane::getObjectType() const {return ObjectType::PLANE;}
 
-Object *Plane::checkIntersection(Ray& r, real& t_min, bool shadow_test){
+Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull) const {
     real dot_r_n = dot_product(r.dir, n);
-    if (dot_r_n == 0) return nullptr;
+    intersectResult result;
+    result.currTri = 0;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    if (dot_r_n == 0) return result;
 
     real t_temp = dot_product((point - r.pos),n) / dot_r_n;
 
     if (!shadow_test && t_temp < t_min && t_temp>0 )
     {
-        t_min = t_temp;
-        return this;
+        result.t_min = t_temp;
+        result.obj = this;
+        return result;
     }
 
     if (shadow_test && t_temp < 1 && t_temp >= 0)
     {
-        return this;
+        result.obj = this;
+        return result;
     }
 
-    return nullptr;
+    return result;
 }
 
-Vec3r Plane::getNormal(Vertex &v) { return n;}
+Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri) const { return n;}
 
 
 
@@ -367,35 +390,42 @@ Instance::~Instance()
     if (orig && original != nullptr) delete original;
 }
 
-ObjectType Instance::getObjectType() { return ObjectType::INSTANCE; }
+ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
 
-Object* Instance::checkIntersection(Ray& ray, real& t_min, bool shadow_test){
+ Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull) const {
 
     //std::cout << "Check Intersection of Instance" << std::endl;
+    intersectResult result;
+    result.t_min = t_min;
+    result.currTri = 0;
+    result.obj = nullptr;
     if (!shadow_test)
     {
         Ray localRay = (*backwardTrans) * ray;
-        Object *temp = original->checkIntersection(localRay, t_min, shadow_test);
-        return temp ? this : nullptr;
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+        result.obj = result.obj ? this :nullptr;
+        return result;
     }
     else
     {
         Ray localRay = (*backwardTrans) * ray; // get the local light point
-        Object *temp = original->checkIntersection(localRay, t_min, shadow_test);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
-        if (temp)
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
+        if (result.obj)
         {
             Vertex intersect = localRay.pos + localRay.dir * t_min;
             Vertex globalIntersect = getGlobal(intersect); // o + t*d
-            t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
-            return this;
+            result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+            result.obj = this;
+            return result;
         }
-        return nullptr;
+        result.obj = nullptr;
+        return result;
     }
 }
 
-Vec3r Instance::getNormal(Vertex &v){
+Vec3r Instance::getNormal(const Vertex &v, uint32_t triID) const {
     Vertex localV = ((*backwardTrans) * Vec4r(v)).getVertex();
-    Vec3r res = original->getNormal(localV);
+    Vec3r res = original->getNormal(localV,triID);
     return  ((forwardTrans->normalTransform) * Vec4r(res)).getVec3r().normalize();
 }
 
@@ -445,7 +475,7 @@ Ray Instance::getLocal(Ray &r)
     return result;
 }
 
-Vertex Instance::getLocal(Vertex &v)
+Vertex Instance::getLocal(const Vertex &v)
 {
     Vertex result;
     result = ((*backwardTrans) * Vec4r(v)).getVertex();
@@ -467,7 +497,7 @@ Vec3r Instance::getGlobal(Vec3r &v)
     return result;
 }
 
-Vertex Instance::getGlobal(Vertex v)
+Vertex Instance::getGlobal(Vertex v) const
 {
     Vertex result;
     result = ((*forwardTrans) * Vec4r(v)).getVertex();

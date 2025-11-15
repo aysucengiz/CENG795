@@ -5,6 +5,7 @@
 #include "raytracerThread.h"
 #include "functions/overloads.h"
 #include "../functions/helpers.h"
+#include <stack>
 
 void RaytracerThread::drawRow(uint32_t y)
 {
@@ -14,17 +15,17 @@ void RaytracerThread::drawRow(uint32_t y)
     for (uint32_t x = 0; x < width; x++)
     {
         Ray viewing_ray = computeViewingRay(x, y);
-        final_color = computeColor(viewing_ray, 0);
+        final_color = computeColor(viewing_ray, 0,1.0);
         scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
         scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
         scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
     }
-    done_threads++;
-    if (done_threads % 10 == 0)
-        std::cout << done_threads << " ";
-    fflush(stdout);
-    if (done_threads % 400 == 0 || done_threads == cam.height)
-        std::cout << std::endl;
+    // done_threads++;
+    // if (done_threads % 10 == 0)
+    //     std::cout << done_threads << " ";
+    // fflush(stdout);
+    // if (done_threads % 400 == 0 || done_threads == cam.height)
+    //     std::cout << std::endl;
 }
 
 void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
@@ -65,7 +66,7 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         if (done_threads % THREAD_PROGRESS == 0)
             std::cout << done_threads / THREAD_PROGRESS << "\t";
         fflush(stdout);
-        if (done_threads % THREAD_ENDL == 0 || done_threads == cam.height)
+        if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
             std::cout << std::endl;
     }
 }
@@ -92,21 +93,21 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 
     if (ACCELERATE)
     {
-        if (bvh.traverse(shadow_ray, t_min, scene.objects, true) != nullptr)
+        if (traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
             return true;
     }
     else
     {
         for (int j = 0; j < scene.numObjects; j++)
         {
-            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
+            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false).obj != nullptr)
                 return true;
         }
     }
 
     for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
-        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true) != nullptr)
+        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false).obj != nullptr)
             return true;
     }
     return false;
@@ -117,11 +118,11 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, real n1, Color ac)
 {
     Color curr_color;
     HitRecord hit_record;
-    real t_min = INFINITY;
+    real t_min= INFINITY;
     // std::cout << "Computecolor" << std::endl;
 
     if (depth > scene.MaxRecursionDepth) return curr_color;
-    checkObjIntersection(ray, t_min, hit_record);
+    checkObjIntersection(ray, t_min, hit_record,BACK_CULLING);
 
     if (hit_record.obj != nullptr &&
         hit_record.obj->material.materialType != MaterialType::NONE)
@@ -195,69 +196,78 @@ Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t i)
 }
 
 
-void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit_record)
+void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit_record, bool back_cull)
 {
-    t_min = INFINITY;
     hit_record.obj = nullptr;
-    Object* temp_obj = nullptr;
+    Object::intersectResult temp_obj;
+    temp_obj.obj = nullptr;
+    temp_obj.t_min = INFINITY;
+    t_min = INFINITY;
 
     for (int i = scene.numObjects; i < scene.numPlanes; i++)
     {
-        temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false);
+        temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false, back_cull);
 
-        if (temp_obj != nullptr)
+        if (temp_obj.obj != nullptr)
         {
-            hit_record.obj = temp_obj;
+            hit_record.obj = temp_obj.obj;
+            t_min = temp_obj.t_min;
+            hit_record.currTri = temp_obj.currTri;
         }
     }
 
     if (ACCELERATE)
     {
-        temp_obj = bvh.traverse(ray, t_min, scene.objects);
-        if (temp_obj != nullptr)
+        temp_obj= traverse(ray, t_min, scene.objects, false, back_cull);
+        if (temp_obj.obj != nullptr)
         {
-            hit_record.obj = temp_obj;
+            hit_record.obj = temp_obj.obj;
+            hit_record.currTri = temp_obj.currTri;
+            t_min = temp_obj.t_min;
         }
     }
     else
     {
         for (int i = 0; i < scene.numObjects; i++)
         {
-            temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false);
+            temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false,back_cull);
 
-            if (temp_obj != nullptr)
+            if (temp_obj.obj != nullptr)
             {
-                hit_record.obj = temp_obj;
+                hit_record.currTri = temp_obj.currTri;
+                hit_record.obj = temp_obj.obj;
+                t_min = temp_obj.t_min;
             }
         }
     }
 
-
+    t_min = temp_obj.t_min;
     if (hit_record.obj != nullptr)
     {
-        hit_record.intersection_point = ray.pos + ray.dir * t_min;
-        hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point);
+        hit_record.intersection_point = ray.pos + ray.dir * temp_obj.t_min;
+        hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point,hit_record.currTri);
     }
 }
 
 Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec3r n, real& Fr, real& Ft)
 {
-    real cos_theta = -dot_product(n, ray.dir);
+    real cos_theta = -dot_product(n, ray.dir.normalize());
     Vec3r n_refr = n.normalize();
 
     if (cos_theta < 0)
     {
         cos_theta = -cos_theta;
-        n_refr = -n;
+        n_refr = -n_refr;
     }
 
     real n1_n2 = n1 / n2;
-    real cos_phi2 = 1 - pow(n1_n2, 2) * (1 - pow(cos_theta, 2));
+    real cos_phi2 = 1 - n1_n2* n1_n2 * (1 - cos_theta*cos_theta);
     Ray refracted_ray;
 
 
     if (cos_phi2 < 0)
     {
+        // std::cout << cos_phi2 << std::endl;
         Fr = 1.0;
         Ft = 0.0;
         return refracted_ray;
@@ -271,8 +281,8 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
     Fr = 0.5 * (pow(parall, 2) + pow(perp, 2));
     if (Fr > 1.0) Fr = 1.0;
     Ft = 1.0 - Fr;
-    refracted_ray.dir = (ray.dir + n_refr * cos_theta) * n1_n2 - n_refr * cos_phi;
-    //refracted_ray.dir = refracted_ray.dir.normalize();
+    refracted_ray.dir = (ray.dir.normalize() + n_refr * cos_theta) * n1_n2 - n_refr * cos_phi;
+    refracted_ray.dir = refracted_ray.dir.normalize();
     refracted_ray.pos = point - n_refr * scene.ShadowRayEpsilon;
     return refracted_ray;
 }
@@ -281,7 +291,6 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
 Color RaytracerThread::refract(Ray& ray, int depth, real n1, HitRecord& hit_record, Color ac)
 {
     if (depth > scene.MaxRecursionDepth) return Color();
-
     Color reflected, refracted;
     real Fr = 0.0, Ft = 1.0;
     real n2 = hit_record.obj->material.RefractionIndex;
@@ -292,22 +301,29 @@ Color RaytracerThread::refract(Ray& ray, int depth, real n1, HitRecord& hit_reco
         // enter the object (n2)
         HitRecord new_hit_record;
         real t_min = INFINITY;
-        checkObjIntersection(refractedRay, t_min, new_hit_record);
+        checkObjIntersection(refractedRay, t_min, new_hit_record,false);
 
-        if (new_hit_record.obj != nullptr && hit_record.obj->material.materialType == MaterialType::DIELECTRIC)
+        if (new_hit_record.obj != nullptr)
         {
-            // obje içinden çıkıyoruz, computecolor ve attenuationyapılacak
-            real Fr2, Ft2;
-            Color eCx = (-hit_record.obj->material.AbsorptionCoefficient * (hit_record.intersection_point -
-                new_hit_record.intersection_point).mag()).exponent();
-            Ray refractedRay2 = refractionRay(refractedRay, n2, n1, new_hit_record.intersection_point,
-                                              new_hit_record.normal, Fr2, Ft2);
-            if (Fr2 > 0.0) refracted += reflect(refractedRay, depth, MaterialType::DIELECTRIC, new_hit_record, n2,
-                                                hit_record.obj->material.AbsorptionCoefficient) * Fr2;
-            if (Ft2 > 0.0) refracted += computeColor(refractedRay2, depth + 1, n1, ac) * Ft2 * eCx;
+            if (new_hit_record.obj->material.materialType == MaterialType::DIELECTRIC) // çıkıyoruz
+            {
+                // obje içinden çıkıyoruz, computecolor ve attenuationyapılacak
+                real Fr2, Ft2;
+                Color eCx = (-hit_record.obj->material.AbsorptionCoefficient * (hit_record.intersection_point - new_hit_record.intersection_point).mag()).exponent();
+                Ray refractedRay2 = refractionRay(refractedRay, n2, n1, new_hit_record.intersection_point,
+                                                  new_hit_record.normal, Fr2, Ft2);
+                if (Fr2 > 0.0) refracted += reflect(refractedRay, depth, MaterialType::DIELECTRIC, new_hit_record, n2,
+                                                    hit_record.obj->material.AbsorptionCoefficient) * Fr2;
+                if (Ft2 > 0.0) refracted += computeColor(refractedRay2, depth + 1, n1, ac) * Ft2;
 
-            // attenuation
-            refracted = refracted * Ft;
+                // attenuation
+                refracted = refracted * Ft * eCx;
+            }
+            else // çıkamıyoruz
+            {
+                //refracted += computeColor(refractedRay, depth + 1, n1, ac) * Ft;
+            }
+
         }
     }
     //std::cout << "Refracted" << std::endl;
@@ -346,4 +362,56 @@ Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord
 
     if (type == MaterialType::DIELECTRIC) return temp;
     return temp * hit_record.obj->material.MirrorReflectance;
+}
+
+Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const
+{
+    //std::cout << "BVH::traverse" << std::endl;
+    Object::intersectResult result;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    std::stack<int> traverseIDs;
+    traverseIDs.push(0);
+
+    while (traverseIDs.size() > 0)
+    {
+        //std::cout << traverseIDs.top() << std::endl;
+        int id = traverseIDs.top();
+        //std::cout << id << std::endl;
+        BVHNode const &node = bvh.nodes[id];
+        traverseIDs.pop();
+        if (node.bbox.intersects(ray))
+        {
+            if (node.type == BVHNodeType::LEAF)
+            {
+                Object::intersectResult temp;
+                temp.t_min = result.t_min;
+                temp.obj = result.obj;
+                int finID = node.firstObjID + node.objCount;
+                for (int i=node.firstObjID; i< finID; i++)
+                {
+                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull);
+                    if (shadow_test && temp.obj != nullptr) return temp;
+                    if (temp.obj != nullptr)
+                    {
+                        result.obj = temp.obj;
+                        result.currTri = temp.currTri;
+                        result.t_min = temp.t_min;
+                    }
+                }
+            }
+            else
+            {
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_LEFT)
+                    traverseIDs.push(id + 1);
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_RIGHT)
+                    traverseIDs.push(node.rightOffset);
+            }
+        }
+    }
+
+
+    return result;
 }

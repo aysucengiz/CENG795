@@ -23,24 +23,21 @@ private:
 
     // for recursive refraction
     //real n1;
-    int mID;
 
 public:
-    static int done_threads;
+    static long done_threads;
 
     RaytracerThread(SceneInput &_scene, Camera &camID, BVH &_bvh) :
-    scene(_scene), cam(camID), bvh(_bvh),
-     mID(-1)
+    scene(_scene), cam(camID), bvh(_bvh)
     {}
 
-    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam),
-                                                                     mID(-1), bvh(rt.bvh) {}
+    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh) {}
 
     void drawRow(uint32_t y);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
     Ray computeViewingRay(uint32_t x, uint32_t y);
     Color computeColor(Ray &ray, int depth, real n1 = 1.0, Color ac = Color(0,0,0));
-    void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record);
+    void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);
     Ray compute_shadow_ray(const HitRecord &hit_record,uint32_t i);
     static Color diffuseTerm(const HitRecord &hit_record, real cos_theta, Color I_R_2);
@@ -49,6 +46,8 @@ public:
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, real n1, Color ac);
     Color refract(Ray &ray, int depth, real n1, HitRecord &hit_record, Color ac);
     Ray refractionRay(Ray &ray, real n1, real n2, Vertex point,  Vec3r n, real &Fr, real &Ft);
+    Object::intersectResult traverse(const Ray &ray, const real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
+
 };
 
 

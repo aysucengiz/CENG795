@@ -11,7 +11,7 @@ FUNCTION_FILES = $(wildcard src/functions/*.cpp)
 DATA_FILES = $(MATRIX_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FUNCTION_FILES)
 FILE_FILES = $(wildcard src/fileManagement/*.cpp)
 PARALLEL = -fopenmp
-FLAGS = -Isrc  -O3 -std=c++20
+FLAGS = -Isrc  -O3 -std=c++20 $(PARALLEL)
 
 SRC_FILES = $(DATA_FILES) $(FILE_FILES) $(RAYTRACER_FILES) $(ACC_FILES)
 TEST_FILES = $(TEST_FILE) $(SRC_FILES)
