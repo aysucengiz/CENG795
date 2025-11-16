@@ -15,6 +15,7 @@ struct BBox
     BBox(Vertex vmax, Vertex vMin);
     bool isWithin(const Vertex &v);
     bool intersects(const Ray &r) const;
+    real getArea() const;
 };
 
 

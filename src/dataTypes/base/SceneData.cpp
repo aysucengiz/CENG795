@@ -35,7 +35,7 @@ Color& Color::operator+=(const Color& other) {
     return *this;  // Return the modified object
 }
 
-bool Color::isWhite() const
+bool Color::isBlack() const
 {
     if(r == 0.0 && g == 0.0 && b == 0.0) return true;
     return false;
@@ -97,7 +97,7 @@ Material::Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
     if (type == "dielectric") materialType = MaterialType::DIELECTRIC;
     else if (type == "conductor") materialType = MaterialType::CONDUCTOR;
     else if (type == "mirror") materialType = MaterialType::MIRROR;
-    else if (ar.isWhite() && dr.isWhite()&& sr.isWhite()&& mr.isWhite() && ac.isWhite()) materialType = MaterialType::NONE;
+    else if (ar.isBlack() && dr.isBlack()&& sr.isBlack()&& mr.isBlack() && ac.isBlack()) materialType = MaterialType::NONE;
     else materialType = MaterialType::NORMAL;
 }
 

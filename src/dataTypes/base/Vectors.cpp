@@ -147,5 +147,16 @@ real Vertex::operator[](Axes a) const
     }
 }
 
+real Vec3r::operator[](Axes a) const
+{
+    switch (a)
+    {
+    case Axes::x: return i;
+    case Axes::y: return j;
+    case Axes::z: return k;
+    default: throw std::invalid_argument("Invalid Vertex string: " + std::to_string((int) a));
+    }
+}
+
 
 

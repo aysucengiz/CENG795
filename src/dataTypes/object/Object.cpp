@@ -157,7 +157,7 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
         if (BB_AC > 0)
         {
             real sqrt_BB_AC_A = sqrt(BB_AC)/A;
-            real res_1 = (-B + sqrt(BB_AC) )/ A; // TODO: burası floating point farklılığına yol açabilir
+            real res_1 = (-B + sqrt(BB_AC) )/ A;
             real res_2 = (-B - sqrt(BB_AC) )/ A;
 
             if (res_1 <= res_2 && res_1 > 0 && res_2 > 0)  t_temp = res_1;
@@ -409,7 +409,7 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
     else
     {
         Ray localRay = (*backwardTrans) * ray; // get the local light point
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);  // TODO: t_min manipüle olunca intersection point kayıyor olabilir mi
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
         if (result.obj)
         {
             Vertex intersect = localRay.pos + localRay.dir * t_min;

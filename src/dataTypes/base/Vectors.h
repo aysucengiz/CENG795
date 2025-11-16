@@ -21,6 +21,7 @@ struct Vec3r{
     Vec3r operator-() const;
     Vec3r& operator+=(const Vec3r& other);
     Vec3r& operator/=(const uint32_t& other);
+    real operator[](Axes a) const;
 
     Vec3r normalize() const;
     real mag() const;

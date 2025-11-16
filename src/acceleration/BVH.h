@@ -32,11 +32,15 @@ struct alignas(32) BVHNode
 class BVH
 {
 public:
+    BBox bboxA;
+    BBox bboxB;
     std::vector<BVHNode> nodes;
     PivotType pivotType;
-    real getPivot(BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects);
+    int divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects);
     int partition(int start, int end, Axes a, std::deque<Object *> &objects);
     void getScene(SceneInput &scene);
+    real getSAH(Axes &a, uint32_t start, uint32_t end, real areaC, std::deque<Object *> &objects);
+    int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object*>& objects);
 
 };
 

@@ -5,8 +5,6 @@
 #include "Parser.h"
 #include "../functions/overloads.h"
 
-// TODO: material tipleri, bazılarında mesela _type : mirror olayı söz konusu
-
 namespace Parser
 {
     uint32_t type1_triStartID;
@@ -291,7 +289,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
                (*t *Vec4r(Vec3r(Gaze))).getVec3r(),
                (t->normalTransform * Vec4r( Vec3r(Cameras["Up"]))).getVec3r(),
                nearPlane,
-               std::stoi(Cameras["NearDistance"].get<std::string>()),
+               std::stod(Cameras["NearDistance"].get<std::string>()),
                Cameras["ImageResolution"],
                Cameras["ImageName"]
            );
@@ -444,7 +442,7 @@ void Parser::addInstance(std::string transformations, Object *original, SceneInp
 void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
     Object *orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects);
-    std::cout << "original: " << orig_obj->_id << std::endl;
+    // std::cout << "original: " << orig_obj->_id << std::endl;
     std::string resetTransform = s.contains("_resetTransform") ? s["_resetTransform"].get<std::string>() : "false";
     if (resetTransform == "true") while (orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = dynamic_cast<Instance*>(orig_obj)->original;
     sceneInput.objects.push_back(new Instance(

@@ -20,6 +20,7 @@ class RayTracer
 {
 public:
     RayTracer();
+    std::filesystem::path project_root;
     std::ofstream logFile;
     std::string input_path;
     std::string output_path;

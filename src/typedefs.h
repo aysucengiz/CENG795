@@ -8,18 +8,20 @@
 
 typedef float real;
 
-#define THREAD_PROGRESS 100
-#define THREAD_ENDL 16000
+#define THREAD_PROGRESS 500
+#define THREAD_ENDL 80000
 
 #define ROW_THREAD false
 #define BATCH_THREAD true
 
+#define LOG_ON true
 #define BACK_CULLING true
 #define ACCELERATE true
-#define MAX_OBJ_IN_NODE 1
+#define MAX_OBJ_IN_NODE 3
+#define PIVOT_TYPE SAH
 
-#define PRINTINIT true
-#define PRINTBVH true
+#define PRINTINIT false
+#define PRINTBVH false
 #define DEFAULT_MAX_DEPTH 100
 #define DEFAULT_SHADOW_EPS 1e-3
 #define DEFAULT_INTERS_EPS 1e-3

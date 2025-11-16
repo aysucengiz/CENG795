@@ -22,7 +22,7 @@ struct Color{
     Color(real r, real g, real b);
     Color(std::string inp);
     Color& operator+=(const Color& other);
-    bool isWhite() const;
+    bool isBlack() const;
     Color operator-();
     Color exponent();
 };
@@ -71,8 +71,8 @@ struct Material{
     Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
         std::string type = "",
         Color mr = Color(),
-        Color ac = Color(),
-        real refrIndex = 0,
+        Color ac = Color(1.0,1.0,1.0),
+        real refrIndex = 1.0,
         real ai = 0);
 };
 

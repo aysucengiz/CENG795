@@ -283,7 +283,7 @@ public:
    */
   TypedProperty(const std::string& name_) : Property(name_) {
     if (typeName<T>() == "unknown") {
-      // TODO should really be a compile-time error
+      // should really be a compile-time error
       throw std::runtime_error("Attempted property type does not match any type defined by the .ply format.");
     }
   };

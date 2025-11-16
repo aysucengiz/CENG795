@@ -22,13 +22,15 @@ std::string RayTracer::timeString(long duration)
 
 RayTracer::RayTracer()
 {
+    project_root = std::filesystem::current_path();
+    output_path = "outputs/";
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
 
     filename << "logs/render_log_"
              << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
-    bvh.pivotType = PivotType::MEDIAN;
+    bvh.pivotType = PivotType::PIVOT_TYPE;
 
     log("Log started.");
 }
@@ -41,6 +43,7 @@ RayTracer::~RayTracer()
 
 void RayTracer::log(std::string logText)
 {
+    if (!LOG_ON) return;
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
@@ -83,9 +86,16 @@ void RayTracer::drawAllFiles(std::string path_to_dir){
     for (const auto& file: std::filesystem::directory_iterator(path_to_dir))
     {
         if (file.is_regular_file() && file.path().extension() == ".json") {
-            std::filesystem::path dir(file.path());
+            std::cout << output_path << "\n";
+            orig_out = output_path;
+            std::filesystem::path rel_path = std::filesystem::relative(file.path().parent_path(), project_root);
+            output_path = output_path + rel_path.string() + "/";
+            std::filesystem::path dir(output_path);
+            std::filesystem::create_directories(project_root / dir);
+            std::cout << output_path << "\n";
             parseScene(file.path());
             drawAllScenes();
+            output_path = orig_out;
         }
     }
 }
@@ -146,7 +156,7 @@ void RayTracer::drawScene(uint32_t c){
     std::cout << std::endl;
 
 
-    PPM::write_stb(("outputs" + output_path + "/" + cam.ImageName).c_str(), scene.image, width, height);
+    PPM::write_stb((output_path  + cam.ImageName).c_str(), scene.image, width, height);
     delete[] scene.image;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
