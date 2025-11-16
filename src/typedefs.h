@@ -22,7 +22,7 @@ typedef float real;
 
 #define PRINTINIT false
 #define PRINTBVH false
-#define DEFAULT_MAX_DEPTH 100
+#define DEFAULT_MAX_DEPTH 50
 #define DEFAULT_SHADOW_EPS 1e-3
 #define DEFAULT_INTERS_EPS 1e-3
 #define PLANE_SHADOW_EPS 1e-2

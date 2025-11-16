@@ -132,8 +132,8 @@ struct SceneInput
     unsigned char* image;
     uint32_t MaxRecursionDepth;
     Color BackgroundColor;
-    real ShadowRayEpsilon;
-    real IntersectionTestEpsilon;
+    double ShadowRayEpsilon;
+    double IntersectionTestEpsilon;
 
     // materials and cam  info
     std::vector<Material> Materials;
