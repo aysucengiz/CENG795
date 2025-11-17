@@ -42,3 +42,5 @@
 
 # clion
 .idea/*
+
+jsonFiles/*
