@@ -1,0 +1,2339 @@
+[2025-11-15 23:00:30] Log started.
+[2025-11-15 23:00:30] 
+
+The following are simple scenes:
+[2025-11-15 23:00:30] jsonFiles/hw2/inputs/ellipsoids.json: 0.003000 s 
+[2025-11-15 23:00:30] There are 5 sets of 500 batches.
+[2025-11-15 23:00:30] ellipsoids.png all: 0.073000 s 
+[2025-11-15 23:00:30] ellipsoids.png drawing: 0.067000 s 
+[2025-11-15 23:00:30] jsonFiles/hw2/inputs/spheres.json: 0.005000 s 
+[2025-11-15 23:00:30] There are 5 sets of 500 batches.
+[2025-11-15 23:00:30] spheres.png all: 0.059000 s 
+[2025-11-15 23:00:30] spheres.png drawing: 0.049000 s 
+[2025-11-15 23:00:30] jsonFiles/hw2/inputs/simple_transform.json: 0.003000 s 
+[2025-11-15 23:00:30] There are 5 sets of 500 batches.
+[2025-11-15 23:00:30] simple_transform.png all: 0.041000 s 
+[2025-11-15 23:00:30] simple_transform.png drawing: 0.034000 s 
+[2025-11-15 23:00:30] jsonFiles/hw2/inputs/mirror_room.json: 0.003000 s 
+[2025-11-15 23:00:30] There are 5 sets of 500 batches.
+[2025-11-15 23:00:31] mirror_room.png all: 0.291000 s 
+[2025-11-15 23:00:31] mirror_room.png drawing: 0.285000 s 
+[2025-11-15 23:00:31] jsonFiles/hw2/inputs/akif_uslu/berserker/two_berserkers.json: 0.148000 s 
+[2025-11-15 23:00:31] There are 6 sets of 500 batches.
+[2025-11-15 23:00:31] two_berserkers.png all: 0.349000 s 
+[2025-11-15 23:00:31] two_berserkers.png drawing: 0.199000 s 
+[2025-11-15 23:00:31] 
+
+The following contain dielectric or conductors:
+[2025-11-15 23:00:31] jsonFiles/hw2/inputs/metal_glass_plates.json: 0.003000 s 
+[2025-11-15 23:00:31] There are 5 sets of 500 batches.
+[2025-11-15 23:00:31] metal_glass_plates.png all: 0.155000 s 
+[2025-11-15 23:00:31] metal_glass_plates.png drawing: 0.150000 s 
+[2025-11-15 23:00:31] jsonFiles/hw1/inputs/cornellbox_recursive.json: 0.004000 s 
+[2025-11-15 23:00:31] There are 5 sets of 500 batches.
+[2025-11-15 23:00:31] cornellbox_recursive.png all: 0.064000 s 
+[2025-11-15 23:00:31] cornellbox_recursive.png drawing: 0.055000 s 
+[2025-11-15 23:00:31] jsonFiles/hw1/inputs/scienceTree_glass.json: 0.006000 s 
+[2025-11-15 23:00:31] There are 8 sets of 500 batches.
+[2025-11-15 23:00:32] scienceTree_glass.png all: 0.373000 s 
+[2025-11-15 23:00:32] scienceTree_glass.png drawing: 0.364000 s 
+[2025-11-15 23:00:34] jsonFiles/hw2/inputs/dragon_metal.json: 2.345000 s 
+[2025-11-15 23:00:34] There are 17 sets of 500 batches.
+[2025-11-16 03:16:53] dragon_metal.png all: 981171 h 21171 m 15381.171000 s 
+[2025-11-16 03:16:53] dragon_metal.png drawing: 978821 h 18821 m 15378.821000 s 
+[2025-11-16 03:16:53] 
+
+The following are time consuming scenes:
+[2025-11-16 03:16:53] jsonFiles/hw2/inputs/grass/grass_desert.json: 0.014000 s 
+[2025-11-16 03:16:53] There are 16 sets of 500 batches.
+[2025-11-16 03:23:49] grass_desert.png all: 56576 m 416.576000 s 
+[2025-11-16 03:23:49] grass_desert.png drawing: 56559 m 416.559000 s 
+[2025-11-16 03:23:50] jsonFiles/hw2/inputs/raven/glaring_davids.json: 0.187000 s 
+[2025-11-16 03:23:50] There are 5 sets of 500 batches.
+[2025-11-16 03:25:46] glaring_davids.png all: 56549 m 116.549000 s 
+[2025-11-16 03:25:46] glaring_davids.png drawing: 56358 m 116.358000 s 
+[2025-11-16 03:25:47] jsonFiles/hw2/inputs/marching_dragons.json: 0.982000 s 
+[2025-11-16 03:25:47] There are 16 sets of 500 batches.
+[2025-11-16 04:02:10] marching_dragons.png all: 24088 m 2184.088000 s 
+[2025-11-16 04:02:10] marching_dragons.png drawing: 23101 m 2183.101000 s 
+[2025-11-16 04:02:10] jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json: 0.404000 s 
+[2025-11-16 04:02:10] There are 5 sets of 500 batches.
+[2025-11-16 04:10:34] dragon_new.png all: 24076 m 504.076000 s 
+[2025-11-16 04:10:34] dragon_new.png drawing: 23669 m 503.669000 s 
+[2025-11-16 04:10:35] jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json: 0.412000 s 
+[2025-11-16 04:10:35] There are 5 sets of 500 batches.
+[2025-11-16 04:17:48] dragon_new_right.png all: 14215 m 434.215000 s 
+[2025-11-16 04:17:48] dragon_new_right.png drawing: 13799 m 433.799000 s 
+[2025-11-16 04:17:49] jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json: 0.453000 s 
+[2025-11-16 04:17:49] There are 5 sets of 500 batches.
+[2025-11-16 04:25:26] dragon_new_top.png all: 37335 m 457.335000 s 
+[2025-11-16 04:25:26] dragon_new_top.png drawing: 36879 m 456.879000 s 
+[2025-11-16 04:25:26] 
+
+The following are moving/dynamic scenes:
+[2025-11-16 04:25:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_000.json: 0.078000 s 
+[2025-11-16 04:25:26] There are 5 sets of 500 batches.
+[2025-11-16 04:25:28] windmill_000.png all: 1.934000 s 
+[2025-11-16 04:25:28] windmill_000.png drawing: 1.850000 s 
+[2025-11-16 04:25:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_001.json: 0.131000 s 
+[2025-11-16 04:25:28] There are 5 sets of 500 batches.
+[2025-11-16 04:25:30] windmill_001.png all: 2.169000 s 
+[2025-11-16 04:25:30] windmill_001.png drawing: 2.032000 s 
+[2025-11-16 04:25:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_002.json: 0.109000 s 
+[2025-11-16 04:25:30] There are 5 sets of 500 batches.
+[2025-11-16 04:25:32] windmill_002.png all: 2.191000 s 
+[2025-11-16 04:25:32] windmill_002.png drawing: 2.080000 s 
+[2025-11-16 04:25:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_003.json: 0.120000 s 
+[2025-11-16 04:25:32] There are 5 sets of 500 batches.
+[2025-11-16 04:25:34] windmill_003.png all: 2.247000 s 
+[2025-11-16 04:25:34] windmill_003.png drawing: 2.125000 s 
+[2025-11-16 04:25:34] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_004.json: 0.105000 s 
+[2025-11-16 04:25:34] There are 5 sets of 500 batches.
+[2025-11-16 04:25:36] windmill_004.png all: 2.181000 s 
+[2025-11-16 04:25:36] windmill_004.png drawing: 2.073000 s 
+[2025-11-16 04:25:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_005.json: 0.105000 s 
+[2025-11-16 04:25:37] There are 5 sets of 500 batches.
+[2025-11-16 04:25:39] windmill_005.png all: 2.128000 s 
+[2025-11-16 04:25:39] windmill_005.png drawing: 2.019000 s 
+[2025-11-16 04:25:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_006.json: 0.113000 s 
+[2025-11-16 04:25:39] There are 5 sets of 500 batches.
+[2025-11-16 04:25:41] windmill_006.png all: 2.171000 s 
+[2025-11-16 04:25:41] windmill_006.png drawing: 2.056000 s 
+[2025-11-16 04:25:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_007.json: 0.127000 s 
+[2025-11-16 04:25:41] There are 5 sets of 500 batches.
+[2025-11-16 04:25:43] windmill_007.png all: 2.119000 s 
+[2025-11-16 04:25:43] windmill_007.png drawing: 1.990000 s 
+[2025-11-16 04:25:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_008.json: 0.114000 s 
+[2025-11-16 04:25:43] There are 5 sets of 500 batches.
+[2025-11-16 04:25:45] windmill_008.png all: 2.150000 s 
+[2025-11-16 04:25:45] windmill_008.png drawing: 2.034000 s 
+[2025-11-16 04:25:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_009.json: 0.119000 s 
+[2025-11-16 04:25:45] There are 5 sets of 500 batches.
+[2025-11-16 04:25:47] windmill_009.png all: 2.172000 s 
+[2025-11-16 04:25:47] windmill_009.png drawing: 2.050000 s 
+[2025-11-16 04:25:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_010.json: 0.113000 s 
+[2025-11-16 04:25:47] There are 5 sets of 500 batches.
+[2025-11-16 04:25:49] windmill_010.png all: 2.209000 s 
+[2025-11-16 04:25:49] windmill_010.png drawing: 2.094000 s 
+[2025-11-16 04:25:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_011.json: 0.114000 s 
+[2025-11-16 04:25:50] There are 5 sets of 500 batches.
+[2025-11-16 04:25:52] windmill_011.png all: 2.168000 s 
+[2025-11-16 04:25:52] windmill_011.png drawing: 2.051000 s 
+[2025-11-16 04:25:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_012.json: 0.107000 s 
+[2025-11-16 04:25:52] There are 5 sets of 500 batches.
+[2025-11-16 04:25:54] windmill_012.png all: 2.141000 s 
+[2025-11-16 04:25:54] windmill_012.png drawing: 2.032000 s 
+[2025-11-16 04:25:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_013.json: 0.132000 s 
+[2025-11-16 04:25:54] There are 5 sets of 500 batches.
+[2025-11-16 04:25:56] windmill_013.png all: 2.146000 s 
+[2025-11-16 04:25:56] windmill_013.png drawing: 2.010000 s 
+[2025-11-16 04:25:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_014.json: 0.118000 s 
+[2025-11-16 04:25:56] There are 5 sets of 500 batches.
+[2025-11-16 04:25:58] windmill_014.png all: 2.142000 s 
+[2025-11-16 04:25:58] windmill_014.png drawing: 2.020000 s 
+[2025-11-16 04:25:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_015.json: 0.121000 s 
+[2025-11-16 04:25:58] There are 5 sets of 500 batches.
+[2025-11-16 04:26:00] windmill_015.png all: 2.176000 s 
+[2025-11-16 04:26:00] windmill_015.png drawing: 2.050000 s 
+[2025-11-16 04:26:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_016.json: 0.117000 s 
+[2025-11-16 04:26:00] There are 5 sets of 500 batches.
+[2025-11-16 04:26:02] windmill_016.png all: 2.139000 s 
+[2025-11-16 04:26:02] windmill_016.png drawing: 2.019000 s 
+[2025-11-16 04:26:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_017.json: 0.125000 s 
+[2025-11-16 04:26:03] There are 5 sets of 500 batches.
+[2025-11-16 04:26:05] windmill_017.png all: 2.185000 s 
+[2025-11-16 04:26:05] windmill_017.png drawing: 2.052000 s 
+[2025-11-16 04:26:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_018.json: 0.123000 s 
+[2025-11-16 04:26:05] There are 5 sets of 500 batches.
+[2025-11-16 04:26:07] windmill_018.png all: 2.118000 s 
+[2025-11-16 04:26:07] windmill_018.png drawing: 1.992000 s 
+[2025-11-16 04:26:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_019.json: 0.099000 s 
+[2025-11-16 04:26:07] There are 5 sets of 500 batches.
+[2025-11-16 04:26:09] windmill_019.png all: 2.121000 s 
+[2025-11-16 04:26:09] windmill_019.png drawing: 2.018000 s 
+[2025-11-16 04:26:09] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_020.json: 0.106000 s 
+[2025-11-16 04:26:09] There are 5 sets of 500 batches.
+[2025-11-16 04:26:11] windmill_020.png all: 2.151000 s 
+[2025-11-16 04:26:11] windmill_020.png drawing: 2.043000 s 
+[2025-11-16 04:26:11] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_021.json: 0.116000 s 
+[2025-11-16 04:26:11] There are 5 sets of 500 batches.
+[2025-11-16 04:26:13] windmill_021.png all: 2.148000 s 
+[2025-11-16 04:26:13] windmill_021.png drawing: 2.029000 s 
+[2025-11-16 04:26:13] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_022.json: 0.113000 s 
+[2025-11-16 04:26:13] There are 5 sets of 500 batches.
+[2025-11-16 04:26:15] windmill_022.png all: 2.139000 s 
+[2025-11-16 04:26:15] windmill_022.png drawing: 2.023000 s 
+[2025-11-16 04:26:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_023.json: 0.095000 s 
+[2025-11-16 04:26:15] There are 5 sets of 500 batches.
+[2025-11-16 04:26:17] windmill_023.png all: 2.171000 s 
+[2025-11-16 04:26:17] windmill_023.png drawing: 2.074000 s 
+[2025-11-16 04:26:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_024.json: 0.121000 s 
+[2025-11-16 04:26:18] There are 5 sets of 500 batches.
+[2025-11-16 04:26:20] windmill_024.png all: 2.166000 s 
+[2025-11-16 04:26:20] windmill_024.png drawing: 2.043000 s 
+[2025-11-16 04:26:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_025.json: 0.126000 s 
+[2025-11-16 04:26:20] There are 5 sets of 500 batches.
+[2025-11-16 04:26:22] windmill_025.png all: 2.165000 s 
+[2025-11-16 04:26:22] windmill_025.png drawing: 2.035000 s 
+[2025-11-16 04:26:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_026.json: 0.118000 s 
+[2025-11-16 04:26:22] There are 5 sets of 500 batches.
+[2025-11-16 04:26:24] windmill_026.png all: 2.123000 s 
+[2025-11-16 04:26:24] windmill_026.png drawing: 2.003000 s 
+[2025-11-16 04:26:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_027.json: 0.113000 s 
+[2025-11-16 04:26:24] There are 5 sets of 500 batches.
+[2025-11-16 04:26:26] windmill_027.png all: 2.098000 s 
+[2025-11-16 04:26:26] windmill_027.png drawing: 1.981000 s 
+[2025-11-16 04:26:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_028.json: 0.111000 s 
+[2025-11-16 04:26:26] There are 5 sets of 500 batches.
+[2025-11-16 04:26:28] windmill_028.png all: 2.120000 s 
+[2025-11-16 04:26:28] windmill_028.png drawing: 2.007000 s 
+[2025-11-16 04:26:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_029.json: 0.131000 s 
+[2025-11-16 04:26:28] There are 5 sets of 500 batches.
+[2025-11-16 04:26:30] windmill_029.png all: 2.162000 s 
+[2025-11-16 04:26:30] windmill_029.png drawing: 2.028000 s 
+[2025-11-16 04:26:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_030.json: 0.119000 s 
+[2025-11-16 04:26:30] There are 5 sets of 500 batches.
+[2025-11-16 04:26:32] windmill_030.png all: 2.166000 s 
+[2025-11-16 04:26:32] windmill_030.png drawing: 2.043000 s 
+[2025-11-16 04:26:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_031.json: 0.125000 s 
+[2025-11-16 04:26:33] There are 5 sets of 500 batches.
+[2025-11-16 04:26:35] windmill_031.png all: 2.157000 s 
+[2025-11-16 04:26:35] windmill_031.png drawing: 2.029000 s 
+[2025-11-16 04:26:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_032.json: 0.112000 s 
+[2025-11-16 04:26:35] There are 5 sets of 500 batches.
+[2025-11-16 04:26:37] windmill_032.png all: 2.038000 s 
+[2025-11-16 04:26:37] windmill_032.png drawing: 1.923000 s 
+[2025-11-16 04:26:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_033.json: 0.117000 s 
+[2025-11-16 04:26:37] There are 5 sets of 500 batches.
+[2025-11-16 04:26:39] windmill_033.png all: 2.124000 s 
+[2025-11-16 04:26:39] windmill_033.png drawing: 2.005000 s 
+[2025-11-16 04:26:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_034.json: 0.113000 s 
+[2025-11-16 04:26:39] There are 5 sets of 500 batches.
+[2025-11-16 04:26:41] windmill_034.png all: 2.148000 s 
+[2025-11-16 04:26:41] windmill_034.png drawing: 2.033000 s 
+[2025-11-16 04:26:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_035.json: 0.115000 s 
+[2025-11-16 04:26:41] There are 5 sets of 500 batches.
+[2025-11-16 04:26:43] windmill_035.png all: 2.129000 s 
+[2025-11-16 04:26:43] windmill_035.png drawing: 2.011000 s 
+[2025-11-16 04:26:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_036.json: 0.107000 s 
+[2025-11-16 04:26:43] There are 5 sets of 500 batches.
+[2025-11-16 04:26:45] windmill_036.png all: 2.129000 s 
+[2025-11-16 04:26:45] windmill_036.png drawing: 2.020000 s 
+[2025-11-16 04:26:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_037.json: 0.122000 s 
+[2025-11-16 04:26:45] There are 5 sets of 500 batches.
+[2025-11-16 04:26:47] windmill_037.png all: 2.140000 s 
+[2025-11-16 04:26:47] windmill_037.png drawing: 2.014000 s 
+[2025-11-16 04:26:48] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_038.json: 0.115000 s 
+[2025-11-16 04:26:48] There are 5 sets of 500 batches.
+[2025-11-16 04:26:50] windmill_038.png all: 2.154000 s 
+[2025-11-16 04:26:50] windmill_038.png drawing: 2.037000 s 
+[2025-11-16 04:26:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_039.json: 0.111000 s 
+[2025-11-16 04:26:50] There are 5 sets of 500 batches.
+[2025-11-16 04:26:52] windmill_039.png all: 2.171000 s 
+[2025-11-16 04:26:52] windmill_039.png drawing: 2.058000 s 
+[2025-11-16 04:26:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_040.json: 0.105000 s 
+[2025-11-16 04:26:52] There are 5 sets of 500 batches.
+[2025-11-16 04:26:54] windmill_040.png all: 2.126000 s 
+[2025-11-16 04:26:54] windmill_040.png drawing: 2.018000 s 
+[2025-11-16 04:26:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_041.json: 0.107000 s 
+[2025-11-16 04:26:54] There are 5 sets of 500 batches.
+[2025-11-16 04:26:56] windmill_041.png all: 2.147000 s 
+[2025-11-16 04:26:56] windmill_041.png drawing: 2.037000 s 
+[2025-11-16 04:26:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_042.json: 0.119000 s 
+[2025-11-16 04:26:56] There are 5 sets of 500 batches.
+[2025-11-16 04:26:58] windmill_042.png all: 2.147000 s 
+[2025-11-16 04:26:58] windmill_042.png drawing: 2.025000 s 
+[2025-11-16 04:26:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_043.json: 0.111000 s 
+[2025-11-16 04:26:58] There are 5 sets of 500 batches.
+[2025-11-16 04:27:00] windmill_043.png all: 2.143000 s 
+[2025-11-16 04:27:00] windmill_043.png drawing: 2.030000 s 
+[2025-11-16 04:27:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_044.json: 0.117000 s 
+[2025-11-16 04:27:00] There are 5 sets of 500 batches.
+[2025-11-16 04:27:02] windmill_044.png all: 2.177000 s 
+[2025-11-16 04:27:02] windmill_044.png drawing: 2.058000 s 
+[2025-11-16 04:27:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_045.json: 0.117000 s 
+[2025-11-16 04:27:03] There are 5 sets of 500 batches.
+[2025-11-16 04:27:05] windmill_045.png all: 2.149000 s 
+[2025-11-16 04:27:05] windmill_045.png drawing: 2.030000 s 
+[2025-11-16 04:27:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_046.json: 0.118000 s 
+[2025-11-16 04:27:05] There are 5 sets of 500 batches.
+[2025-11-16 04:27:07] windmill_046.png all: 2.173000 s 
+[2025-11-16 04:27:07] windmill_046.png drawing: 2.052000 s 
+[2025-11-16 04:27:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_047.json: 0.099000 s 
+[2025-11-16 04:27:07] There are 5 sets of 500 batches.
+[2025-11-16 04:27:09] windmill_047.png all: 2.121000 s 
+[2025-11-16 04:27:09] windmill_047.png drawing: 2.021000 s 
+[2025-11-16 04:27:09] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_048.json: 0.114000 s 
+[2025-11-16 04:27:09] There are 5 sets of 500 batches.
+[2025-11-16 04:27:11] windmill_048.png all: 2.156000 s 
+[2025-11-16 04:27:11] windmill_048.png drawing: 2.039000 s 
+[2025-11-16 04:27:11] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_049.json: 0.110000 s 
+[2025-11-16 04:27:11] There are 5 sets of 500 batches.
+[2025-11-16 04:27:13] windmill_049.png all: 2.127000 s 
+[2025-11-16 04:27:13] windmill_049.png drawing: 2.015000 s 
+[2025-11-16 04:27:13] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_050.json: 0.106000 s 
+[2025-11-16 04:27:13] There are 5 sets of 500 batches.
+[2025-11-16 04:27:15] windmill_050.png all: 2.142000 s 
+[2025-11-16 04:27:15] windmill_050.png drawing: 2.033000 s 
+[2025-11-16 04:27:16] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_051.json: 0.109000 s 
+[2025-11-16 04:27:16] There are 5 sets of 500 batches.
+[2025-11-16 04:27:18] windmill_051.png all: 2.147000 s 
+[2025-11-16 04:27:18] windmill_051.png drawing: 2.035000 s 
+[2025-11-16 04:27:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_052.json: 0.119000 s 
+[2025-11-16 04:27:18] There are 5 sets of 500 batches.
+[2025-11-16 04:27:20] windmill_052.png all: 2.195000 s 
+[2025-11-16 04:27:20] windmill_052.png drawing: 2.074000 s 
+[2025-11-16 04:27:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_053.json: 0.117000 s 
+[2025-11-16 04:27:20] There are 5 sets of 500 batches.
+[2025-11-16 04:27:22] windmill_053.png all: 2.175000 s 
+[2025-11-16 04:27:22] windmill_053.png drawing: 2.055000 s 
+[2025-11-16 04:27:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_054.json: 0.109000 s 
+[2025-11-16 04:27:22] There are 5 sets of 500 batches.
+[2025-11-16 04:27:24] windmill_054.png all: 2.111000 s 
+[2025-11-16 04:27:24] windmill_054.png drawing: 1.999000 s 
+[2025-11-16 04:27:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_055.json: 0.111000 s 
+[2025-11-16 04:27:24] There are 5 sets of 500 batches.
+[2025-11-16 04:27:26] windmill_055.png all: 2.147000 s 
+[2025-11-16 04:27:26] windmill_055.png drawing: 2.033000 s 
+[2025-11-16 04:27:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_056.json: 0.111000 s 
+[2025-11-16 04:27:26] There are 5 sets of 500 batches.
+[2025-11-16 04:27:28] windmill_056.png all: 2.137000 s 
+[2025-11-16 04:27:28] windmill_056.png drawing: 2.023000 s 
+[2025-11-16 04:27:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_057.json: 0.100000 s 
+[2025-11-16 04:27:28] There are 5 sets of 500 batches.
+[2025-11-16 04:27:30] windmill_057.png all: 2.131000 s 
+[2025-11-16 04:27:30] windmill_057.png drawing: 2.029000 s 
+[2025-11-16 04:27:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_058.json: 0.115000 s 
+[2025-11-16 04:27:31] There are 5 sets of 500 batches.
+[2025-11-16 04:27:33] windmill_058.png all: 2.072000 s 
+[2025-11-16 04:27:33] windmill_058.png drawing: 1.954000 s 
+[2025-11-16 04:27:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_059.json: 0.121000 s 
+[2025-11-16 04:27:33] There are 5 sets of 500 batches.
+[2025-11-16 04:27:35] windmill_059.png all: 2.191000 s 
+[2025-11-16 04:27:35] windmill_059.png drawing: 2.067000 s 
+[2025-11-16 04:27:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_060.json: 0.120000 s 
+[2025-11-16 04:27:35] There are 5 sets of 500 batches.
+[2025-11-16 04:27:37] windmill_060.png all: 2.169000 s 
+[2025-11-16 04:27:37] windmill_060.png drawing: 2.047000 s 
+[2025-11-16 04:27:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_061.json: 0.101000 s 
+[2025-11-16 04:27:37] There are 5 sets of 500 batches.
+[2025-11-16 04:27:39] windmill_061.png all: 2.121000 s 
+[2025-11-16 04:27:39] windmill_061.png drawing: 2.017000 s 
+[2025-11-16 04:27:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_062.json: 0.109000 s 
+[2025-11-16 04:27:39] There are 5 sets of 500 batches.
+[2025-11-16 04:27:41] windmill_062.png all: 2.143000 s 
+[2025-11-16 04:27:41] windmill_062.png drawing: 2.031000 s 
+[2025-11-16 04:27:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_063.json: 0.099000 s 
+[2025-11-16 04:27:41] There are 5 sets of 500 batches.
+[2025-11-16 04:27:43] windmill_063.png all: 2.126000 s 
+[2025-11-16 04:27:43] windmill_063.png drawing: 2.024000 s 
+[2025-11-16 04:27:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_064.json: 0.115000 s 
+[2025-11-16 04:27:43] There are 5 sets of 500 batches.
+[2025-11-16 04:27:46] windmill_064.png all: 2.155000 s 
+[2025-11-16 04:27:46] windmill_064.png drawing: 2.038000 s 
+[2025-11-16 04:27:46] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_065.json: 0.115000 s 
+[2025-11-16 04:27:46] There are 5 sets of 500 batches.
+[2025-11-16 04:27:48] windmill_065.png all: 2.199000 s 
+[2025-11-16 04:27:48] windmill_065.png drawing: 2.081000 s 
+[2025-11-16 04:27:48] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_066.json: 0.115000 s 
+[2025-11-16 04:27:48] There are 5 sets of 500 batches.
+[2025-11-16 04:27:50] windmill_066.png all: 2.187000 s 
+[2025-11-16 04:27:50] windmill_066.png drawing: 2.070000 s 
+[2025-11-16 04:27:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_067.json: 0.115000 s 
+[2025-11-16 04:27:50] There are 5 sets of 500 batches.
+[2025-11-16 04:27:52] windmill_067.png all: 2.172000 s 
+[2025-11-16 04:27:52] windmill_067.png drawing: 2.054000 s 
+[2025-11-16 04:27:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_068.json: 0.109000 s 
+[2025-11-16 04:27:52] There are 5 sets of 500 batches.
+[2025-11-16 04:27:54] windmill_068.png all: 2.196000 s 
+[2025-11-16 04:27:54] windmill_068.png drawing: 2.083000 s 
+[2025-11-16 04:27:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_069.json: 0.110000 s 
+[2025-11-16 04:27:54] There are 5 sets of 500 batches.
+[2025-11-16 04:27:56] windmill_069.png all: 2.148000 s 
+[2025-11-16 04:27:56] windmill_069.png drawing: 2.034000 s 
+[2025-11-16 04:27:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_070.json: 0.104000 s 
+[2025-11-16 04:27:57] There are 5 sets of 500 batches.
+[2025-11-16 04:27:59] windmill_070.png all: 2.141000 s 
+[2025-11-16 04:27:59] windmill_070.png drawing: 2.035000 s 
+[2025-11-16 04:27:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_071.json: 0.085000 s 
+[2025-11-16 04:27:59] There are 5 sets of 500 batches.
+[2025-11-16 04:28:01] windmill_071.png all: 2.097000 s 
+[2025-11-16 04:28:01] windmill_071.png drawing: 2.007000 s 
+[2025-11-16 04:28:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_072.json: 0.108000 s 
+[2025-11-16 04:28:01] There are 5 sets of 500 batches.
+[2025-11-16 04:28:03] windmill_072.png all: 2.180000 s 
+[2025-11-16 04:28:03] windmill_072.png drawing: 2.066000 s 
+[2025-11-16 04:28:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_073.json: 0.122000 s 
+[2025-11-16 04:28:03] There are 5 sets of 500 batches.
+[2025-11-16 04:28:05] windmill_073.png all: 2.194000 s 
+[2025-11-16 04:28:05] windmill_073.png drawing: 2.069000 s 
+[2025-11-16 04:28:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_074.json: 0.118000 s 
+[2025-11-16 04:28:05] There are 5 sets of 500 batches.
+[2025-11-16 04:28:07] windmill_074.png all: 2.207000 s 
+[2025-11-16 04:28:07] windmill_074.png drawing: 2.086000 s 
+[2025-11-16 04:28:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_075.json: 0.115000 s 
+[2025-11-16 04:28:07] There are 5 sets of 500 batches.
+[2025-11-16 04:28:10] windmill_075.png all: 2.226000 s 
+[2025-11-16 04:28:10] windmill_075.png drawing: 2.109000 s 
+[2025-11-16 04:28:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_076.json: 0.103000 s 
+[2025-11-16 04:28:10] There are 5 sets of 500 batches.
+[2025-11-16 04:28:12] windmill_076.png all: 2.144000 s 
+[2025-11-16 04:28:12] windmill_076.png drawing: 2.038000 s 
+[2025-11-16 04:28:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_077.json: 0.117000 s 
+[2025-11-16 04:28:12] There are 5 sets of 500 batches.
+[2025-11-16 04:28:14] windmill_077.png all: 2.191000 s 
+[2025-11-16 04:28:14] windmill_077.png drawing: 2.071000 s 
+[2025-11-16 04:28:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_078.json: 0.102000 s 
+[2025-11-16 04:28:14] There are 5 sets of 500 batches.
+[2025-11-16 04:28:16] windmill_078.png all: 2.138000 s 
+[2025-11-16 04:28:16] windmill_078.png drawing: 2.032000 s 
+[2025-11-16 04:28:16] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_079.json: 0.111000 s 
+[2025-11-16 04:28:16] There are 5 sets of 500 batches.
+[2025-11-16 04:28:18] windmill_079.png all: 2.186000 s 
+[2025-11-16 04:28:18] windmill_079.png drawing: 2.073000 s 
+[2025-11-16 04:28:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_080.json: 0.120000 s 
+[2025-11-16 04:28:18] There are 5 sets of 500 batches.
+[2025-11-16 04:28:20] windmill_080.png all: 2.205000 s 
+[2025-11-16 04:28:20] windmill_080.png drawing: 2.083000 s 
+[2025-11-16 04:28:21] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_081.json: 0.121000 s 
+[2025-11-16 04:28:21] There are 5 sets of 500 batches.
+[2025-11-16 04:28:23] windmill_081.png all: 2.166000 s 
+[2025-11-16 04:28:23] windmill_081.png drawing: 2.043000 s 
+[2025-11-16 04:28:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_082.json: 0.111000 s 
+[2025-11-16 04:28:23] There are 5 sets of 500 batches.
+[2025-11-16 04:28:25] windmill_082.png all: 2.168000 s 
+[2025-11-16 04:28:25] windmill_082.png drawing: 2.055000 s 
+[2025-11-16 04:28:25] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_083.json: 0.116000 s 
+[2025-11-16 04:28:25] There are 5 sets of 500 batches.
+[2025-11-16 04:28:27] windmill_083.png all: 2.172000 s 
+[2025-11-16 04:28:27] windmill_083.png drawing: 2.053000 s 
+[2025-11-16 04:28:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_084.json: 0.097000 s 
+[2025-11-16 04:28:27] There are 5 sets of 500 batches.
+[2025-11-16 04:28:29] windmill_084.png all: 2.113000 s 
+[2025-11-16 04:28:29] windmill_084.png drawing: 2.013000 s 
+[2025-11-16 04:28:29] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_085.json: 0.125000 s 
+[2025-11-16 04:28:29] There are 5 sets of 500 batches.
+[2025-11-16 04:28:31] windmill_085.png all: 2.058000 s 
+[2025-11-16 04:28:31] windmill_085.png drawing: 1.929000 s 
+[2025-11-16 04:28:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_086.json: 0.114000 s 
+[2025-11-16 04:28:31] There are 5 sets of 500 batches.
+[2025-11-16 04:28:33] windmill_086.png all: 2.219000 s 
+[2025-11-16 04:28:33] windmill_086.png drawing: 2.102000 s 
+[2025-11-16 04:28:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_087.json: 0.111000 s 
+[2025-11-16 04:28:33] There are 5 sets of 500 batches.
+[2025-11-16 04:28:36] windmill_087.png all: 2.166000 s 
+[2025-11-16 04:28:36] windmill_087.png drawing: 2.052000 s 
+[2025-11-16 04:28:36] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_088.json: 0.120000 s 
+[2025-11-16 04:28:36] There are 5 sets of 500 batches.
+[2025-11-16 04:28:38] windmill_088.png all: 2.191000 s 
+[2025-11-16 04:28:38] windmill_088.png drawing: 2.068000 s 
+[2025-11-16 04:28:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_089.json: 0.119000 s 
+[2025-11-16 04:28:38] There are 5 sets of 500 batches.
+[2025-11-16 04:28:40] windmill_089.png all: 2.155000 s 
+[2025-11-16 04:28:40] windmill_089.png drawing: 2.034000 s 
+[2025-11-16 04:28:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_090.json: 0.106000 s 
+[2025-11-16 04:28:40] There are 5 sets of 500 batches.
+[2025-11-16 04:28:42] windmill_090.png all: 2.139000 s 
+[2025-11-16 04:28:42] windmill_090.png drawing: 2.027000 s 
+[2025-11-16 04:28:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_091.json: 0.104000 s 
+[2025-11-16 04:28:42] There are 5 sets of 500 batches.
+[2025-11-16 04:28:44] windmill_091.png all: 2.149000 s 
+[2025-11-16 04:28:44] windmill_091.png drawing: 2.043000 s 
+[2025-11-16 04:28:44] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_092.json: 0.102000 s 
+[2025-11-16 04:28:44] There are 5 sets of 500 batches.
+[2025-11-16 04:28:46] windmill_092.png all: 2.130000 s 
+[2025-11-16 04:28:46] windmill_092.png drawing: 2.025000 s 
+[2025-11-16 04:28:46] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_093.json: 0.099000 s 
+[2025-11-16 04:28:46] There are 5 sets of 500 batches.
+[2025-11-16 04:28:49] windmill_093.png all: 2.195000 s 
+[2025-11-16 04:28:49] windmill_093.png drawing: 2.095000 s 
+[2025-11-16 04:28:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_094.json: 0.112000 s 
+[2025-11-16 04:28:49] There are 5 sets of 500 batches.
+[2025-11-16 04:28:51] windmill_094.png all: 2.164000 s 
+[2025-11-16 04:28:51] windmill_094.png drawing: 2.049000 s 
+[2025-11-16 04:28:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_095.json: 0.118000 s 
+[2025-11-16 04:28:51] There are 5 sets of 500 batches.
+[2025-11-16 04:28:53] windmill_095.png all: 2.185000 s 
+[2025-11-16 04:28:53] windmill_095.png drawing: 2.065000 s 
+[2025-11-16 04:28:53] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_096.json: 0.117000 s 
+[2025-11-16 04:28:53] There are 5 sets of 500 batches.
+[2025-11-16 04:28:55] windmill_096.png all: 2.140000 s 
+[2025-11-16 04:28:55] windmill_096.png drawing: 2.021000 s 
+[2025-11-16 04:28:55] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_097.json: 0.110000 s 
+[2025-11-16 04:28:55] There are 5 sets of 500 batches.
+[2025-11-16 04:28:57] windmill_097.png all: 2.130000 s 
+[2025-11-16 04:28:57] windmill_097.png drawing: 2.018000 s 
+[2025-11-16 04:28:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_098.json: 0.111000 s 
+[2025-11-16 04:28:57] There are 5 sets of 500 batches.
+[2025-11-16 04:28:59] windmill_098.png all: 2.056000 s 
+[2025-11-16 04:28:59] windmill_098.png drawing: 1.943000 s 
+[2025-11-16 04:28:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_099.json: 0.103000 s 
+[2025-11-16 04:28:59] There are 5 sets of 500 batches.
+[2025-11-16 04:29:01] windmill_099.png all: 2.148000 s 
+[2025-11-16 04:29:01] windmill_099.png drawing: 2.042000 s 
+[2025-11-16 04:29:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_100.json: 0.103000 s 
+[2025-11-16 04:29:01] There are 5 sets of 500 batches.
+[2025-11-16 04:29:04] windmill_100.png all: 2.178000 s 
+[2025-11-16 04:29:04] windmill_100.png drawing: 2.073000 s 
+[2025-11-16 04:29:04] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_101.json: 0.116000 s 
+[2025-11-16 04:29:04] There are 5 sets of 500 batches.
+[2025-11-16 04:29:06] windmill_101.png all: 2.183000 s 
+[2025-11-16 04:29:06] windmill_101.png drawing: 2.064000 s 
+[2025-11-16 04:29:06] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_102.json: 0.116000 s 
+[2025-11-16 04:29:06] There are 5 sets of 500 batches.
+[2025-11-16 04:29:08] windmill_102.png all: 2.168000 s 
+[2025-11-16 04:29:08] windmill_102.png drawing: 2.049000 s 
+[2025-11-16 04:29:08] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_103.json: 0.109000 s 
+[2025-11-16 04:29:08] There are 5 sets of 500 batches.
+[2025-11-16 04:29:10] windmill_103.png all: 2.128000 s 
+[2025-11-16 04:29:10] windmill_103.png drawing: 2.016000 s 
+[2025-11-16 04:29:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_104.json: 0.103000 s 
+[2025-11-16 04:29:10] There are 5 sets of 500 batches.
+[2025-11-16 04:29:12] windmill_104.png all: 2.127000 s 
+[2025-11-16 04:29:12] windmill_104.png drawing: 2.021000 s 
+[2025-11-16 04:29:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_105.json: 0.105000 s 
+[2025-11-16 04:29:12] There are 5 sets of 500 batches.
+[2025-11-16 04:29:14] windmill_105.png all: 2.149000 s 
+[2025-11-16 04:29:14] windmill_105.png drawing: 2.041000 s 
+[2025-11-16 04:29:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_106.json: 0.127000 s 
+[2025-11-16 04:29:14] There are 5 sets of 500 batches.
+[2025-11-16 04:29:17] windmill_106.png all: 2.159000 s 
+[2025-11-16 04:29:17] windmill_106.png drawing: 2.028000 s 
+[2025-11-16 04:29:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_107.json: 0.115000 s 
+[2025-11-16 04:29:17] There are 5 sets of 500 batches.
+[2025-11-16 04:29:19] windmill_107.png all: 2.239000 s 
+[2025-11-16 04:29:19] windmill_107.png drawing: 2.121000 s 
+[2025-11-16 04:29:19] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_108.json: 0.111000 s 
+[2025-11-16 04:29:19] There are 5 sets of 500 batches.
+[2025-11-16 04:29:21] windmill_108.png all: 2.184000 s 
+[2025-11-16 04:29:21] windmill_108.png drawing: 2.071000 s 
+[2025-11-16 04:29:21] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_109.json: 0.091000 s 
+[2025-11-16 04:29:21] There are 5 sets of 500 batches.
+[2025-11-16 04:29:23] windmill_109.png all: 2.122000 s 
+[2025-11-16 04:29:23] windmill_109.png drawing: 2.029000 s 
+[2025-11-16 04:29:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_110.json: 0.114000 s 
+[2025-11-16 04:29:23] There are 5 sets of 500 batches.
+[2025-11-16 04:29:25] windmill_110.png all: 2.150000 s 
+[2025-11-16 04:29:25] windmill_110.png drawing: 2.034000 s 
+[2025-11-16 04:29:25] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_111.json: 0.119000 s 
+[2025-11-16 04:29:25] There are 5 sets of 500 batches.
+[2025-11-16 04:29:27] windmill_111.png all: 2.077000 s 
+[2025-11-16 04:29:27] windmill_111.png drawing: 1.956000 s 
+[2025-11-16 04:29:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_112.json: 0.125000 s 
+[2025-11-16 04:29:27] There are 5 sets of 500 batches.
+[2025-11-16 04:29:29] windmill_112.png all: 2.124000 s 
+[2025-11-16 04:29:29] windmill_112.png drawing: 1.995000 s 
+[2025-11-16 04:29:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_113.json: 0.095000 s 
+[2025-11-16 04:29:30] There are 5 sets of 500 batches.
+[2025-11-16 04:29:32] windmill_113.png all: 2.131000 s 
+[2025-11-16 04:29:32] windmill_113.png drawing: 2.034000 s 
+[2025-11-16 04:29:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_114.json: 0.100000 s 
+[2025-11-16 04:29:32] There are 5 sets of 500 batches.
+[2025-11-16 04:29:34] windmill_114.png all: 2.136000 s 
+[2025-11-16 04:29:34] windmill_114.png drawing: 2.034000 s 
+[2025-11-16 04:29:34] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_115.json: 0.123000 s 
+[2025-11-16 04:29:34] There are 5 sets of 500 batches.
+[2025-11-16 04:29:36] windmill_115.png all: 2.162000 s 
+[2025-11-16 04:29:36] windmill_115.png drawing: 2.036000 s 
+[2025-11-16 04:29:36] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_116.json: 0.115000 s 
+[2025-11-16 04:29:36] There are 5 sets of 500 batches.
+[2025-11-16 04:29:38] windmill_116.png all: 2.142000 s 
+[2025-11-16 04:29:38] windmill_116.png drawing: 2.024000 s 
+[2025-11-16 04:29:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_117.json: 0.111000 s 
+[2025-11-16 04:29:38] There are 5 sets of 500 batches.
+[2025-11-16 04:29:40] windmill_117.png all: 2.116000 s 
+[2025-11-16 04:29:40] windmill_117.png drawing: 1.998000 s 
+[2025-11-16 04:29:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_118.json: 0.106000 s 
+[2025-11-16 04:29:40] There are 5 sets of 500 batches.
+[2025-11-16 04:29:42] windmill_118.png all: 2.108000 s 
+[2025-11-16 04:29:42] windmill_118.png drawing: 2.000000 s 
+[2025-11-16 04:29:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_119.json: 0.113000 s 
+[2025-11-16 04:29:42] There are 5 sets of 500 batches.
+[2025-11-16 04:29:44] windmill_119.png all: 2.124000 s 
+[2025-11-16 04:29:44] windmill_119.png drawing: 2.008000 s 
+[2025-11-16 04:29:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_120.json: 0.112000 s 
+[2025-11-16 04:29:45] There are 5 sets of 500 batches.
+[2025-11-16 04:29:47] windmill_120.png all: 2.120000 s 
+[2025-11-16 04:29:47] windmill_120.png drawing: 2.006000 s 
+[2025-11-16 04:29:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_121.json: 0.126000 s 
+[2025-11-16 04:29:47] There are 5 sets of 500 batches.
+[2025-11-16 04:29:49] windmill_121.png all: 2.154000 s 
+[2025-11-16 04:29:49] windmill_121.png drawing: 2.025000 s 
+[2025-11-16 04:29:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_122.json: 0.114000 s 
+[2025-11-16 04:29:49] There are 5 sets of 500 batches.
+[2025-11-16 04:29:51] windmill_122.png all: 2.152000 s 
+[2025-11-16 04:29:51] windmill_122.png drawing: 2.035000 s 
+[2025-11-16 04:29:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_123.json: 0.121000 s 
+[2025-11-16 04:29:51] There are 5 sets of 500 batches.
+[2025-11-16 04:29:53] windmill_123.png all: 2.152000 s 
+[2025-11-16 04:29:53] windmill_123.png drawing: 2.028000 s 
+[2025-11-16 04:29:53] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_124.json: 0.108000 s 
+[2025-11-16 04:29:53] There are 5 sets of 500 batches.
+[2025-11-16 04:29:55] windmill_124.png all: 2.122000 s 
+[2025-11-16 04:29:55] windmill_124.png drawing: 2.011000 s 
+[2025-11-16 04:29:55] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_125.json: 0.095000 s 
+[2025-11-16 04:29:55] There are 5 sets of 500 batches.
+[2025-11-16 04:29:57] windmill_125.png all: 2.073000 s 
+[2025-11-16 04:29:57] windmill_125.png drawing: 1.975000 s 
+[2025-11-16 04:29:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_126.json: 0.112000 s 
+[2025-11-16 04:29:57] There are 5 sets of 500 batches.
+[2025-11-16 04:29:59] windmill_126.png all: 2.088000 s 
+[2025-11-16 04:29:59] windmill_126.png drawing: 1.973000 s 
+[2025-11-16 04:29:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_127.json: 0.115000 s 
+[2025-11-16 04:29:59] There are 5 sets of 500 batches.
+[2025-11-16 04:30:01] windmill_127.png all: 2.143000 s 
+[2025-11-16 04:30:01] windmill_127.png drawing: 2.026000 s 
+[2025-11-16 04:30:02] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_128.json: 0.101000 s 
+[2025-11-16 04:30:02] There are 5 sets of 500 batches.
+[2025-11-16 04:30:04] windmill_128.png all: 2.196000 s 
+[2025-11-16 04:30:04] windmill_128.png drawing: 2.090000 s 
+[2025-11-16 04:30:04] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_129.json: 0.113000 s 
+[2025-11-16 04:30:04] There are 5 sets of 500 batches.
+[2025-11-16 04:30:06] windmill_129.png all: 2.154000 s 
+[2025-11-16 04:30:06] windmill_129.png drawing: 2.039000 s 
+[2025-11-16 04:30:06] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_130.json: 0.120000 s 
+[2025-11-16 04:30:06] There are 5 sets of 500 batches.
+[2025-11-16 04:30:08] windmill_130.png all: 2.162000 s 
+[2025-11-16 04:30:08] windmill_130.png drawing: 2.040000 s 
+[2025-11-16 04:30:08] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_131.json: 0.116000 s 
+[2025-11-16 04:30:08] There are 5 sets of 500 batches.
+[2025-11-16 04:30:10] windmill_131.png all: 2.179000 s 
+[2025-11-16 04:30:10] windmill_131.png drawing: 2.060000 s 
+[2025-11-16 04:30:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_132.json: 0.107000 s 
+[2025-11-16 04:30:10] There are 5 sets of 500 batches.
+[2025-11-16 04:30:12] windmill_132.png all: 2.101000 s 
+[2025-11-16 04:30:12] windmill_132.png drawing: 1.992000 s 
+[2025-11-16 04:30:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_133.json: 0.124000 s 
+[2025-11-16 04:30:12] There are 5 sets of 500 batches.
+[2025-11-16 04:30:14] windmill_133.png all: 2.140000 s 
+[2025-11-16 04:30:14] windmill_133.png drawing: 2.012000 s 
+[2025-11-16 04:30:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_134.json: 0.112000 s 
+[2025-11-16 04:30:15] There are 5 sets of 500 batches.
+[2025-11-16 04:30:17] windmill_134.png all: 2.170000 s 
+[2025-11-16 04:30:17] windmill_134.png drawing: 2.055000 s 
+[2025-11-16 04:30:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_135.json: 0.117000 s 
+[2025-11-16 04:30:17] There are 5 sets of 500 batches.
+[2025-11-16 04:30:19] windmill_135.png all: 2.179000 s 
+[2025-11-16 04:30:19] windmill_135.png drawing: 2.060000 s 
+[2025-11-16 04:30:19] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_136.json: 0.108000 s 
+[2025-11-16 04:30:19] There are 5 sets of 500 batches.
+[2025-11-16 04:30:21] windmill_136.png all: 2.164000 s 
+[2025-11-16 04:30:21] windmill_136.png drawing: 2.052000 s 
+[2025-11-16 04:30:21] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_137.json: 0.118000 s 
+[2025-11-16 04:30:21] There are 5 sets of 500 batches.
+[2025-11-16 04:30:23] windmill_137.png all: 2.384000 s 
+[2025-11-16 04:30:23] windmill_137.png drawing: 2.264000 s 
+[2025-11-16 04:30:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_138.json: 0.110000 s 
+[2025-11-16 04:30:23] There are 5 sets of 500 batches.
+[2025-11-16 04:30:26] windmill_138.png all: 2.138000 s 
+[2025-11-16 04:30:26] windmill_138.png drawing: 2.026000 s 
+[2025-11-16 04:30:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_139.json: 0.101000 s 
+[2025-11-16 04:30:26] There are 5 sets of 500 batches.
+[2025-11-16 04:30:28] windmill_139.png all: 2.058000 s 
+[2025-11-16 04:30:28] windmill_139.png drawing: 1.955000 s 
+[2025-11-16 04:30:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_140.json: 0.111000 s 
+[2025-11-16 04:30:28] There are 5 sets of 500 batches.
+[2025-11-16 04:30:30] windmill_140.png all: 2.126000 s 
+[2025-11-16 04:30:30] windmill_140.png drawing: 2.011000 s 
+[2025-11-16 04:30:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_141.json: 0.109000 s 
+[2025-11-16 04:30:30] There are 5 sets of 500 batches.
+[2025-11-16 04:30:32] windmill_141.png all: 2.117000 s 
+[2025-11-16 04:30:32] windmill_141.png drawing: 2.005000 s 
+[2025-11-16 04:30:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_142.json: 0.116000 s 
+[2025-11-16 04:30:32] There are 5 sets of 500 batches.
+[2025-11-16 04:30:34] windmill_142.png all: 2.211000 s 
+[2025-11-16 04:30:34] windmill_142.png drawing: 2.093000 s 
+[2025-11-16 04:30:34] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_143.json: 0.117000 s 
+[2025-11-16 04:30:34] There are 5 sets of 500 batches.
+[2025-11-16 04:30:36] windmill_143.png all: 2.197000 s 
+[2025-11-16 04:30:36] windmill_143.png drawing: 2.078000 s 
+[2025-11-16 04:30:36] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_144.json: 0.109000 s 
+[2025-11-16 04:30:36] There are 5 sets of 500 batches.
+[2025-11-16 04:30:38] windmill_144.png all: 2.128000 s 
+[2025-11-16 04:30:38] windmill_144.png drawing: 2.017000 s 
+[2025-11-16 04:30:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_145.json: 0.111000 s 
+[2025-11-16 04:30:39] There are 5 sets of 500 batches.
+[2025-11-16 04:30:41] windmill_145.png all: 2.126000 s 
+[2025-11-16 04:30:41] windmill_145.png drawing: 2.010000 s 
+[2025-11-16 04:30:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_146.json: 0.110000 s 
+[2025-11-16 04:30:41] There are 5 sets of 500 batches.
+[2025-11-16 04:30:43] windmill_146.png all: 2.146000 s 
+[2025-11-16 04:30:43] windmill_146.png drawing: 2.033000 s 
+[2025-11-16 04:30:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_147.json: 0.118000 s 
+[2025-11-16 04:30:43] There are 5 sets of 500 batches.
+[2025-11-16 04:30:45] windmill_147.png all: 2.151000 s 
+[2025-11-16 04:30:45] windmill_147.png drawing: 2.029000 s 
+[2025-11-16 04:30:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_148.json: 0.117000 s 
+[2025-11-16 04:30:45] There are 5 sets of 500 batches.
+[2025-11-16 04:30:47] windmill_148.png all: 2.132000 s 
+[2025-11-16 04:30:47] windmill_148.png drawing: 2.010000 s 
+[2025-11-16 04:30:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_149.json: 0.124000 s 
+[2025-11-16 04:30:47] There are 5 sets of 500 batches.
+[2025-11-16 04:30:49] windmill_149.png all: 2.214000 s 
+[2025-11-16 04:30:49] windmill_149.png drawing: 2.087000 s 
+[2025-11-16 04:30:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_150.json: 0.114000 s 
+[2025-11-16 04:30:49] There are 5 sets of 500 batches.
+[2025-11-16 04:30:51] windmill_150.png all: 2.151000 s 
+[2025-11-16 04:30:51] windmill_150.png drawing: 2.034000 s 
+[2025-11-16 04:30:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_151.json: 0.108000 s 
+[2025-11-16 04:30:51] There are 5 sets of 500 batches.
+[2025-11-16 04:30:54] windmill_151.png all: 2.156000 s 
+[2025-11-16 04:30:54] windmill_151.png drawing: 2.045000 s 
+[2025-11-16 04:30:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_152.json: 0.115000 s 
+[2025-11-16 04:30:54] There are 5 sets of 500 batches.
+[2025-11-16 04:30:56] windmill_152.png all: 2.146000 s 
+[2025-11-16 04:30:56] windmill_152.png drawing: 2.029000 s 
+[2025-11-16 04:30:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_153.json: 0.111000 s 
+[2025-11-16 04:30:56] There are 5 sets of 500 batches.
+[2025-11-16 04:30:58] windmill_153.png all: 2.066000 s 
+[2025-11-16 04:30:58] windmill_153.png drawing: 1.952000 s 
+[2025-11-16 04:30:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_154.json: 0.105000 s 
+[2025-11-16 04:30:58] There are 5 sets of 500 batches.
+[2025-11-16 04:31:00] windmill_154.png all: 2.164000 s 
+[2025-11-16 04:31:00] windmill_154.png drawing: 2.057000 s 
+[2025-11-16 04:31:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_155.json: 0.105000 s 
+[2025-11-16 04:31:00] There are 5 sets of 500 batches.
+[2025-11-16 04:31:02] windmill_155.png all: 2.137000 s 
+[2025-11-16 04:31:02] windmill_155.png drawing: 2.030000 s 
+[2025-11-16 04:31:02] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_156.json: 0.112000 s 
+[2025-11-16 04:31:02] There are 5 sets of 500 batches.
+[2025-11-16 04:31:04] windmill_156.png all: 2.178000 s 
+[2025-11-16 04:31:04] windmill_156.png drawing: 2.063000 s 
+[2025-11-16 04:31:04] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_157.json: 0.110000 s 
+[2025-11-16 04:31:04] There are 5 sets of 500 batches.
+[2025-11-16 04:31:06] windmill_157.png all: 2.185000 s 
+[2025-11-16 04:31:06] windmill_157.png drawing: 2.073000 s 
+[2025-11-16 04:31:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_158.json: 0.130000 s 
+[2025-11-16 04:31:07] There are 5 sets of 500 batches.
+[2025-11-16 04:31:09] windmill_158.png all: 2.201000 s 
+[2025-11-16 04:31:09] windmill_158.png drawing: 2.068000 s 
+[2025-11-16 04:31:09] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_159.json: 0.113000 s 
+[2025-11-16 04:31:09] There are 5 sets of 500 batches.
+[2025-11-16 04:31:11] windmill_159.png all: 2.146000 s 
+[2025-11-16 04:31:11] windmill_159.png drawing: 2.030000 s 
+[2025-11-16 04:31:11] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_160.json: 0.110000 s 
+[2025-11-16 04:31:11] There are 5 sets of 500 batches.
+[2025-11-16 04:31:13] windmill_160.png all: 2.157000 s 
+[2025-11-16 04:31:13] windmill_160.png drawing: 2.043000 s 
+[2025-11-16 04:31:13] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_161.json: 0.117000 s 
+[2025-11-16 04:31:13] There are 5 sets of 500 batches.
+[2025-11-16 04:31:15] windmill_161.png all: 2.182000 s 
+[2025-11-16 04:31:15] windmill_161.png drawing: 2.062000 s 
+[2025-11-16 04:31:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_162.json: 0.113000 s 
+[2025-11-16 04:31:15] There are 5 sets of 500 batches.
+[2025-11-16 04:31:17] windmill_162.png all: 2.193000 s 
+[2025-11-16 04:31:17] windmill_162.png drawing: 2.077000 s 
+[2025-11-16 04:31:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_163.json: 0.124000 s 
+[2025-11-16 04:31:17] There are 5 sets of 500 batches.
+[2025-11-16 04:31:20] windmill_163.png all: 2.219000 s 
+[2025-11-16 04:31:20] windmill_163.png drawing: 2.092000 s 
+[2025-11-16 04:31:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_164.json: 0.114000 s 
+[2025-11-16 04:31:20] There are 5 sets of 500 batches.
+[2025-11-16 04:31:22] windmill_164.png all: 2.217000 s 
+[2025-11-16 04:31:22] windmill_164.png drawing: 2.100000 s 
+[2025-11-16 04:31:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_165.json: 0.114000 s 
+[2025-11-16 04:31:22] There are 5 sets of 500 batches.
+[2025-11-16 04:31:24] windmill_165.png all: 2.143000 s 
+[2025-11-16 04:31:24] windmill_165.png drawing: 2.026000 s 
+[2025-11-16 04:31:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_166.json: 0.121000 s 
+[2025-11-16 04:31:24] There are 5 sets of 500 batches.
+[2025-11-16 04:31:26] windmill_166.png all: 2.068000 s 
+[2025-11-16 04:31:26] windmill_166.png drawing: 1.945000 s 
+[2025-11-16 04:31:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_167.json: 0.114000 s 
+[2025-11-16 04:31:26] There are 5 sets of 500 batches.
+[2025-11-16 04:31:28] windmill_167.png all: 2.199000 s 
+[2025-11-16 04:31:28] windmill_167.png drawing: 2.083000 s 
+[2025-11-16 04:31:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_168.json: 0.112000 s 
+[2025-11-16 04:31:28] There are 5 sets of 500 batches.
+[2025-11-16 04:31:30] windmill_168.png all: 2.149000 s 
+[2025-11-16 04:31:30] windmill_168.png drawing: 2.035000 s 
+[2025-11-16 04:31:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_169.json: 0.124000 s 
+[2025-11-16 04:31:30] There are 5 sets of 500 batches.
+[2025-11-16 04:31:33] windmill_169.png all: 2.201000 s 
+[2025-11-16 04:31:33] windmill_169.png drawing: 2.074000 s 
+[2025-11-16 04:31:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_170.json: 0.127000 s 
+[2025-11-16 04:31:33] There are 5 sets of 500 batches.
+[2025-11-16 04:31:35] windmill_170.png all: 2.251000 s 
+[2025-11-16 04:31:35] windmill_170.png drawing: 2.121000 s 
+[2025-11-16 04:31:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_171.json: 0.111000 s 
+[2025-11-16 04:31:35] There are 5 sets of 500 batches.
+[2025-11-16 04:31:37] windmill_171.png all: 2.220000 s 
+[2025-11-16 04:31:37] windmill_171.png drawing: 2.107000 s 
+[2025-11-16 04:31:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_172.json: 0.117000 s 
+[2025-11-16 04:31:37] There are 5 sets of 500 batches.
+[2025-11-16 04:31:39] windmill_172.png all: 2.153000 s 
+[2025-11-16 04:31:39] windmill_172.png drawing: 2.033000 s 
+[2025-11-16 04:31:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_173.json: 0.123000 s 
+[2025-11-16 04:31:39] There are 5 sets of 500 batches.
+[2025-11-16 04:31:41] windmill_173.png all: 2.166000 s 
+[2025-11-16 04:31:41] windmill_173.png drawing: 2.040000 s 
+[2025-11-16 04:31:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_174.json: 0.107000 s 
+[2025-11-16 04:31:41] There are 5 sets of 500 batches.
+[2025-11-16 04:31:44] windmill_174.png all: 2.129000 s 
+[2025-11-16 04:31:44] windmill_174.png drawing: 2.020000 s 
+[2025-11-16 04:31:44] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_175.json: 0.114000 s 
+[2025-11-16 04:31:44] There are 5 sets of 500 batches.
+[2025-11-16 04:31:46] windmill_175.png all: 2.133000 s 
+[2025-11-16 04:31:46] windmill_175.png drawing: 2.016000 s 
+[2025-11-16 04:31:46] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_176.json: 0.108000 s 
+[2025-11-16 04:31:46] There are 5 sets of 500 batches.
+[2025-11-16 04:31:48] windmill_176.png all: 2.179000 s 
+[2025-11-16 04:31:48] windmill_176.png drawing: 2.068000 s 
+[2025-11-16 04:31:48] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_177.json: 0.113000 s 
+[2025-11-16 04:31:48] There are 5 sets of 500 batches.
+[2025-11-16 04:31:50] windmill_177.png all: 2.174000 s 
+[2025-11-16 04:31:50] windmill_177.png drawing: 2.054000 s 
+[2025-11-16 04:31:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_178.json: 0.109000 s 
+[2025-11-16 04:31:50] There are 5 sets of 500 batches.
+[2025-11-16 04:31:52] windmill_178.png all: 2.178000 s 
+[2025-11-16 04:31:52] windmill_178.png drawing: 2.066000 s 
+[2025-11-16 04:31:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_179.json: 0.113000 s 
+[2025-11-16 04:31:52] There are 5 sets of 500 batches.
+[2025-11-16 04:31:54] windmill_179.png all: 2.163000 s 
+[2025-11-16 04:31:54] windmill_179.png drawing: 2.047000 s 
+[2025-11-16 04:31:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_180.json: 0.106000 s 
+[2025-11-16 04:31:54] There are 5 sets of 500 batches.
+[2025-11-16 04:31:56] windmill_180.png all: 2.040000 s 
+[2025-11-16 04:31:56] windmill_180.png drawing: 1.930000 s 
+[2025-11-16 04:31:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_181.json: 0.115000 s 
+[2025-11-16 04:31:57] There are 5 sets of 500 batches.
+[2025-11-16 04:31:59] windmill_181.png all: 2.136000 s 
+[2025-11-16 04:31:59] windmill_181.png drawing: 2.018000 s 
+[2025-11-16 04:31:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_182.json: 0.097000 s 
+[2025-11-16 04:31:59] There are 5 sets of 500 batches.
+[2025-11-16 04:32:01] windmill_182.png all: 2.154000 s 
+[2025-11-16 04:32:01] windmill_182.png drawing: 2.054000 s 
+[2025-11-16 04:32:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_183.json: 0.111000 s 
+[2025-11-16 04:32:01] There are 5 sets of 500 batches.
+[2025-11-16 04:32:03] windmill_183.png all: 2.161000 s 
+[2025-11-16 04:32:03] windmill_183.png drawing: 2.047000 s 
+[2025-11-16 04:32:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_184.json: 0.127000 s 
+[2025-11-16 04:32:03] There are 5 sets of 500 batches.
+[2025-11-16 04:32:05] windmill_184.png all: 2.224000 s 
+[2025-11-16 04:32:05] windmill_184.png drawing: 2.095000 s 
+[2025-11-16 04:32:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_185.json: 0.121000 s 
+[2025-11-16 04:32:05] There are 5 sets of 500 batches.
+[2025-11-16 04:32:07] windmill_185.png all: 2.194000 s 
+[2025-11-16 04:32:07] windmill_185.png drawing: 2.071000 s 
+[2025-11-16 04:32:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_186.json: 0.103000 s 
+[2025-11-16 04:32:07] There are 5 sets of 500 batches.
+[2025-11-16 04:32:09] windmill_186.png all: 2.091000 s 
+[2025-11-16 04:32:09] windmill_186.png drawing: 1.986000 s 
+[2025-11-16 04:32:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_187.json: 0.105000 s 
+[2025-11-16 04:32:10] There are 5 sets of 500 batches.
+[2025-11-16 04:32:12] windmill_187.png all: 2.146000 s 
+[2025-11-16 04:32:12] windmill_187.png drawing: 2.039000 s 
+[2025-11-16 04:32:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_188.json: 0.111000 s 
+[2025-11-16 04:32:12] There are 5 sets of 500 batches.
+[2025-11-16 04:32:14] windmill_188.png all: 2.132000 s 
+[2025-11-16 04:32:14] windmill_188.png drawing: 2.019000 s 
+[2025-11-16 04:32:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_189.json: 0.105000 s 
+[2025-11-16 04:32:14] There are 5 sets of 500 batches.
+[2025-11-16 04:32:16] windmill_189.png all: 2.148000 s 
+[2025-11-16 04:32:16] windmill_189.png drawing: 2.039000 s 
+[2025-11-16 04:32:16] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_190.json: 0.130000 s 
+[2025-11-16 04:32:16] There are 5 sets of 500 batches.
+[2025-11-16 04:32:18] windmill_190.png all: 2.195000 s 
+[2025-11-16 04:32:18] windmill_190.png drawing: 2.063000 s 
+[2025-11-16 04:32:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_191.json: 0.119000 s 
+[2025-11-16 04:32:18] There are 5 sets of 500 batches.
+[2025-11-16 04:32:20] windmill_191.png all: 2.204000 s 
+[2025-11-16 04:32:20] windmill_191.png drawing: 2.083000 s 
+[2025-11-16 04:32:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_192.json: 0.121000 s 
+[2025-11-16 04:32:20] There are 5 sets of 500 batches.
+[2025-11-16 04:32:22] windmill_192.png all: 2.168000 s 
+[2025-11-16 04:32:22] windmill_192.png drawing: 2.045000 s 
+[2025-11-16 04:32:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_193.json: 0.115000 s 
+[2025-11-16 04:32:23] There are 5 sets of 500 batches.
+[2025-11-16 04:32:25] windmill_193.png all: 2.097000 s 
+[2025-11-16 04:32:25] windmill_193.png drawing: 1.978000 s 
+[2025-11-16 04:32:25] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_194.json: 0.120000 s 
+[2025-11-16 04:32:25] There are 5 sets of 500 batches.
+[2025-11-16 04:32:27] windmill_194.png all: 2.155000 s 
+[2025-11-16 04:32:27] windmill_194.png drawing: 2.031000 s 
+[2025-11-16 04:32:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_195.json: 0.117000 s 
+[2025-11-16 04:32:27] There are 5 sets of 500 batches.
+[2025-11-16 04:32:29] windmill_195.png all: 2.132000 s 
+[2025-11-16 04:32:29] windmill_195.png drawing: 2.013000 s 
+[2025-11-16 04:32:29] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_196.json: 0.107000 s 
+[2025-11-16 04:32:29] There are 5 sets of 500 batches.
+[2025-11-16 04:32:31] windmill_196.png all: 2.167000 s 
+[2025-11-16 04:32:31] windmill_196.png drawing: 2.058000 s 
+[2025-11-16 04:32:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_197.json: 0.116000 s 
+[2025-11-16 04:32:31] There are 5 sets of 500 batches.
+[2025-11-16 04:32:33] windmill_197.png all: 2.184000 s 
+[2025-11-16 04:32:33] windmill_197.png drawing: 2.063000 s 
+[2025-11-16 04:32:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_198.json: 0.120000 s 
+[2025-11-16 04:32:33] There are 5 sets of 500 batches.
+[2025-11-16 04:32:35] windmill_198.png all: 2.181000 s 
+[2025-11-16 04:32:35] windmill_198.png drawing: 2.059000 s 
+[2025-11-16 04:32:36] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_199.json: 0.111000 s 
+[2025-11-16 04:32:36] There are 5 sets of 500 batches.
+[2025-11-16 04:32:38] windmill_199.png all: 2.173000 s 
+[2025-11-16 04:32:38] windmill_199.png drawing: 2.060000 s 
+[2025-11-16 04:32:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_200.json: 0.119000 s 
+[2025-11-16 04:32:38] There are 5 sets of 500 batches.
+[2025-11-16 04:32:40] windmill_200.png all: 2.149000 s 
+[2025-11-16 04:32:40] windmill_200.png drawing: 2.027000 s 
+[2025-11-16 04:32:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_201.json: 0.108000 s 
+[2025-11-16 04:32:40] There are 5 sets of 500 batches.
+[2025-11-16 04:32:42] windmill_201.png all: 2.121000 s 
+[2025-11-16 04:32:42] windmill_201.png drawing: 2.011000 s 
+[2025-11-16 04:32:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_202.json: 0.112000 s 
+[2025-11-16 04:32:42] There are 5 sets of 500 batches.
+[2025-11-16 04:32:44] windmill_202.png all: 2.133000 s 
+[2025-11-16 04:32:44] windmill_202.png drawing: 2.018000 s 
+[2025-11-16 04:32:44] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_203.json: 0.115000 s 
+[2025-11-16 04:32:44] There are 5 sets of 500 batches.
+[2025-11-16 04:32:46] windmill_203.png all: 2.117000 s 
+[2025-11-16 04:32:46] windmill_203.png drawing: 1.999000 s 
+[2025-11-16 04:32:46] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_204.json: 0.109000 s 
+[2025-11-16 04:32:46] There are 5 sets of 500 batches.
+[2025-11-16 04:32:48] windmill_204.png all: 2.298000 s 
+[2025-11-16 04:32:48] windmill_204.png drawing: 2.187000 s 
+[2025-11-16 04:32:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_205.json: 0.138000 s 
+[2025-11-16 04:32:49] There are 5 sets of 500 batches.
+[2025-11-16 04:32:51] windmill_205.png all: 2.471000 s 
+[2025-11-16 04:32:51] windmill_205.png drawing: 2.330000 s 
+[2025-11-16 04:32:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_206.json: 0.127000 s 
+[2025-11-16 04:32:51] There are 5 sets of 500 batches.
+[2025-11-16 04:32:53] windmill_206.png all: 2.401000 s 
+[2025-11-16 04:32:53] windmill_206.png drawing: 2.272000 s 
+[2025-11-16 04:32:53] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_207.json: 0.114000 s 
+[2025-11-16 04:32:53] There are 5 sets of 500 batches.
+[2025-11-16 04:32:55] windmill_207.png all: 2.169000 s 
+[2025-11-16 04:32:55] windmill_207.png drawing: 2.052000 s 
+[2025-11-16 04:32:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_208.json: 0.112000 s 
+[2025-11-16 04:32:56] There are 5 sets of 500 batches.
+[2025-11-16 04:32:58] windmill_208.png all: 2.158000 s 
+[2025-11-16 04:32:58] windmill_208.png drawing: 2.044000 s 
+[2025-11-16 04:32:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_209.json: 0.117000 s 
+[2025-11-16 04:32:58] There are 5 sets of 500 batches.
+[2025-11-16 04:33:00] windmill_209.png all: 2.181000 s 
+[2025-11-16 04:33:00] windmill_209.png drawing: 2.060000 s 
+[2025-11-16 04:33:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_210.json: 0.113000 s 
+[2025-11-16 04:33:00] There are 5 sets of 500 batches.
+[2025-11-16 04:33:02] windmill_210.png all: 2.129000 s 
+[2025-11-16 04:33:02] windmill_210.png drawing: 2.014000 s 
+[2025-11-16 04:33:02] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_211.json: 0.113000 s 
+[2025-11-16 04:33:02] There are 5 sets of 500 batches.
+[2025-11-16 04:33:04] windmill_211.png all: 2.414000 s 
+[2025-11-16 04:33:04] windmill_211.png drawing: 2.298000 s 
+[2025-11-16 04:33:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_212.json: 0.128000 s 
+[2025-11-16 04:33:05] There are 5 sets of 500 batches.
+[2025-11-16 04:33:07] windmill_212.png all: 2.497000 s 
+[2025-11-16 04:33:07] windmill_212.png drawing: 2.366000 s 
+[2025-11-16 04:33:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_213.json: 0.118000 s 
+[2025-11-16 04:33:07] There are 5 sets of 500 batches.
+[2025-11-16 04:33:09] windmill_213.png all: 2.299000 s 
+[2025-11-16 04:33:09] windmill_213.png drawing: 2.179000 s 
+[2025-11-16 04:33:09] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_214.json: 0.122000 s 
+[2025-11-16 04:33:09] There are 5 sets of 500 batches.
+[2025-11-16 04:33:11] windmill_214.png all: 2.229000 s 
+[2025-11-16 04:33:11] windmill_214.png drawing: 2.105000 s 
+[2025-11-16 04:33:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_215.json: 0.108000 s 
+[2025-11-16 04:33:12] There are 5 sets of 500 batches.
+[2025-11-16 04:33:14] windmill_215.png all: 2.173000 s 
+[2025-11-16 04:33:14] windmill_215.png drawing: 2.063000 s 
+[2025-11-16 04:33:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_216.json: 0.124000 s 
+[2025-11-16 04:33:14] There are 5 sets of 500 batches.
+[2025-11-16 04:33:16] windmill_216.png all: 2.214000 s 
+[2025-11-16 04:33:16] windmill_216.png drawing: 2.083000 s 
+[2025-11-16 04:33:16] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_217.json: 0.112000 s 
+[2025-11-16 04:33:16] There are 5 sets of 500 batches.
+[2025-11-16 04:33:18] windmill_217.png all: 2.210000 s 
+[2025-11-16 04:33:18] windmill_217.png drawing: 2.096000 s 
+[2025-11-16 04:33:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_218.json: 0.139000 s 
+[2025-11-16 04:33:18] There are 5 sets of 500 batches.
+[2025-11-16 04:33:20] windmill_218.png all: 2.296000 s 
+[2025-11-16 04:33:20] windmill_218.png drawing: 2.154000 s 
+[2025-11-16 04:33:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_219.json: 0.124000 s 
+[2025-11-16 04:33:20] There are 5 sets of 500 batches.
+[2025-11-16 04:33:23] windmill_219.png all: 2.286000 s 
+[2025-11-16 04:33:23] windmill_219.png drawing: 2.160000 s 
+[2025-11-16 04:33:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_220.json: 0.123000 s 
+[2025-11-16 04:33:23] There are 5 sets of 500 batches.
+[2025-11-16 04:33:25] windmill_220.png all: 2.199000 s 
+[2025-11-16 04:33:25] windmill_220.png drawing: 2.074000 s 
+[2025-11-16 04:33:25] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_221.json: 0.117000 s 
+[2025-11-16 04:33:25] There are 5 sets of 500 batches.
+[2025-11-16 04:33:27] windmill_221.png all: 2.255000 s 
+[2025-11-16 04:33:27] windmill_221.png drawing: 2.136000 s 
+[2025-11-16 04:33:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_222.json: 0.115000 s 
+[2025-11-16 04:33:27] There are 5 sets of 500 batches.
+[2025-11-16 04:33:29] windmill_222.png all: 2.153000 s 
+[2025-11-16 04:33:29] windmill_222.png drawing: 2.035000 s 
+[2025-11-16 04:33:29] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_223.json: 0.124000 s 
+[2025-11-16 04:33:29] There are 5 sets of 500 batches.
+[2025-11-16 04:33:31] windmill_223.png all: 2.139000 s 
+[2025-11-16 04:33:31] windmill_223.png drawing: 2.012000 s 
+[2025-11-16 04:33:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_224.json: 0.123000 s 
+[2025-11-16 04:33:32] There are 5 sets of 500 batches.
+[2025-11-16 04:33:34] windmill_224.png all: 2.297000 s 
+[2025-11-16 04:33:34] windmill_224.png drawing: 2.171000 s 
+[2025-11-16 04:33:34] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_225.json: 0.128000 s 
+[2025-11-16 04:33:34] There are 5 sets of 500 batches.
+[2025-11-16 04:33:36] windmill_225.png all: 2.309000 s 
+[2025-11-16 04:33:36] windmill_225.png drawing: 2.179000 s 
+[2025-11-16 04:33:36] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_226.json: 0.140000 s 
+[2025-11-16 04:33:36] There are 5 sets of 500 batches.
+[2025-11-16 04:33:38] windmill_226.png all: 2.269000 s 
+[2025-11-16 04:33:38] windmill_226.png drawing: 2.126000 s 
+[2025-11-16 04:33:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_227.json: 0.114000 s 
+[2025-11-16 04:33:38] There are 5 sets of 500 batches.
+[2025-11-16 04:33:41] windmill_227.png all: 2.210000 s 
+[2025-11-16 04:33:41] windmill_227.png drawing: 2.093000 s 
+[2025-11-16 04:33:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_228.json: 0.118000 s 
+[2025-11-16 04:33:41] There are 5 sets of 500 batches.
+[2025-11-16 04:33:43] windmill_228.png all: 2.247000 s 
+[2025-11-16 04:33:43] windmill_228.png drawing: 2.126000 s 
+[2025-11-16 04:33:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_229.json: 0.102000 s 
+[2025-11-16 04:33:43] There are 5 sets of 500 batches.
+[2025-11-16 04:33:45] windmill_229.png all: 2.171000 s 
+[2025-11-16 04:33:45] windmill_229.png drawing: 2.067000 s 
+[2025-11-16 04:33:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_230.json: 0.114000 s 
+[2025-11-16 04:33:45] There are 5 sets of 500 batches.
+[2025-11-16 04:33:47] windmill_230.png all: 2.080000 s 
+[2025-11-16 04:33:47] windmill_230.png drawing: 1.963000 s 
+[2025-11-16 04:33:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_231.json: 0.115000 s 
+[2025-11-16 04:33:47] There are 5 sets of 500 batches.
+[2025-11-16 04:33:50] windmill_231.png all: 2.466000 s 
+[2025-11-16 04:33:50] windmill_231.png drawing: 2.348000 s 
+[2025-11-16 04:33:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_232.json: 0.132000 s 
+[2025-11-16 04:33:50] There are 5 sets of 500 batches.
+[2025-11-16 04:33:52] windmill_232.png all: 2.482000 s 
+[2025-11-16 04:33:52] windmill_232.png drawing: 2.347000 s 
+[2025-11-16 04:33:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_233.json: 0.113000 s 
+[2025-11-16 04:33:52] There are 5 sets of 500 batches.
+[2025-11-16 04:33:54] windmill_233.png all: 2.349000 s 
+[2025-11-16 04:33:54] windmill_233.png drawing: 2.233000 s 
+[2025-11-16 04:33:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_234.json: 0.119000 s 
+[2025-11-16 04:33:54] There are 5 sets of 500 batches.
+[2025-11-16 04:33:57] windmill_234.png all: 2.204000 s 
+[2025-11-16 04:33:57] windmill_234.png drawing: 2.080000 s 
+[2025-11-16 04:33:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_235.json: 0.110000 s 
+[2025-11-16 04:33:57] There are 5 sets of 500 batches.
+[2025-11-16 04:33:59] windmill_235.png all: 2.232000 s 
+[2025-11-16 04:33:59] windmill_235.png drawing: 2.118000 s 
+[2025-11-16 04:33:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_236.json: 0.117000 s 
+[2025-11-16 04:33:59] There are 5 sets of 500 batches.
+[2025-11-16 04:34:01] windmill_236.png all: 2.218000 s 
+[2025-11-16 04:34:01] windmill_236.png drawing: 2.098000 s 
+[2025-11-16 04:34:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_237.json: 0.110000 s 
+[2025-11-16 04:34:01] There are 5 sets of 500 batches.
+[2025-11-16 04:34:03] windmill_237.png all: 2.226000 s 
+[2025-11-16 04:34:03] windmill_237.png drawing: 2.115000 s 
+[2025-11-16 04:34:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_238.json: 0.140000 s 
+[2025-11-16 04:34:03] There are 5 sets of 500 batches.
+[2025-11-16 04:34:06] windmill_238.png all: 2.271000 s 
+[2025-11-16 04:34:06] windmill_238.png drawing: 2.128000 s 
+[2025-11-16 04:34:06] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_239.json: 0.120000 s 
+[2025-11-16 04:34:06] There are 5 sets of 500 batches.
+[2025-11-16 04:34:08] windmill_239.png all: 2.297000 s 
+[2025-11-16 04:34:08] windmill_239.png drawing: 2.174000 s 
+[2025-11-16 04:34:08] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_240.json: 0.118000 s 
+[2025-11-16 04:34:08] There are 5 sets of 500 batches.
+[2025-11-16 04:34:10] windmill_240.png all: 2.185000 s 
+[2025-11-16 04:34:10] windmill_240.png drawing: 2.064000 s 
+[2025-11-16 04:34:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_241.json: 0.120000 s 
+[2025-11-16 04:34:10] There are 5 sets of 500 batches.
+[2025-11-16 04:34:12] windmill_241.png all: 2.317000 s 
+[2025-11-16 04:34:12] windmill_241.png drawing: 2.193000 s 
+[2025-11-16 04:34:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_242.json: 0.123000 s 
+[2025-11-16 04:34:13] There are 5 sets of 500 batches.
+[2025-11-16 04:34:15] windmill_242.png all: 2.204000 s 
+[2025-11-16 04:34:15] windmill_242.png drawing: 2.078000 s 
+[2025-11-16 04:34:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_243.json: 0.132000 s 
+[2025-11-16 04:34:15] There are 5 sets of 500 batches.
+[2025-11-16 04:34:17] windmill_243.png all: 2.138000 s 
+[2025-11-16 04:34:17] windmill_243.png drawing: 2.004000 s 
+[2025-11-16 04:34:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_244.json: 0.118000 s 
+[2025-11-16 04:34:17] There are 5 sets of 500 batches.
+[2025-11-16 04:34:19] windmill_244.png all: 2.398000 s 
+[2025-11-16 04:34:19] windmill_244.png drawing: 2.277000 s 
+[2025-11-16 04:34:19] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_245.json: 0.132000 s 
+[2025-11-16 04:34:19] There are 5 sets of 500 batches.
+[2025-11-16 04:34:22] windmill_245.png all: 2.463000 s 
+[2025-11-16 04:34:22] windmill_245.png drawing: 2.327000 s 
+[2025-11-16 04:34:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_246.json: 0.117000 s 
+[2025-11-16 04:34:22] There are 5 sets of 500 batches.
+[2025-11-16 04:34:24] windmill_246.png all: 2.450000 s 
+[2025-11-16 04:34:24] windmill_246.png drawing: 2.330000 s 
+[2025-11-16 04:34:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_247.json: 0.129000 s 
+[2025-11-16 04:34:24] There are 5 sets of 500 batches.
+[2025-11-16 04:34:26] windmill_247.png all: 2.263000 s 
+[2025-11-16 04:34:26] windmill_247.png drawing: 2.132000 s 
+[2025-11-16 04:34:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_248.json: 0.115000 s 
+[2025-11-16 04:34:26] There are 5 sets of 500 batches.
+[2025-11-16 04:34:29] windmill_248.png all: 2.232000 s 
+[2025-11-16 04:34:29] windmill_248.png drawing: 2.114000 s 
+[2025-11-16 04:34:29] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_249.json: 0.121000 s 
+[2025-11-16 04:34:29] There are 5 sets of 500 batches.
+[2025-11-16 04:34:31] windmill_249.png all: 2.251000 s 
+[2025-11-16 04:34:31] windmill_249.png drawing: 2.127000 s 
+[2025-11-16 04:34:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_250.json: 0.121000 s 
+[2025-11-16 04:34:31] There are 5 sets of 500 batches.
+[2025-11-16 04:34:33] windmill_250.png all: 2.263000 s 
+[2025-11-16 04:34:33] windmill_250.png drawing: 2.139000 s 
+[2025-11-16 04:34:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_251.json: 0.133000 s 
+[2025-11-16 04:34:33] There are 5 sets of 500 batches.
+[2025-11-16 04:34:35] windmill_251.png all: 2.293000 s 
+[2025-11-16 04:34:35] windmill_251.png drawing: 2.157000 s 
+[2025-11-16 04:34:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_252.json: 0.112000 s 
+[2025-11-16 04:34:36] There are 5 sets of 500 batches.
+[2025-11-16 04:34:38] windmill_252.png all: 2.232000 s 
+[2025-11-16 04:34:38] windmill_252.png drawing: 2.117000 s 
+[2025-11-16 04:34:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_253.json: 0.115000 s 
+[2025-11-16 04:34:38] There are 5 sets of 500 batches.
+[2025-11-16 04:34:40] windmill_253.png all: 2.265000 s 
+[2025-11-16 04:34:40] windmill_253.png drawing: 2.146000 s 
+[2025-11-16 04:34:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_254.json: 0.121000 s 
+[2025-11-16 04:34:40] There are 5 sets of 500 batches.
+[2025-11-16 04:34:42] windmill_254.png all: 2.225000 s 
+[2025-11-16 04:34:42] windmill_254.png drawing: 2.101000 s 
+[2025-11-16 04:34:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_255.json: 0.123000 s 
+[2025-11-16 04:34:42] There are 5 sets of 500 batches.
+[2025-11-16 04:34:44] windmill_255.png all: 2.270000 s 
+[2025-11-16 04:34:44] windmill_255.png drawing: 2.144000 s 
+[2025-11-16 04:34:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_256.json: 0.116000 s 
+[2025-11-16 04:34:45] There are 5 sets of 500 batches.
+[2025-11-16 04:34:47] windmill_256.png all: 2.206000 s 
+[2025-11-16 04:34:47] windmill_256.png drawing: 2.086000 s 
+[2025-11-16 04:34:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_257.json: 0.110000 s 
+[2025-11-16 04:34:47] There are 5 sets of 500 batches.
+[2025-11-16 04:34:49] windmill_257.png all: 2.383000 s 
+[2025-11-16 04:34:49] windmill_257.png drawing: 2.271000 s 
+[2025-11-16 04:34:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_258.json: 0.131000 s 
+[2025-11-16 04:34:49] There are 5 sets of 500 batches.
+[2025-11-16 04:34:52] windmill_258.png all: 2.521000 s 
+[2025-11-16 04:34:52] windmill_258.png drawing: 2.387000 s 
+[2025-11-16 04:34:52] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_259.json: 0.120000 s 
+[2025-11-16 04:34:52] There are 5 sets of 500 batches.
+[2025-11-16 04:34:54] windmill_259.png all: 2.478000 s 
+[2025-11-16 04:34:54] windmill_259.png drawing: 2.356000 s 
+[2025-11-16 04:34:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_260.json: 0.118000 s 
+[2025-11-16 04:34:54] There are 5 sets of 500 batches.
+[2025-11-16 04:34:56] windmill_260.png all: 2.202000 s 
+[2025-11-16 04:34:56] windmill_260.png drawing: 2.081000 s 
+[2025-11-16 04:34:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_261.json: 0.111000 s 
+[2025-11-16 04:34:56] There are 5 sets of 500 batches.
+[2025-11-16 04:34:58] windmill_261.png all: 2.252000 s 
+[2025-11-16 04:34:58] windmill_261.png drawing: 2.138000 s 
+[2025-11-16 04:34:59] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_262.json: 0.112000 s 
+[2025-11-16 04:34:59] There are 5 sets of 500 batches.
+[2025-11-16 04:35:01] windmill_262.png all: 2.238000 s 
+[2025-11-16 04:35:01] windmill_262.png drawing: 2.124000 s 
+[2025-11-16 04:35:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_263.json: 0.105000 s 
+[2025-11-16 04:35:01] There are 5 sets of 500 batches.
+[2025-11-16 04:35:03] windmill_263.png all: 2.219000 s 
+[2025-11-16 04:35:03] windmill_263.png drawing: 2.111000 s 
+[2025-11-16 04:35:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_264.json: 0.144000 s 
+[2025-11-16 04:35:03] There are 5 sets of 500 batches.
+[2025-11-16 04:35:05] windmill_264.png all: 2.502000 s 
+[2025-11-16 04:35:05] windmill_264.png drawing: 2.351000 s 
+[2025-11-16 04:35:06] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_265.json: 0.122000 s 
+[2025-11-16 04:35:06] There are 5 sets of 500 batches.
+[2025-11-16 04:35:08] windmill_265.png all: 2.464000 s 
+[2025-11-16 04:35:08] windmill_265.png drawing: 2.338000 s 
+[2025-11-16 04:35:08] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_266.json: 0.136000 s 
+[2025-11-16 04:35:08] There are 5 sets of 500 batches.
+[2025-11-16 04:35:10] windmill_266.png all: 2.366000 s 
+[2025-11-16 04:35:10] windmill_266.png drawing: 2.227000 s 
+[2025-11-16 04:35:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_267.json: 0.100000 s 
+[2025-11-16 04:35:10] There are 5 sets of 500 batches.
+[2025-11-16 04:35:12] windmill_267.png all: 2.183000 s 
+[2025-11-16 04:35:12] windmill_267.png drawing: 2.081000 s 
+[2025-11-16 04:35:13] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_268.json: 0.117000 s 
+[2025-11-16 04:35:13] There are 5 sets of 500 batches.
+[2025-11-16 04:35:15] windmill_268.png all: 2.271000 s 
+[2025-11-16 04:35:15] windmill_268.png drawing: 2.151000 s 
+[2025-11-16 04:35:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_269.json: 0.121000 s 
+[2025-11-16 04:35:15] There are 5 sets of 500 batches.
+[2025-11-16 04:35:17] windmill_269.png all: 2.241000 s 
+[2025-11-16 04:35:17] windmill_269.png drawing: 2.117000 s 
+[2025-11-16 04:35:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_270.json: 0.112000 s 
+[2025-11-16 04:35:17] There are 5 sets of 500 batches.
+[2025-11-16 04:35:19] windmill_270.png all: 2.319000 s 
+[2025-11-16 04:35:19] windmill_270.png drawing: 2.205000 s 
+[2025-11-16 04:35:19] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_271.json: 0.123000 s 
+[2025-11-16 04:35:19] There are 5 sets of 500 batches.
+[2025-11-16 04:35:22] windmill_271.png all: 2.256000 s 
+[2025-11-16 04:35:22] windmill_271.png drawing: 2.130000 s 
+[2025-11-16 04:35:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_272.json: 0.103000 s 
+[2025-11-16 04:35:22] There are 5 sets of 500 batches.
+[2025-11-16 04:35:24] windmill_272.png all: 2.224000 s 
+[2025-11-16 04:35:24] windmill_272.png drawing: 2.118000 s 
+[2025-11-16 04:35:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_273.json: 0.119000 s 
+[2025-11-16 04:35:24] There are 5 sets of 500 batches.
+[2025-11-16 04:35:26] windmill_273.png all: 2.189000 s 
+[2025-11-16 04:35:26] windmill_273.png drawing: 2.067000 s 
+[2025-11-16 04:35:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_274.json: 0.116000 s 
+[2025-11-16 04:35:26] There are 5 sets of 500 batches.
+[2025-11-16 04:35:28] windmill_274.png all: 2.219000 s 
+[2025-11-16 04:35:28] windmill_274.png drawing: 2.100000 s 
+[2025-11-16 04:35:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_275.json: 0.127000 s 
+[2025-11-16 04:35:28] There are 5 sets of 500 batches.
+[2025-11-16 04:35:30] windmill_275.png all: 2.235000 s 
+[2025-11-16 04:35:31] windmill_275.png drawing: 2.106000 s 
+[2025-11-16 04:35:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_276.json: 0.116000 s 
+[2025-11-16 04:35:31] There are 5 sets of 500 batches.
+[2025-11-16 04:35:33] windmill_276.png all: 2.224000 s 
+[2025-11-16 04:35:33] windmill_276.png drawing: 2.106000 s 
+[2025-11-16 04:35:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_277.json: 0.127000 s 
+[2025-11-16 04:35:33] There are 5 sets of 500 batches.
+[2025-11-16 04:35:35] windmill_277.png all: 2.388000 s 
+[2025-11-16 04:35:35] windmill_277.png drawing: 2.257000 s 
+[2025-11-16 04:35:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_278.json: 0.124000 s 
+[2025-11-16 04:35:35] There are 5 sets of 500 batches.
+[2025-11-16 04:35:37] windmill_278.png all: 2.288000 s 
+[2025-11-16 04:35:37] windmill_278.png drawing: 2.162000 s 
+[2025-11-16 04:35:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_279.json: 0.119000 s 
+[2025-11-16 04:35:38] There are 5 sets of 500 batches.
+[2025-11-16 04:35:40] windmill_279.png all: 2.256000 s 
+[2025-11-16 04:35:40] windmill_279.png drawing: 2.134000 s 
+[2025-11-16 04:35:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_280.json: 0.114000 s 
+[2025-11-16 04:35:40] There are 5 sets of 500 batches.
+[2025-11-16 04:35:42] windmill_280.png all: 2.228000 s 
+[2025-11-16 04:35:42] windmill_280.png drawing: 2.111000 s 
+[2025-11-16 04:35:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_281.json: 0.123000 s 
+[2025-11-16 04:35:42] There are 5 sets of 500 batches.
+[2025-11-16 04:35:44] windmill_281.png all: 2.295000 s 
+[2025-11-16 04:35:44] windmill_281.png drawing: 2.169000 s 
+[2025-11-16 04:35:44] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_282.json: 0.122000 s 
+[2025-11-16 04:35:44] There are 5 sets of 500 batches.
+[2025-11-16 04:35:46] windmill_282.png all: 2.150000 s 
+[2025-11-16 04:35:46] windmill_282.png drawing: 2.025000 s 
+[2025-11-16 04:35:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_283.json: 0.130000 s 
+[2025-11-16 04:35:47] There are 5 sets of 500 batches.
+[2025-11-16 04:35:49] windmill_283.png all: 2.328000 s 
+[2025-11-16 04:35:49] windmill_283.png drawing: 2.195000 s 
+[2025-11-16 04:35:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_284.json: 0.134000 s 
+[2025-11-16 04:35:49] There are 5 sets of 500 batches.
+[2025-11-16 04:35:51] windmill_284.png all: 2.505000 s 
+[2025-11-16 04:35:51] windmill_284.png drawing: 2.369000 s 
+[2025-11-16 04:35:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_285.json: 0.131000 s 
+[2025-11-16 04:35:51] There are 5 sets of 500 batches.
+[2025-11-16 04:35:54] windmill_285.png all: 2.501000 s 
+[2025-11-16 04:35:54] windmill_285.png drawing: 2.368000 s 
+[2025-11-16 04:35:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_286.json: 0.129000 s 
+[2025-11-16 04:35:54] There are 5 sets of 500 batches.
+[2025-11-16 04:35:56] windmill_286.png all: 2.326000 s 
+[2025-11-16 04:35:56] windmill_286.png drawing: 2.193000 s 
+[2025-11-16 04:35:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_287.json: 0.107000 s 
+[2025-11-16 04:35:56] There are 5 sets of 500 batches.
+[2025-11-16 04:35:58] windmill_287.png all: 2.248000 s 
+[2025-11-16 04:35:58] windmill_287.png drawing: 2.139000 s 
+[2025-11-16 04:35:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_288.json: 0.116000 s 
+[2025-11-16 04:35:58] There are 5 sets of 500 batches.
+[2025-11-16 04:36:00] windmill_288.png all: 2.167000 s 
+[2025-11-16 04:36:00] windmill_288.png drawing: 2.047000 s 
+[2025-11-16 04:36:01] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_289.json: 0.112000 s 
+[2025-11-16 04:36:01] There are 5 sets of 500 batches.
+[2025-11-16 04:36:03] windmill_289.png all: 2.112000 s 
+[2025-11-16 04:36:03] windmill_289.png drawing: 1.997000 s 
+[2025-11-16 04:36:03] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_290.json: 0.107000 s 
+[2025-11-16 04:36:03] There are 5 sets of 500 batches.
+[2025-11-16 04:36:05] windmill_290.png all: 2.338000 s 
+[2025-11-16 04:36:05] windmill_290.png drawing: 2.229000 s 
+[2025-11-16 04:36:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_291.json: 0.133000 s 
+[2025-11-16 04:36:05] There are 5 sets of 500 batches.
+[2025-11-16 04:36:07] windmill_291.png all: 2.249000 s 
+[2025-11-16 04:36:07] windmill_291.png drawing: 2.111000 s 
+[2025-11-16 04:36:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_292.json: 0.114000 s 
+[2025-11-16 04:36:07] There are 5 sets of 500 batches.
+[2025-11-16 04:36:09] windmill_292.png all: 2.249000 s 
+[2025-11-16 04:36:09] windmill_292.png drawing: 2.133000 s 
+[2025-11-16 04:36:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_293.json: 0.108000 s 
+[2025-11-16 04:36:10] There are 5 sets of 500 batches.
+[2025-11-16 04:36:12] windmill_293.png all: 2.126000 s 
+[2025-11-16 04:36:12] windmill_293.png drawing: 2.014000 s 
+[2025-11-16 04:36:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_294.json: 0.101000 s 
+[2025-11-16 04:36:12] There are 5 sets of 500 batches.
+[2025-11-16 04:36:14] windmill_294.png all: 2.200000 s 
+[2025-11-16 04:36:14] windmill_294.png drawing: 2.096000 s 
+[2025-11-16 04:36:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_295.json: 0.118000 s 
+[2025-11-16 04:36:14] There are 5 sets of 500 batches.
+[2025-11-16 04:36:16] windmill_295.png all: 2.215000 s 
+[2025-11-16 04:36:16] windmill_295.png drawing: 2.095000 s 
+[2025-11-16 04:36:16] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_296.json: 0.112000 s 
+[2025-11-16 04:36:16] There are 5 sets of 500 batches.
+[2025-11-16 04:36:18] windmill_296.png all: 2.239000 s 
+[2025-11-16 04:36:18] windmill_296.png drawing: 2.124000 s 
+[2025-11-16 04:36:18] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_297.json: 0.141000 s 
+[2025-11-16 04:36:18] There are 5 sets of 500 batches.
+[2025-11-16 04:36:21] windmill_297.png all: 2.309000 s 
+[2025-11-16 04:36:21] windmill_297.png drawing: 2.164000 s 
+[2025-11-16 04:36:21] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_298.json: 0.131000 s 
+[2025-11-16 04:36:21] There are 5 sets of 500 batches.
+[2025-11-16 04:36:23] windmill_298.png all: 2.303000 s 
+[2025-11-16 04:36:23] windmill_298.png drawing: 2.169000 s 
+[2025-11-16 04:36:23] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_299.json: 0.127000 s 
+[2025-11-16 04:36:23] There are 5 sets of 500 batches.
+[2025-11-16 04:36:25] windmill_299.png all: 2.258000 s 
+[2025-11-16 04:36:25] windmill_299.png drawing: 2.129000 s 
+[2025-11-16 04:36:25] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_300.json: 0.113000 s 
+[2025-11-16 04:36:25] There are 5 sets of 500 batches.
+[2025-11-16 04:36:27] windmill_300.png all: 2.172000 s 
+[2025-11-16 04:36:27] windmill_300.png drawing: 2.054000 s 
+[2025-11-16 04:36:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_301.json: 0.117000 s 
+[2025-11-16 04:36:27] There are 5 sets of 500 batches.
+[2025-11-16 04:36:30] windmill_301.png all: 2.234000 s 
+[2025-11-16 04:36:30] windmill_301.png drawing: 2.111000 s 
+[2025-11-16 04:36:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_302.json: 0.108000 s 
+[2025-11-16 04:36:30] There are 5 sets of 500 batches.
+[2025-11-16 04:36:32] windmill_302.png all: 2.185000 s 
+[2025-11-16 04:36:32] windmill_302.png drawing: 2.074000 s 
+[2025-11-16 04:36:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_303.json: 0.121000 s 
+[2025-11-16 04:36:32] There are 5 sets of 500 batches.
+[2025-11-16 04:36:34] windmill_303.png all: 2.286000 s 
+[2025-11-16 04:36:34] windmill_303.png drawing: 2.161000 s 
+[2025-11-16 04:36:34] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_304.json: 0.130000 s 
+[2025-11-16 04:36:34] There are 5 sets of 500 batches.
+[2025-11-16 04:36:36] windmill_304.png all: 2.324000 s 
+[2025-11-16 04:36:36] windmill_304.png drawing: 2.192000 s 
+[2025-11-16 04:36:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_305.json: 0.118000 s 
+[2025-11-16 04:36:37] There are 5 sets of 500 batches.
+[2025-11-16 04:36:39] windmill_305.png all: 2.253000 s 
+[2025-11-16 04:36:39] windmill_305.png drawing: 2.132000 s 
+[2025-11-16 04:36:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_306.json: 0.103000 s 
+[2025-11-16 04:36:39] There are 5 sets of 500 batches.
+[2025-11-16 04:36:41] windmill_306.png all: 2.195000 s 
+[2025-11-16 04:36:41] windmill_306.png drawing: 2.088000 s 
+[2025-11-16 04:36:41] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_307.json: 0.121000 s 
+[2025-11-16 04:36:41] There are 5 sets of 500 batches.
+[2025-11-16 04:36:43] windmill_307.png all: 2.206000 s 
+[2025-11-16 04:36:43] windmill_307.png drawing: 2.082000 s 
+[2025-11-16 04:36:43] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_308.json: 0.123000 s 
+[2025-11-16 04:36:43] There are 5 sets of 500 batches.
+[2025-11-16 04:36:45] windmill_308.png all: 2.256000 s 
+[2025-11-16 04:36:45] windmill_308.png drawing: 2.124000 s 
+[2025-11-16 04:36:45] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_309.json: 0.099000 s 
+[2025-11-16 04:36:45] There are 5 sets of 500 batches.
+[2025-11-16 04:36:47] windmill_309.png all: 2.117000 s 
+[2025-11-16 04:36:47] windmill_309.png drawing: 2.015000 s 
+[2025-11-16 04:36:48] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_310.json: 0.095000 s 
+[2025-11-16 04:36:48] There are 5 sets of 500 batches.
+[2025-11-16 04:36:50] windmill_310.png all: 2.502000 s 
+[2025-11-16 04:36:50] windmill_310.png drawing: 2.405000 s 
+[2025-11-16 04:36:50] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_311.json: 0.137000 s 
+[2025-11-16 04:36:50] There are 5 sets of 500 batches.
+[2025-11-16 04:36:52] windmill_311.png all: 2.466000 s 
+[2025-11-16 04:36:52] windmill_311.png drawing: 2.326000 s 
+[2025-11-16 04:36:53] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_312.json: 0.117000 s 
+[2025-11-16 04:36:53] There are 5 sets of 500 batches.
+[2025-11-16 04:36:55] windmill_312.png all: 2.431000 s 
+[2025-11-16 04:36:55] windmill_312.png drawing: 2.310000 s 
+[2025-11-16 04:36:55] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_313.json: 0.106000 s 
+[2025-11-16 04:36:55] There are 5 sets of 500 batches.
+[2025-11-16 04:36:57] windmill_313.png all: 2.304000 s 
+[2025-11-16 04:36:57] windmill_313.png drawing: 2.195000 s 
+[2025-11-16 04:36:57] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_314.json: 0.101000 s 
+[2025-11-16 04:36:57] There are 5 sets of 500 batches.
+[2025-11-16 04:36:59] windmill_314.png all: 2.253000 s 
+[2025-11-16 04:36:59] windmill_314.png drawing: 2.149000 s 
+[2025-11-16 04:37:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_315.json: 0.119000 s 
+[2025-11-16 04:37:00] There are 5 sets of 500 batches.
+[2025-11-16 04:37:02] windmill_315.png all: 2.329000 s 
+[2025-11-16 04:37:02] windmill_315.png drawing: 2.208000 s 
+[2025-11-16 04:37:02] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_316.json: 0.101000 s 
+[2025-11-16 04:37:02] There are 5 sets of 500 batches.
+[2025-11-16 04:37:04] windmill_316.png all: 2.229000 s 
+[2025-11-16 04:37:04] windmill_316.png drawing: 2.125000 s 
+[2025-11-16 04:37:04] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_317.json: 0.120000 s 
+[2025-11-16 04:37:04] There are 5 sets of 500 batches.
+[2025-11-16 04:37:06] windmill_317.png all: 2.233000 s 
+[2025-11-16 04:37:06] windmill_317.png drawing: 2.110000 s 
+[2025-11-16 04:37:06] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_318.json: 0.113000 s 
+[2025-11-16 04:37:06] There are 5 sets of 500 batches.
+[2025-11-16 04:37:09] windmill_318.png all: 2.265000 s 
+[2025-11-16 04:37:09] windmill_318.png drawing: 2.150000 s 
+[2025-11-16 04:37:09] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_319.json: 0.112000 s 
+[2025-11-16 04:37:09] There are 5 sets of 500 batches.
+[2025-11-16 04:37:11] windmill_319.png all: 2.214000 s 
+[2025-11-16 04:37:11] windmill_319.png drawing: 2.100000 s 
+[2025-11-16 04:37:11] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_320.json: 0.110000 s 
+[2025-11-16 04:37:11] There are 5 sets of 500 batches.
+[2025-11-16 04:37:13] windmill_320.png all: 2.256000 s 
+[2025-11-16 04:37:13] windmill_320.png drawing: 2.144000 s 
+[2025-11-16 04:37:13] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_321.json: 0.112000 s 
+[2025-11-16 04:37:13] There are 5 sets of 500 batches.
+[2025-11-16 04:37:15] windmill_321.png all: 2.205000 s 
+[2025-11-16 04:37:15] windmill_321.png drawing: 2.090000 s 
+[2025-11-16 04:37:15] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_322.json: 0.117000 s 
+[2025-11-16 04:37:15] There are 5 sets of 500 batches.
+[2025-11-16 04:37:17] windmill_322.png all: 2.126000 s 
+[2025-11-16 04:37:17] windmill_322.png drawing: 2.005000 s 
+[2025-11-16 04:37:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_323.json: 0.112000 s 
+[2025-11-16 04:37:17] There are 5 sets of 500 batches.
+[2025-11-16 04:37:20] windmill_323.png all: 2.272000 s 
+[2025-11-16 04:37:20] windmill_323.png drawing: 2.156000 s 
+[2025-11-16 04:37:20] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_324.json: 0.119000 s 
+[2025-11-16 04:37:20] There are 5 sets of 500 batches.
+[2025-11-16 04:37:22] windmill_324.png all: 2.269000 s 
+[2025-11-16 04:37:22] windmill_324.png drawing: 2.147000 s 
+[2025-11-16 04:37:22] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_325.json: 0.124000 s 
+[2025-11-16 04:37:22] There are 5 sets of 500 batches.
+[2025-11-16 04:37:24] windmill_325.png all: 2.245000 s 
+[2025-11-16 04:37:24] windmill_325.png drawing: 2.119000 s 
+[2025-11-16 04:37:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_326.json: 0.110000 s 
+[2025-11-16 04:37:24] There are 5 sets of 500 batches.
+[2025-11-16 04:37:26] windmill_326.png all: 2.230000 s 
+[2025-11-16 04:37:26] windmill_326.png drawing: 2.114000 s 
+[2025-11-16 04:37:27] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_327.json: 0.115000 s 
+[2025-11-16 04:37:27] There are 5 sets of 500 batches.
+[2025-11-16 04:37:29] windmill_327.png all: 2.272000 s 
+[2025-11-16 04:37:29] windmill_327.png drawing: 2.154000 s 
+[2025-11-16 04:37:29] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_328.json: 0.122000 s 
+[2025-11-16 04:37:29] There are 5 sets of 500 batches.
+[2025-11-16 04:37:31] windmill_328.png all: 2.165000 s 
+[2025-11-16 04:37:31] windmill_328.png drawing: 2.040000 s 
+[2025-11-16 04:37:31] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_329.json: 0.120000 s 
+[2025-11-16 04:37:31] There are 5 sets of 500 batches.
+[2025-11-16 04:37:33] windmill_329.png all: 2.162000 s 
+[2025-11-16 04:37:33] windmill_329.png drawing: 2.040000 s 
+[2025-11-16 04:37:33] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_330.json: 0.131000 s 
+[2025-11-16 04:37:33] There are 5 sets of 500 batches.
+[2025-11-16 04:37:35] windmill_330.png all: 2.300000 s 
+[2025-11-16 04:37:35] windmill_330.png drawing: 2.167000 s 
+[2025-11-16 04:37:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_331.json: 0.121000 s 
+[2025-11-16 04:37:35] There are 5 sets of 500 batches.
+[2025-11-16 04:37:38] windmill_331.png all: 2.257000 s 
+[2025-11-16 04:37:38] windmill_331.png drawing: 2.134000 s 
+[2025-11-16 04:37:38] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_332.json: 0.120000 s 
+[2025-11-16 04:37:38] There are 5 sets of 500 batches.
+[2025-11-16 04:37:40] windmill_332.png all: 2.275000 s 
+[2025-11-16 04:37:40] windmill_332.png drawing: 2.152000 s 
+[2025-11-16 04:37:40] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_333.json: 0.120000 s 
+[2025-11-16 04:37:40] There are 5 sets of 500 batches.
+[2025-11-16 04:37:42] windmill_333.png all: 2.252000 s 
+[2025-11-16 04:37:42] windmill_333.png drawing: 2.129000 s 
+[2025-11-16 04:37:42] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_334.json: 0.116000 s 
+[2025-11-16 04:37:42] There are 5 sets of 500 batches.
+[2025-11-16 04:37:44] windmill_334.png all: 2.231000 s 
+[2025-11-16 04:37:44] windmill_334.png drawing: 2.113000 s 
+[2025-11-16 04:37:44] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_335.json: 0.120000 s 
+[2025-11-16 04:37:44] There are 5 sets of 500 batches.
+[2025-11-16 04:37:47] windmill_335.png all: 2.156000 s 
+[2025-11-16 04:37:47] windmill_335.png drawing: 2.034000 s 
+[2025-11-16 04:37:47] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_336.json: 0.103000 s 
+[2025-11-16 04:37:47] There are 5 sets of 500 batches.
+[2025-11-16 04:37:49] windmill_336.png all: 2.235000 s 
+[2025-11-16 04:37:49] windmill_336.png drawing: 2.130000 s 
+[2025-11-16 04:37:49] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_337.json: 0.134000 s 
+[2025-11-16 04:37:49] There are 5 sets of 500 batches.
+[2025-11-16 04:37:51] windmill_337.png all: 2.323000 s 
+[2025-11-16 04:37:51] windmill_337.png drawing: 2.186000 s 
+[2025-11-16 04:37:51] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_338.json: 0.135000 s 
+[2025-11-16 04:37:51] There are 5 sets of 500 batches.
+[2025-11-16 04:37:53] windmill_338.png all: 2.381000 s 
+[2025-11-16 04:37:53] windmill_338.png drawing: 2.239000 s 
+[2025-11-16 04:37:54] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_339.json: 0.117000 s 
+[2025-11-16 04:37:54] There are 5 sets of 500 batches.
+[2025-11-16 04:37:56] windmill_339.png all: 2.195000 s 
+[2025-11-16 04:37:56] windmill_339.png drawing: 2.075000 s 
+[2025-11-16 04:37:56] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_340.json: 0.121000 s 
+[2025-11-16 04:37:56] There are 5 sets of 500 batches.
+[2025-11-16 04:37:58] windmill_340.png all: 2.256000 s 
+[2025-11-16 04:37:58] windmill_340.png drawing: 2.132000 s 
+[2025-11-16 04:37:58] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_341.json: 0.124000 s 
+[2025-11-16 04:37:58] There are 5 sets of 500 batches.
+[2025-11-16 04:38:00] windmill_341.png all: 2.218000 s 
+[2025-11-16 04:38:00] windmill_341.png drawing: 2.091000 s 
+[2025-11-16 04:38:00] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_342.json: 0.112000 s 
+[2025-11-16 04:38:00] There are 5 sets of 500 batches.
+[2025-11-16 04:38:02] windmill_342.png all: 2.138000 s 
+[2025-11-16 04:38:02] windmill_342.png drawing: 2.023000 s 
+[2025-11-16 04:38:02] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_343.json: 0.101000 s 
+[2025-11-16 04:38:02] There are 5 sets of 500 batches.
+[2025-11-16 04:38:05] windmill_343.png all: 2.390000 s 
+[2025-11-16 04:38:05] windmill_343.png drawing: 2.287000 s 
+[2025-11-16 04:38:05] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_344.json: 0.134000 s 
+[2025-11-16 04:38:05] There are 5 sets of 500 batches.
+[2025-11-16 04:38:07] windmill_344.png all: 2.461000 s 
+[2025-11-16 04:38:07] windmill_344.png drawing: 2.324000 s 
+[2025-11-16 04:38:07] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_345.json: 0.122000 s 
+[2025-11-16 04:38:07] There are 5 sets of 500 batches.
+[2025-11-16 04:38:10] windmill_345.png all: 2.499000 s 
+[2025-11-16 04:38:10] windmill_345.png drawing: 2.374000 s 
+[2025-11-16 04:38:10] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_346.json: 0.115000 s 
+[2025-11-16 04:38:10] There are 5 sets of 500 batches.
+[2025-11-16 04:38:12] windmill_346.png all: 2.382000 s 
+[2025-11-16 04:38:12] windmill_346.png drawing: 2.264000 s 
+[2025-11-16 04:38:12] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_347.json: 0.122000 s 
+[2025-11-16 04:38:12] There are 5 sets of 500 batches.
+[2025-11-16 04:38:14] windmill_347.png all: 2.177000 s 
+[2025-11-16 04:38:14] windmill_347.png drawing: 2.053000 s 
+[2025-11-16 04:38:14] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_348.json: 0.109000 s 
+[2025-11-16 04:38:14] There are 5 sets of 500 batches.
+[2025-11-16 04:38:17] windmill_348.png all: 2.262000 s 
+[2025-11-16 04:38:17] windmill_348.png drawing: 2.145000 s 
+[2025-11-16 04:38:17] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_349.json: 0.111000 s 
+[2025-11-16 04:38:17] There are 5 sets of 500 batches.
+[2025-11-16 04:38:19] windmill_349.png all: 2.276000 s 
+[2025-11-16 04:38:19] windmill_349.png drawing: 2.159000 s 
+[2025-11-16 04:38:19] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_350.json: 0.126000 s 
+[2025-11-16 04:38:19] There are 5 sets of 500 batches.
+[2025-11-16 04:38:21] windmill_350.png all: 2.299000 s 
+[2025-11-16 04:38:21] windmill_350.png drawing: 2.170000 s 
+[2025-11-16 04:38:21] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_351.json: 0.122000 s 
+[2025-11-16 04:38:21] There are 5 sets of 500 batches.
+[2025-11-16 04:38:23] windmill_351.png all: 2.317000 s 
+[2025-11-16 04:38:23] windmill_351.png drawing: 2.193000 s 
+[2025-11-16 04:38:24] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_352.json: 0.109000 s 
+[2025-11-16 04:38:24] There are 5 sets of 500 batches.
+[2025-11-16 04:38:26] windmill_352.png all: 2.226000 s 
+[2025-11-16 04:38:26] windmill_352.png drawing: 2.112000 s 
+[2025-11-16 04:38:26] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_353.json: 0.114000 s 
+[2025-11-16 04:38:26] There are 5 sets of 500 batches.
+[2025-11-16 04:38:28] windmill_353.png all: 2.277000 s 
+[2025-11-16 04:38:28] windmill_353.png drawing: 2.160000 s 
+[2025-11-16 04:38:28] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_354.json: 0.113000 s 
+[2025-11-16 04:38:28] There are 5 sets of 500 batches.
+[2025-11-16 04:38:30] windmill_354.png all: 2.170000 s 
+[2025-11-16 04:38:30] windmill_354.png drawing: 2.054000 s 
+[2025-11-16 04:38:30] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_355.json: 0.125000 s 
+[2025-11-16 04:38:30] There are 5 sets of 500 batches.
+[2025-11-16 04:38:32] windmill_355.png all: 2.132000 s 
+[2025-11-16 04:38:32] windmill_355.png drawing: 2.004000 s 
+[2025-11-16 04:38:32] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_356.json: 0.111000 s 
+[2025-11-16 04:38:32] There are 5 sets of 500 batches.
+[2025-11-16 04:38:35] windmill_356.png all: 2.276000 s 
+[2025-11-16 04:38:35] windmill_356.png drawing: 2.162000 s 
+[2025-11-16 04:38:35] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_357.json: 0.125000 s 
+[2025-11-16 04:38:35] There are 5 sets of 500 batches.
+[2025-11-16 04:38:37] windmill_357.png all: 2.184000 s 
+[2025-11-16 04:38:37] windmill_357.png drawing: 2.055000 s 
+[2025-11-16 04:38:37] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_358.json: 0.113000 s 
+[2025-11-16 04:38:37] There are 5 sets of 500 batches.
+[2025-11-16 04:38:39] windmill_358.png all: 2.245000 s 
+[2025-11-16 04:38:39] windmill_358.png drawing: 2.128000 s 
+[2025-11-16 04:38:39] jsonFiles/hw2/inputs/akif_uslu/windmill/input/windmill_359.json: 0.100000 s 
+[2025-11-16 04:38:39] There are 5 sets of 500 batches.
+[2025-11-16 04:38:41] windmill_359.png all: 2.242000 s 
+[2025-11-16 04:38:41] windmill_359.png drawing: 2.140000 s 
+[2025-11-16 04:38:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_000.json: 0.161000 s 
+[2025-11-16 04:38:41] There are 5 sets of 500 batches.
+[2025-11-16 04:40:33] davids_camera_000.png all: 51826 m 111.826000 s 
+[2025-11-16 04:40:33] davids_camera_000.png drawing: 51660 m 111.660000 s 
+[2025-11-16 04:40:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_001.json: 0.150000 s 
+[2025-11-16 04:40:33] There are 5 sets of 500 batches.
+[2025-11-16 04:42:26] davids_camera_001.png all: 52883 m 112.883000 s 
+[2025-11-16 04:42:26] davids_camera_001.png drawing: 52731 m 112.731000 s 
+[2025-11-16 04:42:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_002.json: 0.137000 s 
+[2025-11-16 04:42:26] There are 5 sets of 500 batches.
+[2025-11-16 04:44:16] davids_camera_002.png all: 49726 m 109.726000 s 
+[2025-11-16 04:44:16] davids_camera_002.png drawing: 49586 m 109.586000 s 
+[2025-11-16 04:44:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_003.json: 0.122000 s 
+[2025-11-16 04:44:16] There are 5 sets of 500 batches.
+[2025-11-16 04:46:11] davids_camera_003.png all: 55003 m 115.003000 s 
+[2025-11-16 04:46:11] davids_camera_003.png drawing: 54876 m 114.876000 s 
+[2025-11-16 04:46:11] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_004.json: 0.154000 s 
+[2025-11-16 04:46:11] There are 5 sets of 500 batches.
+[2025-11-16 04:48:04] davids_camera_004.png all: 53501 m 113.501000 s 
+[2025-11-16 04:48:04] davids_camera_004.png drawing: 53342 m 113.342000 s 
+[2025-11-16 04:48:04] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_005.json: 0.153000 s 
+[2025-11-16 04:48:04] There are 5 sets of 500 batches.
+[2025-11-16 04:49:58] davids_camera_005.png all: 53635 m 113.635000 s 
+[2025-11-16 04:49:58] davids_camera_005.png drawing: 53480 m 113.480000 s 
+[2025-11-16 04:49:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_006.json: 0.154000 s 
+[2025-11-16 04:49:58] There are 5 sets of 500 batches.
+[2025-11-16 04:51:51] davids_camera_006.png all: 53326 m 113.326000 s 
+[2025-11-16 04:51:51] davids_camera_006.png drawing: 53168 m 113.168000 s 
+[2025-11-16 04:51:51] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_007.json: 0.131000 s 
+[2025-11-16 04:51:51] There are 5 sets of 500 batches.
+[2025-11-16 04:53:47] davids_camera_007.png all: 55930 m 115.930000 s 
+[2025-11-16 04:53:47] davids_camera_007.png drawing: 55795 m 115.795000 s 
+[2025-11-16 04:53:47] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_008.json: 0.156000 s 
+[2025-11-16 04:53:47] There are 5 sets of 500 batches.
+[2025-11-16 04:55:41] davids_camera_008.png all: 54046 m 114.046000 s 
+[2025-11-16 04:55:41] davids_camera_008.png drawing: 53887 m 113.887000 s 
+[2025-11-16 04:55:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_009.json: 0.149000 s 
+[2025-11-16 04:55:41] There are 5 sets of 500 batches.
+[2025-11-16 04:57:35] davids_camera_009.png all: 54038 m 114.038000 s 
+[2025-11-16 04:57:35] davids_camera_009.png drawing: 53885 m 113.885000 s 
+[2025-11-16 04:57:35] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_010.json: 0.161000 s 
+[2025-11-16 04:57:35] There are 5 sets of 500 batches.
+[2025-11-16 04:59:28] davids_camera_010.png all: 52761 m 112.761000 s 
+[2025-11-16 04:59:28] davids_camera_010.png drawing: 52596 m 112.596000 s 
+[2025-11-16 04:59:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_011.json: 0.147000 s 
+[2025-11-16 04:59:28] There are 5 sets of 500 batches.
+[2025-11-16 05:01:25] davids_camera_011.png all: 56819 m 116.819000 s 
+[2025-11-16 05:01:25] davids_camera_011.png drawing: 56668 m 116.668000 s 
+[2025-11-16 05:01:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_012.json: 0.162000 s 
+[2025-11-16 05:01:25] There are 5 sets of 500 batches.
+[2025-11-16 05:03:19] davids_camera_012.png all: 53762 m 113.762000 s 
+[2025-11-16 05:03:19] davids_camera_012.png drawing: 53597 m 113.597000 s 
+[2025-11-16 05:03:19] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_013.json: 0.149000 s 
+[2025-11-16 05:03:19] There are 5 sets of 500 batches.
+[2025-11-16 05:05:14] davids_camera_013.png all: 55579 m 115.579000 s 
+[2025-11-16 05:05:14] davids_camera_013.png drawing: 55427 m 115.427000 s 
+[2025-11-16 05:05:14] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_014.json: 0.149000 s 
+[2025-11-16 05:05:14] There are 5 sets of 500 batches.
+[2025-11-16 05:07:07] davids_camera_014.png all: 52401 m 112.401000 s 
+[2025-11-16 05:07:07] davids_camera_014.png drawing: 52249 m 112.249000 s 
+[2025-11-16 05:07:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_015.json: 0.144000 s 
+[2025-11-16 05:07:07] There are 5 sets of 500 batches.
+[2025-11-16 05:09:03] davids_camera_015.png all: 56448 m 116.448000 s 
+[2025-11-16 05:09:03] davids_camera_015.png drawing: 56297 m 116.297000 s 
+[2025-11-16 05:09:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_016.json: 0.157000 s 
+[2025-11-16 05:09:03] There are 5 sets of 500 batches.
+[2025-11-16 05:10:58] davids_camera_016.png all: 55222 m 115.222000 s 
+[2025-11-16 05:10:58] davids_camera_016.png drawing: 55061 m 115.061000 s 
+[2025-11-16 05:10:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_017.json: 0.148000 s 
+[2025-11-16 05:10:58] There are 5 sets of 500 batches.
+[2025-11-16 05:12:53] davids_camera_017.png all: 54334 m 114.334000 s 
+[2025-11-16 05:12:53] davids_camera_017.png drawing: 54182 m 114.182000 s 
+[2025-11-16 05:12:53] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_018.json: 0.146000 s 
+[2025-11-16 05:12:53] There are 5 sets of 500 batches.
+[2025-11-16 05:14:46] davids_camera_018.png all: 53317 m 113.317000 s 
+[2025-11-16 05:14:46] davids_camera_018.png drawing: 53168 m 113.168000 s 
+[2025-11-16 05:14:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_019.json: 0.149000 s 
+[2025-11-16 05:14:46] There are 5 sets of 500 batches.
+[2025-11-16 05:16:45] davids_camera_019.png all: 58871 m 118.871000 s 
+[2025-11-16 05:16:45] davids_camera_019.png drawing: 58719 m 118.719000 s 
+[2025-11-16 05:16:45] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_020.json: 0.147000 s 
+[2025-11-16 05:16:45] There are 5 sets of 500 batches.
+[2025-11-16 05:18:41] davids_camera_020.png all: 56213 m 116.213000 s 
+[2025-11-16 05:18:41] davids_camera_020.png drawing: 56063 m 116.063000 s 
+[2025-11-16 05:18:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_021.json: 0.138000 s 
+[2025-11-16 05:18:41] There are 5 sets of 500 batches.
+[2025-11-16 05:20:38] davids_camera_021.png all: 56618 m 116.618000 s 
+[2025-11-16 05:20:38] davids_camera_021.png drawing: 56476 m 116.476000 s 
+[2025-11-16 05:20:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_022.json: 0.154000 s 
+[2025-11-16 05:20:38] There are 5 sets of 500 batches.
+[2025-11-16 05:22:33] davids_camera_022.png all: 55197 m 115.197000 s 
+[2025-11-16 05:22:33] davids_camera_022.png drawing: 55039 m 115.039000 s 
+[2025-11-16 05:22:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_023.json: 0.148000 s 
+[2025-11-16 05:22:33] There are 5 sets of 500 batches.
+[2025-11-16 05:24:32] davids_camera_023.png all: 59631 m 119.631000 s 
+[2025-11-16 05:24:32] davids_camera_023.png drawing: 59481 m 119.481000 s 
+[2025-11-16 05:24:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_024.json: 0.163000 s 
+[2025-11-16 05:24:33] There are 5 sets of 500 batches.
+[2025-11-16 05:26:29] davids_camera_024.png all: 56575 m 116.575000 s 
+[2025-11-16 05:26:29] davids_camera_024.png drawing: 56407 m 116.407000 s 
+[2025-11-16 05:26:29] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_025.json: 0.118000 s 
+[2025-11-16 05:26:29] There are 5 sets of 500 batches.
+[2025-11-16 05:28:26] davids_camera_025.png all: 56657 m 116.657000 s 
+[2025-11-16 05:28:26] davids_camera_025.png drawing: 56536 m 116.536000 s 
+[2025-11-16 05:28:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_026.json: 0.140000 s 
+[2025-11-16 05:28:26] There are 5 sets of 500 batches.
+[2025-11-16 05:30:21] davids_camera_026.png all: 54860 m 114.860000 s 
+[2025-11-16 05:30:21] davids_camera_026.png drawing: 54717 m 114.717000 s 
+[2025-11-16 05:30:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_027.json: 0.154000 s 
+[2025-11-16 05:30:21] There are 5 sets of 500 batches.
+[2025-11-16 05:32:20] davids_camera_027.png all: 59834 m 119.834000 s 
+[2025-11-16 05:32:20] davids_camera_027.png drawing: 59677 m 119.677000 s 
+[2025-11-16 05:32:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_028.json: 0.132000 s 
+[2025-11-16 05:32:21] There are 5 sets of 500 batches.
+[2025-11-16 05:34:17] davids_camera_028.png all: 56280 m 116.280000 s 
+[2025-11-16 05:34:17] davids_camera_028.png drawing: 56145 m 116.145000 s 
+[2025-11-16 05:34:17] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_029.json: 0.150000 s 
+[2025-11-16 05:34:17] There are 5 sets of 500 batches.
+[2025-11-16 05:36:14] davids_camera_029.png all: 56990 m 116.990000 s 
+[2025-11-16 05:36:14] davids_camera_029.png drawing: 56837 m 116.837000 s 
+[2025-11-16 05:36:14] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_030.json: 0.137000 s 
+[2025-11-16 05:36:14] There are 5 sets of 500 batches.
+[2025-11-16 05:38:08] davids_camera_030.png all: 54221 m 114.221000 s 
+[2025-11-16 05:38:08] davids_camera_030.png drawing: 54081 m 114.081000 s 
+[2025-11-16 05:38:08] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_031.json: 0.124000 s 
+[2025-11-16 05:38:08] There are 5 sets of 500 batches.
+[2025-11-16 05:40:08] davids_camera_031.png all: 483 m 120.483000 s 
+[2025-11-16 05:40:08] davids_camera_031.png drawing: 355 m 120.355000 s 
+[2025-11-16 05:40:09] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_032.json: 0.160000 s 
+[2025-11-16 05:40:09] There are 5 sets of 500 batches.
+[2025-11-16 05:42:06] davids_camera_032.png all: 57114 m 117.114000 s 
+[2025-11-16 05:42:06] davids_camera_032.png drawing: 56950 m 116.950000 s 
+[2025-11-16 05:42:06] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_033.json: 0.151000 s 
+[2025-11-16 05:42:06] There are 5 sets of 500 batches.
+[2025-11-16 05:44:02] davids_camera_033.png all: 56446 m 116.446000 s 
+[2025-11-16 05:44:02] davids_camera_033.png drawing: 56292 m 116.292000 s 
+[2025-11-16 05:44:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_034.json: 0.149000 s 
+[2025-11-16 05:44:02] There are 5 sets of 500 batches.
+[2025-11-16 05:45:56] davids_camera_034.png all: 53788 m 113.788000 s 
+[2025-11-16 05:45:56] davids_camera_034.png drawing: 53636 m 113.636000 s 
+[2025-11-16 05:45:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_035.json: 0.156000 s 
+[2025-11-16 05:45:56] There are 5 sets of 500 batches.
+[2025-11-16 05:47:54] davids_camera_035.png all: 58206 m 118.206000 s 
+[2025-11-16 05:47:54] davids_camera_035.png drawing: 58046 m 118.046000 s 
+[2025-11-16 05:47:54] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_036.json: 0.132000 s 
+[2025-11-16 05:47:54] There are 5 sets of 500 batches.
+[2025-11-16 05:49:50] davids_camera_036.png all: 56158 m 116.158000 s 
+[2025-11-16 05:49:50] davids_camera_036.png drawing: 56020 m 116.020000 s 
+[2025-11-16 05:49:50] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_037.json: 0.146000 s 
+[2025-11-16 05:49:50] There are 5 sets of 500 batches.
+[2025-11-16 05:51:45] davids_camera_037.png all: 54960 m 114.960000 s 
+[2025-11-16 05:51:45] davids_camera_037.png drawing: 54811 m 114.811000 s 
+[2025-11-16 05:51:45] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_038.json: 0.159000 s 
+[2025-11-16 05:51:45] There are 5 sets of 500 batches.
+[2025-11-16 05:53:38] davids_camera_038.png all: 52906 m 112.906000 s 
+[2025-11-16 05:53:38] davids_camera_038.png drawing: 52743 m 112.743000 s 
+[2025-11-16 05:53:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_039.json: 0.124000 s 
+[2025-11-16 05:53:38] There are 5 sets of 500 batches.
+[2025-11-16 05:55:37] davids_camera_039.png all: 58499 m 118.499000 s 
+[2025-11-16 05:55:37] davids_camera_039.png drawing: 58370 m 118.370000 s 
+[2025-11-16 05:55:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_040.json: 0.152000 s 
+[2025-11-16 05:55:37] There are 5 sets of 500 batches.
+[2025-11-16 05:57:32] davids_camera_040.png all: 55274 m 115.274000 s 
+[2025-11-16 05:57:32] davids_camera_040.png drawing: 55119 m 115.119000 s 
+[2025-11-16 05:57:32] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_041.json: 0.176000 s 
+[2025-11-16 05:57:32] There are 5 sets of 500 batches.
+[2025-11-16 05:59:25] davids_camera_041.png all: 53547 m 113.547000 s 
+[2025-11-16 05:59:25] davids_camera_041.png drawing: 53368 m 113.368000 s 
+[2025-11-16 05:59:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_042.json: 0.150000 s 
+[2025-11-16 05:59:26] There are 5 sets of 500 batches.
+[2025-11-16 06:01:17] davids_camera_042.png all: 52004 m 112.004000 s 
+[2025-11-16 06:01:17] davids_camera_042.png drawing: 51850 m 111.850000 s 
+[2025-11-16 06:01:18] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_043.json: 0.150000 s 
+[2025-11-16 06:01:18] There are 5 sets of 500 batches.
+[2025-11-16 06:03:13] davids_camera_043.png all: 55145 m 115.145000 s 
+[2025-11-16 06:03:13] davids_camera_043.png drawing: 54992 m 114.992000 s 
+[2025-11-16 06:03:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_044.json: 0.151000 s 
+[2025-11-16 06:03:13] There are 5 sets of 500 batches.
+[2025-11-16 06:05:05] davids_camera_044.png all: 52176 m 112.176000 s 
+[2025-11-16 06:05:05] davids_camera_044.png drawing: 52022 m 112.022000 s 
+[2025-11-16 06:05:05] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_045.json: 0.136000 s 
+[2025-11-16 06:05:05] There are 5 sets of 500 batches.
+[2025-11-16 06:06:56] davids_camera_045.png all: 51626 m 111.626000 s 
+[2025-11-16 06:06:56] davids_camera_045.png drawing: 51485 m 111.485000 s 
+[2025-11-16 06:06:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_046.json: 0.133000 s 
+[2025-11-16 06:06:56] There are 5 sets of 500 batches.
+[2025-11-16 06:08:46] davids_camera_046.png all: 49895 m 109.895000 s 
+[2025-11-16 06:08:46] davids_camera_046.png drawing: 49759 m 109.759000 s 
+[2025-11-16 06:08:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_047.json: 0.134000 s 
+[2025-11-16 06:08:46] There are 5 sets of 500 batches.
+[2025-11-16 06:10:39] davids_camera_047.png all: 52656 m 112.656000 s 
+[2025-11-16 06:10:39] davids_camera_047.png drawing: 52519 m 112.519000 s 
+[2025-11-16 06:10:39] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_048.json: 0.153000 s 
+[2025-11-16 06:10:39] There are 5 sets of 500 batches.
+[2025-11-16 06:12:28] davids_camera_048.png all: 49386 m 109.386000 s 
+[2025-11-16 06:12:28] davids_camera_048.png drawing: 49230 m 109.230000 s 
+[2025-11-16 06:12:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_049.json: 0.149000 s 
+[2025-11-16 06:12:28] There are 5 sets of 500 batches.
+[2025-11-16 06:14:16] davids_camera_049.png all: 47392 m 107.392000 s 
+[2025-11-16 06:14:16] davids_camera_049.png drawing: 47239 m 107.239000 s 
+[2025-11-16 06:14:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_050.json: 0.128000 s 
+[2025-11-16 06:14:16] There are 5 sets of 500 batches.
+[2025-11-16 06:16:02] davids_camera_050.png all: 46431 m 106.431000 s 
+[2025-11-16 06:16:02] davids_camera_050.png drawing: 46301 m 106.301000 s 
+[2025-11-16 06:16:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_051.json: 0.137000 s 
+[2025-11-16 06:16:02] There are 5 sets of 500 batches.
+[2025-11-16 06:17:51] davids_camera_051.png all: 48662 m 108.662000 s 
+[2025-11-16 06:17:51] davids_camera_051.png drawing: 48521 m 108.521000 s 
+[2025-11-16 06:17:51] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_052.json: 0.135000 s 
+[2025-11-16 06:17:51] There are 5 sets of 500 batches.
+[2025-11-16 06:19:36] davids_camera_052.png all: 45660 m 105.660000 s 
+[2025-11-16 06:19:36] davids_camera_052.png drawing: 45522 m 105.522000 s 
+[2025-11-16 06:19:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_053.json: 0.158000 s 
+[2025-11-16 06:19:37] There are 5 sets of 500 batches.
+[2025-11-16 06:21:21] davids_camera_053.png all: 44735 m 104.735000 s 
+[2025-11-16 06:21:21] davids_camera_053.png drawing: 44574 m 104.574000 s 
+[2025-11-16 06:21:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_054.json: 0.141000 s 
+[2025-11-16 06:21:21] There are 5 sets of 500 batches.
+[2025-11-16 06:23:04] davids_camera_054.png all: 42330 m 102.330000 s 
+[2025-11-16 06:23:04] davids_camera_054.png drawing: 42184 m 102.184000 s 
+[2025-11-16 06:23:04] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_055.json: 0.142000 s 
+[2025-11-16 06:23:04] There are 5 sets of 500 batches.
+[2025-11-16 06:24:48] davids_camera_055.png all: 44713 m 104.713000 s 
+[2025-11-16 06:24:48] davids_camera_055.png drawing: 44569 m 104.569000 s 
+[2025-11-16 06:24:48] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_056.json: 0.144000 s 
+[2025-11-16 06:24:48] There are 5 sets of 500 batches.
+[2025-11-16 06:26:31] davids_camera_056.png all: 42416 m 102.416000 s 
+[2025-11-16 06:26:31] davids_camera_056.png drawing: 42269 m 102.269000 s 
+[2025-11-16 06:26:31] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_057.json: 0.139000 s 
+[2025-11-16 06:26:31] There are 5 sets of 500 batches.
+[2025-11-16 06:28:11] davids_camera_057.png all: 40169 m 100.169000 s 
+[2025-11-16 06:28:11] davids_camera_057.png drawing: 40027 m 100.027000 s 
+[2025-11-16 06:28:11] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_058.json: 0.142000 s 
+[2025-11-16 06:28:11] There are 5 sets of 500 batches.
+[2025-11-16 06:29:49] davids_camera_058.png all: 38171 m 98.171000 s 
+[2025-11-16 06:29:49] davids_camera_058.png drawing: 38025 m 98.025000 s 
+[2025-11-16 06:29:49] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_059.json: 0.131000 s 
+[2025-11-16 06:29:49] There are 5 sets of 500 batches.
+[2025-11-16 06:31:30] davids_camera_059.png all: 41287 m 101.287000 s 
+[2025-11-16 06:31:30] davids_camera_059.png drawing: 41151 m 101.151000 s 
+[2025-11-16 06:31:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_060.json: 0.150000 s 
+[2025-11-16 06:31:30] There are 5 sets of 500 batches.
+[2025-11-16 06:33:08] davids_camera_060.png all: 37966 m 97.966000 s 
+[2025-11-16 06:33:08] davids_camera_060.png drawing: 37813 m 97.813000 s 
+[2025-11-16 06:33:08] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_061.json: 0.133000 s 
+[2025-11-16 06:33:08] There are 5 sets of 500 batches.
+[2025-11-16 06:34:45] davids_camera_061.png all: 36274 m 96.274000 s 
+[2025-11-16 06:34:45] davids_camera_061.png drawing: 36137 m 96.137000 s 
+[2025-11-16 06:34:45] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_062.json: 0.128000 s 
+[2025-11-16 06:34:45] There are 5 sets of 500 batches.
+[2025-11-16 06:36:19] davids_camera_062.png all: 34142 m 94.142000 s 
+[2025-11-16 06:36:19] davids_camera_062.png drawing: 34010 m 94.010000 s 
+[2025-11-16 06:36:19] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_063.json: 0.144000 s 
+[2025-11-16 06:36:19] There are 5 sets of 500 batches.
+[2025-11-16 06:37:56] davids_camera_063.png all: 37079 m 97.079000 s 
+[2025-11-16 06:37:56] davids_camera_063.png drawing: 36932 m 96.932000 s 
+[2025-11-16 06:37:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_064.json: 0.146000 s 
+[2025-11-16 06:37:56] There are 5 sets of 500 batches.
+[2025-11-16 06:39:29] davids_camera_064.png all: 33107 m 93.107000 s 
+[2025-11-16 06:39:29] davids_camera_064.png drawing: 32957 m 92.957000 s 
+[2025-11-16 06:39:29] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_065.json: 0.161000 s 
+[2025-11-16 06:39:29] There are 5 sets of 500 batches.
+[2025-11-16 06:41:01] davids_camera_065.png all: 31939 m 91.939000 s 
+[2025-11-16 06:41:01] davids_camera_065.png drawing: 31775 m 91.775000 s 
+[2025-11-16 06:41:01] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_066.json: 0.157000 s 
+[2025-11-16 06:41:01] There are 5 sets of 500 batches.
+[2025-11-16 06:42:30] davids_camera_066.png all: 28784 m 88.784000 s 
+[2025-11-16 06:42:30] davids_camera_066.png drawing: 28624 m 88.624000 s 
+[2025-11-16 06:42:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_067.json: 0.136000 s 
+[2025-11-16 06:42:30] There are 5 sets of 500 batches.
+[2025-11-16 06:44:01] davids_camera_067.png all: 31796 m 91.796000 s 
+[2025-11-16 06:44:01] davids_camera_067.png drawing: 31656 m 91.656000 s 
+[2025-11-16 06:44:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_068.json: 0.138000 s 
+[2025-11-16 06:44:02] There are 5 sets of 500 batches.
+[2025-11-16 06:45:29] davids_camera_068.png all: 27648 m 87.648000 s 
+[2025-11-16 06:45:29] davids_camera_068.png drawing: 27506 m 87.506000 s 
+[2025-11-16 06:45:29] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_069.json: 0.163000 s 
+[2025-11-16 06:45:29] There are 5 sets of 500 batches.
+[2025-11-16 06:46:56] davids_camera_069.png all: 26413 m 86.413000 s 
+[2025-11-16 06:46:56] davids_camera_069.png drawing: 26247 m 86.247000 s 
+[2025-11-16 06:46:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_070.json: 0.152000 s 
+[2025-11-16 06:46:56] There are 5 sets of 500 batches.
+[2025-11-16 06:48:19] davids_camera_070.png all: 23918 m 83.918000 s 
+[2025-11-16 06:48:19] davids_camera_070.png drawing: 23761 m 83.761000 s 
+[2025-11-16 06:48:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_071.json: 0.135000 s 
+[2025-11-16 06:48:20] There are 5 sets of 500 batches.
+[2025-11-16 06:49:46] davids_camera_071.png all: 26151 m 86.151000 s 
+[2025-11-16 06:49:46] davids_camera_071.png drawing: 26012 m 86.012000 s 
+[2025-11-16 06:49:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_072.json: 0.164000 s 
+[2025-11-16 06:49:46] There are 5 sets of 500 batches.
+[2025-11-16 06:51:08] davids_camera_072.png all: 22336 m 82.336000 s 
+[2025-11-16 06:51:08] davids_camera_072.png drawing: 22169 m 82.169000 s 
+[2025-11-16 06:51:08] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_073.json: 0.155000 s 
+[2025-11-16 06:51:08] There are 5 sets of 500 batches.
+[2025-11-16 06:52:28] davids_camera_073.png all: 20002 m 80.002000 s 
+[2025-11-16 06:52:28] davids_camera_073.png drawing: 19844 m 79.844000 s 
+[2025-11-16 06:52:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_074.json: 0.114000 s 
+[2025-11-16 06:52:28] There are 5 sets of 500 batches.
+[2025-11-16 06:53:47] davids_camera_074.png all: 18994 m 78.994000 s 
+[2025-11-16 06:53:47] davids_camera_074.png drawing: 18877 m 78.877000 s 
+[2025-11-16 06:53:47] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_075.json: 0.161000 s 
+[2025-11-16 06:53:47] There are 5 sets of 500 batches.
+[2025-11-16 06:55:06] davids_camera_075.png all: 19481 m 79.481000 s 
+[2025-11-16 06:55:06] davids_camera_075.png drawing: 19316 m 79.316000 s 
+[2025-11-16 06:55:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_076.json: 0.130000 s 
+[2025-11-16 06:55:07] There are 5 sets of 500 batches.
+[2025-11-16 06:56:23] davids_camera_076.png all: 16276 m 76.276000 s 
+[2025-11-16 06:56:23] davids_camera_076.png drawing: 16143 m 76.143000 s 
+[2025-11-16 06:56:23] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_077.json: 0.136000 s 
+[2025-11-16 06:56:23] There are 5 sets of 500 batches.
+[2025-11-16 06:57:39] davids_camera_077.png all: 15791 m 75.791000 s 
+[2025-11-16 06:57:39] davids_camera_077.png drawing: 15651 m 75.651000 s 
+[2025-11-16 06:57:39] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_078.json: 0.149000 s 
+[2025-11-16 06:57:39] There are 5 sets of 500 batches.
+[2025-11-16 06:58:52] davids_camera_078.png all: 13847 m 73.847000 s 
+[2025-11-16 06:58:52] davids_camera_078.png drawing: 13694 m 73.694000 s 
+[2025-11-16 06:58:53] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_079.json: 0.136000 s 
+[2025-11-16 06:58:53] There are 5 sets of 500 batches.
+[2025-11-16 07:00:07] davids_camera_079.png all: 14807 m 74.807000 s 
+[2025-11-16 07:00:07] davids_camera_079.png drawing: 14667 m 74.667000 s 
+[2025-11-16 07:00:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_080.json: 0.146000 s 
+[2025-11-16 07:00:07] There are 5 sets of 500 batches.
+[2025-11-16 07:01:20] davids_camera_080.png all: 12739 m 72.739000 s 
+[2025-11-16 07:01:20] davids_camera_080.png drawing: 12590 m 72.590000 s 
+[2025-11-16 07:01:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_081.json: 0.142000 s 
+[2025-11-16 07:01:20] There are 5 sets of 500 batches.
+[2025-11-16 07:02:30] davids_camera_081.png all: 10364 m 70.364000 s 
+[2025-11-16 07:02:30] davids_camera_081.png drawing: 10219 m 70.219000 s 
+[2025-11-16 07:02:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_082.json: 0.166000 s 
+[2025-11-16 07:02:30] There are 5 sets of 500 batches.
+[2025-11-16 07:03:41] davids_camera_082.png all: 10285 m 70.285000 s 
+[2025-11-16 07:03:41] davids_camera_082.png drawing: 10116 m 70.116000 s 
+[2025-11-16 07:03:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_083.json: 0.155000 s 
+[2025-11-16 07:03:41] There are 5 sets of 500 batches.
+[2025-11-16 07:04:52] davids_camera_083.png all: 11113 m 71.113000 s 
+[2025-11-16 07:04:52] davids_camera_083.png drawing: 10955 m 70.955000 s 
+[2025-11-16 07:04:52] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_084.json: 0.152000 s 
+[2025-11-16 07:04:52] There are 5 sets of 500 batches.
+[2025-11-16 07:06:01] davids_camera_084.png all: 9428 m 69.428000 s 
+[2025-11-16 07:06:01] davids_camera_084.png drawing: 9272 m 69.272000 s 
+[2025-11-16 07:06:01] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_085.json: 0.148000 s 
+[2025-11-16 07:06:01] There are 5 sets of 500 batches.
+[2025-11-16 07:07:10] davids_camera_085.png all: 9099 m 69.099000 s 
+[2025-11-16 07:07:10] davids_camera_085.png drawing: 8944 m 68.944000 s 
+[2025-11-16 07:07:10] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_086.json: 0.157000 s 
+[2025-11-16 07:07:10] There are 5 sets of 500 batches.
+[2025-11-16 07:08:16] davids_camera_086.png all: 5456 m 65.456000 s 
+[2025-11-16 07:08:16] davids_camera_086.png drawing: 5295 m 65.295000 s 
+[2025-11-16 07:08:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_087.json: 0.138000 s 
+[2025-11-16 07:08:16] There are 5 sets of 500 batches.
+[2025-11-16 07:09:23] davids_camera_087.png all: 6826 m 66.826000 s 
+[2025-11-16 07:09:23] davids_camera_087.png drawing: 6684 m 66.684000 s 
+[2025-11-16 07:09:23] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_088.json: 0.162000 s 
+[2025-11-16 07:09:23] There are 5 sets of 500 batches.
+[2025-11-16 07:10:30] davids_camera_088.png all: 7321 m 67.321000 s 
+[2025-11-16 07:10:30] davids_camera_088.png drawing: 7155 m 67.155000 s 
+[2025-11-16 07:10:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_089.json: 0.153000 s 
+[2025-11-16 07:10:30] There are 5 sets of 500 batches.
+[2025-11-16 07:11:37] davids_camera_089.png all: 6971 m 66.971000 s 
+[2025-11-16 07:11:37] davids_camera_089.png drawing: 6815 m 66.815000 s 
+[2025-11-16 07:11:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_090.json: 0.140000 s 
+[2025-11-16 07:11:37] There are 5 sets of 500 batches.
+[2025-11-16 07:12:43] davids_camera_090.png all: 6135 m 66.135000 s 
+[2025-11-16 07:12:43] davids_camera_090.png drawing: 5991 m 65.991000 s 
+[2025-11-16 07:12:43] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_091.json: 0.137000 s 
+[2025-11-16 07:12:43] There are 5 sets of 500 batches.
+[2025-11-16 07:13:51] davids_camera_091.png all: 7625 m 67.625000 s 
+[2025-11-16 07:13:51] davids_camera_091.png drawing: 7482 m 67.482000 s 
+[2025-11-16 07:13:51] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_092.json: 0.160000 s 
+[2025-11-16 07:13:51] There are 5 sets of 500 batches.
+[2025-11-16 07:14:57] davids_camera_092.png all: 6453 m 66.453000 s 
+[2025-11-16 07:14:57] davids_camera_092.png drawing: 6290 m 66.290000 s 
+[2025-11-16 07:14:57] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_093.json: 0.151000 s 
+[2025-11-16 07:14:57] There are 5 sets of 500 batches.
+[2025-11-16 07:16:02] davids_camera_093.png all: 5297 m 65.297000 s 
+[2025-11-16 07:16:02] davids_camera_093.png drawing: 5141 m 65.141000 s 
+[2025-11-16 07:16:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_094.json: 0.160000 s 
+[2025-11-16 07:16:03] There are 5 sets of 500 batches.
+[2025-11-16 07:17:07] davids_camera_094.png all: 4337 m 64.337000 s 
+[2025-11-16 07:17:07] davids_camera_094.png drawing: 4172 m 64.172000 s 
+[2025-11-16 07:17:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_095.json: 0.168000 s 
+[2025-11-16 07:17:07] There are 5 sets of 500 batches.
+[2025-11-16 07:18:11] davids_camera_095.png all: 4468 m 64.468000 s 
+[2025-11-16 07:18:11] davids_camera_095.png drawing: 4297 m 64.297000 s 
+[2025-11-16 07:18:11] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_096.json: 0.144000 s 
+[2025-11-16 07:18:11] There are 5 sets of 500 batches.
+[2025-11-16 07:19:15] davids_camera_096.png all: 4125 m 64.125000 s 
+[2025-11-16 07:19:15] davids_camera_096.png drawing: 3975 m 63.975000 s 
+[2025-11-16 07:19:15] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_097.json: 0.143000 s 
+[2025-11-16 07:19:15] There are 5 sets of 500 batches.
+[2025-11-16 07:20:20] davids_camera_097.png all: 4333 m 64.333000 s 
+[2025-11-16 07:20:20] davids_camera_097.png drawing: 4186 m 64.186000 s 
+[2025-11-16 07:20:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_098.json: 0.160000 s 
+[2025-11-16 07:20:20] There are 5 sets of 500 batches.
+[2025-11-16 07:21:24] davids_camera_098.png all: 4427 m 64.427000 s 
+[2025-11-16 07:21:24] davids_camera_098.png drawing: 4264 m 64.264000 s 
+[2025-11-16 07:21:24] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_099.json: 0.167000 s 
+[2025-11-16 07:21:24] There are 5 sets of 500 batches.
+[2025-11-16 07:22:30] davids_camera_099.png all: 5944 m 65.944000 s 
+[2025-11-16 07:22:30] davids_camera_099.png drawing: 5771 m 65.771000 s 
+[2025-11-16 07:22:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_100.json: 0.149000 s 
+[2025-11-16 07:22:30] There are 5 sets of 500 batches.
+[2025-11-16 07:23:37] davids_camera_100.png all: 7347 m 67.347000 s 
+[2025-11-16 07:23:37] davids_camera_100.png drawing: 7192 m 67.192000 s 
+[2025-11-16 07:23:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_101.json: 0.160000 s 
+[2025-11-16 07:23:38] There are 5 sets of 500 batches.
+[2025-11-16 07:24:45] davids_camera_101.png all: 7956 m 67.956000 s 
+[2025-11-16 07:24:45] davids_camera_101.png drawing: 7792 m 67.792000 s 
+[2025-11-16 07:24:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_102.json: 0.158000 s 
+[2025-11-16 07:24:46] There are 5 sets of 500 batches.
+[2025-11-16 07:25:53] davids_camera_102.png all: 7951 m 67.951000 s 
+[2025-11-16 07:25:53] davids_camera_102.png drawing: 7789 m 67.789000 s 
+[2025-11-16 07:25:53] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_103.json: 0.171000 s 
+[2025-11-16 07:25:53] There are 5 sets of 500 batches.
+[2025-11-16 07:27:00] davids_camera_103.png all: 6532 m 66.532000 s 
+[2025-11-16 07:27:00] davids_camera_103.png drawing: 6358 m 66.358000 s 
+[2025-11-16 07:27:00] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_104.json: 0.121000 s 
+[2025-11-16 07:27:00] There are 5 sets of 500 batches.
+[2025-11-16 07:28:02] davids_camera_104.png all: 1752 m 61.752000 s 
+[2025-11-16 07:28:02] davids_camera_104.png drawing: 1629 m 61.629000 s 
+[2025-11-16 07:28:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_105.json: 0.139000 s 
+[2025-11-16 07:28:02] There are 5 sets of 500 batches.
+[2025-11-16 07:29:06] davids_camera_105.png all: 4825 m 64.825000 s 
+[2025-11-16 07:29:06] davids_camera_105.png drawing: 4683 m 64.683000 s 
+[2025-11-16 07:29:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_106.json: 0.149000 s 
+[2025-11-16 07:29:07] There are 5 sets of 500 batches.
+[2025-11-16 07:30:13] davids_camera_106.png all: 6225 m 66.225000 s 
+[2025-11-16 07:30:13] davids_camera_106.png drawing: 6073 m 66.073000 s 
+[2025-11-16 07:30:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_107.json: 0.134000 s 
+[2025-11-16 07:30:13] There are 5 sets of 500 batches.
+[2025-11-16 07:31:16] davids_camera_107.png all: 2928 m 62.928000 s 
+[2025-11-16 07:31:16] davids_camera_107.png drawing: 2791 m 62.791000 s 
+[2025-11-16 07:31:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_108.json: 0.128000 s 
+[2025-11-16 07:31:16] There are 5 sets of 500 batches.
+[2025-11-16 07:32:20] davids_camera_108.png all: 4327 m 64.327000 s 
+[2025-11-16 07:32:20] davids_camera_108.png drawing: 4197 m 64.197000 s 
+[2025-11-16 07:32:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_109.json: 0.130000 s 
+[2025-11-16 07:32:20] There are 5 sets of 500 batches.
+[2025-11-16 07:33:26] davids_camera_109.png all: 5612 m 65.612000 s 
+[2025-11-16 07:33:26] davids_camera_109.png drawing: 5479 m 65.479000 s 
+[2025-11-16 07:33:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_110.json: 0.130000 s 
+[2025-11-16 07:33:26] There are 5 sets of 500 batches.
+[2025-11-16 07:34:32] davids_camera_110.png all: 6929 m 66.929000 s 
+[2025-11-16 07:34:32] davids_camera_110.png drawing: 6794 m 66.794000 s 
+[2025-11-16 07:34:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_111.json: 0.143000 s 
+[2025-11-16 07:34:33] There are 5 sets of 500 batches.
+[2025-11-16 07:35:37] davids_camera_111.png all: 4798 m 64.798000 s 
+[2025-11-16 07:35:37] davids_camera_111.png drawing: 4653 m 64.653000 s 
+[2025-11-16 07:35:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_112.json: 0.124000 s 
+[2025-11-16 07:35:37] There are 5 sets of 500 batches.
+[2025-11-16 07:36:46] davids_camera_112.png all: 8584 m 68.584000 s 
+[2025-11-16 07:36:46] davids_camera_112.png drawing: 8457 m 68.457000 s 
+[2025-11-16 07:36:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_113.json: 0.167000 s 
+[2025-11-16 07:36:46] There are 5 sets of 500 batches.
+[2025-11-16 07:37:58] davids_camera_113.png all: 12249 m 72.249000 s 
+[2025-11-16 07:37:58] davids_camera_113.png drawing: 12078 m 72.078000 s 
+[2025-11-16 07:37:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_114.json: 0.141000 s 
+[2025-11-16 07:37:58] There are 5 sets of 500 batches.
+[2025-11-16 07:39:01] davids_camera_114.png all: 3279 m 63.279000 s 
+[2025-11-16 07:39:01] davids_camera_114.png drawing: 3135 m 63.135000 s 
+[2025-11-16 07:39:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_115.json: 0.142000 s 
+[2025-11-16 07:39:02] There are 5 sets of 500 batches.
+[2025-11-16 07:40:13] davids_camera_115.png all: 11275 m 71.275000 s 
+[2025-11-16 07:40:13] davids_camera_115.png drawing: 11130 m 71.130000 s 
+[2025-11-16 07:40:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_116.json: 0.157000 s 
+[2025-11-16 07:40:13] There are 5 sets of 500 batches.
+[2025-11-16 07:41:20] davids_camera_116.png all: 6933 m 66.933000 s 
+[2025-11-16 07:41:20] davids_camera_116.png drawing: 6772 m 66.772000 s 
+[2025-11-16 07:41:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_117.json: 0.122000 s 
+[2025-11-16 07:41:20] There are 5 sets of 500 batches.
+[2025-11-16 07:42:28] davids_camera_117.png all: 8235 m 68.235000 s 
+[2025-11-16 07:42:28] davids_camera_117.png drawing: 8110 m 68.110000 s 
+[2025-11-16 07:42:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_118.json: 0.119000 s 
+[2025-11-16 07:42:28] There are 5 sets of 500 batches.
+[2025-11-16 07:43:37] davids_camera_118.png all: 8782 m 68.782000 s 
+[2025-11-16 07:43:37] davids_camera_118.png drawing: 8659 m 68.659000 s 
+[2025-11-16 07:43:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_119.json: 0.146000 s 
+[2025-11-16 07:43:37] There are 5 sets of 500 batches.
+[2025-11-16 07:44:56] davids_camera_119.png all: 19089 m 79.089000 s 
+[2025-11-16 07:44:56] davids_camera_119.png drawing: 18940 m 78.940000 s 
+[2025-11-16 07:44:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_120.json: 0.112000 s 
+[2025-11-16 07:44:56] There are 5 sets of 500 batches.
+[2025-11-16 07:46:06] davids_camera_120.png all: 10045 m 70.045000 s 
+[2025-11-16 07:46:06] davids_camera_120.png drawing: 9931 m 69.931000 s 
+[2025-11-16 07:46:06] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_121.json: 0.136000 s 
+[2025-11-16 07:46:06] There are 5 sets of 500 batches.
+[2025-11-16 07:47:17] davids_camera_121.png all: 10724 m 70.724000 s 
+[2025-11-16 07:47:17] davids_camera_121.png drawing: 10585 m 70.585000 s 
+[2025-11-16 07:47:17] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_122.json: 0.126000 s 
+[2025-11-16 07:47:17] There are 5 sets of 500 batches.
+[2025-11-16 07:48:21] davids_camera_122.png all: 3989 m 63.989000 s 
+[2025-11-16 07:48:21] davids_camera_122.png drawing: 3861 m 63.861000 s 
+[2025-11-16 07:48:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_123.json: 0.133000 s 
+[2025-11-16 07:48:21] There are 5 sets of 500 batches.
+[2025-11-16 07:49:41] davids_camera_123.png all: 20644 m 80.644000 s 
+[2025-11-16 07:49:41] davids_camera_123.png drawing: 20508 m 80.508000 s 
+[2025-11-16 07:49:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_124.json: 0.135000 s 
+[2025-11-16 07:49:41] There are 5 sets of 500 batches.
+[2025-11-16 07:50:58] davids_camera_124.png all: 16716 m 76.716000 s 
+[2025-11-16 07:50:58] davids_camera_124.png drawing: 16579 m 76.579000 s 
+[2025-11-16 07:50:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_125.json: 0.132000 s 
+[2025-11-16 07:50:58] There are 5 sets of 500 batches.
+[2025-11-16 07:52:13] davids_camera_125.png all: 14819 m 74.819000 s 
+[2025-11-16 07:52:13] davids_camera_125.png drawing: 14684 m 74.684000 s 
+[2025-11-16 07:52:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_126.json: 0.124000 s 
+[2025-11-16 07:52:13] There are 5 sets of 500 batches.
+[2025-11-16 07:53:25] davids_camera_126.png all: 12408 m 72.408000 s 
+[2025-11-16 07:53:25] davids_camera_126.png drawing: 12281 m 72.281000 s 
+[2025-11-16 07:53:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_127.json: 0.122000 s 
+[2025-11-16 07:53:25] There are 5 sets of 500 batches.
+[2025-11-16 07:54:41] davids_camera_127.png all: 15667 m 75.667000 s 
+[2025-11-16 07:54:41] davids_camera_127.png drawing: 15543 m 75.543000 s 
+[2025-11-16 07:54:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_128.json: 0.161000 s 
+[2025-11-16 07:54:41] There are 5 sets of 500 batches.
+[2025-11-16 07:56:00] davids_camera_128.png all: 18985 m 78.985000 s 
+[2025-11-16 07:56:00] davids_camera_128.png drawing: 18820 m 78.820000 s 
+[2025-11-16 07:56:00] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_129.json: 0.126000 s 
+[2025-11-16 07:56:00] There are 5 sets of 500 batches.
+[2025-11-16 07:57:18] davids_camera_129.png all: 18382 m 78.382000 s 
+[2025-11-16 07:57:18] davids_camera_129.png drawing: 18253 m 78.253000 s 
+[2025-11-16 07:57:18] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_130.json: 0.127000 s 
+[2025-11-16 07:57:18] There are 5 sets of 500 batches.
+[2025-11-16 07:58:33] davids_camera_130.png all: 14857 m 74.857000 s 
+[2025-11-16 07:58:33] davids_camera_130.png drawing: 14726 m 74.726000 s 
+[2025-11-16 07:58:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_131.json: 0.134000 s 
+[2025-11-16 07:58:33] There are 5 sets of 500 batches.
+[2025-11-16 07:59:51] davids_camera_131.png all: 18166 m 78.166000 s 
+[2025-11-16 07:59:51] davids_camera_131.png drawing: 18030 m 78.030000 s 
+[2025-11-16 07:59:51] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_132.json: 0.163000 s 
+[2025-11-16 07:59:51] There are 5 sets of 500 batches.
+[2025-11-16 08:01:10] davids_camera_132.png all: 18349 m 78.349000 s 
+[2025-11-16 08:01:10] davids_camera_132.png drawing: 18181 m 78.181000 s 
+[2025-11-16 08:01:10] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_133.json: 0.162000 s 
+[2025-11-16 08:01:10] There are 5 sets of 500 batches.
+[2025-11-16 08:02:27] davids_camera_133.png all: 17250 m 77.250000 s 
+[2025-11-16 08:02:27] davids_camera_133.png drawing: 17084 m 77.084000 s 
+[2025-11-16 08:02:27] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_134.json: 0.138000 s 
+[2025-11-16 08:02:27] There are 5 sets of 500 batches.
+[2025-11-16 08:03:40] davids_camera_134.png all: 13490 m 73.490000 s 
+[2025-11-16 08:03:40] davids_camera_134.png drawing: 13349 m 73.349000 s 
+[2025-11-16 08:03:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_135.json: 0.141000 s 
+[2025-11-16 08:03:41] There are 5 sets of 500 batches.
+[2025-11-16 08:04:57] davids_camera_135.png all: 17090 m 77.090000 s 
+[2025-11-16 08:04:57] davids_camera_135.png drawing: 16946 m 76.946000 s 
+[2025-11-16 08:04:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_136.json: 0.116000 s 
+[2025-11-16 08:04:58] There are 5 sets of 500 batches.
+[2025-11-16 08:06:11] davids_camera_136.png all: 13319 m 73.319000 s 
+[2025-11-16 08:06:11] davids_camera_136.png drawing: 13200 m 73.200000 s 
+[2025-11-16 08:06:11] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_137.json: 0.107000 s 
+[2025-11-16 08:06:11] There are 5 sets of 500 batches.
+[2025-11-16 08:07:25] davids_camera_137.png all: 14419 m 74.419000 s 
+[2025-11-16 08:07:25] davids_camera_137.png drawing: 14311 m 74.311000 s 
+[2025-11-16 08:07:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_138.json: 0.126000 s 
+[2025-11-16 08:07:25] There are 5 sets of 500 batches.
+[2025-11-16 08:08:38] davids_camera_138.png all: 12510 m 72.510000 s 
+[2025-11-16 08:08:38] davids_camera_138.png drawing: 12381 m 72.381000 s 
+[2025-11-16 08:08:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_139.json: 0.134000 s 
+[2025-11-16 08:08:38] There are 5 sets of 500 batches.
+[2025-11-16 08:09:52] davids_camera_139.png all: 13965 m 73.965000 s 
+[2025-11-16 08:09:52] davids_camera_139.png drawing: 13829 m 73.829000 s 
+[2025-11-16 08:09:52] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_140.json: 0.128000 s 
+[2025-11-16 08:09:52] There are 5 sets of 500 batches.
+[2025-11-16 08:11:02] davids_camera_140.png all: 10764 m 70.764000 s 
+[2025-11-16 08:11:02] davids_camera_140.png drawing: 10633 m 70.633000 s 
+[2025-11-16 08:11:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_141.json: 0.127000 s 
+[2025-11-16 08:11:03] There are 5 sets of 500 batches.
+[2025-11-16 08:12:17] davids_camera_141.png all: 14266 m 74.266000 s 
+[2025-11-16 08:12:17] davids_camera_141.png drawing: 14136 m 74.136000 s 
+[2025-11-16 08:12:17] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_142.json: 0.136000 s 
+[2025-11-16 08:12:17] There are 5 sets of 500 batches.
+[2025-11-16 08:13:35] davids_camera_142.png all: 18544 m 78.544000 s 
+[2025-11-16 08:13:35] davids_camera_142.png drawing: 18405 m 78.405000 s 
+[2025-11-16 08:13:35] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_143.json: 0.147000 s 
+[2025-11-16 08:13:35] There are 5 sets of 500 batches.
+[2025-11-16 08:14:46] davids_camera_143.png all: 11183 m 71.183000 s 
+[2025-11-16 08:14:46] davids_camera_143.png drawing: 11032 m 71.032000 s 
+[2025-11-16 08:14:47] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_144.json: 0.131000 s 
+[2025-11-16 08:14:47] There are 5 sets of 500 batches.
+[2025-11-16 08:15:59] davids_camera_144.png all: 12211 m 72.211000 s 
+[2025-11-16 08:15:59] davids_camera_144.png drawing: 12077 m 72.077000 s 
+[2025-11-16 08:15:59] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_145.json: 0.130000 s 
+[2025-11-16 08:15:59] There are 5 sets of 500 batches.
+[2025-11-16 08:17:13] davids_camera_145.png all: 14272 m 74.272000 s 
+[2025-11-16 08:17:13] davids_camera_145.png drawing: 14139 m 74.139000 s 
+[2025-11-16 08:17:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_146.json: 0.135000 s 
+[2025-11-16 08:17:13] There are 5 sets of 500 batches.
+[2025-11-16 08:18:29] davids_camera_146.png all: 15786 m 75.786000 s 
+[2025-11-16 08:18:29] davids_camera_146.png drawing: 15649 m 75.649000 s 
+[2025-11-16 08:18:29] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_147.json: 0.157000 s 
+[2025-11-16 08:18:29] There are 5 sets of 500 batches.
+[2025-11-16 08:19:43] davids_camera_147.png all: 14012 m 74.012000 s 
+[2025-11-16 08:19:43] davids_camera_147.png drawing: 13852 m 73.852000 s 
+[2025-11-16 08:19:43] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_148.json: 0.141000 s 
+[2025-11-16 08:19:43] There are 5 sets of 500 batches.
+[2025-11-16 08:20:57] davids_camera_148.png all: 14499 m 74.499000 s 
+[2025-11-16 08:20:57] davids_camera_148.png drawing: 14355 m 74.355000 s 
+[2025-11-16 08:20:57] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_149.json: 0.125000 s 
+[2025-11-16 08:20:57] There are 5 sets of 500 batches.
+[2025-11-16 08:22:11] davids_camera_149.png all: 14143 m 74.143000 s 
+[2025-11-16 08:22:11] davids_camera_149.png drawing: 14015 m 74.015000 s 
+[2025-11-16 08:22:12] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_150.json: 0.136000 s 
+[2025-11-16 08:22:12] There are 5 sets of 500 batches.
+[2025-11-16 08:23:26] davids_camera_150.png all: 14513 m 74.513000 s 
+[2025-11-16 08:23:26] davids_camera_150.png drawing: 14374 m 74.374000 s 
+[2025-11-16 08:23:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_151.json: 0.128000 s 
+[2025-11-16 08:23:26] There are 5 sets of 500 batches.
+[2025-11-16 08:24:38] davids_camera_151.png all: 11882 m 71.882000 s 
+[2025-11-16 08:24:38] davids_camera_151.png drawing: 11752 m 71.752000 s 
+[2025-11-16 08:24:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_152.json: 0.154000 s 
+[2025-11-16 08:24:38] There are 5 sets of 500 batches.
+[2025-11-16 08:25:52] davids_camera_152.png all: 14049 m 74.049000 s 
+[2025-11-16 08:25:52] davids_camera_152.png drawing: 13892 m 73.892000 s 
+[2025-11-16 08:25:52] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_153.json: 0.135000 s 
+[2025-11-16 08:25:52] There are 5 sets of 500 batches.
+[2025-11-16 08:27:08] davids_camera_153.png all: 16077 m 76.077000 s 
+[2025-11-16 08:27:08] davids_camera_153.png drawing: 15939 m 75.939000 s 
+[2025-11-16 08:27:08] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_154.json: 0.149000 s 
+[2025-11-16 08:27:08] There are 5 sets of 500 batches.
+[2025-11-16 08:28:25] davids_camera_154.png all: 16949 m 76.949000 s 
+[2025-11-16 08:28:25] davids_camera_154.png drawing: 16796 m 76.796000 s 
+[2025-11-16 08:28:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_155.json: 0.138000 s 
+[2025-11-16 08:28:25] There are 5 sets of 500 batches.
+[2025-11-16 08:29:36] davids_camera_155.png all: 10690 m 70.690000 s 
+[2025-11-16 08:29:36] davids_camera_155.png drawing: 10549 m 70.549000 s 
+[2025-11-16 08:29:36] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_156.json: 0.125000 s 
+[2025-11-16 08:29:36] There are 5 sets of 500 batches.
+[2025-11-16 08:30:43] davids_camera_156.png all: 7670 m 67.670000 s 
+[2025-11-16 08:30:43] davids_camera_156.png drawing: 7542 m 67.542000 s 
+[2025-11-16 08:30:43] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_157.json: 0.133000 s 
+[2025-11-16 08:30:43] There are 5 sets of 500 batches.
+[2025-11-16 08:31:58] davids_camera_157.png all: 15061 m 75.061000 s 
+[2025-11-16 08:31:58] davids_camera_157.png drawing: 14926 m 74.926000 s 
+[2025-11-16 08:31:59] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_158.json: 0.142000 s 
+[2025-11-16 08:31:59] There are 5 sets of 500 batches.
+[2025-11-16 08:33:13] davids_camera_158.png all: 14689 m 74.689000 s 
+[2025-11-16 08:33:13] davids_camera_158.png drawing: 14544 m 74.544000 s 
+[2025-11-16 08:33:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_159.json: 0.168000 s 
+[2025-11-16 08:33:13] There are 5 sets of 500 batches.
+[2025-11-16 08:34:27] davids_camera_159.png all: 13554 m 73.554000 s 
+[2025-11-16 08:34:27] davids_camera_159.png drawing: 13381 m 73.381000 s 
+[2025-11-16 08:34:27] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_160.json: 0.184000 s 
+[2025-11-16 08:34:27] There are 5 sets of 500 batches.
+[2025-11-16 08:35:34] davids_camera_160.png all: 7348 m 67.348000 s 
+[2025-11-16 08:35:34] davids_camera_160.png drawing: 7160 m 67.160000 s 
+[2025-11-16 08:35:34] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_161.json: 0.135000 s 
+[2025-11-16 08:35:34] There are 5 sets of 500 batches.
+[2025-11-16 08:36:46] davids_camera_161.png all: 12420 m 72.420000 s 
+[2025-11-16 08:36:46] davids_camera_161.png drawing: 12281 m 72.281000 s 
+[2025-11-16 08:36:47] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_162.json: 0.124000 s 
+[2025-11-16 08:36:47] There are 5 sets of 500 batches.
+[2025-11-16 08:37:55] davids_camera_162.png all: 8099 m 68.099000 s 
+[2025-11-16 08:37:55] davids_camera_162.png drawing: 7971 m 67.971000 s 
+[2025-11-16 08:37:55] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_163.json: 0.129000 s 
+[2025-11-16 08:37:55] There are 5 sets of 500 batches.
+[2025-11-16 08:39:00] davids_camera_163.png all: 5397 m 65.397000 s 
+[2025-11-16 08:39:00] davids_camera_163.png drawing: 5266 m 65.266000 s 
+[2025-11-16 08:39:00] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_164.json: 0.141000 s 
+[2025-11-16 08:39:00] There are 5 sets of 500 batches.
+[2025-11-16 08:40:02] davids_camera_164.png all: 2228 m 62.228000 s 
+[2025-11-16 08:40:02] davids_camera_164.png drawing: 2084 m 62.084000 s 
+[2025-11-16 08:40:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_165.json: 0.145000 s 
+[2025-11-16 08:40:02] There are 5 sets of 500 batches.
+[2025-11-16 08:41:03] davids_camera_165.png all: 1212 m 61.212000 s 
+[2025-11-16 08:41:03] davids_camera_165.png drawing: 1064 m 61.064000 s 
+[2025-11-16 08:41:04] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_166.json: 0.139000 s 
+[2025-11-16 08:41:04] There are 5 sets of 500 batches.
+[2025-11-16 08:42:04] davids_camera_166.png all: 516 m 60.516000 s 
+[2025-11-16 08:42:04] davids_camera_166.png drawing: 374 m 60.374000 s 
+[2025-11-16 08:42:04] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_167.json: 0.138000 s 
+[2025-11-16 08:42:04] There are 5 sets of 500 batches.
+[2025-11-16 08:43:10] davids_camera_167.png all: 5987 m 65.987000 s 
+[2025-11-16 08:43:10] davids_camera_167.png drawing: 5847 m 65.847000 s 
+[2025-11-16 08:43:10] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_168.json: 0.139000 s 
+[2025-11-16 08:43:10] There are 5 sets of 500 batches.
+[2025-11-16 08:44:18] davids_camera_168.png all: 8110 m 68.110000 s 
+[2025-11-16 08:44:18] davids_camera_168.png drawing: 7968 m 67.968000 s 
+[2025-11-16 08:44:18] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_169.json: 0.145000 s 
+[2025-11-16 08:44:18] There are 5 sets of 500 batches.
+[2025-11-16 08:45:28] davids_camera_169.png all: 9697 m 69.697000 s 
+[2025-11-16 08:45:28] davids_camera_169.png drawing: 9549 m 69.549000 s 
+[2025-11-16 08:45:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_170.json: 0.147000 s 
+[2025-11-16 08:45:28] There are 5 sets of 500 batches.
+[2025-11-16 08:46:34] davids_camera_170.png all: 6351 m 66.351000 s 
+[2025-11-16 08:46:34] davids_camera_170.png drawing: 6200 m 66.200000 s 
+[2025-11-16 08:46:34] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_171.json: 0.143000 s 
+[2025-11-16 08:46:34] There are 5 sets of 500 batches.
+[2025-11-16 08:47:42] davids_camera_171.png all: 7984 m 67.984000 s 
+[2025-11-16 08:47:42] davids_camera_171.png drawing: 7838 m 67.838000 s 
+[2025-11-16 08:47:42] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_172.json: 0.148000 s 
+[2025-11-16 08:47:42] There are 5 sets of 500 batches.
+[2025-11-16 08:48:48] davids_camera_172.png all: 5609 m 65.609000 s 
+[2025-11-16 08:48:48] davids_camera_172.png drawing: 5456 m 65.456000 s 
+[2025-11-16 08:48:48] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_173.json: 0.138000 s 
+[2025-11-16 08:48:48] There are 5 sets of 500 batches.
+[2025-11-16 08:49:54] davids_camera_173.png all: 6758 m 66.758000 s 
+[2025-11-16 08:49:54] davids_camera_173.png drawing: 6618 m 66.618000 s 
+[2025-11-16 08:49:55] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_174.json: 0.150000 s 
+[2025-11-16 08:49:55] There are 5 sets of 500 batches.
+[2025-11-16 08:50:56] davids_camera_174.png all: 1405 m 61.405000 s 
+[2025-11-16 08:50:56] davids_camera_174.png drawing: 1251 m 61.251000 s 
+[2025-11-16 08:50:56] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_175.json: 0.133000 s 
+[2025-11-16 08:50:56] There are 5 sets of 500 batches.
+[2025-11-16 08:52:06] davids_camera_175.png all: 9973 m 69.973000 s 
+[2025-11-16 08:52:06] davids_camera_175.png drawing: 9837 m 69.837000 s 
+[2025-11-16 08:52:06] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_176.json: 0.140000 s 
+[2025-11-16 08:52:06] There are 5 sets of 500 batches.
+[2025-11-16 08:53:17] davids_camera_176.png all: 10746 m 70.746000 s 
+[2025-11-16 08:53:17] davids_camera_176.png drawing: 10603 m 70.603000 s 
+[2025-11-16 08:53:17] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_177.json: 0.140000 s 
+[2025-11-16 08:53:17] There are 5 sets of 500 batches.
+[2025-11-16 08:54:28] davids_camera_177.png all: 11023 m 71.023000 s 
+[2025-11-16 08:54:28] davids_camera_177.png drawing: 10881 m 70.881000 s 
+[2025-11-16 08:54:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_178.json: 0.153000 s 
+[2025-11-16 08:54:28] There are 5 sets of 500 batches.
+[2025-11-16 08:55:33] davids_camera_178.png all: 5008 m 65.008000 s 
+[2025-11-16 08:55:33] davids_camera_178.png drawing: 4850 m 64.850000 s 
+[2025-11-16 08:55:33] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_179.json: 0.136000 s 
+[2025-11-16 08:55:33] There are 5 sets of 500 batches.
+[2025-11-16 08:56:43] davids_camera_179.png all: 10675 m 70.675000 s 
+[2025-11-16 08:56:43] davids_camera_179.png drawing: 10536 m 70.536000 s 
+[2025-11-16 08:56:43] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_180.json: 0.142000 s 
+[2025-11-16 08:56:43] There are 5 sets of 500 batches.
+[2025-11-16 08:57:54] davids_camera_180.png all: 10358 m 70.358000 s 
+[2025-11-16 08:57:54] davids_camera_180.png drawing: 10212 m 70.212000 s 
+[2025-11-16 08:57:54] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_181.json: 0.135000 s 
+[2025-11-16 08:57:54] There are 5 sets of 500 batches.
+[2025-11-16 08:59:01] davids_camera_181.png all: 7176 m 67.176000 s 
+[2025-11-16 08:59:01] davids_camera_181.png drawing: 7039 m 67.039000 s 
+[2025-11-16 08:59:01] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_182.json: 0.145000 s 
+[2025-11-16 08:59:01] There are 5 sets of 500 batches.
+[2025-11-16 09:00:09] davids_camera_182.png all: 8388 m 68.388000 s 
+[2025-11-16 09:00:09] davids_camera_182.png drawing: 8237 m 68.237000 s 
+[2025-11-16 09:00:09] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_183.json: 0.140000 s 
+[2025-11-16 09:00:09] There are 5 sets of 500 batches.
+[2025-11-16 09:01:18] davids_camera_183.png all: 8666 m 68.666000 s 
+[2025-11-16 09:01:18] davids_camera_183.png drawing: 8522 m 68.522000 s 
+[2025-11-16 09:01:18] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_184.json: 0.136000 s 
+[2025-11-16 09:01:18] There are 5 sets of 500 batches.
+[2025-11-16 09:02:27] davids_camera_184.png all: 8814 m 68.814000 s 
+[2025-11-16 09:02:27] davids_camera_184.png drawing: 8675 m 68.675000 s 
+[2025-11-16 09:02:27] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_185.json: 0.127000 s 
+[2025-11-16 09:02:27] There are 5 sets of 500 batches.
+[2025-11-16 09:03:38] davids_camera_185.png all: 10923 m 70.923000 s 
+[2025-11-16 09:03:38] davids_camera_185.png drawing: 10793 m 70.793000 s 
+[2025-11-16 09:03:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_186.json: 0.136000 s 
+[2025-11-16 09:03:38] There are 5 sets of 500 batches.
+[2025-11-16 09:04:46] davids_camera_186.png all: 8579 m 68.579000 s 
+[2025-11-16 09:04:46] davids_camera_186.png drawing: 8440 m 68.440000 s 
+[2025-11-16 09:04:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_187.json: 0.173000 s 
+[2025-11-16 09:04:46] There are 5 sets of 500 batches.
+[2025-11-16 09:06:00] davids_camera_187.png all: 13792 m 73.792000 s 
+[2025-11-16 09:06:00] davids_camera_187.png drawing: 13616 m 73.616000 s 
+[2025-11-16 09:06:00] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_188.json: 0.179000 s 
+[2025-11-16 09:06:00] There are 5 sets of 500 batches.
+[2025-11-16 09:07:25] davids_camera_188.png all: 24459 m 84.459000 s 
+[2025-11-16 09:07:25] davids_camera_188.png drawing: 24276 m 84.276000 s 
+[2025-11-16 09:07:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_189.json: 0.162000 s 
+[2025-11-16 09:07:25] There are 5 sets of 500 batches.
+[2025-11-16 09:08:40] davids_camera_189.png all: 15273 m 75.273000 s 
+[2025-11-16 09:08:40] davids_camera_189.png drawing: 15109 m 75.109000 s 
+[2025-11-16 09:08:40] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_190.json: 0.146000 s 
+[2025-11-16 09:08:40] There are 5 sets of 500 batches.
+[2025-11-16 09:09:47] davids_camera_190.png all: 7656 m 67.656000 s 
+[2025-11-16 09:09:47] davids_camera_190.png drawing: 7506 m 67.506000 s 
+[2025-11-16 09:09:48] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_191.json: 0.166000 s 
+[2025-11-16 09:09:48] There are 5 sets of 500 batches.
+[2025-11-16 09:11:05] davids_camera_191.png all: 17611 m 77.611000 s 
+[2025-11-16 09:11:05] davids_camera_191.png drawing: 17441 m 77.441000 s 
+[2025-11-16 09:11:05] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_192.json: 0.156000 s 
+[2025-11-16 09:11:05] There are 5 sets of 500 batches.
+[2025-11-16 09:12:21] davids_camera_192.png all: 16025 m 76.025000 s 
+[2025-11-16 09:12:21] davids_camera_192.png drawing: 15864 m 75.864000 s 
+[2025-11-16 09:12:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_193.json: 0.161000 s 
+[2025-11-16 09:12:21] There are 5 sets of 500 batches.
+[2025-11-16 09:13:32] davids_camera_193.png all: 10640 m 70.640000 s 
+[2025-11-16 09:13:32] davids_camera_193.png drawing: 10475 m 70.475000 s 
+[2025-11-16 09:13:32] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_194.json: 0.137000 s 
+[2025-11-16 09:13:32] There are 5 sets of 500 batches.
+[2025-11-16 09:14:35] davids_camera_194.png all: 3105 m 63.105000 s 
+[2025-11-16 09:14:35] davids_camera_194.png drawing: 2965 m 62.965000 s 
+[2025-11-16 09:14:35] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_195.json: 0.134000 s 
+[2025-11-16 09:14:35] There are 5 sets of 500 batches.
+[2025-11-16 09:15:46] davids_camera_195.png all: 11057 m 71.057000 s 
+[2025-11-16 09:15:46] davids_camera_195.png drawing: 10919 m 70.919000 s 
+[2025-11-16 09:15:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_196.json: 0.132000 s 
+[2025-11-16 09:15:46] There are 5 sets of 500 batches.
+[2025-11-16 09:17:01] davids_camera_196.png all: 14622 m 74.622000 s 
+[2025-11-16 09:17:01] davids_camera_196.png drawing: 14487 m 74.487000 s 
+[2025-11-16 09:17:01] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_197.json: 0.156000 s 
+[2025-11-16 09:17:01] There are 5 sets of 500 batches.
+[2025-11-16 09:18:19] davids_camera_197.png all: 18263 m 78.263000 s 
+[2025-11-16 09:18:19] davids_camera_197.png drawing: 18104 m 78.104000 s 
+[2025-11-16 09:18:19] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_198.json: 0.126000 s 
+[2025-11-16 09:18:19] There are 5 sets of 500 batches.
+[2025-11-16 09:19:38] davids_camera_198.png all: 19054 m 79.054000 s 
+[2025-11-16 09:19:38] davids_camera_198.png drawing: 18926 m 78.926000 s 
+[2025-11-16 09:19:38] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_199.json: 0.174000 s 
+[2025-11-16 09:19:38] There are 5 sets of 500 batches.
+[2025-11-16 09:20:47] davids_camera_199.png all: 9285 m 69.285000 s 
+[2025-11-16 09:20:47] davids_camera_199.png drawing: 9107 m 69.107000 s 
+[2025-11-16 09:20:47] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_200.json: 0.136000 s 
+[2025-11-16 09:20:47] There are 5 sets of 500 batches.
+[2025-11-16 09:22:02] davids_camera_200.png all: 14886 m 74.886000 s 
+[2025-11-16 09:22:02] davids_camera_200.png drawing: 14747 m 74.747000 s 
+[2025-11-16 09:22:02] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_201.json: 0.145000 s 
+[2025-11-16 09:22:02] There are 5 sets of 500 batches.
+[2025-11-16 09:23:21] davids_camera_201.png all: 18433 m 78.433000 s 
+[2025-11-16 09:23:21] davids_camera_201.png drawing: 18280 m 78.280000 s 
+[2025-11-16 09:23:21] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_202.json: 0.139000 s 
+[2025-11-16 09:23:21] There are 5 sets of 500 batches.
+[2025-11-16 09:24:30] davids_camera_202.png all: 9964 m 69.964000 s 
+[2025-11-16 09:24:30] davids_camera_202.png drawing: 9821 m 69.821000 s 
+[2025-11-16 09:24:31] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_203.json: 0.133000 s 
+[2025-11-16 09:24:31] There are 5 sets of 500 batches.
+[2025-11-16 09:25:46] davids_camera_203.png all: 15011 m 75.011000 s 
+[2025-11-16 09:25:46] davids_camera_203.png drawing: 14875 m 74.875000 s 
+[2025-11-16 09:25:46] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_204.json: 0.132000 s 
+[2025-11-16 09:25:46] There are 5 sets of 500 batches.
+[2025-11-16 09:27:03] davids_camera_204.png all: 17013 m 77.013000 s 
+[2025-11-16 09:27:03] davids_camera_204.png drawing: 16878 m 76.878000 s 
+[2025-11-16 09:27:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_205.json: 0.121000 s 
+[2025-11-16 09:27:03] There are 5 sets of 500 batches.
+[2025-11-16 09:28:15] davids_camera_205.png all: 12094 m 72.094000 s 
+[2025-11-16 09:28:15] davids_camera_205.png drawing: 11971 m 71.971000 s 
+[2025-11-16 09:28:15] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_206.json: 0.133000 s 
+[2025-11-16 09:28:15] There are 5 sets of 500 batches.

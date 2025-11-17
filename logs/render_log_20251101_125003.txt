@@ -1,0 +1,82 @@
+[2025-11-01 12:50:03] Log started.
+[2025-11-01 12:50:03] 
+
+The following are the rather simple scenes:
+[2025-11-01 12:50:03] jsonFiles/inputs/simple.json: 0.003000 s
+[2025-11-01 12:50:03] simple.png all: 0.045000 s
+[2025-11-01 12:50:03] simple.png drawing: 0.039000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/spheres.json: 0.008000 s
+[2025-11-01 12:50:03] spheres.png all: 0.057000 s
+[2025-11-01 12:50:03] spheres.png drawing: 0.046000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/spheres_mirror.json: 0.002000 s
+[2025-11-01 12:50:03] spheres_mirror.png all: 0.045000 s
+[2025-11-01 12:50:03] spheres_mirror.png drawing: 0.041000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/spheres_with_plane.json: 0.003000 s
+[2025-11-01 12:50:03] spheres_with_plane.png all: 0.035000 s
+[2025-11-01 12:50:03] spheres_with_plane.png drawing: 0.030000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/two_spheres.json: 0.004000 s
+[2025-11-01 12:50:03] two_spheres.png all: 0.035000 s
+[2025-11-01 12:50:03] two_spheres.png drawing: 0.029000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/cornellbox.json: 0.005000 s
+[2025-11-01 12:50:03] cornellbox.png all: 0.053000 s
+[2025-11-01 12:50:03] cornellbox.png drawing: 0.043000 s
+[2025-11-01 12:50:03] jsonFiles/inputs/scienceTree.json: 0.008000 s
+[2025-11-01 12:50:05] scienceTree.png all: 1.782000 s
+[2025-11-01 12:50:05] scienceTree.png drawing: 1.773000 s
+[2025-11-01 12:50:05] jsonFiles/inputs/bunny.json: 0.010000 s
+[2025-11-01 12:50:06] bunny.png all: 1.161000 s
+[2025-11-01 12:50:06] bunny.png drawing: 1.150000 s
+[2025-11-01 12:50:06] jsonFiles/inputs/bunny_with_plane.json: 0.006000 s
+[2025-11-01 12:50:34] bunny_with_plane.png all: 27.814000 s
+[2025-11-01 12:50:34] bunny_with_plane.png drawing: 27.805000 s
+[2025-11-01 12:50:35] jsonFiles/inputs/chinese_dragon.json: 0.752000 s
+[2025-11-01 13:12:31] chinese_dragon.png all: 1316.735000 s
+[2025-11-01 13:12:31] chinese_dragon.png drawing: 1315.981000 s
+[2025-11-01 13:12:31] 
+
+Dielectic and conductor scenes:
+[2025-11-01 13:12:31] jsonFiles/inputs/cornellbox_recursive.json: 0.005000 s
+[2025-11-01 13:12:31] cornellbox_recursive.png all: 0.055000 s
+[2025-11-01 13:12:31] cornellbox_recursive.png drawing: 0.048000 s
+[2025-11-01 13:12:31] jsonFiles/inputs/scienceTree_glass.json: 0.007000 s
+[2025-11-01 13:12:36] scienceTree_glass.png all: 5.535000 s
+[2025-11-01 13:12:36] scienceTree_glass.png drawing: 5.526000 s
+[2025-11-01 13:12:36] 
+
+Akif Uslu ones (smooth):
+[2025-11-01 13:12:36] jsonFiles/inputs/akif_uslu/low_poly_smooth.json: 0.017000 s
+[2025-11-01 13:12:54] low_poly_scene_smooth.png all: 17.326000 s
+[2025-11-01 13:12:54] low_poly_scene_smooth.png drawing: 17.306000 s
+[2025-11-01 13:12:54] jsonFiles/inputs/akif_uslu/berserker_smooth.json: 0.015000 s
+[2025-11-01 13:12:59] berserker_smooth.png all: 5.120000 s
+[2025-11-01 13:12:59] berserker_smooth.png drawing: 5.101000 s
+[2025-11-01 13:12:59] jsonFiles/inputs/akif_uslu/tower_smooth.json: 0.013000 s
+[2025-11-01 13:13:18] tower_smooth.png all: 18.853000 s
+[2025-11-01 13:13:18] tower_smooth.png drawing: 18.838000 s
+[2025-11-01 13:13:18] jsonFiles/inputs/akif_uslu/car_smooth_fixed.json: 0.021000 s
+[2025-11-01 13:13:55] Car_smooth.png all: 37.423000 s
+[2025-11-01 13:13:55] Car_smooth.png drawing: 37.399000 s
+[2025-11-01 13:14:29] Car_front_smooth.png all: 71.800000 s
+[2025-11-01 13:14:29] Car_front_smooth.png drawing: 34.372000 s
+[2025-11-01 13:14:29] jsonFiles/inputs/akif_uslu/windmill_smooth.json: 0.024000 s
+[2025-11-01 13:14:42] windmill_smooth.png all: 12.226000 s
+[2025-11-01 13:14:42] windmill_smooth.png drawing: 12.199000 s
+[2025-11-01 13:14:42] 
+
+The ones under the raven folder:
+[2025-11-01 13:14:42] jsonFiles/inputs/raven/rt_david.json: 0.149000 s
+[2025-11-01 13:19:57] David.png all: 315.103000 s
+[2025-11-01 13:19:57] David.png drawing: 314.951000 s
+[2025-11-01 13:19:57] jsonFiles/inputs/raven/rt_raven.json: 0.014000 s
+[2025-11-01 13:20:21] raven.png all: 24.118000 s
+[2025-11-01 13:20:21] raven.png drawing: 24.101000 s
+[2025-11-01 13:20:21] jsonFiles/inputs/raven/rt_utahteapot_mug_ceng.json: 0.089000 s
+[2025-11-01 13:21:58] UtahTeapotMugCENG.png all: 97.539000 s
+[2025-11-01 13:21:58] UtahTeapotMugCENG.png drawing: 97.448000 s
+[2025-11-01 13:21:58] 
+
+Scenes with lookAt:
+[2025-11-01 13:22:00] jsonFiles/inputs/other_dragon.json: 1.788000 s
+[2025-11-01 15:07:54] other_dragon.png all: 6355.616000 s
+[2025-11-01 15:07:54] other_dragon.png drawing: 6353.825000 s
+[2025-11-01 15:07:55] jsonFiles/inputs/deniz_sayin/lobster.json: 1.276000 s

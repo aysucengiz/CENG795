@@ -1,0 +1,1115 @@
+[2025-11-16 22:59:35] Log started.
+[2025-11-16 22:59:35] 
+
+The following are simple scenes:
+[2025-11-16 22:59:35] jsonFiles/hw2/inputs/ellipsoids.json: 0.005000 s 
+[2025-11-16 22:59:36] ellipsoids.png all: 0.073000 s 
+[2025-11-16 22:59:36] ellipsoids.png drawing: 0.065000 s 
+[2025-11-16 22:59:36] jsonFiles/hw2/inputs/spheres.json: 0.004000 s 
+[2025-11-16 22:59:36] spheres.png all: 0.056000 s 
+[2025-11-16 22:59:36] spheres.png drawing: 0.051000 s 
+[2025-11-16 22:59:36] jsonFiles/hw2/inputs/simple_transform.json: 0.004000 s 
+[2025-11-16 22:59:36] simple_transform.png all: 0.037000 s 
+[2025-11-16 22:59:36] simple_transform.png drawing: 0.029000 s 
+[2025-11-16 22:59:36] jsonFiles/hw2/inputs/mirror_room.json: 0.002000 s 
+[2025-11-16 22:59:36] mirror_room.png all: 0.348000 s 
+[2025-11-16 22:59:36] mirror_room.png drawing: 0.343000 s 
+[2025-11-16 22:59:36] jsonFiles/hw2/inputs/akif_uslu/berserker/two_berserkers.json: 0.144000 s 
+[2025-11-16 22:59:36] two_berserkers.png all: 0.353000 s 
+[2025-11-16 22:59:36] two_berserkers.png drawing: 0.207000 s 
+[2025-11-16 22:59:36] 
+
+The following contain dielectric or conductors:
+[2025-11-16 22:59:36] jsonFiles/hw2/inputs/metal_glass_plates.json: 0.004000 s 
+[2025-11-16 22:59:37] metal_glass_plates.png all: 0.210000 s 
+[2025-11-16 22:59:37] metal_glass_plates.png drawing: 0.203000 s 
+[2025-11-16 22:59:37] 
+
+The following are time consuming scenes:
+[2025-11-16 22:59:37] jsonFiles/hw2/inputs/grass/grass_desert.json: 0.014000 s 
+[2025-11-16 23:05:11] grass_desert.png all: 34477 m 334.477000 s 
+[2025-11-16 23:05:11] grass_desert.png drawing: 34460 m 334.460000 s 
+[2025-11-16 23:05:11] 
+
+The following are moving/dynamic scenes:
+[2025-11-16 23:05:11] jsonFiles/hw2/inputs/raven/light_around_david/davids_000.json: 0.190000 s 
+[2025-11-16 23:06:41] davids_000.png all: 29940 m 89.940000 s 
+[2025-11-16 23:06:41] davids_000.png drawing: 29746 m 89.746000 s 
+[2025-11-16 23:06:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_001.json: 0.229000 s 
+[2025-11-16 23:08:19] davids_001.png all: 37451 m 97.451000 s 
+[2025-11-16 23:08:19] davids_001.png drawing: 37218 m 97.218000 s 
+[2025-11-16 23:08:19] jsonFiles/hw2/inputs/raven/light_around_david/davids_002.json: 0.127000 s 
+[2025-11-16 23:09:52] davids_002.png all: 33323 m 93.323000 s 
+[2025-11-16 23:09:52] davids_002.png drawing: 33194 m 93.194000 s 
+[2025-11-16 23:09:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_003.json: 0.144000 s 
+[2025-11-16 23:11:23] davids_003.png all: 31231 m 91.231000 s 
+[2025-11-16 23:11:23] davids_003.png drawing: 31083 m 91.083000 s 
+[2025-11-16 23:11:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_004.json: 0.155000 s 
+[2025-11-16 23:12:55] davids_004.png all: 32264 m 92.264000 s 
+[2025-11-16 23:12:55] davids_004.png drawing: 32107 m 92.107000 s 
+[2025-11-16 23:12:56] jsonFiles/hw2/inputs/raven/light_around_david/davids_005.json: 0.152000 s 
+[2025-11-16 23:14:26] davids_005.png all: 30699 m 90.699000 s 
+[2025-11-16 23:14:26] davids_005.png drawing: 30544 m 90.544000 s 
+[2025-11-16 23:14:26] jsonFiles/hw2/inputs/raven/light_around_david/davids_006.json: 0.161000 s 
+[2025-11-16 23:15:58] davids_006.png all: 31874 m 91.874000 s 
+[2025-11-16 23:15:58] davids_006.png drawing: 31707 m 91.707000 s 
+[2025-11-16 23:15:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_007.json: 0.249000 s 
+[2025-11-16 23:17:28] davids_007.png all: 30169 m 90.169000 s 
+[2025-11-16 23:17:28] davids_007.png drawing: 29917 m 89.917000 s 
+[2025-11-16 23:17:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_008.json: 0.136000 s 
+[2025-11-16 23:19:00] davids_008.png all: 31846 m 91.846000 s 
+[2025-11-16 23:19:00] davids_008.png drawing: 31707 m 91.707000 s 
+[2025-11-16 23:19:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_009.json: 0.153000 s 
+[2025-11-16 23:20:31] davids_009.png all: 31311 m 91.311000 s 
+[2025-11-16 23:20:31] davids_009.png drawing: 31155 m 91.155000 s 
+[2025-11-16 23:20:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_010.json: 0.123000 s 
+[2025-11-16 23:22:01] davids_010.png all: 30098 m 90.098000 s 
+[2025-11-16 23:22:01] davids_010.png drawing: 29969 m 89.969000 s 
+[2025-11-16 23:22:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_011.json: 0.147000 s 
+[2025-11-16 23:23:31] davids_011.png all: 29757 m 89.757000 s 
+[2025-11-16 23:23:31] davids_011.png drawing: 29608 m 89.608000 s 
+[2025-11-16 23:23:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_012.json: 0.131000 s 
+[2025-11-16 23:25:01] davids_012.png all: 29841 m 89.841000 s 
+[2025-11-16 23:25:01] davids_012.png drawing: 29707 m 89.707000 s 
+[2025-11-16 23:25:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_013.json: 0.154000 s 
+[2025-11-16 23:26:32] davids_013.png all: 30918 m 90.918000 s 
+[2025-11-16 23:26:32] davids_013.png drawing: 30761 m 90.761000 s 
+[2025-11-16 23:26:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_014.json: 0.199000 s 
+[2025-11-16 23:28:02] davids_014.png all: 30366 m 90.366000 s 
+[2025-11-16 23:28:02] davids_014.png drawing: 30163 m 90.163000 s 
+[2025-11-16 23:28:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_015.json: 0.171000 s 
+[2025-11-16 23:29:31] davids_015.png all: 28830 m 88.830000 s 
+[2025-11-16 23:29:31] davids_015.png drawing: 28656 m 88.656000 s 
+[2025-11-16 23:29:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_016.json: 0.156000 s 
+[2025-11-16 23:31:02] davids_016.png all: 30307 m 90.307000 s 
+[2025-11-16 23:31:02] davids_016.png drawing: 30134 m 90.134000 s 
+[2025-11-16 23:31:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_017.json: 0.132000 s 
+[2025-11-16 23:32:29] davids_017.png all: 27621 m 87.621000 s 
+[2025-11-16 23:32:29] davids_017.png drawing: 27485 m 87.485000 s 
+[2025-11-16 23:32:29] jsonFiles/hw2/inputs/raven/light_around_david/davids_018.json: 0.123000 s 
+[2025-11-16 23:33:57] davids_018.png all: 27701 m 87.701000 s 
+[2025-11-16 23:33:57] davids_018.png drawing: 27574 m 87.574000 s 
+[2025-11-16 23:33:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_019.json: 0.142000 s 
+[2025-11-16 23:35:23] davids_019.png all: 26531 m 86.531000 s 
+[2025-11-16 23:35:23] davids_019.png drawing: 26386 m 86.386000 s 
+[2025-11-16 23:35:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_020.json: 0.137000 s 
+[2025-11-16 23:36:50] davids_020.png all: 26085 m 86.085000 s 
+[2025-11-16 23:36:50] davids_020.png drawing: 25946 m 85.946000 s 
+[2025-11-16 23:36:50] jsonFiles/hw2/inputs/raven/light_around_david/davids_021.json: 0.138000 s 
+[2025-11-16 23:38:21] davids_021.png all: 31530 m 91.530000 s 
+[2025-11-16 23:38:21] davids_021.png drawing: 31389 m 91.389000 s 
+[2025-11-16 23:38:21] jsonFiles/hw2/inputs/raven/light_around_david/davids_022.json: 0.180000 s 
+[2025-11-16 23:40:10] davids_022.png all: 48817 m 108.817000 s 
+[2025-11-16 23:40:10] davids_022.png drawing: 48623 m 108.623000 s 
+[2025-11-16 23:40:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_023.json: 0.213000 s 
+[2025-11-16 23:42:04] davids_023.png all: 53737 m 113.737000 s 
+[2025-11-16 23:42:04] davids_023.png drawing: 53520 m 113.520000 s 
+[2025-11-16 23:42:04] jsonFiles/hw2/inputs/raven/light_around_david/davids_024.json: 0.221000 s 
+[2025-11-16 23:43:48] davids_024.png all: 44512 m 104.512000 s 
+[2025-11-16 23:43:48] davids_024.png drawing: 44288 m 104.288000 s 
+[2025-11-16 23:43:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_025.json: 0.248000 s 
+[2025-11-16 23:45:31] davids_025.png all: 43256 m 103.256000 s 
+[2025-11-16 23:45:31] davids_025.png drawing: 43004 m 103.004000 s 
+[2025-11-16 23:45:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_026.json: 0.180000 s 
+[2025-11-16 23:47:13] davids_026.png all: 41721 m 101.721000 s 
+[2025-11-16 23:47:13] davids_026.png drawing: 41538 m 101.538000 s 
+[2025-11-16 23:47:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_027.json: 0.246000 s 
+[2025-11-16 23:48:55] davids_027.png all: 41662 m 101.662000 s 
+[2025-11-16 23:48:55] davids_027.png drawing: 41413 m 101.413000 s 
+[2025-11-16 23:48:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_028.json: 0.231000 s 
+[2025-11-16 23:50:35] davids_028.png all: 39780 m 99.780000 s 
+[2025-11-16 23:50:35] davids_028.png drawing: 39545 m 99.545000 s 
+[2025-11-16 23:50:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_029.json: 0.183000 s 
+[2025-11-16 23:52:15] davids_029.png all: 40656 m 100.656000 s 
+[2025-11-16 23:52:15] davids_029.png drawing: 40470 m 100.470000 s 
+[2025-11-16 23:52:16] jsonFiles/hw2/inputs/raven/light_around_david/davids_030.json: 0.191000 s 
+[2025-11-16 23:53:55] davids_030.png all: 39427 m 99.427000 s 
+[2025-11-16 23:53:55] davids_030.png drawing: 39225 m 99.225000 s 
+[2025-11-16 23:53:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_031.json: 0.226000 s 
+[2025-11-16 23:55:33] davids_031.png all: 38269 m 98.269000 s 
+[2025-11-16 23:55:33] davids_031.png drawing: 38028 m 98.028000 s 
+[2025-11-16 23:55:33] jsonFiles/hw2/inputs/raven/light_around_david/davids_032.json: 0.212000 s 
+[2025-11-16 23:57:10] davids_032.png all: 37457 m 97.457000 s 
+[2025-11-16 23:57:10] davids_032.png drawing: 37234 m 97.234000 s 
+[2025-11-16 23:57:11] jsonFiles/hw2/inputs/raven/light_around_david/davids_033.json: 0.218000 s 
+[2025-11-16 23:58:48] davids_033.png all: 37291 m 97.291000 s 
+[2025-11-16 23:58:48] davids_033.png drawing: 37069 m 97.069000 s 
+[2025-11-16 23:58:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_034.json: 0.195000 s 
+[2025-11-17 00:00:25] davids_034.png all: 37001 m 97.001000 s 
+[2025-11-17 00:00:25] davids_034.png drawing: 36787 m 96.787000 s 
+[2025-11-17 00:00:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_035.json: 0.207000 s 
+[2025-11-17 00:02:03] davids_035.png all: 37873 m 97.873000 s 
+[2025-11-17 00:02:03] davids_035.png drawing: 37663 m 97.663000 s 
+[2025-11-17 00:02:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_036.json: 0.196000 s 
+[2025-11-17 00:03:38] davids_036.png all: 34948 m 94.948000 s 
+[2025-11-17 00:03:38] davids_036.png drawing: 34750 m 94.750000 s 
+[2025-11-17 00:03:38] jsonFiles/hw2/inputs/raven/light_around_david/davids_037.json: 0.295000 s 
+[2025-11-17 00:05:13] davids_037.png all: 34923 m 94.923000 s 
+[2025-11-17 00:05:13] davids_037.png drawing: 34608 m 94.608000 s 
+[2025-11-17 00:05:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_038.json: 0.179000 s 
+[2025-11-17 00:06:48] davids_038.png all: 35129 m 95.129000 s 
+[2025-11-17 00:06:48] davids_038.png drawing: 34915 m 94.915000 s 
+[2025-11-17 00:06:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_039.json: 0.279000 s 
+[2025-11-17 00:08:23] davids_039.png all: 34860 m 94.860000 s 
+[2025-11-17 00:08:23] davids_039.png drawing: 34577 m 94.577000 s 
+[2025-11-17 00:08:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_040.json: 0.209000 s 
+[2025-11-17 00:09:59] davids_040.png all: 36224 m 96.224000 s 
+[2025-11-17 00:09:59] davids_040.png drawing: 36007 m 96.007000 s 
+[2025-11-17 00:09:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_041.json: 0.259000 s 
+[2025-11-17 00:11:34] davids_041.png all: 34764 m 94.764000 s 
+[2025-11-17 00:11:34] davids_041.png drawing: 34502 m 94.502000 s 
+[2025-11-17 00:11:34] jsonFiles/hw2/inputs/raven/light_around_david/davids_042.json: 0.215000 s 
+[2025-11-17 00:13:09] davids_042.png all: 35459 m 95.459000 s 
+[2025-11-17 00:13:09] davids_042.png drawing: 35240 m 95.240000 s 
+[2025-11-17 00:13:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_043.json: 0.278000 s 
+[2025-11-17 00:14:46] davids_043.png all: 37018 m 97.018000 s 
+[2025-11-17 00:14:46] davids_043.png drawing: 36715 m 96.715000 s 
+[2025-11-17 00:14:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_044.json: 0.187000 s 
+[2025-11-17 00:16:23] davids_044.png all: 36592 m 96.592000 s 
+[2025-11-17 00:16:23] davids_044.png drawing: 36401 m 96.401000 s 
+[2025-11-17 00:16:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_045.json: 0.235000 s 
+[2025-11-17 00:18:03] davids_045.png all: 39829 m 99.829000 s 
+[2025-11-17 00:18:03] davids_045.png drawing: 39581 m 99.581000 s 
+[2025-11-17 00:18:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_046.json: 0.489000 s 
+[2025-11-17 00:19:41] davids_046.png all: 38043 m 98.043000 s 
+[2025-11-17 00:19:41] davids_046.png drawing: 37551 m 97.551000 s 
+[2025-11-17 00:19:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_047.json: 0.205000 s 
+[2025-11-17 00:21:19] davids_047.png all: 38263 m 98.263000 s 
+[2025-11-17 00:21:19] davids_047.png drawing: 38055 m 98.055000 s 
+[2025-11-17 00:21:19] jsonFiles/hw2/inputs/raven/light_around_david/davids_048.json: 0.178000 s 
+[2025-11-17 00:22:59] davids_048.png all: 40041 m 100.041000 s 
+[2025-11-17 00:22:59] davids_048.png drawing: 39860 m 99.860000 s 
+[2025-11-17 00:22:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_049.json: 0.175000 s 
+[2025-11-17 00:24:42] davids_049.png all: 42570 m 102.570000 s 
+[2025-11-17 00:24:42] davids_049.png drawing: 42391 m 102.391000 s 
+[2025-11-17 00:24:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_050.json: 0.202000 s 
+[2025-11-17 00:26:22] davids_050.png all: 40465 m 100.465000 s 
+[2025-11-17 00:26:22] davids_050.png drawing: 40261 m 100.261000 s 
+[2025-11-17 00:26:22] jsonFiles/hw2/inputs/raven/light_around_david/davids_051.json: 0.242000 s 
+[2025-11-17 00:28:03] davids_051.png all: 41004 m 101.004000 s 
+[2025-11-17 00:28:03] davids_051.png drawing: 40759 m 100.759000 s 
+[2025-11-17 00:28:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_052.json: 0.250000 s 
+[2025-11-17 00:29:45] davids_052.png all: 41688 m 101.688000 s 
+[2025-11-17 00:29:45] davids_052.png drawing: 41410 m 101.410000 s 
+[2025-11-17 00:29:45] jsonFiles/hw2/inputs/raven/light_around_david/davids_053.json: 0.222000 s 
+[2025-11-17 00:31:28] davids_053.png all: 43144 m 103.144000 s 
+[2025-11-17 00:31:28] davids_053.png drawing: 42919 m 102.919000 s 
+[2025-11-17 00:31:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_054.json: 0.150000 s 
+[2025-11-17 00:33:09] davids_054.png all: 41474 m 101.474000 s 
+[2025-11-17 00:33:09] davids_054.png drawing: 41321 m 101.321000 s 
+[2025-11-17 00:33:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_055.json: 0.183000 s 
+[2025-11-17 00:34:53] davids_055.png all: 43168 m 103.168000 s 
+[2025-11-17 00:34:53] davids_055.png drawing: 42983 m 102.983000 s 
+[2025-11-17 00:34:53] jsonFiles/hw2/inputs/raven/light_around_david/davids_056.json: 0.466000 s 
+[2025-11-17 00:36:37] davids_056.png all: 44590 m 104.590000 s 
+[2025-11-17 00:36:37] davids_056.png drawing: 44114 m 104.114000 s 
+[2025-11-17 00:36:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_057.json: 0.190000 s 
+[2025-11-17 00:38:22] davids_057.png all: 45293 m 105.293000 s 
+[2025-11-17 00:38:22] davids_057.png drawing: 45100 m 105.100000 s 
+[2025-11-17 00:38:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_058.json: 0.431000 s 
+[2025-11-17 00:40:09] davids_058.png all: 46755 m 106.755000 s 
+[2025-11-17 00:40:09] davids_058.png drawing: 46317 m 106.317000 s 
+[2025-11-17 00:40:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_059.json: 0.206000 s 
+[2025-11-17 00:41:56] davids_059.png all: 47133 m 107.133000 s 
+[2025-11-17 00:41:56] davids_059.png drawing: 46924 m 106.924000 s 
+[2025-11-17 00:41:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_060.json: 0.191000 s 
+[2025-11-17 00:43:44] davids_060.png all: 47483 m 107.483000 s 
+[2025-11-17 00:43:44] davids_060.png drawing: 47290 m 107.290000 s 
+[2025-11-17 00:43:44] jsonFiles/hw2/inputs/raven/light_around_david/davids_061.json: 0.201000 s 
+[2025-11-17 00:45:32] davids_061.png all: 47631 m 107.631000 s 
+[2025-11-17 00:45:32] davids_061.png drawing: 47419 m 107.419000 s 
+[2025-11-17 00:45:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_062.json: 0.188000 s 
+[2025-11-17 00:47:22] davids_062.png all: 50578 m 110.578000 s 
+[2025-11-17 00:47:22] davids_062.png drawing: 50387 m 110.387000 s 
+[2025-11-17 00:47:22] jsonFiles/hw2/inputs/raven/light_around_david/davids_063.json: 0.186000 s 
+[2025-11-17 00:49:10] davids_063.png all: 47607 m 107.607000 s 
+[2025-11-17 00:49:10] davids_063.png drawing: 47417 m 107.417000 s 
+[2025-11-17 00:49:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_064.json: 0.202000 s 
+[2025-11-17 00:51:01] davids_064.png all: 51633 m 111.633000 s 
+[2025-11-17 00:51:01] davids_064.png drawing: 51408 m 111.408000 s 
+[2025-11-17 00:51:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_065.json: 0.157000 s 
+[2025-11-17 00:52:53] davids_065.png all: 52101 m 112.101000 s 
+[2025-11-17 00:52:53] davids_065.png drawing: 51941 m 111.941000 s 
+[2025-11-17 00:52:54] jsonFiles/hw2/inputs/raven/light_around_david/davids_066.json: 0.206000 s 
+[2025-11-17 00:54:50] davids_066.png all: 56139 m 116.139000 s 
+[2025-11-17 00:54:50] davids_066.png drawing: 55929 m 115.929000 s 
+[2025-11-17 00:54:50] jsonFiles/hw2/inputs/raven/light_around_david/davids_067.json: 0.185000 s 
+[2025-11-17 00:56:42] davids_067.png all: 52327 m 112.327000 s 
+[2025-11-17 00:56:42] davids_067.png drawing: 52138 m 112.138000 s 
+[2025-11-17 00:56:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_068.json: 0.158000 s 
+[2025-11-17 00:58:34] davids_068.png all: 52204 m 112.204000 s 
+[2025-11-17 00:58:34] davids_068.png drawing: 52042 m 112.042000 s 
+[2025-11-17 00:58:34] jsonFiles/hw2/inputs/raven/light_around_david/davids_069.json: 0.161000 s 
+[2025-11-17 01:00:26] davids_069.png all: 52166 m 112.166000 s 
+[2025-11-17 01:00:26] davids_069.png drawing: 52002 m 112.002000 s 
+[2025-11-17 01:00:27] jsonFiles/hw2/inputs/raven/light_around_david/davids_070.json: 0.207000 s 
+[2025-11-17 01:02:21] davids_070.png all: 54593 m 114.593000 s 
+[2025-11-17 01:02:21] davids_070.png drawing: 54381 m 114.381000 s 
+[2025-11-17 01:02:21] jsonFiles/hw2/inputs/raven/light_around_david/davids_071.json: 0.173000 s 
+[2025-11-17 01:04:14] davids_071.png all: 52622 m 112.622000 s 
+[2025-11-17 01:04:14] davids_071.png drawing: 52425 m 112.425000 s 
+[2025-11-17 01:04:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_072.json: 0.212000 s 
+[2025-11-17 01:06:06] davids_072.png all: 52842 m 112.842000 s 
+[2025-11-17 01:06:06] davids_072.png drawing: 52628 m 112.628000 s 
+[2025-11-17 01:06:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_073.json: 0.172000 s 
+[2025-11-17 01:07:58] davids_073.png all: 51703 m 111.703000 s 
+[2025-11-17 01:07:58] davids_073.png drawing: 51513 m 111.513000 s 
+[2025-11-17 01:07:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_074.json: 0.226000 s 
+[2025-11-17 01:09:50] davids_074.png all: 52201 m 112.201000 s 
+[2025-11-17 01:09:50] davids_074.png drawing: 51972 m 111.972000 s 
+[2025-11-17 01:09:51] jsonFiles/hw2/inputs/raven/light_around_david/davids_075.json: 0.212000 s 
+[2025-11-17 01:11:42] davids_075.png all: 51689 m 111.689000 s 
+[2025-11-17 01:11:42] davids_075.png drawing: 51474 m 111.474000 s 
+[2025-11-17 01:11:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_076.json: 0.211000 s 
+[2025-11-17 01:13:36] davids_076.png all: 53704 m 113.704000 s 
+[2025-11-17 01:13:36] davids_076.png drawing: 53490 m 113.490000 s 
+[2025-11-17 01:13:36] jsonFiles/hw2/inputs/raven/light_around_david/davids_077.json: 0.163000 s 
+[2025-11-17 01:15:29] davids_077.png all: 53580 m 113.580000 s 
+[2025-11-17 01:15:29] davids_077.png drawing: 53414 m 113.414000 s 
+[2025-11-17 01:15:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_078.json: 0.212000 s 
+[2025-11-17 01:17:23] davids_078.png all: 53171 m 113.171000 s 
+[2025-11-17 01:17:23] davids_078.png drawing: 52956 m 112.956000 s 
+[2025-11-17 01:17:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_079.json: 0.203000 s 
+[2025-11-17 01:19:14] davids_079.png all: 51031 m 111.031000 s 
+[2025-11-17 01:19:14] davids_079.png drawing: 50820 m 110.820000 s 
+[2025-11-17 01:19:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_080.json: 0.397000 s 
+[2025-11-17 01:21:05] davids_080.png all: 51718 m 111.718000 s 
+[2025-11-17 01:21:05] davids_080.png drawing: 51314 m 111.314000 s 
+[2025-11-17 01:21:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_081.json: 0.236000 s 
+[2025-11-17 01:22:58] davids_081.png all: 52753 m 112.753000 s 
+[2025-11-17 01:22:58] davids_081.png drawing: 52500 m 112.500000 s 
+[2025-11-17 01:22:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_082.json: 0.197000 s 
+[2025-11-17 01:24:51] davids_082.png all: 52460 m 112.460000 s 
+[2025-11-17 01:24:51] davids_082.png drawing: 52259 m 112.259000 s 
+[2025-11-17 01:24:51] jsonFiles/hw2/inputs/raven/light_around_david/davids_083.json: 0.163000 s 
+[2025-11-17 01:26:43] davids_083.png all: 51947 m 111.947000 s 
+[2025-11-17 01:26:43] davids_083.png drawing: 51779 m 111.779000 s 
+[2025-11-17 01:26:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_084.json: 0.186000 s 
+[2025-11-17 01:28:34] davids_084.png all: 50903 m 110.903000 s 
+[2025-11-17 01:28:34] davids_084.png drawing: 50706 m 110.706000 s 
+[2025-11-17 01:28:34] jsonFiles/hw2/inputs/raven/light_around_david/davids_085.json: 0.169000 s 
+[2025-11-17 01:30:25] davids_085.png all: 51663 m 111.663000 s 
+[2025-11-17 01:30:25] davids_085.png drawing: 51492 m 111.492000 s 
+[2025-11-17 01:30:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_086.json: 0.177000 s 
+[2025-11-17 01:32:15] davids_086.png all: 50004 m 110.004000 s 
+[2025-11-17 01:32:15] davids_086.png drawing: 49822 m 109.822000 s 
+[2025-11-17 01:32:15] jsonFiles/hw2/inputs/raven/light_around_david/davids_087.json: 0.222000 s 
+[2025-11-17 01:34:05] davids_087.png all: 49921 m 109.921000 s 
+[2025-11-17 01:34:05] davids_087.png drawing: 49694 m 109.694000 s 
+[2025-11-17 01:34:05] jsonFiles/hw2/inputs/raven/light_around_david/davids_088.json: 0.179000 s 
+[2025-11-17 01:35:55] davids_088.png all: 50056 m 110.056000 s 
+[2025-11-17 01:35:55] davids_088.png drawing: 49874 m 109.874000 s 
+[2025-11-17 01:35:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_089.json: 0.205000 s 
+[2025-11-17 01:37:46] davids_089.png all: 50738 m 110.738000 s 
+[2025-11-17 01:37:46] davids_089.png drawing: 50528 m 110.528000 s 
+[2025-11-17 01:37:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_090.json: 0.172000 s 
+[2025-11-17 01:39:36] davids_090.png all: 50242 m 110.242000 s 
+[2025-11-17 01:39:36] davids_090.png drawing: 50068 m 110.068000 s 
+[2025-11-17 01:39:36] jsonFiles/hw2/inputs/raven/light_around_david/davids_091.json: 0.184000 s 
+[2025-11-17 01:41:27] davids_091.png all: 50687 m 110.687000 s 
+[2025-11-17 01:41:27] davids_091.png drawing: 50499 m 110.499000 s 
+[2025-11-17 01:41:27] jsonFiles/hw2/inputs/raven/light_around_david/davids_092.json: 0.227000 s 
+[2025-11-17 01:43:17] davids_092.png all: 50319 m 110.319000 s 
+[2025-11-17 01:43:17] davids_092.png drawing: 50065 m 110.065000 s 
+[2025-11-17 01:43:17] jsonFiles/hw2/inputs/raven/light_around_david/davids_093.json: 0.157000 s 
+[2025-11-17 01:45:08] davids_093.png all: 51025 m 111.025000 s 
+[2025-11-17 01:45:08] davids_093.png drawing: 50866 m 110.866000 s 
+[2025-11-17 01:45:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_094.json: 0.198000 s 
+[2025-11-17 01:46:56] davids_094.png all: 47593 m 107.593000 s 
+[2025-11-17 01:46:56] davids_094.png drawing: 47365 m 107.365000 s 
+[2025-11-17 01:46:56] jsonFiles/hw2/inputs/raven/light_around_david/davids_095.json: 0.269000 s 
+[2025-11-17 01:48:46] davids_095.png all: 50436 m 110.436000 s 
+[2025-11-17 01:48:46] davids_095.png drawing: 50161 m 110.161000 s 
+[2025-11-17 01:48:47] jsonFiles/hw2/inputs/raven/light_around_david/davids_096.json: 0.257000 s 
+[2025-11-17 01:50:35] davids_096.png all: 48180 m 108.180000 s 
+[2025-11-17 01:50:35] davids_096.png drawing: 47914 m 107.914000 s 
+[2025-11-17 01:50:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_097.json: 0.175000 s 
+[2025-11-17 01:52:21] davids_097.png all: 46630 m 106.630000 s 
+[2025-11-17 01:52:21] davids_097.png drawing: 46434 m 106.434000 s 
+[2025-11-17 01:52:21] jsonFiles/hw2/inputs/raven/light_around_david/davids_098.json: 0.230000 s 
+[2025-11-17 01:54:10] davids_098.png all: 48380 m 108.380000 s 
+[2025-11-17 01:54:10] davids_098.png drawing: 48135 m 108.135000 s 
+[2025-11-17 01:54:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_099.json: 0.198000 s 
+[2025-11-17 01:55:58] davids_099.png all: 48229 m 108.229000 s 
+[2025-11-17 01:55:58] davids_099.png drawing: 48018 m 108.018000 s 
+[2025-11-17 01:55:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_100.json: 0.175000 s 
+[2025-11-17 01:57:45] davids_100.png all: 47578 m 107.578000 s 
+[2025-11-17 01:57:45] davids_100.png drawing: 47401 m 107.401000 s 
+[2025-11-17 01:57:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_101.json: 0.166000 s 
+[2025-11-17 01:59:31] davids_101.png all: 45642 m 105.642000 s 
+[2025-11-17 01:59:31] davids_101.png drawing: 45473 m 105.473000 s 
+[2025-11-17 01:59:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_102.json: 0.186000 s 
+[2025-11-17 02:01:17] davids_102.png all: 45591 m 105.591000 s 
+[2025-11-17 02:01:17] davids_102.png drawing: 45404 m 105.404000 s 
+[2025-11-17 02:01:17] jsonFiles/hw2/inputs/raven/light_around_david/davids_103.json: 0.173000 s 
+[2025-11-17 02:03:01] davids_103.png all: 44196 m 104.196000 s 
+[2025-11-17 02:03:01] davids_103.png drawing: 44021 m 104.021000 s 
+[2025-11-17 02:03:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_104.json: 0.244000 s 
+[2025-11-17 02:04:46] davids_104.png all: 45146 m 105.146000 s 
+[2025-11-17 02:04:46] davids_104.png drawing: 44880 m 104.880000 s 
+[2025-11-17 02:04:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_105.json: 0.170000 s 
+[2025-11-17 02:06:30] davids_105.png all: 44312 m 104.312000 s 
+[2025-11-17 02:06:30] davids_105.png drawing: 44140 m 104.140000 s 
+[2025-11-17 02:06:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_106.json: 0.279000 s 
+[2025-11-17 02:08:14] davids_106.png all: 43976 m 103.976000 s 
+[2025-11-17 02:08:14] davids_106.png drawing: 43692 m 103.692000 s 
+[2025-11-17 02:08:15] jsonFiles/hw2/inputs/raven/light_around_david/davids_107.json: 0.165000 s 
+[2025-11-17 02:09:58] davids_107.png all: 43403 m 103.403000 s 
+[2025-11-17 02:09:58] davids_107.png drawing: 43225 m 103.225000 s 
+[2025-11-17 02:09:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_108.json: 0.173000 s 
+[2025-11-17 02:11:39] davids_108.png all: 41608 m 101.608000 s 
+[2025-11-17 02:11:39] davids_108.png drawing: 41432 m 101.432000 s 
+[2025-11-17 02:11:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_109.json: 0.228000 s 
+[2025-11-17 02:13:22] davids_109.png all: 42627 m 102.627000 s 
+[2025-11-17 02:13:22] davids_109.png drawing: 42396 m 102.396000 s 
+[2025-11-17 02:13:22] jsonFiles/hw2/inputs/raven/light_around_david/davids_110.json: 0.168000 s 
+[2025-11-17 02:15:04] davids_110.png all: 41709 m 101.709000 s 
+[2025-11-17 02:15:04] davids_110.png drawing: 41539 m 101.539000 s 
+[2025-11-17 02:15:04] jsonFiles/hw2/inputs/raven/light_around_david/davids_111.json: 0.242000 s 
+[2025-11-17 02:16:44] davids_111.png all: 40287 m 100.287000 s 
+[2025-11-17 02:16:44] davids_111.png drawing: 40038 m 100.038000 s 
+[2025-11-17 02:16:44] jsonFiles/hw2/inputs/raven/light_around_david/davids_112.json: 0.173000 s 
+[2025-11-17 02:18:25] davids_112.png all: 41088 m 101.088000 s 
+[2025-11-17 02:18:25] davids_112.png drawing: 40912 m 100.912000 s 
+[2025-11-17 02:18:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_113.json: 0.241000 s 
+[2025-11-17 02:20:06] davids_113.png all: 40887 m 100.887000 s 
+[2025-11-17 02:20:06] davids_113.png drawing: 40640 m 100.640000 s 
+[2025-11-17 02:20:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_114.json: 0.185000 s 
+[2025-11-17 02:21:46] davids_114.png all: 40190 m 100.190000 s 
+[2025-11-17 02:21:46] davids_114.png drawing: 39998 m 99.998000 s 
+[2025-11-17 02:21:47] jsonFiles/hw2/inputs/raven/light_around_david/davids_115.json: 0.217000 s 
+[2025-11-17 02:23:29] davids_115.png all: 42236 m 102.236000 s 
+[2025-11-17 02:23:29] davids_115.png drawing: 42015 m 102.015000 s 
+[2025-11-17 02:23:29] jsonFiles/hw2/inputs/raven/light_around_david/davids_116.json: 0.170000 s 
+[2025-11-17 02:25:10] davids_116.png all: 41122 m 101.122000 s 
+[2025-11-17 02:25:10] davids_116.png drawing: 40950 m 100.950000 s 
+[2025-11-17 02:25:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_117.json: 0.231000 s 
+[2025-11-17 02:26:52] davids_117.png all: 42338 m 102.338000 s 
+[2025-11-17 02:26:52] davids_117.png drawing: 42098 m 102.098000 s 
+[2025-11-17 02:26:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_118.json: 0.202000 s 
+[2025-11-17 02:28:35] davids_118.png all: 42724 m 102.724000 s 
+[2025-11-17 02:28:35] davids_118.png drawing: 42520 m 102.520000 s 
+[2025-11-17 02:28:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_119.json: 0.202000 s 
+[2025-11-17 02:30:18] davids_119.png all: 42988 m 102.988000 s 
+[2025-11-17 02:30:18] davids_119.png drawing: 42783 m 102.783000 s 
+[2025-11-17 02:30:18] jsonFiles/hw2/inputs/raven/light_around_david/davids_120.json: 0.203000 s 
+[2025-11-17 02:32:01] davids_120.png all: 43078 m 103.078000 s 
+[2025-11-17 02:32:01] davids_120.png drawing: 42873 m 102.873000 s 
+[2025-11-17 02:32:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_121.json: 0.198000 s 
+[2025-11-17 02:33:42] davids_121.png all: 40799 m 100.799000 s 
+[2025-11-17 02:33:42] davids_121.png drawing: 40599 m 100.599000 s 
+[2025-11-17 02:33:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_122.json: 0.192000 s 
+[2025-11-17 02:35:24] davids_122.png all: 42529 m 102.529000 s 
+[2025-11-17 02:35:24] davids_122.png drawing: 42328 m 102.328000 s 
+[2025-11-17 02:35:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_123.json: 0.209000 s 
+[2025-11-17 02:37:07] davids_123.png all: 42481 m 102.481000 s 
+[2025-11-17 02:37:07] davids_123.png drawing: 42250 m 102.250000 s 
+[2025-11-17 02:37:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_124.json: 0.175000 s 
+[2025-11-17 02:38:50] davids_124.png all: 42854 m 102.854000 s 
+[2025-11-17 02:38:50] davids_124.png drawing: 42676 m 102.676000 s 
+[2025-11-17 02:38:50] jsonFiles/hw2/inputs/raven/light_around_david/davids_125.json: 0.181000 s 
+[2025-11-17 02:40:33] davids_125.png all: 42990 m 102.990000 s 
+[2025-11-17 02:40:33] davids_125.png drawing: 42807 m 102.807000 s 
+[2025-11-17 02:40:33] jsonFiles/hw2/inputs/raven/light_around_david/davids_126.json: 0.193000 s 
+[2025-11-17 02:42:16] davids_126.png all: 43192 m 103.192000 s 
+[2025-11-17 02:42:16] davids_126.png drawing: 42996 m 102.996000 s 
+[2025-11-17 02:42:16] jsonFiles/hw2/inputs/raven/light_around_david/davids_127.json: 0.176000 s 
+[2025-11-17 02:43:57] davids_127.png all: 41590 m 101.590000 s 
+[2025-11-17 02:43:57] davids_127.png drawing: 41412 m 101.412000 s 
+[2025-11-17 02:43:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_128.json: 0.192000 s 
+[2025-11-17 02:45:40] davids_128.png all: 42242 m 102.242000 s 
+[2025-11-17 02:45:40] davids_128.png drawing: 42047 m 102.047000 s 
+[2025-11-17 02:45:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_129.json: 0.169000 s 
+[2025-11-17 02:47:23] davids_129.png all: 43182 m 103.182000 s 
+[2025-11-17 02:47:23] davids_129.png drawing: 43010 m 103.010000 s 
+[2025-11-17 02:47:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_130.json: 0.172000 s 
+[2025-11-17 02:49:05] davids_130.png all: 42685 m 102.685000 s 
+[2025-11-17 02:49:05] davids_130.png drawing: 42506 m 102.506000 s 
+[2025-11-17 02:49:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_131.json: 0.214000 s 
+[2025-11-17 02:50:47] davids_131.png all: 41045 m 101.045000 s 
+[2025-11-17 02:50:47] davids_131.png drawing: 40821 m 100.821000 s 
+[2025-11-17 02:50:47] jsonFiles/hw2/inputs/raven/light_around_david/davids_132.json: 0.179000 s 
+[2025-11-17 02:52:29] davids_132.png all: 42900 m 102.900000 s 
+[2025-11-17 02:52:29] davids_132.png drawing: 42718 m 102.718000 s 
+[2025-11-17 02:52:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_133.json: 0.176000 s 
+[2025-11-17 02:54:12] davids_133.png all: 42333 m 102.333000 s 
+[2025-11-17 02:54:12] davids_133.png drawing: 42152 m 102.152000 s 
+[2025-11-17 02:54:12] jsonFiles/hw2/inputs/raven/light_around_david/davids_134.json: 0.228000 s 
+[2025-11-17 02:55:55] davids_134.png all: 42995 m 102.995000 s 
+[2025-11-17 02:55:55] davids_134.png drawing: 42750 m 102.750000 s 
+[2025-11-17 02:55:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_135.json: 0.149000 s 
+[2025-11-17 02:57:37] davids_135.png all: 42605 m 102.605000 s 
+[2025-11-17 02:57:37] davids_135.png drawing: 42452 m 102.452000 s 
+[2025-11-17 02:57:38] jsonFiles/hw2/inputs/raven/light_around_david/davids_136.json: 0.210000 s 
+[2025-11-17 02:59:20] davids_136.png all: 42178 m 102.178000 s 
+[2025-11-17 02:59:20] davids_136.png drawing: 41966 m 101.966000 s 
+[2025-11-17 02:59:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_137.json: 0.166000 s 
+[2025-11-17 03:01:03] davids_137.png all: 43043 m 103.043000 s 
+[2025-11-17 03:01:03] davids_137.png drawing: 42875 m 102.875000 s 
+[2025-11-17 03:01:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_138.json: 0.227000 s 
+[2025-11-17 03:02:45] davids_138.png all: 42127 m 102.127000 s 
+[2025-11-17 03:02:45] davids_138.png drawing: 41884 m 101.884000 s 
+[2025-11-17 03:02:45] jsonFiles/hw2/inputs/raven/light_around_david/davids_139.json: 0.161000 s 
+[2025-11-17 03:04:27] davids_139.png all: 41801 m 101.801000 s 
+[2025-11-17 03:04:27] davids_139.png drawing: 41623 m 101.623000 s 
+[2025-11-17 03:04:27] jsonFiles/hw2/inputs/raven/light_around_david/davids_140.json: 0.242000 s 
+[2025-11-17 03:06:09] davids_140.png all: 42183 m 102.183000 s 
+[2025-11-17 03:06:09] davids_140.png drawing: 41937 m 101.937000 s 
+[2025-11-17 03:06:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_141.json: 0.162000 s 
+[2025-11-17 03:07:52] davids_141.png all: 43283 m 103.283000 s 
+[2025-11-17 03:07:52] davids_141.png drawing: 43109 m 103.109000 s 
+[2025-11-17 03:07:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_142.json: 0.363000 s 
+[2025-11-17 03:09:34] davids_142.png all: 42184 m 102.184000 s 
+[2025-11-17 03:09:34] davids_142.png drawing: 41752 m 101.752000 s 
+[2025-11-17 03:09:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_143.json: 0.291000 s 
+[2025-11-17 03:11:16] davids_143.png all: 41978 m 101.978000 s 
+[2025-11-17 03:11:16] davids_143.png drawing: 41681 m 101.681000 s 
+[2025-11-17 03:11:16] jsonFiles/hw2/inputs/raven/light_around_david/davids_144.json: 0.166000 s 
+[2025-11-17 03:12:59] davids_144.png all: 42996 m 102.996000 s 
+[2025-11-17 03:12:59] davids_144.png drawing: 42829 m 102.829000 s 
+[2025-11-17 03:12:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_145.json: 0.199000 s 
+[2025-11-17 03:14:43] davids_145.png all: 43274 m 103.274000 s 
+[2025-11-17 03:14:43] davids_145.png drawing: 43070 m 103.070000 s 
+[2025-11-17 03:14:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_146.json: 0.176000 s 
+[2025-11-17 03:16:24] davids_146.png all: 41645 m 101.645000 s 
+[2025-11-17 03:16:24] davids_146.png drawing: 41450 m 101.450000 s 
+[2025-11-17 03:16:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_147.json: 0.189000 s 
+[2025-11-17 03:18:07] davids_147.png all: 42394 m 102.394000 s 
+[2025-11-17 03:18:07] davids_147.png drawing: 42201 m 102.201000 s 
+[2025-11-17 03:18:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_148.json: 0.184000 s 
+[2025-11-17 03:19:50] davids_148.png all: 42956 m 102.956000 s 
+[2025-11-17 03:19:50] davids_148.png drawing: 42767 m 102.767000 s 
+[2025-11-17 03:19:50] jsonFiles/hw2/inputs/raven/light_around_david/davids_149.json: 0.163000 s 
+[2025-11-17 03:21:32] davids_149.png all: 42427 m 102.427000 s 
+[2025-11-17 03:21:32] davids_149.png drawing: 42262 m 102.262000 s 
+[2025-11-17 03:21:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_150.json: 0.180000 s 
+[2025-11-17 03:23:16] davids_150.png all: 44330 m 104.330000 s 
+[2025-11-17 03:23:16] davids_150.png drawing: 44147 m 104.147000 s 
+[2025-11-17 03:23:17] jsonFiles/hw2/inputs/raven/light_around_david/davids_151.json: 0.172000 s 
+[2025-11-17 03:24:59] davids_151.png all: 43048 m 103.048000 s 
+[2025-11-17 03:24:59] davids_151.png drawing: 42874 m 102.874000 s 
+[2025-11-17 03:25:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_152.json: 0.223000 s 
+[2025-11-17 03:26:45] davids_152.png all: 45053 m 105.053000 s 
+[2025-11-17 03:26:45] davids_152.png drawing: 44827 m 104.827000 s 
+[2025-11-17 03:26:45] jsonFiles/hw2/inputs/raven/light_around_david/davids_153.json: 0.198000 s 
+[2025-11-17 03:28:28] davids_153.png all: 43026 m 103.026000 s 
+[2025-11-17 03:28:28] davids_153.png drawing: 42809 m 102.809000 s 
+[2025-11-17 03:28:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_154.json: 0.235000 s 
+[2025-11-17 03:30:12] davids_154.png all: 44823 m 104.823000 s 
+[2025-11-17 03:30:12] davids_154.png drawing: 44585 m 104.585000 s 
+[2025-11-17 03:30:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_155.json: 0.172000 s 
+[2025-11-17 03:31:56] davids_155.png all: 43905 m 103.905000 s 
+[2025-11-17 03:31:56] davids_155.png drawing: 43728 m 103.728000 s 
+[2025-11-17 03:31:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_156.json: 0.227000 s 
+[2025-11-17 03:33:41] davids_156.png all: 44272 m 104.272000 s 
+[2025-11-17 03:33:41] davids_156.png drawing: 44043 m 104.043000 s 
+[2025-11-17 03:33:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_157.json: 0.222000 s 
+[2025-11-17 03:35:26] davids_157.png all: 45378 m 105.378000 s 
+[2025-11-17 03:35:26] davids_157.png drawing: 45127 m 105.127000 s 
+[2025-11-17 03:35:26] jsonFiles/hw2/inputs/raven/light_around_david/davids_158.json: 0.159000 s 
+[2025-11-17 03:37:10] davids_158.png all: 44106 m 104.106000 s 
+[2025-11-17 03:37:10] davids_158.png drawing: 43925 m 103.925000 s 
+[2025-11-17 03:37:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_159.json: 0.219000 s 
+[2025-11-17 03:38:54] davids_159.png all: 44339 m 104.339000 s 
+[2025-11-17 03:38:54] davids_159.png drawing: 44085 m 104.085000 s 
+[2025-11-17 03:38:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_160.json: 0.161000 s 
+[2025-11-17 03:40:38] davids_160.png all: 43605 m 103.605000 s 
+[2025-11-17 03:40:38] davids_160.png drawing: 43442 m 103.442000 s 
+[2025-11-17 03:40:38] jsonFiles/hw2/inputs/raven/light_around_david/davids_161.json: 0.258000 s 
+[2025-11-17 03:42:24] davids_161.png all: 45956 m 105.956000 s 
+[2025-11-17 03:42:24] davids_161.png drawing: 45655 m 105.655000 s 
+[2025-11-17 03:42:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_162.json: 0.172000 s 
+[2025-11-17 03:44:12] davids_162.png all: 47613 m 107.613000 s 
+[2025-11-17 03:44:12] davids_162.png drawing: 47425 m 107.425000 s 
+[2025-11-17 03:44:12] jsonFiles/hw2/inputs/raven/light_around_david/davids_163.json: 0.203000 s 
+[2025-11-17 03:45:59] davids_163.png all: 47410 m 107.410000 s 
+[2025-11-17 03:45:59] davids_163.png drawing: 47192 m 107.192000 s 
+[2025-11-17 03:45:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_164.json: 0.189000 s 
+[2025-11-17 03:47:48] davids_164.png all: 49144 m 109.144000 s 
+[2025-11-17 03:47:48] davids_164.png drawing: 48947 m 108.947000 s 
+[2025-11-17 03:47:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_165.json: 0.192000 s 
+[2025-11-17 03:49:37] davids_165.png all: 48499 m 108.499000 s 
+[2025-11-17 03:49:37] davids_165.png drawing: 48301 m 108.301000 s 
+[2025-11-17 03:49:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_166.json: 0.236000 s 
+[2025-11-17 03:51:24] davids_166.png all: 47723 m 107.723000 s 
+[2025-11-17 03:51:24] davids_166.png drawing: 47462 m 107.462000 s 
+[2025-11-17 03:51:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_167.json: 0.166000 s 
+[2025-11-17 03:53:13] davids_167.png all: 48265 m 108.265000 s 
+[2025-11-17 03:53:13] davids_167.png drawing: 48097 m 108.097000 s 
+[2025-11-17 03:53:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_168.json: 0.197000 s 
+[2025-11-17 03:55:02] davids_168.png all: 48919 m 108.919000 s 
+[2025-11-17 03:55:02] davids_168.png drawing: 48719 m 108.719000 s 
+[2025-11-17 03:55:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_169.json: 0.218000 s 
+[2025-11-17 03:56:48] davids_169.png all: 46484 m 106.484000 s 
+[2025-11-17 03:56:48] davids_169.png drawing: 46263 m 106.263000 s 
+[2025-11-17 03:56:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_170.json: 0.210000 s 
+[2025-11-17 03:58:38] davids_170.png all: 49828 m 109.828000 s 
+[2025-11-17 03:58:38] davids_170.png drawing: 49614 m 109.614000 s 
+[2025-11-17 03:58:38] jsonFiles/hw2/inputs/raven/light_around_david/davids_171.json: 0.139000 s 
+[2025-11-17 04:00:26] davids_171.png all: 48231 m 108.231000 s 
+[2025-11-17 04:00:26] davids_171.png drawing: 48079 m 108.079000 s 
+[2025-11-17 04:00:26] jsonFiles/hw2/inputs/raven/light_around_david/davids_172.json: 0.181000 s 
+[2025-11-17 04:02:15] davids_172.png all: 49109 m 109.109000 s 
+[2025-11-17 04:02:15] davids_172.png drawing: 48925 m 108.925000 s 
+[2025-11-17 04:02:16] jsonFiles/hw2/inputs/raven/light_around_david/davids_173.json: 0.341000 s 
+[2025-11-17 04:04:04] davids_173.png all: 48555 m 108.555000 s 
+[2025-11-17 04:04:04] davids_173.png drawing: 48206 m 108.206000 s 
+[2025-11-17 04:04:04] jsonFiles/hw2/inputs/raven/light_around_david/davids_174.json: 0.188000 s 
+[2025-11-17 04:05:53] davids_174.png all: 48795 m 108.795000 s 
+[2025-11-17 04:05:53] davids_174.png drawing: 48573 m 108.573000 s 
+[2025-11-17 04:05:53] jsonFiles/hw2/inputs/raven/light_around_david/davids_175.json: 0.398000 s 
+[2025-11-17 04:07:42] davids_175.png all: 49159 m 109.159000 s 
+[2025-11-17 04:07:42] davids_175.png drawing: 48752 m 108.752000 s 
+[2025-11-17 04:07:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_176.json: 0.173000 s 
+[2025-11-17 04:09:31] davids_176.png all: 48806 m 108.806000 s 
+[2025-11-17 04:09:31] davids_176.png drawing: 48629 m 108.629000 s 
+[2025-11-17 04:09:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_177.json: 0.173000 s 
+[2025-11-17 04:11:18] davids_177.png all: 47043 m 107.043000 s 
+[2025-11-17 04:11:18] davids_177.png drawing: 46867 m 106.867000 s 
+[2025-11-17 04:11:18] jsonFiles/hw2/inputs/raven/light_around_david/davids_178.json: 0.196000 s 
+[2025-11-17 04:13:05] davids_178.png all: 47528 m 107.528000 s 
+[2025-11-17 04:13:05] davids_178.png drawing: 47310 m 107.310000 s 
+[2025-11-17 04:13:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_179.json: 0.229000 s 
+[2025-11-17 04:14:54] davids_179.png all: 48900 m 108.900000 s 
+[2025-11-17 04:14:54] davids_179.png drawing: 48636 m 108.636000 s 
+[2025-11-17 04:14:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_180.json: 0.262000 s 
+[2025-11-17 04:16:42] davids_180.png all: 47766 m 107.766000 s 
+[2025-11-17 04:16:42] davids_180.png drawing: 47482 m 107.482000 s 
+[2025-11-17 04:16:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_181.json: 0.180000 s 
+[2025-11-17 04:18:31] davids_181.png all: 48728 m 108.728000 s 
+[2025-11-17 04:18:31] davids_181.png drawing: 48544 m 108.544000 s 
+[2025-11-17 04:18:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_182.json: 0.166000 s 
+[2025-11-17 04:20:18] davids_182.png all: 47708 m 107.708000 s 
+[2025-11-17 04:20:18] davids_182.png drawing: 47534 m 107.534000 s 
+[2025-11-17 04:20:19] jsonFiles/hw2/inputs/raven/light_around_david/davids_183.json: 0.175000 s 
+[2025-11-17 04:22:06] davids_183.png all: 48003 m 108.003000 s 
+[2025-11-17 04:22:06] davids_183.png drawing: 47825 m 107.825000 s 
+[2025-11-17 04:22:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_184.json: 0.183000 s 
+[2025-11-17 04:23:55] davids_184.png all: 48565 m 108.565000 s 
+[2025-11-17 04:23:55] davids_184.png drawing: 48379 m 108.379000 s 
+[2025-11-17 04:23:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_185.json: 0.197000 s 
+[2025-11-17 04:25:43] davids_185.png all: 48045 m 108.045000 s 
+[2025-11-17 04:25:43] davids_185.png drawing: 47845 m 107.845000 s 
+[2025-11-17 04:25:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_186.json: 0.220000 s 
+[2025-11-17 04:27:32] davids_186.png all: 48626 m 108.626000 s 
+[2025-11-17 04:27:32] davids_186.png drawing: 48389 m 108.389000 s 
+[2025-11-17 04:27:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_187.json: 0.160000 s 
+[2025-11-17 04:29:20] davids_187.png all: 48012 m 108.012000 s 
+[2025-11-17 04:29:20] davids_187.png drawing: 47850 m 107.850000 s 
+[2025-11-17 04:29:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_188.json: 0.169000 s 
+[2025-11-17 04:31:09] davids_188.png all: 49050 m 109.050000 s 
+[2025-11-17 04:31:09] davids_188.png drawing: 48870 m 108.870000 s 
+[2025-11-17 04:31:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_189.json: 0.172000 s 
+[2025-11-17 04:32:56] davids_189.png all: 47298 m 107.298000 s 
+[2025-11-17 04:32:56] davids_189.png drawing: 47123 m 107.123000 s 
+[2025-11-17 04:32:56] jsonFiles/hw2/inputs/raven/light_around_david/davids_190.json: 0.167000 s 
+[2025-11-17 04:34:43] davids_190.png all: 46943 m 106.943000 s 
+[2025-11-17 04:34:43] davids_190.png drawing: 46761 m 106.761000 s 
+[2025-11-17 04:34:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_191.json: 0.173000 s 
+[2025-11-17 04:36:32] davids_191.png all: 48577 m 108.577000 s 
+[2025-11-17 04:36:32] davids_191.png drawing: 48402 m 108.402000 s 
+[2025-11-17 04:36:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_192.json: 0.186000 s 
+[2025-11-17 04:38:17] davids_192.png all: 45553 m 105.553000 s 
+[2025-11-17 04:38:17] davids_192.png drawing: 45364 m 105.364000 s 
+[2025-11-17 04:38:18] jsonFiles/hw2/inputs/raven/light_around_david/davids_193.json: 0.234000 s 
+[2025-11-17 04:40:06] davids_193.png all: 48665 m 108.665000 s 
+[2025-11-17 04:40:06] davids_193.png drawing: 48427 m 108.427000 s 
+[2025-11-17 04:40:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_194.json: 0.179000 s 
+[2025-11-17 04:41:52] davids_194.png all: 46316 m 106.316000 s 
+[2025-11-17 04:41:52] davids_194.png drawing: 46102 m 106.102000 s 
+[2025-11-17 04:41:53] jsonFiles/hw2/inputs/raven/light_around_david/davids_195.json: 0.239000 s 
+[2025-11-17 04:43:40] davids_195.png all: 47895 m 107.895000 s 
+[2025-11-17 04:43:40] davids_195.png drawing: 47643 m 107.643000 s 
+[2025-11-17 04:43:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_196.json: 0.164000 s 
+[2025-11-17 04:45:28] davids_196.png all: 47638 m 107.638000 s 
+[2025-11-17 04:45:28] davids_196.png drawing: 47470 m 107.470000 s 
+[2025-11-17 04:45:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_197.json: 0.209000 s 
+[2025-11-17 04:47:16] davids_197.png all: 48191 m 108.191000 s 
+[2025-11-17 04:47:16] davids_197.png drawing: 47979 m 107.979000 s 
+[2025-11-17 04:47:16] jsonFiles/hw2/inputs/raven/light_around_david/davids_198.json: 0.172000 s 
+[2025-11-17 04:49:04] davids_198.png all: 47982 m 107.982000 s 
+[2025-11-17 04:49:04] davids_198.png drawing: 47807 m 107.807000 s 
+[2025-11-17 04:49:04] jsonFiles/hw2/inputs/raven/light_around_david/davids_199.json: 0.177000 s 
+[2025-11-17 04:50:51] davids_199.png all: 47388 m 107.388000 s 
+[2025-11-17 04:50:51] davids_199.png drawing: 47202 m 107.202000 s 
+[2025-11-17 04:50:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_200.json: 0.169000 s 
+[2025-11-17 04:52:37] davids_200.png all: 45430 m 105.430000 s 
+[2025-11-17 04:52:37] davids_200.png drawing: 45257 m 105.257000 s 
+[2025-11-17 04:52:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_201.json: 0.237000 s 
+[2025-11-17 04:54:23] davids_201.png all: 46429 m 106.429000 s 
+[2025-11-17 04:54:23] davids_201.png drawing: 46183 m 106.183000 s 
+[2025-11-17 04:54:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_202.json: 0.199000 s 
+[2025-11-17 04:56:10] davids_202.png all: 46984 m 106.984000 s 
+[2025-11-17 04:56:10] davids_202.png drawing: 46777 m 106.777000 s 
+[2025-11-17 04:56:11] jsonFiles/hw2/inputs/raven/light_around_david/davids_203.json: 0.201000 s 
+[2025-11-17 04:57:55] davids_203.png all: 44935 m 104.935000 s 
+[2025-11-17 04:57:55] davids_203.png drawing: 44730 m 104.730000 s 
+[2025-11-17 04:57:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_204.json: 0.214000 s 
+[2025-11-17 04:59:43] davids_204.png all: 47807 m 107.807000 s 
+[2025-11-17 04:59:43] davids_204.png drawing: 47590 m 107.590000 s 
+[2025-11-17 04:59:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_205.json: 0.175000 s 
+[2025-11-17 05:01:30] davids_205.png all: 46508 m 106.508000 s 
+[2025-11-17 05:01:30] davids_205.png drawing: 46330 m 106.330000 s 
+[2025-11-17 05:01:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_206.json: 0.171000 s 
+[2025-11-17 05:03:13] davids_206.png all: 43752 m 103.752000 s 
+[2025-11-17 05:03:13] davids_206.png drawing: 43578 m 103.578000 s 
+[2025-11-17 05:03:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_207.json: 0.233000 s 
+[2025-11-17 05:04:58] davids_207.png all: 44309 m 104.309000 s 
+[2025-11-17 05:04:58] davids_207.png drawing: 44054 m 104.054000 s 
+[2025-11-17 05:04:58] jsonFiles/hw2/inputs/raven/light_around_david/davids_208.json: 0.184000 s 
+[2025-11-17 05:06:44] davids_208.png all: 46017 m 106.017000 s 
+[2025-11-17 05:06:44] davids_208.png drawing: 45831 m 105.831000 s 
+[2025-11-17 05:06:44] jsonFiles/hw2/inputs/raven/light_around_david/davids_209.json: 0.296000 s 
+[2025-11-17 05:08:30] davids_209.png all: 46307 m 106.307000 s 
+[2025-11-17 05:08:30] davids_209.png drawing: 46003 m 106.003000 s 
+[2025-11-17 05:08:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_210.json: 0.190000 s 
+[2025-11-17 05:10:13] davids_210.png all: 42551 m 102.551000 s 
+[2025-11-17 05:10:13] davids_210.png drawing: 42358 m 102.358000 s 
+[2025-11-17 05:10:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_211.json: 0.226000 s 
+[2025-11-17 05:11:57] davids_211.png all: 44285 m 104.285000 s 
+[2025-11-17 05:11:57] davids_211.png drawing: 44056 m 104.056000 s 
+[2025-11-17 05:11:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_212.json: 0.240000 s 
+[2025-11-17 05:13:43] davids_212.png all: 45971 m 105.971000 s 
+[2025-11-17 05:13:43] davids_212.png drawing: 45690 m 105.690000 s 
+[2025-11-17 05:13:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_213.json: 0.193000 s 
+[2025-11-17 05:15:27] davids_213.png all: 44465 m 104.465000 s 
+[2025-11-17 05:15:27] davids_213.png drawing: 44269 m 104.269000 s 
+[2025-11-17 05:15:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_214.json: 0.185000 s 
+[2025-11-17 05:17:13] davids_214.png all: 45328 m 105.328000 s 
+[2025-11-17 05:17:13] davids_214.png drawing: 45140 m 105.140000 s 
+[2025-11-17 05:17:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_215.json: 0.244000 s 
+[2025-11-17 05:18:55] davids_215.png all: 42008 m 102.008000 s 
+[2025-11-17 05:18:55] davids_215.png drawing: 41762 m 101.762000 s 
+[2025-11-17 05:18:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_216.json: 0.234000 s 
+[2025-11-17 05:20:36] davids_216.png all: 41599 m 101.599000 s 
+[2025-11-17 05:20:36] davids_216.png drawing: 41362 m 101.362000 s 
+[2025-11-17 05:20:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_217.json: 0.214000 s 
+[2025-11-17 05:22:19] davids_217.png all: 43085 m 103.085000 s 
+[2025-11-17 05:22:19] davids_217.png drawing: 42861 m 102.861000 s 
+[2025-11-17 05:22:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_218.json: 0.194000 s 
+[2025-11-17 05:24:02] davids_218.png all: 42462 m 102.462000 s 
+[2025-11-17 05:24:02] davids_218.png drawing: 42261 m 102.261000 s 
+[2025-11-17 05:24:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_219.json: 0.161000 s 
+[2025-11-17 05:25:44] davids_219.png all: 42437 m 102.437000 s 
+[2025-11-17 05:25:44] davids_219.png drawing: 42246 m 102.246000 s 
+[2025-11-17 05:25:45] jsonFiles/hw2/inputs/raven/light_around_david/davids_220.json: 0.164000 s 
+[2025-11-17 05:27:28] davids_220.png all: 43525 m 103.525000 s 
+[2025-11-17 05:27:28] davids_220.png drawing: 43359 m 103.359000 s 
+[2025-11-17 05:27:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_221.json: 0.176000 s 
+[2025-11-17 05:29:10] davids_221.png all: 42253 m 102.253000 s 
+[2025-11-17 05:29:10] davids_221.png drawing: 42074 m 102.074000 s 
+[2025-11-17 05:29:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_222.json: 0.189000 s 
+[2025-11-17 05:30:51] davids_222.png all: 41007 m 101.007000 s 
+[2025-11-17 05:30:51] davids_222.png drawing: 40798 m 100.798000 s 
+[2025-11-17 05:30:51] jsonFiles/hw2/inputs/raven/light_around_david/davids_223.json: 0.293000 s 
+[2025-11-17 05:32:35] davids_223.png all: 43719 m 103.719000 s 
+[2025-11-17 05:32:35] davids_223.png drawing: 43418 m 103.418000 s 
+[2025-11-17 05:32:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_224.json: 0.326000 s 
+[2025-11-17 05:34:18] davids_224.png all: 42971 m 102.971000 s 
+[2025-11-17 05:34:18] davids_224.png drawing: 42641 m 102.641000 s 
+[2025-11-17 05:34:18] jsonFiles/hw2/inputs/raven/light_around_david/davids_225.json: 0.238000 s 
+[2025-11-17 05:36:00] davids_225.png all: 42199 m 102.199000 s 
+[2025-11-17 05:36:00] davids_225.png drawing: 41930 m 101.930000 s 
+[2025-11-17 05:36:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_226.json: 0.185000 s 
+[2025-11-17 05:37:43] davids_226.png all: 42510 m 102.510000 s 
+[2025-11-17 05:37:43] davids_226.png drawing: 42309 m 102.309000 s 
+[2025-11-17 05:37:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_227.json: 0.172000 s 
+[2025-11-17 05:39:25] davids_227.png all: 42612 m 102.612000 s 
+[2025-11-17 05:39:25] davids_227.png drawing: 42437 m 102.437000 s 
+[2025-11-17 05:39:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_228.json: 0.189000 s 
+[2025-11-17 05:41:09] davids_228.png all: 43886 m 103.886000 s 
+[2025-11-17 05:41:09] davids_228.png drawing: 43693 m 103.693000 s 
+[2025-11-17 05:41:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_229.json: 0.226000 s 
+[2025-11-17 05:42:50] davids_229.png all: 41310 m 101.310000 s 
+[2025-11-17 05:42:50] davids_229.png drawing: 41081 m 101.081000 s 
+[2025-11-17 05:42:51] jsonFiles/hw2/inputs/raven/light_around_david/davids_230.json: 0.183000 s 
+[2025-11-17 05:44:34] davids_230.png all: 43058 m 103.058000 s 
+[2025-11-17 05:44:34] davids_230.png drawing: 42872 m 102.872000 s 
+[2025-11-17 05:44:34] jsonFiles/hw2/inputs/raven/light_around_david/davids_231.json: 0.169000 s 
+[2025-11-17 05:46:18] davids_231.png all: 44212 m 104.212000 s 
+[2025-11-17 05:46:18] davids_231.png drawing: 44040 m 104.040000 s 
+[2025-11-17 05:46:18] jsonFiles/hw2/inputs/raven/light_around_david/davids_232.json: 0.181000 s 
+[2025-11-17 05:48:01] davids_232.png all: 43366 m 103.366000 s 
+[2025-11-17 05:48:01] davids_232.png drawing: 43175 m 103.175000 s 
+[2025-11-17 05:48:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_233.json: 0.194000 s 
+[2025-11-17 05:49:44] davids_233.png all: 42623 m 102.623000 s 
+[2025-11-17 05:49:44] davids_233.png drawing: 42419 m 102.419000 s 
+[2025-11-17 05:49:44] jsonFiles/hw2/inputs/raven/light_around_david/davids_234.json: 0.214000 s 
+[2025-11-17 05:51:27] davids_234.png all: 43342 m 103.342000 s 
+[2025-11-17 05:51:27] davids_234.png drawing: 43125 m 103.125000 s 
+[2025-11-17 05:51:27] jsonFiles/hw2/inputs/raven/light_around_david/davids_235.json: 0.181000 s 
+[2025-11-17 05:53:10] davids_235.png all: 42656 m 102.656000 s 
+[2025-11-17 05:53:10] davids_235.png drawing: 42462 m 102.462000 s 
+[2025-11-17 05:53:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_236.json: 0.199000 s 
+[2025-11-17 05:54:53] davids_236.png all: 43626 m 103.626000 s 
+[2025-11-17 05:54:53] davids_236.png drawing: 43423 m 103.423000 s 
+[2025-11-17 05:54:54] jsonFiles/hw2/inputs/raven/light_around_david/davids_237.json: 0.173000 s 
+[2025-11-17 05:56:36] davids_237.png all: 42910 m 102.910000 s 
+[2025-11-17 05:56:36] davids_237.png drawing: 42733 m 102.733000 s 
+[2025-11-17 05:56:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_238.json: 0.197000 s 
+[2025-11-17 05:58:20] davids_238.png all: 43329 m 103.329000 s 
+[2025-11-17 05:58:20] davids_238.png drawing: 43124 m 103.124000 s 
+[2025-11-17 05:58:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_239.json: 0.193000 s 
+[2025-11-17 06:00:02] davids_239.png all: 42291 m 102.291000 s 
+[2025-11-17 06:00:02] davids_239.png drawing: 42093 m 102.093000 s 
+[2025-11-17 06:00:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_240.json: 0.237000 s 
+[2025-11-17 06:01:45] davids_240.png all: 43183 m 103.183000 s 
+[2025-11-17 06:01:45] davids_240.png drawing: 42943 m 102.943000 s 
+[2025-11-17 06:01:45] jsonFiles/hw2/inputs/raven/light_around_david/davids_241.json: 0.250000 s 
+[2025-11-17 06:03:28] davids_241.png all: 42430 m 102.430000 s 
+[2025-11-17 06:03:28] davids_241.png drawing: 42146 m 102.146000 s 
+[2025-11-17 06:03:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_242.json: 0.222000 s 
+[2025-11-17 06:05:12] davids_242.png all: 43899 m 103.899000 s 
+[2025-11-17 06:05:12] davids_242.png drawing: 43669 m 103.669000 s 
+[2025-11-17 06:05:12] jsonFiles/hw2/inputs/raven/light_around_david/davids_243.json: 0.259000 s 
+[2025-11-17 06:06:54] davids_243.png all: 42333 m 102.333000 s 
+[2025-11-17 06:06:54] davids_243.png drawing: 42050 m 102.050000 s 
+[2025-11-17 06:06:54] jsonFiles/hw2/inputs/raven/light_around_david/davids_244.json: 0.322000 s 
+[2025-11-17 06:08:37] davids_244.png all: 43311 m 103.311000 s 
+[2025-11-17 06:08:37] davids_244.png drawing: 42985 m 102.985000 s 
+[2025-11-17 06:08:37] jsonFiles/hw2/inputs/raven/light_around_david/davids_245.json: 0.183000 s 
+[2025-11-17 06:10:25] davids_245.png all: 48028 m 108.028000 s 
+[2025-11-17 06:10:25] davids_245.png drawing: 47842 m 107.842000 s 
+[2025-11-17 06:10:25] jsonFiles/hw2/inputs/raven/light_around_david/davids_246.json: 0.176000 s 
+[2025-11-17 06:12:08] davids_246.png all: 42600 m 102.600000 s 
+[2025-11-17 06:12:08] davids_246.png drawing: 42420 m 102.420000 s 
+[2025-11-17 06:12:08] jsonFiles/hw2/inputs/raven/light_around_david/davids_247.json: 0.188000 s 
+[2025-11-17 06:13:51] davids_247.png all: 43439 m 103.439000 s 
+[2025-11-17 06:13:51] davids_247.png drawing: 43245 m 103.245000 s 
+[2025-11-17 06:13:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_248.json: 0.207000 s 
+[2025-11-17 06:15:29] davids_248.png all: 38032 m 98.032000 s 
+[2025-11-17 06:15:29] davids_248.png drawing: 37820 m 97.820000 s 
+[2025-11-17 06:15:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_249.json: 0.177000 s 
+[2025-11-17 06:16:59] davids_249.png all: 29531 m 89.531000 s 
+[2025-11-17 06:16:59] davids_249.png drawing: 29349 m 89.349000 s 
+[2025-11-17 06:16:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_250.json: 0.159000 s 
+[2025-11-17 06:18:35] davids_250.png all: 35999 m 95.999000 s 
+[2025-11-17 06:18:35] davids_250.png drawing: 35837 m 95.837000 s 
+[2025-11-17 06:18:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_251.json: 0.139000 s 
+[2025-11-17 06:20:09] davids_251.png all: 34237 m 94.237000 s 
+[2025-11-17 06:20:09] davids_251.png drawing: 34095 m 94.095000 s 
+[2025-11-17 06:20:09] jsonFiles/hw2/inputs/raven/light_around_david/davids_252.json: 0.155000 s 
+[2025-11-17 06:21:42] davids_252.png all: 32542 m 92.542000 s 
+[2025-11-17 06:21:42] davids_252.png drawing: 32383 m 92.383000 s 
+[2025-11-17 06:21:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_253.json: 0.156000 s 
+[2025-11-17 06:23:21] davids_253.png all: 38785 m 98.785000 s 
+[2025-11-17 06:23:21] davids_253.png drawing: 38627 m 98.627000 s 
+[2025-11-17 06:23:21] jsonFiles/hw2/inputs/raven/light_around_david/davids_254.json: 0.150000 s 
+[2025-11-17 06:24:57] davids_254.png all: 36700 m 96.700000 s 
+[2025-11-17 06:24:57] davids_254.png drawing: 36547 m 96.547000 s 
+[2025-11-17 06:24:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_255.json: 0.173000 s 
+[2025-11-17 06:26:43] davids_255.png all: 45300 m 105.300000 s 
+[2025-11-17 06:26:43] davids_255.png drawing: 45124 m 105.124000 s 
+[2025-11-17 06:26:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_256.json: 0.177000 s 
+[2025-11-17 06:28:23] davids_256.png all: 40811 m 100.811000 s 
+[2025-11-17 06:28:23] davids_256.png drawing: 40631 m 100.631000 s 
+[2025-11-17 06:28:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_257.json: 0.174000 s 
+[2025-11-17 06:29:57] davids_257.png all: 33811 m 93.811000 s 
+[2025-11-17 06:29:57] davids_257.png drawing: 33634 m 93.634000 s 
+[2025-11-17 06:29:57] jsonFiles/hw2/inputs/raven/light_around_david/davids_258.json: 0.148000 s 
+[2025-11-17 06:31:39] davids_258.png all: 41580 m 101.580000 s 
+[2025-11-17 06:31:39] davids_258.png drawing: 41429 m 101.429000 s 
+[2025-11-17 06:31:39] jsonFiles/hw2/inputs/raven/light_around_david/davids_259.json: 0.170000 s 
+[2025-11-17 06:33:16] davids_259.png all: 37519 m 97.519000 s 
+[2025-11-17 06:33:16] davids_259.png drawing: 37343 m 97.343000 s 
+[2025-11-17 06:33:17] jsonFiles/hw2/inputs/raven/light_around_david/davids_260.json: 0.172000 s 
+[2025-11-17 06:34:42] davids_260.png all: 25590 m 85.590000 s 
+[2025-11-17 06:34:42] davids_260.png drawing: 25414 m 85.414000 s 
+[2025-11-17 06:34:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_261.json: 0.140000 s 
+[2025-11-17 06:36:22] davids_261.png all: 39810 m 99.810000 s 
+[2025-11-17 06:36:22] davids_261.png drawing: 39668 m 99.668000 s 
+[2025-11-17 06:36:22] jsonFiles/hw2/inputs/raven/light_around_david/davids_262.json: 0.155000 s 
+[2025-11-17 06:38:01] davids_262.png all: 39619 m 99.619000 s 
+[2025-11-17 06:38:01] davids_262.png drawing: 39461 m 99.461000 s 
+[2025-11-17 06:38:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_263.json: 0.192000 s 
+[2025-11-17 06:39:42] davids_263.png all: 40850 m 100.850000 s 
+[2025-11-17 06:39:42] davids_263.png drawing: 40654 m 100.654000 s 
+[2025-11-17 06:39:42] jsonFiles/hw2/inputs/raven/light_around_david/davids_264.json: 0.145000 s 
+[2025-11-17 06:41:20] davids_264.png all: 37999 m 97.999000 s 
+[2025-11-17 06:41:20] davids_264.png drawing: 37852 m 97.852000 s 
+[2025-11-17 06:41:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_265.json: 0.153000 s 
+[2025-11-17 06:43:01] davids_265.png all: 40411 m 100.411000 s 
+[2025-11-17 06:43:01] davids_265.png drawing: 40256 m 100.256000 s 
+[2025-11-17 06:43:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_266.json: 0.158000 s 
+[2025-11-17 06:44:41] davids_266.png all: 39933 m 99.933000 s 
+[2025-11-17 06:44:41] davids_266.png drawing: 39772 m 99.772000 s 
+[2025-11-17 06:44:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_267.json: 0.145000 s 
+[2025-11-17 06:46:30] davids_267.png all: 49682 m 109.682000 s 
+[2025-11-17 06:46:30] davids_267.png drawing: 49533 m 109.533000 s 
+[2025-11-17 06:46:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_268.json: 0.142000 s 
+[2025-11-17 06:48:10] davids_268.png all: 39797 m 99.797000 s 
+[2025-11-17 06:48:10] davids_268.png drawing: 39653 m 99.653000 s 
+[2025-11-17 06:48:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_269.json: 0.178000 s 
+[2025-11-17 06:49:56] davids_269.png all: 45488 m 105.488000 s 
+[2025-11-17 06:49:56] davids_269.png drawing: 45307 m 105.307000 s 
+[2025-11-17 06:49:56] jsonFiles/hw2/inputs/raven/light_around_david/davids_270.json: 0.185000 s 
+[2025-11-17 06:51:38] davids_270.png all: 42150 m 102.150000 s 
+[2025-11-17 06:51:38] davids_270.png drawing: 41954 m 101.954000 s 
+[2025-11-17 06:51:38] jsonFiles/hw2/inputs/raven/light_around_david/davids_271.json: 0.186000 s 
+[2025-11-17 06:53:14] davids_271.png all: 35743 m 95.743000 s 
+[2025-11-17 06:53:14] davids_271.png drawing: 35553 m 95.553000 s 
+[2025-11-17 06:53:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_272.json: 0.156000 s 
+[2025-11-17 06:54:52] davids_272.png all: 38042 m 98.042000 s 
+[2025-11-17 06:54:52] davids_272.png drawing: 37883 m 97.883000 s 
+[2025-11-17 06:54:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_273.json: 0.173000 s 
+[2025-11-17 06:56:31] davids_273.png all: 39502 m 99.502000 s 
+[2025-11-17 06:56:31] davids_273.png drawing: 39326 m 99.326000 s 
+[2025-11-17 06:56:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_274.json: 0.146000 s 
+[2025-11-17 06:58:13] davids_274.png all: 41458 m 101.458000 s 
+[2025-11-17 06:58:13] davids_274.png drawing: 41309 m 101.309000 s 
+[2025-11-17 06:58:13] jsonFiles/hw2/inputs/raven/light_around_david/davids_275.json: 0.140000 s 
+[2025-11-17 06:59:54] davids_275.png all: 41865 m 101.865000 s 
+[2025-11-17 06:59:54] davids_275.png drawing: 41722 m 101.722000 s 
+[2025-11-17 06:59:55] jsonFiles/hw2/inputs/raven/light_around_david/davids_276.json: 0.134000 s 
+[2025-11-17 07:01:31] davids_276.png all: 36464 m 96.464000 s 
+[2025-11-17 07:01:31] davids_276.png drawing: 36327 m 96.327000 s 
+[2025-11-17 07:01:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_277.json: 0.168000 s 
+[2025-11-17 07:03:06] davids_277.png all: 35138 m 95.138000 s 
+[2025-11-17 07:03:06] davids_277.png drawing: 34967 m 94.967000 s 
+[2025-11-17 07:03:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_278.json: 0.160000 s 
+[2025-11-17 07:04:48] davids_278.png all: 42134 m 102.134000 s 
+[2025-11-17 07:04:48] davids_278.png drawing: 41969 m 101.969000 s 
+[2025-11-17 07:04:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_279.json: 0.147000 s 
+[2025-11-17 07:06:27] davids_279.png all: 39076 m 99.076000 s 
+[2025-11-17 07:06:27] davids_279.png drawing: 38926 m 98.926000 s 
+[2025-11-17 07:06:28] jsonFiles/hw2/inputs/raven/light_around_david/davids_280.json: 0.298000 s 
+[2025-11-17 07:08:12] davids_280.png all: 44354 m 104.354000 s 
+[2025-11-17 07:08:12] davids_280.png drawing: 44053 m 104.053000 s 
+[2025-11-17 07:08:12] jsonFiles/hw2/inputs/raven/light_around_david/davids_281.json: 0.182000 s 
+[2025-11-17 07:10:00] davids_281.png all: 48017 m 108.017000 s 
+[2025-11-17 07:10:00] davids_281.png drawing: 47831 m 107.831000 s 
+[2025-11-17 07:10:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_282.json: 0.180000 s 
+[2025-11-17 07:11:50] davids_282.png all: 50781 m 110.781000 s 
+[2025-11-17 07:11:50] davids_282.png drawing: 50597 m 110.597000 s 
+[2025-11-17 07:11:51] jsonFiles/hw2/inputs/raven/light_around_david/davids_283.json: 0.192000 s 
+[2025-11-17 07:13:46] davids_283.png all: 55148 m 115.148000 s 
+[2025-11-17 07:13:46] davids_283.png drawing: 54954 m 114.954000 s 
+[2025-11-17 07:13:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_284.json: 0.149000 s 
+[2025-11-17 07:15:35] davids_284.png all: 49328 m 109.328000 s 
+[2025-11-17 07:15:35] davids_284.png drawing: 49177 m 109.177000 s 
+[2025-11-17 07:15:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_285.json: 0.159000 s 
+[2025-11-17 07:17:24] davids_285.png all: 48557 m 108.557000 s 
+[2025-11-17 07:17:24] davids_285.png drawing: 48396 m 108.396000 s 
+[2025-11-17 07:17:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_286.json: 0.192000 s 
+[2025-11-17 07:19:06] davids_286.png all: 42453 m 102.453000 s 
+[2025-11-17 07:19:06] davids_286.png drawing: 42257 m 102.257000 s 
+[2025-11-17 07:19:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_287.json: 0.129000 s 
+[2025-11-17 07:20:41] davids_287.png all: 34787 m 94.787000 s 
+[2025-11-17 07:20:41] davids_287.png drawing: 34655 m 94.655000 s 
+[2025-11-17 07:20:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_288.json: 0.140000 s 
+[2025-11-17 07:22:17] davids_288.png all: 36006 m 96.006000 s 
+[2025-11-17 07:22:17] davids_288.png drawing: 35863 m 95.863000 s 
+[2025-11-17 07:22:17] jsonFiles/hw2/inputs/raven/light_around_david/davids_289.json: 0.152000 s 
+[2025-11-17 07:23:49] davids_289.png all: 31845 m 91.845000 s 
+[2025-11-17 07:23:49] davids_289.png drawing: 31689 m 91.689000 s 
+[2025-11-17 07:23:49] jsonFiles/hw2/inputs/raven/light_around_david/davids_290.json: 0.155000 s 
+[2025-11-17 07:25:21] davids_290.png all: 32168 m 92.168000 s 
+[2025-11-17 07:25:21] davids_290.png drawing: 32009 m 92.009000 s 
+[2025-11-17 07:25:21] jsonFiles/hw2/inputs/raven/light_around_david/davids_291.json: 0.146000 s 
+[2025-11-17 07:26:58] davids_291.png all: 37540 m 97.540000 s 
+[2025-11-17 07:26:58] davids_291.png drawing: 37391 m 97.391000 s 
+[2025-11-17 07:26:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_292.json: 0.177000 s 
+[2025-11-17 07:28:30] davids_292.png all: 31525 m 91.525000 s 
+[2025-11-17 07:28:30] davids_292.png drawing: 31344 m 91.344000 s 
+[2025-11-17 07:28:30] jsonFiles/hw2/inputs/raven/light_around_david/davids_293.json: 0.151000 s 
+[2025-11-17 07:30:04] davids_293.png all: 34288 m 94.288000 s 
+[2025-11-17 07:30:04] davids_293.png drawing: 34133 m 94.133000 s 
+[2025-11-17 07:30:04] jsonFiles/hw2/inputs/raven/light_around_david/davids_294.json: 0.145000 s 
+[2025-11-17 07:31:36] davids_294.png all: 31697 m 91.697000 s 
+[2025-11-17 07:31:36] davids_294.png drawing: 31549 m 91.549000 s 
+[2025-11-17 07:31:36] jsonFiles/hw2/inputs/raven/light_around_david/davids_295.json: 0.153000 s 
+[2025-11-17 07:33:08] davids_295.png all: 31651 m 91.651000 s 
+[2025-11-17 07:33:08] davids_295.png drawing: 31493 m 91.493000 s 
+[2025-11-17 07:33:08] jsonFiles/hw2/inputs/raven/light_around_david/davids_296.json: 0.155000 s 
+[2025-11-17 07:34:40] davids_296.png all: 32015 m 92.015000 s 
+[2025-11-17 07:34:40] davids_296.png drawing: 31855 m 91.855000 s 
+[2025-11-17 07:34:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_297.json: 0.134000 s 
+[2025-11-17 07:36:12] davids_297.png all: 32160 m 92.160000 s 
+[2025-11-17 07:36:12] davids_297.png drawing: 32023 m 92.023000 s 
+[2025-11-17 07:36:12] jsonFiles/hw2/inputs/raven/light_around_david/davids_298.json: 0.142000 s 
+[2025-11-17 07:37:46] davids_298.png all: 34181 m 94.181000 s 
+[2025-11-17 07:37:46] davids_298.png drawing: 34036 m 94.036000 s 
+[2025-11-17 07:37:46] jsonFiles/hw2/inputs/raven/light_around_david/davids_299.json: 0.158000 s 
+[2025-11-17 07:39:19] davids_299.png all: 33268 m 93.268000 s 
+[2025-11-17 07:39:19] davids_299.png drawing: 33107 m 93.107000 s 
+[2025-11-17 07:39:19] jsonFiles/hw2/inputs/raven/light_around_david/davids_300.json: 0.146000 s 
+[2025-11-17 07:40:54] davids_300.png all: 34773 m 94.773000 s 
+[2025-11-17 07:40:54] davids_300.png drawing: 34623 m 94.623000 s 
+[2025-11-17 07:40:54] jsonFiles/hw2/inputs/raven/light_around_david/davids_301.json: 0.145000 s 
+[2025-11-17 07:42:26] davids_301.png all: 32149 m 92.149000 s 
+[2025-11-17 07:42:26] davids_301.png drawing: 32000 m 92.000000 s 
+[2025-11-17 07:42:26] jsonFiles/hw2/inputs/raven/light_around_david/davids_302.json: 0.133000 s 
+[2025-11-17 07:43:59] davids_302.png all: 32782 m 92.782000 s 
+[2025-11-17 07:43:59] davids_302.png drawing: 32646 m 92.646000 s 
+[2025-11-17 07:43:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_303.json: 0.146000 s 
+[2025-11-17 07:45:31] davids_303.png all: 31973 m 91.973000 s 
+[2025-11-17 07:45:31] davids_303.png drawing: 31823 m 91.823000 s 
+[2025-11-17 07:45:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_304.json: 0.141000 s 
+[2025-11-17 07:47:01] davids_304.png all: 30087 m 90.087000 s 
+[2025-11-17 07:47:01] davids_304.png drawing: 29943 m 89.943000 s 
+[2025-11-17 07:47:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_305.json: 0.122000 s 
+[2025-11-17 07:48:33] davids_305.png all: 32336 m 92.336000 s 
+[2025-11-17 07:48:33] davids_305.png drawing: 32211 m 92.211000 s 
+[2025-11-17 07:48:34] jsonFiles/hw2/inputs/raven/light_around_david/davids_306.json: 0.148000 s 
+[2025-11-17 07:50:03] davids_306.png all: 29680 m 89.680000 s 
+[2025-11-17 07:50:03] davids_306.png drawing: 29528 m 89.528000 s 
+[2025-11-17 07:50:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_307.json: 0.145000 s 
+[2025-11-17 07:51:35] davids_307.png all: 31436 m 91.436000 s 
+[2025-11-17 07:51:35] davids_307.png drawing: 31286 m 91.286000 s 
+[2025-11-17 07:51:35] jsonFiles/hw2/inputs/raven/light_around_david/davids_308.json: 0.147000 s 
+[2025-11-17 07:53:03] davids_308.png all: 28627 m 88.627000 s 
+[2025-11-17 07:53:03] davids_308.png drawing: 28476 m 88.476000 s 
+[2025-11-17 07:53:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_309.json: 0.133000 s 
+[2025-11-17 07:54:31] davids_309.png all: 28102 m 88.102000 s 
+[2025-11-17 07:54:31] davids_309.png drawing: 27965 m 87.965000 s 
+[2025-11-17 07:54:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_310.json: 0.161000 s 
+[2025-11-17 07:56:00] davids_310.png all: 28451 m 88.451000 s 
+[2025-11-17 07:56:00] davids_310.png drawing: 28286 m 88.286000 s 
+[2025-11-17 07:56:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_311.json: 0.157000 s 
+[2025-11-17 07:57:29] davids_311.png all: 29330 m 89.330000 s 
+[2025-11-17 07:57:29] davids_311.png drawing: 29170 m 89.170000 s 
+[2025-11-17 07:57:29] jsonFiles/hw2/inputs/raven/light_around_david/davids_312.json: 0.160000 s 
+[2025-11-17 07:58:56] davids_312.png all: 26776 m 86.776000 s 
+[2025-11-17 07:58:56] davids_312.png drawing: 26612 m 86.612000 s 
+[2025-11-17 07:58:56] jsonFiles/hw2/inputs/raven/light_around_david/davids_313.json: 0.145000 s 
+[2025-11-17 08:00:24] davids_313.png all: 27959 m 87.959000 s 
+[2025-11-17 08:00:24] davids_313.png drawing: 27810 m 87.810000 s 
+[2025-11-17 08:00:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_314.json: 0.143000 s 
+[2025-11-17 08:01:52] davids_314.png all: 28270 m 88.270000 s 
+[2025-11-17 08:01:52] davids_314.png drawing: 28123 m 88.123000 s 
+[2025-11-17 08:01:52] jsonFiles/hw2/inputs/raven/light_around_david/davids_315.json: 0.151000 s 
+[2025-11-17 08:03:18] davids_315.png all: 26271 m 86.271000 s 
+[2025-11-17 08:03:18] davids_315.png drawing: 26116 m 86.116000 s 
+[2025-11-17 08:03:19] jsonFiles/hw2/inputs/raven/light_around_david/davids_316.json: 0.140000 s 
+[2025-11-17 08:04:43] davids_316.png all: 24163 m 84.163000 s 
+[2025-11-17 08:04:43] davids_316.png drawing: 24021 m 84.021000 s 
+[2025-11-17 08:04:43] jsonFiles/hw2/inputs/raven/light_around_david/davids_317.json: 0.137000 s 
+[2025-11-17 08:06:06] davids_317.png all: 23233 m 83.233000 s 
+[2025-11-17 08:06:06] davids_317.png drawing: 23092 m 83.092000 s 
+[2025-11-17 08:06:06] jsonFiles/hw2/inputs/raven/light_around_david/davids_318.json: 0.263000 s 
+[2025-11-17 08:07:29] davids_318.png all: 22789 m 82.789000 s 
+[2025-11-17 08:07:29] davids_318.png drawing: 22524 m 82.524000 s 
+[2025-11-17 08:07:29] jsonFiles/hw2/inputs/raven/light_around_david/davids_319.json: 0.144000 s 
+[2025-11-17 08:09:03] davids_319.png all: 34037 m 94.037000 s 
+[2025-11-17 08:09:03] davids_319.png drawing: 33889 m 93.889000 s 
+[2025-11-17 08:09:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_320.json: 0.263000 s 
+[2025-11-17 08:10:39] davids_320.png all: 35923 m 95.923000 s 
+[2025-11-17 08:10:39] davids_320.png drawing: 35640 m 95.640000 s 
+[2025-11-17 08:10:39] jsonFiles/hw2/inputs/raven/light_around_david/davids_321.json: 0.290000 s 
+[2025-11-17 08:12:14] davids_321.png all: 35742 m 95.742000 s 
+[2025-11-17 08:12:14] davids_321.png drawing: 35448 m 95.448000 s 
+[2025-11-17 08:12:15] jsonFiles/hw2/inputs/raven/light_around_david/davids_322.json: 0.296000 s 
+[2025-11-17 08:13:49] davids_322.png all: 34816 m 94.816000 s 
+[2025-11-17 08:13:49] davids_322.png drawing: 34514 m 94.514000 s 
+[2025-11-17 08:13:49] jsonFiles/hw2/inputs/raven/light_around_david/davids_323.json: 0.229000 s 
+[2025-11-17 08:15:24] davids_323.png all: 34720 m 94.720000 s 
+[2025-11-17 08:15:24] davids_323.png drawing: 34488 m 94.488000 s 
+[2025-11-17 08:15:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_324.json: 0.189000 s 
+[2025-11-17 08:16:59] davids_324.png all: 35065 m 95.065000 s 
+[2025-11-17 08:16:59] davids_324.png drawing: 34830 m 94.830000 s 
+[2025-11-17 08:16:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_325.json: 0.211000 s 
+[2025-11-17 08:18:33] davids_325.png all: 33776 m 93.776000 s 
+[2025-11-17 08:18:33] davids_325.png drawing: 33549 m 93.549000 s 
+[2025-11-17 08:18:33] jsonFiles/hw2/inputs/raven/light_around_david/davids_326.json: 0.274000 s 
+[2025-11-17 08:20:07] davids_326.png all: 33896 m 93.896000 s 
+[2025-11-17 08:20:07] davids_326.png drawing: 33619 m 93.619000 s 
+[2025-11-17 08:20:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_327.json: 0.215000 s 
+[2025-11-17 08:21:41] davids_327.png all: 33896 m 93.896000 s 
+[2025-11-17 08:21:41] davids_327.png drawing: 33678 m 93.678000 s 
+[2025-11-17 08:21:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_328.json: 0.417000 s 
+[2025-11-17 08:23:13] davids_328.png all: 32834 m 92.834000 s 
+[2025-11-17 08:23:14] davids_328.png drawing: 32405 m 92.405000 s 
+[2025-11-17 08:23:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_329.json: 0.426000 s 
+[2025-11-17 08:24:47] davids_329.png all: 33548 m 93.548000 s 
+[2025-11-17 08:24:47] davids_329.png drawing: 33113 m 93.113000 s 
+[2025-11-17 08:24:47] jsonFiles/hw2/inputs/raven/light_around_david/davids_330.json: 0.296000 s 
+[2025-11-17 08:26:20] davids_330.png all: 33011 m 93.011000 s 
+[2025-11-17 08:26:20] davids_330.png drawing: 32711 m 92.711000 s 
+[2025-11-17 08:26:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_331.json: 0.189000 s 
+[2025-11-17 08:27:40] davids_331.png all: 19422 m 79.422000 s 
+[2025-11-17 08:27:40] davids_331.png drawing: 19229 m 79.229000 s 
+[2025-11-17 08:27:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_332.json: 0.138000 s 
+[2025-11-17 08:29:00] davids_332.png all: 20531 m 80.531000 s 
+[2025-11-17 08:29:00] davids_332.png drawing: 20390 m 80.390000 s 
+[2025-11-17 08:29:00] jsonFiles/hw2/inputs/raven/light_around_david/davids_333.json: 0.166000 s 
+[2025-11-17 08:30:20] davids_333.png all: 20246 m 80.246000 s 
+[2025-11-17 08:30:20] davids_333.png drawing: 20076 m 80.076000 s 
+[2025-11-17 08:30:20] jsonFiles/hw2/inputs/raven/light_around_david/davids_334.json: 0.132000 s 
+[2025-11-17 08:31:41] davids_334.png all: 20406 m 80.406000 s 
+[2025-11-17 08:31:41] davids_334.png drawing: 20258 m 80.258000 s 
+[2025-11-17 08:31:41] jsonFiles/hw2/inputs/raven/light_around_david/davids_335.json: 0.163000 s 
+[2025-11-17 08:33:02] davids_335.png all: 20763 m 80.763000 s 
+[2025-11-17 08:33:02] davids_335.png drawing: 20597 m 80.597000 s 
+[2025-11-17 08:33:02] jsonFiles/hw2/inputs/raven/light_around_david/davids_336.json: 0.114000 s 
+[2025-11-17 08:34:24] davids_336.png all: 22618 m 82.618000 s 
+[2025-11-17 08:34:24] davids_336.png drawing: 22501 m 82.501000 s 
+[2025-11-17 08:34:24] jsonFiles/hw2/inputs/raven/light_around_david/davids_337.json: 0.126000 s 
+[2025-11-17 08:35:47] davids_337.png all: 23248 m 83.248000 s 
+[2025-11-17 08:35:47] davids_337.png drawing: 23118 m 83.118000 s 
+[2025-11-17 08:35:48] jsonFiles/hw2/inputs/raven/light_around_david/davids_338.json: 0.151000 s 
+[2025-11-17 08:37:10] davids_338.png all: 22905 m 82.905000 s 
+[2025-11-17 08:37:10] davids_338.png drawing: 22749 m 82.749000 s 
+[2025-11-17 08:37:10] jsonFiles/hw2/inputs/raven/light_around_david/davids_339.json: 0.148000 s 
+[2025-11-17 08:38:36] davids_339.png all: 25725 m 85.725000 s 
+[2025-11-17 08:38:36] davids_339.png drawing: 25574 m 85.574000 s 
+[2025-11-17 08:38:36] jsonFiles/hw2/inputs/raven/light_around_david/davids_340.json: 0.154000 s 
+[2025-11-17 08:39:59] davids_340.png all: 23245 m 83.245000 s 
+[2025-11-17 08:39:59] davids_340.png drawing: 23087 m 83.087000 s 
+[2025-11-17 08:39:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_341.json: 0.163000 s 
+[2025-11-17 08:41:23] davids_341.png all: 24023 m 84.023000 s 
+[2025-11-17 08:41:23] davids_341.png drawing: 23857 m 83.857000 s 
+[2025-11-17 08:41:23] jsonFiles/hw2/inputs/raven/light_around_david/davids_342.json: 0.146000 s 
+[2025-11-17 08:42:49] davids_342.png all: 25596 m 85.596000 s 
+[2025-11-17 08:42:49] davids_342.png drawing: 25446 m 85.446000 s 
+[2025-11-17 08:42:49] jsonFiles/hw2/inputs/raven/light_around_david/davids_343.json: 0.156000 s 
+[2025-11-17 08:44:13] davids_343.png all: 24495 m 84.495000 s 
+[2025-11-17 08:44:13] davids_343.png drawing: 24334 m 84.334000 s 
+[2025-11-17 08:44:14] jsonFiles/hw2/inputs/raven/light_around_david/davids_344.json: 0.149000 s 
+[2025-11-17 08:45:40] davids_344.png all: 26583 m 86.583000 s 
+[2025-11-17 08:45:40] davids_344.png drawing: 26430 m 86.430000 s 
+[2025-11-17 08:45:40] jsonFiles/hw2/inputs/raven/light_around_david/davids_345.json: 0.144000 s 
+[2025-11-17 08:47:07] davids_345.png all: 26778 m 86.778000 s 
+[2025-11-17 08:47:07] davids_345.png drawing: 26630 m 86.630000 s 
+[2025-11-17 08:47:07] jsonFiles/hw2/inputs/raven/light_around_david/davids_346.json: 0.162000 s 
+[2025-11-17 08:48:32] davids_346.png all: 25225 m 85.225000 s 
+[2025-11-17 08:48:32] davids_346.png drawing: 25060 m 85.060000 s 
+[2025-11-17 08:48:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_347.json: 0.134000 s 
+[2025-11-17 08:50:01] davids_347.png all: 28527 m 88.527000 s 
+[2025-11-17 08:50:01] davids_347.png drawing: 28388 m 88.388000 s 
+[2025-11-17 08:50:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_348.json: 0.134000 s 
+[2025-11-17 08:51:27] davids_348.png all: 26665 m 86.665000 s 
+[2025-11-17 08:51:27] davids_348.png drawing: 26527 m 86.527000 s 
+[2025-11-17 08:51:27] jsonFiles/hw2/inputs/raven/light_around_david/davids_349.json: 0.145000 s 
+[2025-11-17 08:52:59] davids_349.png all: 31444 m 91.444000 s 
+[2025-11-17 08:52:59] davids_349.png drawing: 31297 m 91.297000 s 
+[2025-11-17 08:52:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_350.json: 0.150000 s 
+[2025-11-17 08:54:31] davids_350.png all: 32478 m 92.478000 s 
+[2025-11-17 08:54:31] davids_350.png drawing: 32323 m 92.323000 s 
+[2025-11-17 08:54:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_351.json: 0.137000 s 
+[2025-11-17 08:56:03] davids_351.png all: 31588 m 91.588000 s 
+[2025-11-17 08:56:03] davids_351.png drawing: 31448 m 91.448000 s 
+[2025-11-17 08:56:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_352.json: 0.133000 s 
+[2025-11-17 08:57:33] davids_352.png all: 30380 m 90.380000 s 
+[2025-11-17 08:57:33] davids_352.png drawing: 30244 m 90.244000 s 
+[2025-11-17 08:57:33] jsonFiles/hw2/inputs/raven/light_around_david/davids_353.json: 0.152000 s 
+[2025-11-17 08:59:02] davids_353.png all: 29199 m 89.199000 s 
+[2025-11-17 08:59:02] davids_353.png drawing: 29044 m 89.044000 s 
+[2025-11-17 08:59:03] jsonFiles/hw2/inputs/raven/light_around_david/davids_354.json: 0.114000 s 
+[2025-11-17 09:00:31] davids_354.png all: 28711 m 88.711000 s 
+[2025-11-17 09:00:31] davids_354.png drawing: 28594 m 88.594000 s 
+[2025-11-17 09:00:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_355.json: 0.134000 s 
+[2025-11-17 09:01:59] davids_355.png all: 28131 m 88.131000 s 
+[2025-11-17 09:01:59] davids_355.png drawing: 27993 m 87.993000 s 
+[2025-11-17 09:01:59] jsonFiles/hw2/inputs/raven/light_around_david/davids_356.json: 0.167000 s 
+[2025-11-17 09:03:31] davids_356.png all: 32114 m 92.114000 s 
+[2025-11-17 09:03:31] davids_356.png drawing: 31943 m 91.943000 s 
+[2025-11-17 09:03:32] jsonFiles/hw2/inputs/raven/light_around_david/davids_357.json: 0.159000 s 
+[2025-11-17 09:05:01] davids_357.png all: 29692 m 89.692000 s 
+[2025-11-17 09:05:01] davids_357.png drawing: 29531 m 89.531000 s 
+[2025-11-17 09:05:01] jsonFiles/hw2/inputs/raven/light_around_david/davids_358.json: 0.132000 s 
+[2025-11-17 09:06:31] davids_358.png all: 29586 m 89.586000 s 
+[2025-11-17 09:06:31] davids_358.png drawing: 29451 m 89.451000 s 
+[2025-11-17 09:06:31] jsonFiles/hw2/inputs/raven/light_around_david/davids_359.json: 0.257000 s 
+[2025-11-17 09:08:01] davids_359.png all: 30298 m 90.298000 s 
+[2025-11-17 09:08:01] davids_359.png drawing: 30037 m 90.037000 s 
+[2025-11-17 09:08:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_000.json: 0.402000 s 
