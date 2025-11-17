@@ -31,26 +31,25 @@ int main(void) {
     raytracer.drawFile("jsonFiles/hw2/inputs/metal_glass_plates.json");
     raytracer.drawFile("jsonFiles/hw1/inputs/cornellbox_recursive.json");
     raytracer.drawFile("jsonFiles/hw1/inputs/scienceTree_glass.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/dragon_metal.json");
-
-
-    // raytracer.log("\n\nThe following are time consuming scenes:");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
-    // // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json");
-    // // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json");
-    // // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json");
-    //
-    // raytracer.log("\n\nThe following are moving/dynamic scenes:");
-    // // raytracer.drawAllFiles("jsonFiles/hw2/inputs/akif_uslu/windmill/input/");
-    //  raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/light_around_david/");
-    //  raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_zoom_david/");
-    // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_around_david/");
-
-
 
     return 0;
+    raytracer.log("\n\nThe following are time consuming scenes:");
+    raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
+
+    raytracer.log("\n\nThe following are moving/dynamic scenes:");
+     // raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/light_around_david/");
+     raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_zoom_david/");
+    raytracer.drawAllFiles("jsonFiles/hw2/inputs/raven/camera_around_david/");
+
+    // raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json");
+    //
+    // raytracer.drawAllFiles("jsonFiles/hw2/inputs/akif_uslu/windmill/input/");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/dragon_metal.json");
+
 
     // simple ones
     raytracer.log("\n\nThe following are the rather simple scenes:");
@@ -84,13 +83,13 @@ int main(void) {
     raytracer.drawFile("jsonFiles/hw1/inputs/raven/rt_utahteapot_mug_ceng.json");
 
     // lookat ones
-    /*raytracer.log("\n\nScenes with lookAt:");
-    raytracer.drawFile("jsonFiles/hw1/inputs/other_dragon.json");*/
 
     // ply ones
     //raytracer.log("\n\nScenes with ply:");
     raytracer.drawFile("jsonFiles/hw1/inputs/akif_uslu/ton_Roosendaal_smooth.json");
     raytracer.drawFile("jsonFiles/hw1/inputs/akif_uslu/trex_smooth.json");
+    raytracer.log("\n\nScenes with lookAt:");
+    raytracer.drawFile("jsonFiles/hw1/inputs/other_dragon.json");
     raytracer.drawFile("jsonFiles/hw1/inputs/deniz_sayin/lobster.json");
 
 

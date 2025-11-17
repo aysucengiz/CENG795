@@ -72,8 +72,8 @@ enum class Axes
 enum class BVHNodeType : uint8_t
 {
     LEAF,
-    INT_W_LEFT,
-    INT_W_RIGHT,
+    // INT_W_LEFT,
+    // INT_W_RIGHT,
     INT_W_BOTH
 };
 

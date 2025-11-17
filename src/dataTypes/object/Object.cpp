@@ -78,25 +78,15 @@ Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID)  const
 {
     if (shadingType == ShadingType::SMOOTH)
     {
-        Vec3r b_a = b.v - a.v;
-        Vec3r c_a = c.v - a.v;
         Vec3r v_a = v - a.v;
 
-        real d00 = dot_product(b_a, b_a);
-        real d01 = dot_product(b_a, c_a);
-        real d11 = dot_product(c_a, c_a);
-        real d20 = dot_product(v_a, b_a);
-        real d21 = dot_product(v_a, c_a);
+        real one_areaAll =  1 / x_product(a_b,a_c).mag();
+        real areaB = x_product(v_a,a_b).mag() * one_areaAll;
+        real areaC = x_product(v_a,a_c).mag() * one_areaAll;
+        real areaA = 1.0 - areaB - areaC;
 
-        real denom = d00 * d11 - d01 * d01;
-        real A_b = (d11 * d20 - d01 * d21) / denom;
-        real A_c = (d00 * d21 - d01 * d20) / denom;
-        real A_a = 1.0 - A_b - A_c;
-
-        Vec3r interpolated_normal = a.n * A_a + b.n * A_b + c.n * A_c;
-        interpolated_normal = interpolated_normal.normalize();
-        //if (dot_product(interpolated_normal, n) < 0.0) interpolated_normal = -interpolated_normal;
-        return interpolated_normal;
+        Vec3r fin_normal = a.n * areaA + b.n * areaB + c.n * areaC;
+        return fin_normal.normalize();
     }
     else return n;
 }

@@ -13,11 +13,20 @@ long RaytracerThread::done_threads = 0;
 
 std::string RayTracer::timeString(long duration)
 {
-    std::string s;
-    s= std::to_string(duration / 1000.0) + " s ";
-    if (duration > 60000) s= std::to_string(duration % 60000) + " m " + s;
-    if (duration > 3600000) s= std::to_string(duration % 3600000) + " h " + s;
-    return s;
+    std::string str = "";
+    int h = 0;
+    int m= 0;
+    real s = 0.0;
+
+    h = duration / 3600000;
+    m = (duration % 3600000)/60000;
+    s = (duration % 60000) / 1000;;
+
+
+    if (h>0) str= str + std::to_string(h) + " h ";
+    if (m > 0) str= str + std::to_string(m) + " m ";
+    if (s > 0) str= str + std::to_string(s) + " s ";
+    return str;
 }
 
 RayTracer::RayTracer()
@@ -144,7 +153,7 @@ void RayTracer::drawScene(uint32_t c){
         uint32_t rowcount = (height + batch_h -1) /  batch_h;
         uint32_t colcount = (width + batch_w -1) /  batch_w;
         uint32_t batchcount = rowcount * colcount;
-        log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
+        //log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
         RaytracerThread rtt(scene, scene.Cameras[camID], bvh);
 
 #pragma omp parallel for schedule(dynamic,1) firstprivate(rtt)
@@ -153,7 +162,7 @@ void RayTracer::drawScene(uint32_t c){
             rtt.drawBatch((i/colcount)*batch_h*width + (i%colcount)*batch_w, batch_w, batch_h);
         }
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
 
     PPM::write_stb((output_path  + cam.ImageName).c_str(), scene.image, width, height);

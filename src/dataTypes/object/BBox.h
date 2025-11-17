@@ -9,6 +9,7 @@
 
 struct BBox
 {
+    real area;
     Vertex vMax, vMin;
     BBox();
     BBox(real xmax, real xmin, real ymax, real ymin, real zmax, real zmin);

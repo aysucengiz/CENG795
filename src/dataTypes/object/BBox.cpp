@@ -8,17 +8,29 @@
 
 BBox::BBox()
 {
+    Vec3r temp = vMax - vMin;
+    area = 2* (temp.i * temp.j +
+               temp.i * temp.k +
+               temp.j * temp.k);
 };
 
 
 BBox::BBox(real xmax, real xmin, real ymax, real ymin, real zmax, real zmin)
     : vMax(xmax, ymax, zmax), vMin(xmin, ymin, zmin)
 {
+    Vec3r temp = vMax - vMin;
+    area = 2* (temp.i * temp.j +
+               temp.i * temp.k +
+               temp.j * temp.k);
 };
 
 BBox::BBox(Vertex vMax, Vertex vMin)
     : vMax(vMax), vMin(vMin)
 {
+    Vec3r temp = vMax - vMin;
+    area = 2* (temp.i * temp.j +
+               temp.i * temp.k +
+               temp.j * temp.k);
 };
 
 bool BBox::isWithin(const Vertex& v)
@@ -32,24 +44,15 @@ bool BBox::isWithin(const Vertex& v)
 
 bool BBox::intersects(const Ray& r) const
 {
-    real t_x[2] = {INFINITY, INFINITY};
-    real t_y[2] = {INFINITY, INFINITY};
-    real t_z[2] = {INFINITY, INFINITY};
+    Vec3r t_min = (vMin - r.pos) / r.dir;
+    Vec3r t_max = (vMax - r.pos) / r.dir;
 
-    t_x[0] = (vMin.x - r.pos.x) / r.dir.i;
-    t_x[1] = (vMax.x - r.pos.x) / r.dir.i;
-    if (t_x[1] < t_x[0]) std::swap(t_x[0], t_x[1]);
+    if (t_max.i < t_min.i) std::swap(t_max.i, t_min.i);
+    if (t_max.j < t_min.j) std::swap(t_max.j, t_min.j);
+    if (t_max.k < t_min.k) std::swap(t_max.k, t_min.k);
 
-    t_y[0] = (vMin.y - r.pos.y) / r.dir.j;
-    t_y[1] = (vMax.y - r.pos.y) / r.dir.j;
-    if (t_y[1] < t_y[0]) std::swap(t_y[0], t_y[1]);
-
-    t_z[0] = (vMin.z - r.pos.z) / r.dir.k;
-    t_z[1] = (vMax.z - r.pos.z) / r.dir.k;
-    if (t_z[1] < t_z[0]) std::swap(t_z[0], t_z[1]);
-
-    real t1 = max3(t_x[0], t_y[0], t_z[0]);
-    real t2 = min3(t_x[1], t_y[1], t_z[1]);
+    real t1 = max3(t_min.i, t_min.j, t_min.k);
+    real t2 = min3(t_max.i, t_max.j, t_max.k);
 
     if (t1 > t2) return false;
     return true;
@@ -58,8 +61,5 @@ bool BBox::intersects(const Ray& r) const
 
 real BBox::getArea() const
 {
-    Vec3r temp = vMax - vMin;
-    return 2* (temp.i * temp.j +
-               temp.i * temp.k +
-               temp.j * temp.k);
+    return area;
 }

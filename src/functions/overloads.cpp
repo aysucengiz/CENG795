@@ -119,6 +119,13 @@ Vec3r operator /(const Vec3r &a, const real denum)
                  a.k / denum);
 }
 
+Vec3r operator /(const Vec3r &a, const Vec3r &b)
+{
+    return Vec3r(a.i / b.i,
+                 a.j / b.j,
+                 a.k / b.k);
+}
+
 Vec3r operator *(const Vec3r &a, real mult)
 {
     return Vec3r(a.i * mult,
@@ -366,8 +373,8 @@ std::ostream& operator<<(std::ostream& os, PivotType t)
 std::ostream& operator<<(std::ostream& os, BVHNodeType t)
 {
     if (t == BVHNodeType::LEAF) os<<  "leaf \t\t";
-    else if (t == BVHNodeType::INT_W_LEFT) os<<  "w/ left \t";
-    else if (t == BVHNodeType::INT_W_RIGHT) os<< "w/ right \t";
+    // else if (t == BVHNodeType::INT_W_LEFT) os<<  "w/ left \t";
+    // else if (t == BVHNodeType::INT_W_RIGHT) os<< "w/ right \t";
     else if (t == BVHNodeType::INT_W_BOTH) os<<  "w/ left right";
     else os << "unknown";
     return os;
