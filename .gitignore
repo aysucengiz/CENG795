@@ -45,3 +45,6 @@
 
 jsonFiles/*
 outputs/*
+raytracer
+raytracer_test
+logs/*
