@@ -14,7 +14,6 @@ class Transformation: public M4trix
 {
 public:
     M4trix normalTransform;
-    uint8_t _id;
     virtual ~Transformation() = default;
     virtual TransformationType getTransformationType() const;
     virtual Transformation *inv() const = 0;

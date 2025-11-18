@@ -13,20 +13,11 @@ long RaytracerThread::done_threads = 0;
 
 std::string RayTracer::timeString(long duration)
 {
-    std::string str = "";
-    int h = 0;
-    int m= 0;
-    real s = 0.0;
-
-    h = duration / 3600000;
-    m = (duration % 3600000)/60000;
-    s = (duration % 60000) / 1000.0;;
-
-
-    if (h>0) str= str + std::to_string(h) + " h ";
-    if (m > 0) str= str + std::to_string(m) + " m ";
-    str= str + std::to_string(s) + " s ";
-    return str;
+    std::string s;
+    s= std::to_string(duration / 1000.0) + " s ";
+    if (duration > 60000) s= std::to_string(duration % 60000) + " m " + s;
+    if (duration > 3600000) s= std::to_string(duration % 3600000) + " h " + s;
+    return s;
 }
 
 RayTracer::RayTracer()
@@ -136,7 +127,7 @@ void RayTracer::drawScene(uint32_t c){
 
     scene.image = new unsigned char[width * height * 3];
 
-    if constexpr (ROW_THREAD)
+    if (ROW_THREAD)
     {
         std::vector<RaytracerThread> raytracers;
         for (uint32_t y = 0; y < height; y++){
@@ -148,7 +139,7 @@ void RayTracer::drawScene(uint32_t c){
             raytracers[y].drawRow(y);
         }
     }
-    else if constexpr (BATCH_THREAD)
+    else if (BATCH_THREAD)
     {
         uint32_t rowcount = (height + batch_h -1) /  batch_h;
         uint32_t colcount = (width + batch_w -1) /  batch_w;

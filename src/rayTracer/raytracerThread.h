@@ -33,7 +33,7 @@ public:
     { }
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0) {}
-    Ray reflectionRay(const Ray& ray,MaterialType type,const HitRecord& hit_record,const Vec3r &n, real cos_theta) const;
+    Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
     void drawRow(uint32_t y);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
     Ray computeViewingRay(uint32_t x, uint32_t y);
@@ -46,7 +46,7 @@ public:
 
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, const Material &m1);
     Color refract(Ray &ray, int depth, const Material &m1, const Material &m2, HitRecord &hit_record);
-    Ray refractionRay(Ray &ray, real n1, real n2, Vertex point,  Vec3r n, real cos_theta, real &Fr, real &Ft);
+    Ray refractionRay(Ray &ray, real n1, real n2, Vertex point,  Vec3r n, real &Fr, real &Ft);
     Object::intersectResult traverse(const Ray &ray, const real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
 
 };

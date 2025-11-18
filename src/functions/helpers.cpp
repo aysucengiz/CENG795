@@ -46,7 +46,9 @@ Vertex minVert2(Vertex a, Vertex b)
 }
 int clamp(const real c, const int from, const int to){
     int temp = static_cast<int>(std::round(c));
-    return std::min(to, std::max(temp, from));
+    if(temp > to) return to;
+    if(temp< from) return from;
+    return temp;
 }
 
 Vec3r x_product(const Vec3r &v, const Vec3r &w)

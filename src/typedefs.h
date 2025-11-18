@@ -8,7 +8,7 @@
 
 typedef float real;
 
-#define THREAD_PROGRESS 100
+#define THREAD_PROGRESS 500
 #define THREAD_ENDL 80000
 
 #define ROW_THREAD false
@@ -17,7 +17,7 @@ typedef float real;
 #define LOG_ON true
 #define BACK_CULLING true
 #define ACCELERATE true
-#define MAX_OBJ_IN_NODE 1
+#define MAX_OBJ_IN_NODE 3
 #define PIVOT_TYPE SAH
 
 #define PRINTINIT false
@@ -72,8 +72,8 @@ enum class Axes
 enum class BVHNodeType : uint8_t
 {
     LEAF,
-    // INT_W_LEFT,
-    // INT_W_RIGHT,
+    INT_W_LEFT,
+    INT_W_RIGHT,
     INT_W_BOTH
 };
 

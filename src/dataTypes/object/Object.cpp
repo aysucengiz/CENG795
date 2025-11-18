@@ -78,15 +78,25 @@ Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID)  const
 {
     if (shadingType == ShadingType::SMOOTH)
     {
+        Vec3r b_a = b.v - a.v;
+        Vec3r c_a = c.v - a.v;
         Vec3r v_a = v - a.v;
 
-        real one_areaAll =  1 / x_product(a_b,a_c).mag();
-        real areaB = x_product(v_a,a_b).mag() * one_areaAll;
-        real areaC = x_product(v_a,a_c).mag() * one_areaAll;
-        real areaA = 1.0 - areaB - areaC;
+        real d00 = dot_product(b_a, b_a);
+        real d01 = dot_product(b_a, c_a);
+        real d11 = dot_product(c_a, c_a);
+        real d20 = dot_product(v_a, b_a);
+        real d21 = dot_product(v_a, c_a);
 
-        Vec3r fin_normal = a.n * areaA + b.n * areaB + c.n * areaC;
-        return fin_normal.normalize();
+        real denom = d00 * d11 - d01 * d01;
+        real A_b = (d11 * d20 - d01 * d21) / denom;
+        real A_c = (d00 * d21 - d01 * d20) / denom;
+        real A_a = 1.0 - A_b - A_c;
+
+        Vec3r interpolated_normal = a.n * A_a + b.n * A_b + c.n * A_c;
+        interpolated_normal = interpolated_normal.normalize();
+        //if (dot_product(interpolated_normal, n) < 0.0) interpolated_normal = -interpolated_normal;
+        return interpolated_normal;
     }
     else return n;
 }
@@ -279,14 +289,15 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
         {
 
             temp = Faces[i].checkIntersection(ray, temp.t_min, shadow_test,back_cull);
+            result.t_min = temp.t_min;
             if (temp.obj != nullptr)
             {
-                result.t_min = temp.t_min;
                 result.obj = temp.obj;
                 if (shadow_test) return result;
                 result.currTri = i;
             }
         }
+        return result;
     }
     return result;
 
@@ -388,22 +399,28 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
     result.t_min = t_min;
     result.currTri = 0;
     result.obj = nullptr;
-    Ray localRay = (*backwardTrans) * ray;
-
-    result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
-    result.obj = result.obj ? this :nullptr;
     if (!shadow_test)
     {
+        Ray localRay = (*backwardTrans) * ray;
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+        result.obj = result.obj ? this :nullptr;
         return result;
     }
-    if (result.obj)
+    else
     {
-        Vertex intersect = localRay.pos + localRay.dir * t_min;
-        Vertex globalIntersect = getGlobal(intersect); // o + t*d
-        result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+        Ray localRay = (*backwardTrans) * ray; // get the local light point
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+        if (result.obj)
+        {
+            Vertex intersect = localRay.pos + localRay.dir * t_min;
+            Vertex globalIntersect = getGlobal(intersect); // o + t*d
+            result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+            result.obj = this;
+            return result;
+        }
+        result.obj = nullptr;
+        return result;
     }
-
-    return result;
 }
 
 Vec3r Instance::getNormal(const Vertex &v, uint32_t triID) const {

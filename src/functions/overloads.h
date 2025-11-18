@@ -29,7 +29,7 @@ Vertex operator +(const Vec3r &a, const Vertex &b);
 Vertex operator +(const Vertex &a, const Vec3r &b);
 Vertex operator -(const Vec3r &a, const Vertex &b);
 Vertex operator -(const Vertex &a, const Vec3r &b);
-Vec3r operator /(const Vec3r &a, const Vec3r &b);
+
 // overload - return Vector
 Vec3r operator +(const Vec3r &a, const Vec3r &b);
 Vec3r operator -(const Vec3r &a, const Vec3r &b);
