@@ -115,7 +115,7 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, std::d
 
     if ((swap_pos == end || swap_pos == start) && (end - start > MAX_OBJ_IN_NODE))
     { // bölemedik, ama maxtan da fazla çıktı
-        std::cout << "swap pos is not suitable";
+        // std::cout << "swap pos is not suitable";
         if (pt == PivotType::SAH) swap_pos = getSwapPos(PivotType::MEDIAN, bbox, a, start, end, objects);
         else
         {
@@ -162,7 +162,7 @@ int BVH::partition(int start, int end, Axes a, std::deque<Object*>& objects)
     int swap_pos = start;
     Axes curr_axis = a;
     if (end - start > 1) swap_pos = divideToTwo(pivotType, nodes[curr_idx].bbox, curr_axis, start, end, objects);
-    std::cout << "divided" << std::endl;
+    // std::cout << "divided" << std::endl;
     if (swap_pos == end || swap_pos == start)
     {
         nodes[curr_idx].type = BVHNodeType::LEAF;

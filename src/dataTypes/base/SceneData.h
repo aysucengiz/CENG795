@@ -5,6 +5,7 @@
 #ifndef DATATYPES_H
 #define DATATYPES_H
 
+#include <array>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -43,8 +44,8 @@ struct Camera{
     std::string ImageName;
 
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u,
-           std::string locs, real nd,
-           std::string res,
+           std::array<double,4> locs,  real nd,
+           uint32_t width, uint32_t height,
            std::string imname);
 };
 

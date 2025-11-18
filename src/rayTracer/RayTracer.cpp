@@ -20,12 +20,12 @@ std::string RayTracer::timeString(long duration)
 
     h = duration / 3600000;
     m = (duration % 3600000)/60000;
-    s = (duration % 60000) / 1000;;
+    s = (duration % 60000) / 1000.0;;
 
 
     if (h>0) str= str + std::to_string(h) + " h ";
     if (m > 0) str= str + std::to_string(m) + " m ";
-    if (s > 0) str= str + std::to_string(s) + " s ";
+    str= str + std::to_string(s) + " s ";
     return str;
 }
 
@@ -136,7 +136,7 @@ void RayTracer::drawScene(uint32_t c){
 
     scene.image = new unsigned char[width * height * 3];
 
-    if (ROW_THREAD)
+    if constexpr (ROW_THREAD)
     {
         std::vector<RaytracerThread> raytracers;
         for (uint32_t y = 0; y < height; y++){
@@ -148,12 +148,12 @@ void RayTracer::drawScene(uint32_t c){
             raytracers[y].drawRow(y);
         }
     }
-    else if (BATCH_THREAD)
+    else if constexpr (BATCH_THREAD)
     {
         uint32_t rowcount = (height + batch_h -1) /  batch_h;
         uint32_t colcount = (width + batch_w -1) /  batch_w;
         uint32_t batchcount = rowcount * colcount;
-        //log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
+        log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
         RaytracerThread rtt(scene, scene.Cameras[camID], bvh);
 
 #pragma omp parallel for schedule(dynamic,1) firstprivate(rtt)

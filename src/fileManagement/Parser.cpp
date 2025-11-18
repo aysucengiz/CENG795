@@ -245,57 +245,80 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
 
 
 
-
-
+void Parser::getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double,4> &nearPlane)
+{
+    real t = tan(FovY*0.5/180*M_PI) *  nearDistance;
+    nearPlane[0] = -t*aspect;
+    nearPlane[1] =  t*aspect;
+    nearPlane[2] = -t;
+    nearPlane[3] =  t;
+}
 
 void Parser::addCamera(json Cameras, SceneInput &sceneInput)
 {
-    std::string nearPlane = "";
+    std::array<double,4> nearPlane;
     Vec3r Gaze;
+    double nearDistance = std::stod(Cameras["NearDistance"].get<std::string>());
+    std::istringstream ss(Cameras["ImageResolution"].get<std::string>());
+    real width, height;
+    ss >> width >> height;
+    real aspect = width/height;
+
     if (Cameras.contains("_type") && Cameras["_type"].get<std::string>() == "lookAt")
     {
         // compute near plane here
-        std::istringstream ss(Cameras["ImageResolution"].get<std::string>());
-        real width, height;
-        ss >> width >> height;
-        real aspect = width/height;
         int FovY = std::stoi(Cameras["FovY"].get<std::string>());
-        real t = tan(FovY*0.5/180*M_PI) *  std::stoi(Cameras["NearDistance"].get<std::string>());
-        nearPlane = std::to_string(-t*aspect) + " "
-                   +std::to_string(t*aspect) + " "
-                   +std::to_string(-t) + " "
-                   +std::to_string(t);
+        getNearFromFovY(FovY, nearDistance, aspect, nearPlane);
         Gaze = Vertex(Cameras["GazePoint"]) - Vertex(Cameras["Position"]);
     }
     else
     {
-        nearPlane = Cameras["NearPlane"];
+        std::istringstream ss(Cameras["NearPlane"].get<std::string>());
+        ss >> nearPlane[0] >> nearPlane[1] >> nearPlane[2] >> nearPlane[3];
         Gaze = Vec3r(Cameras["Gaze"]);
     }
 
-    Transformation *t;
+    Vertex pos = Vertex(Cameras["Position"]);
+    Vec3r up = Vec3r(Cameras["Up"]);
+
     if (Cameras.contains("Transformations"))
     {
-        t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
+        Transformation *t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
         t->getNormalTransform();
+        if (Cameras["Transformations"].get<std::string>().find('s') != std::string::npos)
+        {
+            Scale scale = getScaleFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
+            if (scale.y != 1) {
+                nearDistance *= scale.y;
+            }
+            else if (scale.x != 1)
+            {
+                nearDistance *= scale.x;
+            }
+            else if (scale.z != 1)
+            {
+                nearDistance *= scale.z;
+            }
+        }
+
+        pos = (*t *Vec4r(pos)).getVertex();
+        Gaze = (*t *Vec4r(Vec3r(Gaze))).getVec3r();
+        up = Vec3r(Cameras["Up"]);
+
+        delete t;
+
     }
-    else
-    {
-        t = new Composite();
-    }
+
     Camera c(
                std::stoi(Cameras["_id"].get<std::string>()) - 1,
-               (*t *Vec4r(Vertex(Cameras["Position"]))).getVertex(),
-               (*t *Vec4r(Vec3r(Gaze))).getVec3r(),
-               (t->normalTransform * Vec4r( Vec3r(Cameras["Up"]))).getVec3r(),
+               pos, Gaze,  up,
                nearPlane,
-               std::stod(Cameras["NearDistance"].get<std::string>()),
-               Cameras["ImageResolution"],
+               nearDistance,
+               width, height,
                Cameras["ImageName"]
            );
     sceneInput.Cameras.push_back(c);
     if(PRINTINIT) std::cout << c << std::endl;
-    delete t;
 }
 
 
@@ -523,6 +546,28 @@ Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transf
 
     Transformation *transformation = new Composite(temp);
     return transformation;
+}
+
+Scale Parser::getScaleFromStr(std::string transStr, std::vector<Transformation*>& transforms)
+{
+    std::istringstream ss(transStr);
+    Scale s(1.0,1.0,1.0);
+    char transChar;
+    int transID;
+    while (ss >> transChar >> transID) {
+        if (transChar == 's')
+        {
+            int startID =trans2_scaleStartID;
+            if (transforms[startID+transID - 1]->getTransformationType() == TransformationType::SCALE)
+            {
+                Scale *temp = dynamic_cast<Scale *>(transforms[startID+transID - 1]);
+                s.x *= temp->x;
+                s.y *= temp->y;
+                s.z *= temp->z;
+            }
+        }
+    }
+    return s;
 }
 
 Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *>& objs)

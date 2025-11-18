@@ -279,15 +279,14 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
         {
 
             temp = Faces[i].checkIntersection(ray, temp.t_min, shadow_test,back_cull);
-            result.t_min = temp.t_min;
             if (temp.obj != nullptr)
             {
+                result.t_min = temp.t_min;
                 result.obj = temp.obj;
                 if (shadow_test) return result;
                 result.currTri = i;
             }
         }
-        return result;
     }
     return result;
 
@@ -389,28 +388,22 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
     result.t_min = t_min;
     result.currTri = 0;
     result.obj = nullptr;
+    Ray localRay = (*backwardTrans) * ray;
+
+    result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+    result.obj = result.obj ? this :nullptr;
     if (!shadow_test)
     {
-        Ray localRay = (*backwardTrans) * ray;
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
-        result.obj = result.obj ? this :nullptr;
         return result;
     }
-    else
+    if (result.obj)
     {
-        Ray localRay = (*backwardTrans) * ray; // get the local light point
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
-        if (result.obj)
-        {
-            Vertex intersect = localRay.pos + localRay.dir * t_min;
-            Vertex globalIntersect = getGlobal(intersect); // o + t*d
-            result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
-            result.obj = this;
-            return result;
-        }
-        result.obj = nullptr;
-        return result;
+        Vertex intersect = localRay.pos + localRay.dir * t_min;
+        Vertex globalIntersect = getGlobal(intersect); // o + t*d
+        result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
     }
+
+    return result;
 }
 
 Vec3r Instance::getNormal(const Vertex &v, uint32_t triID) const {

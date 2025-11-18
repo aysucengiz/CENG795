@@ -37,8 +37,8 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
     uint32_t start_y = start_idx / width;
     uint32_t start_x = start_idx % width;
     uint32_t curr_pixel = start_idx * 3;
-    uint32_t end_y = std::min(start_y + h, height);
-    uint32_t end_x = std::min(start_x + w, width);
+    uint32_t end_y = start_y + h < height ? start_y + h: height;
+    uint32_t end_x = start_x + w < width ? start_x + w: width;
     uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
     Color final_color;
     for (uint32_t y = start_y; y < end_y; y++)
@@ -47,22 +47,23 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         {
             Ray viewing_ray = computeViewingRay(x, y);
             final_color = computeColor(viewing_ray, 0, air);
-            scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
-            scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
-            scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
+            scene.image[curr_pixel] = clamp(final_color.r, 0, 255);
+            scene.image[curr_pixel+1] = clamp(final_color.g, 0, 255);
+            scene.image[curr_pixel+2] = clamp(final_color.b, 0, 255);
+            curr_pixel += 3;
         }
         curr_pixel += allw_batchw_3;
     }
-// #pragma omp atomic
-//     done_threads++;
-// #pragma omp critical
-//     {
-//         if (done_threads % THREAD_PROGRESS == 0)
-//             std::cout << done_threads / THREAD_PROGRESS << "\t";
-//         fflush(stdout);
-//         if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
-//             std::cout << std::endl;
-//     }
+#pragma omp atomic
+    done_threads++;
+#pragma omp critical
+    {
+        if (done_threads % THREAD_PROGRESS == 0)
+            std::cout << done_threads / THREAD_PROGRESS << "\t";
+        fflush(stdout);
+        if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
+            std::cout << std::endl;
+    }
 }
 
 
@@ -115,7 +116,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
     if (depth > scene.MaxRecursionDepth) return curr_color;
     HitRecord hit_record;
     real t_min= INFINITY;
-    bool back_cull = m1.AbsorptionCoefficient.isBlack() ? BACK_CULLING : false;
+    const bool back_cull = m1.AbsorptionCoefficient.isBlack() ? BACK_CULLING : false;
 
     checkObjIntersection(ray, t_min, hit_record,back_cull);
 
@@ -136,7 +137,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
                 curr_color += refract(ray, depth, m1,air, hit_record);
         }
 
-        //if (!m.SpecularReflectance.isBlack() || !m.DiffuseReflectance.isBlack())
+        if (!m.SpecularReflectance.isBlack() || !m.DiffuseReflectance.isBlack())
         {
             for (int i = 0; i < scene.numLights; i++)
             {
@@ -220,7 +221,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
         }
     }
 
-    if (ACCELERATE)
+    if constexpr (ACCELERATE)
     {
         temp_obj= traverse(ray, t_min, scene.objects, false, back_cull);
         if (temp_obj.obj != nullptr)
@@ -397,18 +398,18 @@ Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_
     Object::intersectResult result;
     result.t_min = t_min;
     result.obj = nullptr;
-    std::stack<int> traverseIDs;
-    traverseIDs.push(0);
+    std::vector<int> traverseIDs;
+    traverseIDs.reserve(64);
+    traverseIDs.push_back(0);
     Object::intersectResult temp;
     int finID;
 
     while (traverseIDs.size() > 0)
     {
         //std::cout << traverseIDs.top() << std::endl;
-        int id = traverseIDs.top();
-        //std::cout << id << std::endl;
+        int id = traverseIDs.back();
+        traverseIDs.pop_back();
         BVHNode const &node = bvh.nodes[id];
-        traverseIDs.pop();
         if (node.bbox.intersects(ray))
         {
             if (node.type == BVHNodeType::LEAF)
@@ -430,8 +431,8 @@ Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_
             }
             else
             {
-                traverseIDs.push(id + 1);
-                traverseIDs.push(node.rightOffset);
+                traverseIDs.push_back(node.rightOffset);
+                traverseIDs.push_back(id + 1);
             }
         }
     }

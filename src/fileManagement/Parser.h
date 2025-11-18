@@ -45,7 +45,9 @@ namespace Parser {
     void addScaling(json p, SceneInput &sceneInput);
     void addRotation(json p, SceneInput &sceneInput);
 
+    void getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double,4> &nearPlane);
     Transformation *getTransFromStr(std::string transStr, std::vector<Transformation *> &transforms);
+    Scale getScaleFromStr(std::string transStr, std::vector<Transformation *> &transforms);
     Object *getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *> &objs);
 };
 
