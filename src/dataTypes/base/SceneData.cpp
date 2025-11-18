@@ -59,15 +59,16 @@ Color Color::exponent()
 ////////////////////////////////////////////////
 
 
-Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::string locs, real nd, std::string res, std::string imname)
-                : _id(id), Position(pos), nearDistance(nd), ImageName(imname)
+Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname)
+                : _id(id), Position(pos), nearDistance(nd), ImageName(imname), width(width), height(height)
 {
     Gaze = g.normalize();
     Up = x_product(-Gaze,x_product(u.normalize(),-Gaze)).normalize();
-    std::istringstream s1(locs);
-    s1 >> l >> r >> b >> t;
-    std::istringstream s2(res);
-    s2 >> width >> height;
+
+    l = locs[0];
+    r = locs[1];
+    b = locs[2];
+    t = locs[3];
 }
 
 

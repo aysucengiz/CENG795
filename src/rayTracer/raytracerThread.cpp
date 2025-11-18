@@ -41,14 +41,12 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
     uint32_t end_x = std::min(start_x + w, width);
     uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
     Color final_color;
-    real dist = 0;
     for (uint32_t y = start_y; y < end_y; y++)
     {
         for (uint32_t x = start_x; x < end_x; x++)
         {
             try
             {
-                dist = 0;
                 Ray viewing_ray = computeViewingRay(x, y);
                 final_color = computeColor(viewing_ray, 0, air);
                 scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
@@ -95,7 +93,7 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 {
     real t_min = INFINITY;
 
-    if (ACCELERATE)
+    if constexpr (ACCELERATE)
     {
         if (traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
             return true;
@@ -417,16 +415,17 @@ Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_
     Object::intersectResult result;
     result.t_min = t_min;
     result.obj = nullptr;
-    std::stack<int> traverseIDs;
-    traverseIDs.push(0);
+    std::vector<int> traverseIDs;
+    traverseIDs.reserve(64);
+    traverseIDs.push_back(0);
 
     while (traverseIDs.size() > 0)
     {
         //std::cout << traverseIDs.top() << std::endl;
-        int id = traverseIDs.top();
+        int id = traverseIDs.back();
+        traverseIDs.pop_back();
         //std::cout << id << std::endl;
         BVHNode const &node = bvh.nodes[id];
-        traverseIDs.pop();
         if (node.bbox.intersects(ray))
         {
             if (node.type == BVHNodeType::LEAF)
@@ -450,11 +449,11 @@ Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_
             else
             {
                 if (node.type == BVHNodeType::INT_W_BOTH ||
-                    node.type == BVHNodeType::INT_W_LEFT)
-                    traverseIDs.push(id + 1);
-                if (node.type == BVHNodeType::INT_W_BOTH ||
                     node.type == BVHNodeType::INT_W_RIGHT)
-                    traverseIDs.push(node.rightOffset);
+                    traverseIDs.push_back(node.rightOffset);
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_LEFT)
+                    traverseIDs.push_back(id + 1);
             }
         }
     }
