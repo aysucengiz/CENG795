@@ -61,16 +61,16 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         }
         curr_pixel += allw_batchw_3;
     }
-// #pragma omp atomic
-//     done_threads++;
-// #pragma omp critical
-//     {
-//         if (done_threads % THREAD_PROGRESS == 0)
-//             std::cout << done_threads / THREAD_PROGRESS << "\t";
-//         fflush(stdout);
-//         if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
-//             std::cout << std::endl;
-//     }
+#pragma omp atomic
+    done_threads++;
+#pragma omp critical
+    {
+        if (done_threads % THREAD_PROGRESS == 0)
+            std::cout << done_threads / THREAD_PROGRESS << "\t";
+        fflush(stdout);
+        if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
+            std::cout << std::endl;
+    }
 }
 
 

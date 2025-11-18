@@ -21,7 +21,7 @@ Color operator *(const Color &a, const real b);
 // overload - vector
 Vec3r operator *(const Vec3r &a, const real mult);
 Vec3r operator /(const Vec3r &a, const real denum);
-
+Vec3r operator /(const Vec3r &a, const Vec3r &b);
 // overload - return Vertex
 Vertex operator /(const Vertex &a, real other);
 Vertex operator +(const Vertex &a, const Vertex &b);

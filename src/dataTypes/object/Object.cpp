@@ -202,7 +202,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
-
+    // std::cout << st << std::endl;
 
     globalBbox.vMax = Vertex(-INFINITY,-INFINITY,-INFINITY);
     globalBbox.vMin = Vertex(INFINITY,INFINITY,INFINITY);

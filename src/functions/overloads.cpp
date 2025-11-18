@@ -119,6 +119,13 @@ Vec3r operator /(const Vec3r &a, const real denum)
                  a.k / denum);
 }
 
+Vec3r operator /(const Vec3r &a, const Vec3r &b)
+{
+    return Vec3r(a.i / b.i,
+                 a.j / b.j,
+                 a.k / b.k);
+}
+
 Vec3r operator *(const Vec3r &a, real mult)
 {
     return Vec3r(a.i * mult,

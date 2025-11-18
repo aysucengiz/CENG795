@@ -8,7 +8,7 @@
 
 typedef float real;
 
-#define THREAD_PROGRESS 500
+#define THREAD_PROGRESS 100
 #define THREAD_ENDL 80000
 
 #define ROW_THREAD false
