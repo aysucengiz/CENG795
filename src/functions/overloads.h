@@ -8,6 +8,7 @@
 #include "../dataTypes/base/SceneData.h"
 #include "../dataTypes/base/Vectors.h"
 #include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/Mesh.h"
 #include "../dataTypes/../acceleration/BVH.h"
 
 

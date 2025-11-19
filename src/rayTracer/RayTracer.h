@@ -8,6 +8,7 @@
 #include "raytracerThread.h"
 #include "../fileManagement/PPM.h"
 #include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/Mesh.h"
 #include "../fileManagement/Parser.h"
 #include "../functions/overloads.h"
 #include <chrono>

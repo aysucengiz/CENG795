@@ -12,7 +12,6 @@
 #include "../typedefs.h"
 #include "../dataTypes/object/Object.h"
 
-
 struct alignas(32) BVHNode
 {
     BBox bbox; // 24 byte
@@ -36,11 +35,22 @@ public:
     BBox bboxB;
     std::vector<BVHNode> nodes;
     PivotType pivotType;
-    int divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object *> &objects);
-    int partition(int start, int end, Axes a, std::deque<Object *> &objects);
+
+    template<typename T>
+    int divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &objects);
+    template<typename T>
+    int partition(int start, int end, Axes a, T &objects);
+
     void getScene(SceneInput &scene);
-    real getSAH(Axes &a, uint32_t start, uint32_t end, real areaC, std::deque<Object *> &objects);
-    int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object*>& objects);
+    void getScene(std::vector<Triangle *> &triangles);
+
+    template<typename T>
+    real getSAH(Axes &a, uint32_t start, uint32_t end, real areaC,T &objects);
+    template<typename T>
+    int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects);
+
+    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
+    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const std::vector<Triangle *> &objects, bool shadow_test , bool back_cull) const;
 
 };
 

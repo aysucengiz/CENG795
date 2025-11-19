@@ -14,8 +14,8 @@
 
 
 
-
-real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, std::deque<Object*>& objects)
+template<typename T>
+real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, T& objects)
 {
     BBox bboxtempSmall;
     BBox bboxtempBig;
@@ -65,7 +65,8 @@ real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, std::deque<O
     return best_pivot;
 }
 
-int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object*>& objects)
+template<typename T>
+int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects)
 {
     if (PRINTBVH) std::cout << "BVH::getPivot" << std::endl;
     real pivot;
@@ -109,7 +110,8 @@ int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, std::de
     return swap_pos;
 }
 
-int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, std::deque<Object*>& objects)
+template<typename T>
+int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &objects)
 {
     int swap_pos = getSwapPos(pt, bbox, a, start, end, objects);
 
@@ -140,7 +142,8 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, std::d
 
 
 
-int BVH::partition(int start, int end, Axes a, std::deque<Object*>& objects)
+template<typename T>
+int BVH::partition(int start, int end, Axes a, T &objects)
 {
     int curr_idx = nodes.size();
 
@@ -201,4 +204,133 @@ void BVH::getScene(SceneInput& scene)
         std::cout << *this;
 
     if (PRINTBVH) std::cout << "gotScene" << std::endl;
+}
+
+void BVH::getScene(std::vector<Triangle *> &triangles)
+{
+    if (PRINTBVH)std::cout << "getScene" << std::endl;
+    // std::cout << scene.numObjects << " " << scene.objects.size()<< std::endl;
+    nodes.clear();
+
+
+    partition(0, triangles.size(), Axes::x, triangles);
+
+
+    for (int i = 0; i < triangles.size(); i++)
+    {
+        triangles[i]->_id = i;
+    }
+
+    if (PRINTBVH)
+        std::cout << *this;
+
+    if (PRINTBVH) std::cout << "gotScene" << std::endl;
+}
+
+
+Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min,const std::deque<Object*> &objects, bool shadow_test , bool back_cull) const
+{
+    //std::cout << "BVH::traverse" << std::endl;
+    Object::intersectResult result;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    std::vector<int> traverseIDs;
+    traverseIDs.reserve(64);
+    traverseIDs.push_back(0);
+
+    while (traverseIDs.size() > 0)
+    {
+        //std::cout << traverseIDs.top() << std::endl;
+        int id = traverseIDs.back();
+        traverseIDs.pop_back();
+        //std::cout << id << std::endl;
+        BVHNode const &node = nodes[id];
+        if (node.bbox.intersects(ray))
+        {
+            if (node.type == BVHNodeType::LEAF)
+            {
+                Object::intersectResult temp;
+                temp.t_min = result.t_min;
+                temp.obj = result.obj;
+                int finID = node.firstObjID + node.objCount;
+                for (int i=node.firstObjID; i< finID; i++)
+                {
+                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull);
+                    if (shadow_test && temp.obj != nullptr) return temp;
+                    if (temp.obj != nullptr)
+                    {
+                        result.obj = temp.obj;
+                        result.currTri = temp.currTri;
+                        result.t_min = temp.t_min;
+                    }
+                }
+            }
+            else
+            {
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_RIGHT)
+                    traverseIDs.push_back(node.rightOffset);
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_LEFT)
+                    traverseIDs.push_back(id + 1);
+            }
+        }
+    }
+
+
+    return result;
+}
+
+
+Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min,const std::vector<Triangle*> &objects, bool shadow_test , bool back_cull) const
+{
+    //std::cout << "BVH::traverse" << std::endl;
+    Object::intersectResult result;
+    result.t_min = t_min;
+    result.obj = nullptr;
+    std::vector<int> traverseIDs;
+    traverseIDs.reserve(64);
+    traverseIDs.push_back(0);
+
+    while (traverseIDs.size() > 0)
+    {
+        //std::cout << traverseIDs.top() << std::endl;
+        int id = traverseIDs.back();
+        traverseIDs.pop_back();
+        //std::cout << id << std::endl;
+        BVHNode const &node = nodes[id];
+        if (node.bbox.intersects(ray))
+        {
+            if (node.type == BVHNodeType::LEAF)
+            {
+                Object::intersectResult temp;
+                temp.t_min = result.t_min;
+                temp.obj = result.obj;
+                int finID = node.firstObjID + node.objCount;
+                for (int i=node.firstObjID; i< finID; i++)
+                {
+                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull);
+                    if (shadow_test && temp.obj != nullptr) return temp;
+                    if (temp.obj != nullptr)
+                    {
+                        result.obj = temp.obj;
+                        result.currTri = temp.currTri;
+                        result.t_min = temp.t_min;
+                    }
+                }
+            }
+            else
+            {
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_RIGHT)
+                    traverseIDs.push_back(node.rightOffset);
+                if (node.type == BVHNodeType::INT_W_BOTH ||
+                    node.type == BVHNodeType::INT_W_LEFT)
+                    traverseIDs.push_back(id + 1);
+            }
+        }
+    }
+
+
+    return result;
 }

@@ -1,0 +1,76 @@
+[2025-11-19 22:00:50] Log started.
+[2025-11-19 22:00:50] jsonFiles/hw1/inputs/bunny.json: 0.017000 s 
+[2025-11-19 22:00:50] bunny.png all: 0.083000 s 
+[2025-11-19 22:00:50] bunny.png drawing: 0.062000 s 
+[2025-11-19 22:00:50] jsonFiles/hw1/inputs/bunny_with_plane.json: 0.015000 s 
+[2025-11-19 22:00:51] bunny_with_plane.png all: 0.217000 s 
+[2025-11-19 22:00:51] bunny_with_plane.png drawing: 0.199000 s 
+[2025-11-19 22:00:54] jsonFiles/hw1/inputs/chinese_dragon.json: 3.412000 s 
+[2025-11-19 22:00:54] chinese_dragon.png all: 3.671000 s 
+[2025-11-19 22:00:54] chinese_dragon.png drawing: 0.253000 s 
+[2025-11-19 22:00:54] jsonFiles/hw1/inputs/cornellbox.json: 0.005000 s 
+[2025-11-19 22:00:54] cornellbox.png all: 0.112000 s 
+[2025-11-19 22:00:54] cornellbox.png drawing: 0.100000 s 
+[2025-11-19 22:00:54] jsonFiles/hw1/inputs/cornellbox_recursive.json: 0.003000 s 
+[2025-11-19 22:00:54] cornellbox_recursive.png all: 0.131000 s 
+[2025-11-19 22:00:54] cornellbox_recursive.png drawing: 0.125000 s 
+[2025-11-19 22:01:03] jsonFiles/hw1/inputs/other_dragon.json: 8.077000 s 
+[2025-11-19 22:01:03] other_dragon.png all: 8.710000 s 
+[2025-11-19 22:01:03] other_dragon.png drawing: 0.627000 s 
+[2025-11-19 22:01:03] jsonFiles/hw1/inputs/scienceTree.json: 0.009000 s 
+[2025-11-19 22:01:03] scienceTree.png all: 0.129000 s 
+[2025-11-19 22:01:03] scienceTree.png drawing: 0.116000 s 
+[2025-11-19 22:01:03] jsonFiles/hw1/inputs/scienceTree_glass.json: 0.007000 s 
+[2025-11-19 22:01:04] scienceTree_glass.png all: 0.271000 s 
+[2025-11-19 22:01:04] scienceTree_glass.png drawing: 0.261000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/simple.json: 0.003000 s 
+[2025-11-19 22:01:04] simple.png all: 0.063000 s 
+[2025-11-19 22:01:04] simple.png drawing: 0.056000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/spheres.json: 0.002000 s 
+[2025-11-19 22:01:04] spheres.png all: 0.070000 s 
+[2025-11-19 22:01:04] spheres.png drawing: 0.066000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/spheres_mirror.json: 0.002000 s 
+[2025-11-19 22:01:04] spheres_mirror.png all: 0.089000 s 
+[2025-11-19 22:01:04] spheres_mirror.png drawing: 0.084000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/spheres_with_plane.json: 0.004000 s 
+[2025-11-19 22:01:04] spheres_with_plane.png all: 0.071000 s 
+[2025-11-19 22:01:04] spheres_with_plane.png drawing: 0.061000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/two_spheres.json: 0.002000 s 
+[2025-11-19 22:01:04] two_spheres.png all: 0.057000 s 
+[2025-11-19 22:01:04] two_spheres.png drawing: 0.053000 s 
+[2025-11-19 22:01:04] jsonFiles/hw1/inputs/raven/rt_david.json: 0.304000 s 
+[2025-11-19 22:01:05] David.png all: 0.569000 s 
+[2025-11-19 22:01:05] David.png drawing: 0.258000 s 
+[2025-11-19 22:01:05] jsonFiles/hw1/inputs/raven/rt_raven.json: 0.026000 s 
+[2025-11-19 22:01:05] raven.png all: 0.257000 s 
+[2025-11-19 22:01:05] raven.png drawing: 0.220000 s 
+[2025-11-19 22:01:05] jsonFiles/hw1/inputs/raven/rt_utahteapot_mug_ceng.json: 0.257000 s 
+[2025-11-19 22:01:05] UtahTeapotMugCENG.png all: 0.544000 s 
+[2025-11-19 22:01:05] UtahTeapotMugCENG.png drawing: 0.283000 s 
+[2025-11-19 22:01:06] jsonFiles/hw1/inputs/akif_uslu/berserker_smooth.json: 0.029000 s 
+[2025-11-19 22:01:06] berserker_smooth.png all: 0.182000 s 
+[2025-11-19 22:01:06] berserker_smooth.png drawing: 0.144000 s 
+[2025-11-19 22:01:06] jsonFiles/hw1/inputs/akif_uslu/car_smooth_fixed.json: 0.037000 s 
+[2025-11-19 22:01:06] Car_smooth.png all: 0.328000 s 
+[2025-11-19 22:01:06] Car_smooth.png drawing: 0.286000 s 
+[2025-11-19 22:01:06] Car_front_smooth.png all: 0.589000 s 
+[2025-11-19 22:01:06] Car_front_smooth.png drawing: 0.250000 s 
+[2025-11-19 22:01:06] jsonFiles/hw1/inputs/akif_uslu/low_poly_smooth.json: 0.034000 s 
+[2025-11-19 22:01:07] low_poly_scene_smooth.png all: 0.392000 s 
+[2025-11-19 22:01:07] low_poly_scene_smooth.png drawing: 0.349000 s 
+[2025-11-19 22:01:07] jsonFiles/hw1/inputs/akif_uslu/ton_Roosendaal_smooth.json: 0.283000 s 
+[2025-11-19 22:01:07] ton_Roosendaal_smooth.png all: 0.596000 s 
+[2025-11-19 22:01:07] ton_Roosendaal_smooth.png drawing: 0.308000 s 
+[2025-11-19 22:01:07] jsonFiles/hw1/inputs/akif_uslu/tower_smooth.json: 0.021000 s 
+[2025-11-19 22:01:08] tower_smooth.png all: 0.449000 s 
+[2025-11-19 22:01:08] tower_smooth.png drawing: 0.422000 s 
+[2025-11-19 22:01:19] jsonFiles/hw1/inputs/akif_uslu/trex_smooth.json: 10.725000 s 
+[2025-11-19 22:01:19] trex_smooth.png all: 11.449000 s 
+[2025-11-19 22:01:19] trex_smooth.png drawing: 0.717000 s 
+[2025-11-19 22:01:19] jsonFiles/hw1/inputs/akif_uslu/windmill_smooth.json: 0.057000 s 
+[2025-11-19 22:01:20] windmill_smooth.png all: 0.325000 s 
+[2025-11-19 22:01:20] windmill_smooth.png drawing: 0.259000 s 
+[2025-11-19 22:01:28] jsonFiles/hw1/inputs/deniz_sayin/lobster.json: 7.924000 s 
+[2025-11-19 22:01:34] lobster.png all: 14.186000 s 
+[2025-11-19 22:01:34] lobster.png drawing: 6.248000 s 
+[2025-11-19 22:01:34] The end :)

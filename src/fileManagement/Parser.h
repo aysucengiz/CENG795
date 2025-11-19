@@ -11,6 +11,7 @@
 
 #include "../dataTypes/base/SceneData.h"
 #include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/Mesh.h"
 #include "../functions/helpers.h"
 
 #include "json.hpp"

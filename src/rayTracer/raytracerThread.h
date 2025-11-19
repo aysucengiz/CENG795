@@ -6,6 +6,7 @@
 #define CENG795_RAYTRACERTHREAD_H
 
 #include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/Mesh.h"
 #include "../dataTypes/base/SceneData.h"
 #include "../functions/helpers.h"
 #include <iostream>

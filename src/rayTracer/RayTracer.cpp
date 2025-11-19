@@ -153,7 +153,7 @@ void RayTracer::drawScene(uint32_t c){
         uint32_t rowcount = (height + batch_h -1) /  batch_h;
         uint32_t colcount = (width + batch_w -1) /  batch_w;
         uint32_t batchcount = rowcount * colcount;
-        log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
+        // log("There are " + std::to_string(batchcount/ THREAD_PROGRESS)  + " sets of " +std::to_string(THREAD_PROGRESS) + " batches.");
         RaytracerThread rtt(scene, scene.Cameras[camID], bvh);
 
 #pragma omp parallel for schedule(dynamic,1) firstprivate(rtt)

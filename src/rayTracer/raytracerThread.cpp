@@ -61,16 +61,16 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         }
         curr_pixel += allw_batchw_3;
     }
-#pragma omp atomic
-    done_threads++;
-#pragma omp critical
-    {
-        if (done_threads % THREAD_PROGRESS == 0)
-            std::cout << done_threads / THREAD_PROGRESS << "\t";
-        fflush(stdout);
-        if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
-            std::cout << std::endl;
-    }
+// #pragma omp atomic
+//     done_threads++;
+// #pragma omp critical
+//     {
+//         if (done_threads % THREAD_PROGRESS == 0)
+//             std::cout << done_threads / THREAD_PROGRESS << "\t";
+//         fflush(stdout);
+//         if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
+//             std::cout << std::endl;
+//     }
 }
 
 
@@ -95,7 +95,7 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 
     if constexpr (ACCELERATE)
     {
-        if (traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
+        if (bvh.traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
             return true;
     }
     else
@@ -229,7 +229,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
 
     if (ACCELERATE)
     {
-        temp_obj= traverse(ray, t_min, scene.objects, false, back_cull);
+        temp_obj= bvh.traverse(ray, t_min, scene.objects, false, back_cull);
         if (temp_obj.obj != nullptr)
         {
             hit_record.obj = temp_obj.obj;
@@ -407,57 +407,4 @@ Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord
 
     if (type == MaterialType::DIELECTRIC) return temp;
     return temp * hit_record.obj->material.MirrorReflectance;
-}
-
-Object::intersectResult RaytracerThread::traverse(const Ray &ray,const  real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const
-{
-    //std::cout << "BVH::traverse" << std::endl;
-    Object::intersectResult result;
-    result.t_min = t_min;
-    result.obj = nullptr;
-    std::vector<int> traverseIDs;
-    traverseIDs.reserve(64);
-    traverseIDs.push_back(0);
-
-    while (traverseIDs.size() > 0)
-    {
-        //std::cout << traverseIDs.top() << std::endl;
-        int id = traverseIDs.back();
-        traverseIDs.pop_back();
-        //std::cout << id << std::endl;
-        BVHNode const &node = bvh.nodes[id];
-        if (node.bbox.intersects(ray))
-        {
-            if (node.type == BVHNodeType::LEAF)
-            {
-                Object::intersectResult temp;
-                temp.t_min = result.t_min;
-                temp.obj = result.obj;
-                int finID = node.firstObjID + node.objCount;
-                for (int i=node.firstObjID; i< finID; i++)
-                {
-                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull);
-                    if (shadow_test && temp.obj != nullptr) return temp;
-                    if (temp.obj != nullptr)
-                    {
-                        result.obj = temp.obj;
-                        result.currTri = temp.currTri;
-                        result.t_min = temp.t_min;
-                    }
-                }
-            }
-            else
-            {
-                if (node.type == BVHNodeType::INT_W_BOTH ||
-                    node.type == BVHNodeType::INT_W_RIGHT)
-                    traverseIDs.push_back(node.rightOffset);
-                if (node.type == BVHNodeType::INT_W_BOTH ||
-                    node.type == BVHNodeType::INT_W_LEFT)
-                    traverseIDs.push_back(id + 1);
-            }
-        }
-    }
-
-
-    return result;
 }

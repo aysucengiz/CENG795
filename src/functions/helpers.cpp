@@ -5,6 +5,7 @@
 #include "helpers.h"
 #include "overloads.h"
 #include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/Mesh.h"
 
 
 real max3(real a, real b, real c)

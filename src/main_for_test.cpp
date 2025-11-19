@@ -16,9 +16,9 @@
 int main(void) {
     RayTracer raytracer;
 
-    raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven/");
-    raytracer.drawFile("jsonFiles/hw1/inputs/akif_uslu/windmill_smooth.json");
-    raytracer.drawFile("jsonFiles/hw1/inputs/akif_uslu/trex_smooth.json");
+    raytracer.drawAllFiles("jsonFiles/hw1/inputs/");
+    raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
+    raytracer.drawAllFiles("jsonFiles/hw1/inputs/akif_uslu/");
     raytracer.drawAllFiles("jsonFiles/hw1/inputs/deniz_sayin/");
 
     return 0;
