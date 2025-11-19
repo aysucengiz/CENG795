@@ -1,0 +1,23 @@
+[2025-11-19 18:01:49] Log started.
+[2025-11-19 18:01:50] jsonFiles/hw1/inputs/raven/rt_david.json: 0.273000 s 
+[2025-11-19 18:01:50] There are 25 sets of 100 batches.
+[2025-11-19 18:02:27] David.png all: 37.358002 s 
+[2025-11-19 18:02:27] David.png drawing: 37.083000 s 
+[2025-11-19 18:02:27] jsonFiles/hw1/inputs/raven/rt_raven.json: 0.015000 s 
+[2025-11-19 18:02:27] There are 36 sets of 100 batches.
+[2025-11-19 18:02:28] raven.png all: 1.070000 s 
+[2025-11-19 18:02:28] raven.png drawing: 1.052000 s 
+[2025-11-19 18:02:28] jsonFiles/hw1/inputs/raven/rt_utahteapot_mug_ceng.json: 0.101000 s 
+[2025-11-19 18:02:28] There are 25 sets of 100 batches.
+[2025-11-19 18:02:31] UtahTeapotMugCENG.png all: 3.047000 s 
+[2025-11-19 18:02:31] UtahTeapotMugCENG.png drawing: 2.941000 s 
+[2025-11-19 18:02:31] jsonFiles/hw1/inputs/akif_uslu/windmill_smooth.json: 0.025000 s 
+[2025-11-19 18:02:31] There are 25 sets of 100 batches.
+[2025-11-19 18:02:32] windmill_smooth.png all: 1.375000 s 
+[2025-11-19 18:02:32] windmill_smooth.png drawing: 1.348000 s 
+[2025-11-19 18:02:34] jsonFiles/hw1/inputs/akif_uslu/trex_smooth.json: 1.577000 s 
+[2025-11-19 18:02:34] There are 40 sets of 100 batches.
+[2025-11-19 19:13:38] trex_smooth.png all: 1 h 11 m 5.695000 s 
+[2025-11-19 19:13:38] trex_smooth.png drawing: 1 h 11 m 4.116000 s 
+[2025-11-19 19:13:39] jsonFiles/hw1/inputs/deniz_sayin/lobster.json: 1.264000 s 
+[2025-11-19 19:13:39] There are 40 sets of 100 batches.

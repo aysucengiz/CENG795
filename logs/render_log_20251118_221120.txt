@@ -1,0 +1,1710 @@
+[2025-11-18 22:11:20] Log started.
+[2025-11-18 22:11:20] 
+
+HW 1 !!!!!!!!!!!!!!!!!!!
+[2025-11-18 22:11:20] jsonFiles/hw1/inputs/bunny.json: 0.008000 s 
+[2025-11-18 22:11:20] There are 10 sets of 100 batches.
+[2025-11-18 22:11:20] bunny.png all: 0.338000 s 
+[2025-11-18 22:11:20] bunny.png drawing: 0.327000 s 
+[2025-11-18 22:11:20] jsonFiles/hw1/inputs/bunny_with_plane.json: 0.009000 s 
+[2025-11-18 22:11:20] There are 40 sets of 100 batches.
+[2025-11-18 22:11:23] bunny_with_plane.png all: 2.980000 s 
+[2025-11-18 22:11:23] bunny_with_plane.png drawing: 2.968000 s 
+[2025-11-18 22:11:24] jsonFiles/hw1/inputs/chinese_dragon.json: 1.142000 s 
+[2025-11-18 22:11:24] There are 25 sets of 100 batches.
+[2025-11-18 22:23:10] chinese_dragon.png all: 11 m 47.325001 s 
+[2025-11-18 22:23:10] chinese_dragon.png drawing: 11 m 46.178001 s 
+[2025-11-18 22:23:10] jsonFiles/hw1/inputs/cornellbox.json: 0.005000 s 
+[2025-11-18 22:23:10] There are 25 sets of 100 batches.
+[2025-11-18 22:23:11] cornellbox.png all: 0.050000 s 
+[2025-11-18 22:23:11] cornellbox.png drawing: 0.043000 s 
+[2025-11-18 22:23:11] jsonFiles/hw1/inputs/cornellbox_recursive.json: 0.001000 s 
+[2025-11-18 22:23:11] There are 25 sets of 100 batches.
+[2025-11-18 22:23:11] cornellbox_recursive.png all: 0.063000 s 
+[2025-11-18 22:23:11] cornellbox_recursive.png drawing: 0.061000 s 
+[2025-11-18 22:23:13] jsonFiles/hw1/inputs/other_dragon.json: 2.191000 s 
+[2025-11-18 22:23:13] There are 15 sets of 100 batches.
+[2025-11-18 22:56:22] other_dragon.png all: 33 m 11.491000 s 
+[2025-11-18 22:56:22] other_dragon.png drawing: 33 m 9.297000 s 
+[2025-11-18 22:56:22] jsonFiles/hw1/inputs/scienceTree.json: 0.008000 s 
+[2025-11-18 22:56:22] There are 40 sets of 100 batches.
+[2025-11-18 22:56:22] scienceTree.png all: 0.282000 s 
+[2025-11-18 22:56:22] scienceTree.png drawing: 0.270000 s 
+[2025-11-18 22:56:22] jsonFiles/hw1/inputs/scienceTree_glass.json: 0.006000 s 
+[2025-11-18 22:56:22] There are 40 sets of 100 batches.
+[2025-11-18 22:56:24] scienceTree_glass.png all: 1.536000 s 
+[2025-11-18 22:56:24] scienceTree_glass.png drawing: 1.524000 s 
+[2025-11-18 22:56:24] jsonFiles/hw1/inputs/simple.json: 0.002000 s 
+[2025-11-18 22:56:24] There are 25 sets of 100 batches.
+[2025-11-18 22:56:24] simple.png all: 0.088000 s 
+[2025-11-18 22:56:24] simple.png drawing: 0.084000 s 
+[2025-11-18 22:56:24] jsonFiles/hw1/inputs/spheres.json: 0.003000 s 
+[2025-11-18 22:56:24] There are 20 sets of 100 batches.
+[2025-11-18 22:56:24] spheres.png all: 0.132000 s 
+[2025-11-18 22:56:24] spheres.png drawing: 0.126000 s 
+[2025-11-18 22:56:24] jsonFiles/hw1/inputs/spheres_mirror.json: 0.002000 s 
+[2025-11-18 22:56:24] There are 20 sets of 100 batches.
+[2025-11-18 22:56:24] spheres_mirror.png all: 0.115000 s 
+[2025-11-18 22:56:24] spheres_mirror.png drawing: 0.109000 s 
+[2025-11-18 22:56:24] jsonFiles/hw1/inputs/spheres_with_plane.json: 0.004000 s 
+[2025-11-18 22:56:24] There are 20 sets of 100 batches.
+[2025-11-18 22:56:24] spheres_with_plane.png all: 0.101000 s 
+[2025-11-18 22:56:24] spheres_with_plane.png drawing: 0.090000 s 
+[2025-11-18 22:56:24] jsonFiles/hw1/inputs/two_spheres.json: 0.002000 s 
+[2025-11-18 22:56:24] There are 25 sets of 100 batches.
+[2025-11-18 22:56:24] two_spheres.png all: 0.058000 s 
+[2025-11-18 22:56:24] two_spheres.png drawing: 0.053000 s 
+[2025-11-18 22:56:24] 
+
+The following are simple scenes:
+[2025-11-18 22:56:24] jsonFiles/hw2/inputs/ellipsoids.json: 0.003000 s 
+[2025-11-18 22:56:24] There are 25 sets of 100 batches.
+[2025-11-18 22:56:25] ellipsoids.png all: 0.104000 s 
+[2025-11-18 22:56:25] ellipsoids.png drawing: 0.098000 s 
+[2025-11-18 22:56:25] jsonFiles/hw2/inputs/spheres.json: 0.003000 s 
+[2025-11-18 22:56:25] There are 25 sets of 100 batches.
+[2025-11-18 22:56:25] spheres.png all: 0.091000 s 
+[2025-11-18 22:56:25] spheres.png drawing: 0.086000 s 
+[2025-11-18 22:56:25] jsonFiles/hw2/inputs/simple_transform.json: 0.003000 s 
+[2025-11-18 22:56:25] There are 25 sets of 100 batches.
+[2025-11-18 22:56:25] simple_transform.png all: 0.060000 s 
+[2025-11-18 22:56:25] simple_transform.png drawing: 0.054000 s 
+[2025-11-18 22:56:25] jsonFiles/hw2/inputs/mirror_room.json: 0.003000 s 
+[2025-11-18 22:56:25] There are 25 sets of 100 batches.
+[2025-11-18 22:56:26] mirror_room.png all: 0.825000 s 
+[2025-11-18 22:56:26] mirror_room.png drawing: 0.819000 s 
+[2025-11-18 22:56:26] jsonFiles/hw2/inputs/akif_uslu/berserker/two_berserkers.json: 0.174000 s 
+[2025-11-18 22:56:26] There are 30 sets of 100 batches.
+[2025-11-18 22:56:26] two_berserkers.png all: 0.748000 s 
+[2025-11-18 22:56:26] two_berserkers.png drawing: 0.572000 s 
+[2025-11-18 22:56:26] 
+
+The following contain dielectric or conductors:
+[2025-11-18 22:56:26] jsonFiles/hw2/inputs/metal_glass_plates.json: 0.003000 s 
+[2025-11-18 22:56:26] There are 25 sets of 100 batches.
+[2025-11-18 22:56:27] metal_glass_plates.png all: 0.531000 s 
+[2025-11-18 22:56:27] metal_glass_plates.png drawing: 0.526000 s 
+[2025-11-18 22:56:27] 
+
+The following are time consuming scenes:
+[2025-11-18 22:56:27] jsonFiles/hw2/inputs/grass/grass_desert.json: 0.021000 s 
+[2025-11-18 22:56:27] There are 81 sets of 100 batches.
+[2025-11-18 23:03:14] grass_desert.png all: 6 m 46.689999 s 
+[2025-11-18 23:03:14] grass_desert.png drawing: 6 m 46.667000 s 
+[2025-11-18 23:03:14] 
+
+The following are moving/dynamic scenes:
+[2025-11-18 23:03:14] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_000.json: 0.129000 s 
+[2025-11-18 23:03:14] There are 25 sets of 100 batches.
+[2025-11-18 23:04:48] davids_camera_zoom_000.png all: 1 m 34.035999 s 
+[2025-11-18 23:04:48] davids_camera_zoom_000.png drawing: 1 m 33.903999 s 
+[2025-11-18 23:04:48] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_001.json: 0.114000 s 
+[2025-11-18 23:04:48] There are 25 sets of 100 batches.
+[2025-11-18 23:06:23] davids_camera_zoom_001.png all: 1 m 35.813999 s 
+[2025-11-18 23:06:23] davids_camera_zoom_001.png drawing: 1 m 35.696999 s 
+[2025-11-18 23:06:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_002.json: 0.145000 s 
+[2025-11-18 23:06:24] There are 25 sets of 100 batches.
+[2025-11-18 23:08:14] davids_camera_zoom_002.png all: 1 m 50.618999 s 
+[2025-11-18 23:08:14] davids_camera_zoom_002.png drawing: 1 m 50.471001 s 
+[2025-11-18 23:08:14] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_003.json: 0.149000 s 
+[2025-11-18 23:08:14] There are 25 sets of 100 batches.
+[2025-11-18 23:10:06] davids_camera_zoom_003.png all: 1 m 52.376999 s 
+[2025-11-18 23:10:06] davids_camera_zoom_003.png drawing: 1 m 52.220001 s 
+[2025-11-18 23:10:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_004.json: 0.174000 s 
+[2025-11-18 23:10:07] There are 25 sets of 100 batches.
+[2025-11-18 23:12:03] davids_camera_zoom_004.png all: 1 m 56.969002 s 
+[2025-11-18 23:12:03] davids_camera_zoom_004.png drawing: 1 m 56.791000 s 
+[2025-11-18 23:12:04] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_005.json: 0.146000 s 
+[2025-11-18 23:12:04] There are 25 sets of 100 batches.
+[2025-11-18 23:14:02] davids_camera_zoom_005.png all: 1 m 58.638000 s 
+[2025-11-18 23:14:02] davids_camera_zoom_005.png drawing: 1 m 58.488998 s 
+[2025-11-18 23:14:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_006.json: 0.161000 s 
+[2025-11-18 23:14:02] There are 25 sets of 100 batches.
+[2025-11-18 23:15:58] davids_camera_zoom_006.png all: 1 m 55.648998 s 
+[2025-11-18 23:15:58] davids_camera_zoom_006.png drawing: 1 m 55.484001 s 
+[2025-11-18 23:15:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_007.json: 0.166000 s 
+[2025-11-18 23:15:58] There are 25 sets of 100 batches.
+[2025-11-18 23:17:52] davids_camera_zoom_007.png all: 1 m 54.653000 s 
+[2025-11-18 23:17:52] davids_camera_zoom_007.png drawing: 1 m 54.480999 s 
+[2025-11-18 23:17:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_008.json: 0.157000 s 
+[2025-11-18 23:17:53] There are 25 sets of 100 batches.
+[2025-11-18 23:19:50] davids_camera_zoom_008.png all: 1 m 57.919998 s 
+[2025-11-18 23:19:50] davids_camera_zoom_008.png drawing: 1 m 57.759998 s 
+[2025-11-18 23:19:50] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_009.json: 0.146000 s 
+[2025-11-18 23:19:50] There are 25 sets of 100 batches.
+[2025-11-18 23:21:54] davids_camera_zoom_009.png all: 2 m 3.258000 s 
+[2025-11-18 23:21:54] davids_camera_zoom_009.png drawing: 2 m 3.108000 s 
+[2025-11-18 23:21:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_010.json: 0.144000 s 
+[2025-11-18 23:21:54] There are 25 sets of 100 batches.
+[2025-11-18 23:23:56] davids_camera_zoom_010.png all: 2 m 2.175000 s 
+[2025-11-18 23:23:56] davids_camera_zoom_010.png drawing: 2 m 2.028000 s 
+[2025-11-18 23:23:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_011.json: 0.168000 s 
+[2025-11-18 23:23:56] There are 25 sets of 100 batches.
+[2025-11-18 23:25:51] davids_camera_zoom_011.png all: 1 m 55.293999 s 
+[2025-11-18 23:25:51] davids_camera_zoom_011.png drawing: 1 m 55.122002 s 
+[2025-11-18 23:25:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_012.json: 0.164000 s 
+[2025-11-18 23:25:51] There are 25 sets of 100 batches.
+[2025-11-18 23:27:53] davids_camera_zoom_012.png all: 2 m 2.159000 s 
+[2025-11-18 23:27:53] davids_camera_zoom_012.png drawing: 2 m 1.993000 s 
+[2025-11-18 23:27:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_013.json: 0.151000 s 
+[2025-11-18 23:27:53] There are 25 sets of 100 batches.
+[2025-11-18 23:29:51] davids_camera_zoom_013.png all: 1 m 58.235001 s 
+[2025-11-18 23:29:51] davids_camera_zoom_013.png drawing: 1 m 58.080002 s 
+[2025-11-18 23:29:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_014.json: 0.128000 s 
+[2025-11-18 23:29:52] There are 25 sets of 100 batches.
+[2025-11-18 23:31:52] davids_camera_zoom_014.png all: 2 m 0.467000 s 
+[2025-11-18 23:31:52] davids_camera_zoom_014.png drawing: 2 m 0.335000 s 
+[2025-11-18 23:31:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_015.json: 0.130000 s 
+[2025-11-18 23:31:52] There are 25 sets of 100 batches.
+[2025-11-18 23:33:51] davids_camera_zoom_015.png all: 1 m 59.090000 s 
+[2025-11-18 23:33:51] davids_camera_zoom_015.png drawing: 1 m 58.957001 s 
+[2025-11-18 23:33:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_016.json: 0.125000 s 
+[2025-11-18 23:33:51] There are 25 sets of 100 batches.
+[2025-11-18 23:35:53] davids_camera_zoom_016.png all: 2 m 1.556000 s 
+[2025-11-18 23:35:53] davids_camera_zoom_016.png drawing: 2 m 1.428000 s 
+[2025-11-18 23:35:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_017.json: 0.159000 s 
+[2025-11-18 23:35:53] There are 25 sets of 100 batches.
+[2025-11-18 23:37:55] davids_camera_zoom_017.png all: 2 m 2.502000 s 
+[2025-11-18 23:37:55] davids_camera_zoom_017.png drawing: 2 m 2.340000 s 
+[2025-11-18 23:37:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_018.json: 0.143000 s 
+[2025-11-18 23:37:55] There are 25 sets of 100 batches.
+[2025-11-18 23:39:59] davids_camera_zoom_018.png all: 2 m 3.996000 s 
+[2025-11-18 23:39:59] davids_camera_zoom_018.png drawing: 2 m 3.850000 s 
+[2025-11-18 23:39:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_019.json: 0.148000 s 
+[2025-11-18 23:39:59] There are 25 sets of 100 batches.
+[2025-11-18 23:41:58] davids_camera_zoom_019.png all: 1 m 58.751999 s 
+[2025-11-18 23:41:58] davids_camera_zoom_019.png drawing: 1 m 58.599998 s 
+[2025-11-18 23:41:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_020.json: 0.168000 s 
+[2025-11-18 23:41:58] There are 25 sets of 100 batches.
+[2025-11-18 23:44:03] davids_camera_zoom_020.png all: 2 m 4.840000 s 
+[2025-11-18 23:44:03] davids_camera_zoom_020.png drawing: 2 m 4.668000 s 
+[2025-11-18 23:44:03] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_021.json: 0.152000 s 
+[2025-11-18 23:44:03] There are 25 sets of 100 batches.
+[2025-11-18 23:46:07] davids_camera_zoom_021.png all: 2 m 4.383000 s 
+[2025-11-18 23:46:07] davids_camera_zoom_021.png drawing: 2 m 4.228000 s 
+[2025-11-18 23:46:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_022.json: 0.145000 s 
+[2025-11-18 23:46:07] There are 25 sets of 100 batches.
+[2025-11-18 23:48:14] davids_camera_zoom_022.png all: 2 m 6.406000 s 
+[2025-11-18 23:48:14] davids_camera_zoom_022.png drawing: 2 m 6.257000 s 
+[2025-11-18 23:48:14] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_023.json: 0.187000 s 
+[2025-11-18 23:48:14] There are 25 sets of 100 batches.
+[2025-11-18 23:50:19] davids_camera_zoom_023.png all: 2 m 5.015000 s 
+[2025-11-18 23:50:19] davids_camera_zoom_023.png drawing: 2 m 4.824000 s 
+[2025-11-18 23:50:19] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_024.json: 0.150000 s 
+[2025-11-18 23:50:19] There are 25 sets of 100 batches.
+[2025-11-18 23:52:25] davids_camera_zoom_024.png all: 2 m 6.566000 s 
+[2025-11-18 23:52:25] davids_camera_zoom_024.png drawing: 2 m 6.412000 s 
+[2025-11-18 23:52:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_025.json: 0.144000 s 
+[2025-11-18 23:52:25] There are 25 sets of 100 batches.
+[2025-11-18 23:54:31] davids_camera_zoom_025.png all: 2 m 5.681000 s 
+[2025-11-18 23:54:31] davids_camera_zoom_025.png drawing: 2 m 5.534000 s 
+[2025-11-18 23:54:31] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_026.json: 0.160000 s 
+[2025-11-18 23:54:31] There are 25 sets of 100 batches.
+[2025-11-18 23:56:39] davids_camera_zoom_026.png all: 2 m 7.738000 s 
+[2025-11-18 23:56:39] davids_camera_zoom_026.png drawing: 2 m 7.574000 s 
+[2025-11-18 23:56:39] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_027.json: 0.155000 s 
+[2025-11-18 23:56:39] There are 25 sets of 100 batches.
+[2025-11-18 23:58:41] davids_camera_zoom_027.png all: 2 m 2.494000 s 
+[2025-11-18 23:58:41] davids_camera_zoom_027.png drawing: 2 m 2.336000 s 
+[2025-11-18 23:58:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_028.json: 0.141000 s 
+[2025-11-18 23:58:41] There are 25 sets of 100 batches.
+[2025-11-19 00:00:53] davids_camera_zoom_028.png all: 2 m 12.170000 s 
+[2025-11-19 00:00:53] davids_camera_zoom_028.png drawing: 2 m 12.025000 s 
+[2025-11-19 00:00:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_029.json: 0.136000 s 
+[2025-11-19 00:00:53] There are 25 sets of 100 batches.
+[2025-11-19 00:03:01] davids_camera_zoom_029.png all: 2 m 7.523000 s 
+[2025-11-19 00:03:01] davids_camera_zoom_029.png drawing: 2 m 7.382000 s 
+[2025-11-19 00:03:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_030.json: 0.145000 s 
+[2025-11-19 00:03:01] There are 25 sets of 100 batches.
+[2025-11-19 00:05:12] davids_camera_zoom_030.png all: 2 m 11.358000 s 
+[2025-11-19 00:05:12] davids_camera_zoom_030.png drawing: 2 m 11.210000 s 
+[2025-11-19 00:05:12] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_031.json: 0.146000 s 
+[2025-11-19 00:05:12] There are 25 sets of 100 batches.
+[2025-11-19 00:07:15] davids_camera_zoom_031.png all: 2 m 3.326000 s 
+[2025-11-19 00:07:15] davids_camera_zoom_031.png drawing: 2 m 3.177000 s 
+[2025-11-19 00:07:16] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_032.json: 0.121000 s 
+[2025-11-19 00:07:16] There are 25 sets of 100 batches.
+[2025-11-19 00:09:26] davids_camera_zoom_032.png all: 2 m 10.977000 s 
+[2025-11-19 00:09:26] davids_camera_zoom_032.png drawing: 2 m 10.852000 s 
+[2025-11-19 00:09:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_033.json: 0.153000 s 
+[2025-11-19 00:09:27] There are 25 sets of 100 batches.
+[2025-11-19 00:11:35] davids_camera_zoom_033.png all: 2 m 8.770000 s 
+[2025-11-19 00:11:35] davids_camera_zoom_033.png drawing: 2 m 8.613000 s 
+[2025-11-19 00:11:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_034.json: 0.133000 s 
+[2025-11-19 00:11:35] There are 25 sets of 100 batches.
+[2025-11-19 00:13:47] davids_camera_zoom_034.png all: 2 m 11.894000 s 
+[2025-11-19 00:13:47] davids_camera_zoom_034.png drawing: 2 m 11.758000 s 
+[2025-11-19 00:13:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_035.json: 0.127000 s 
+[2025-11-19 00:13:47] There are 25 sets of 100 batches.
+[2025-11-19 00:15:54] davids_camera_zoom_035.png all: 2 m 6.402000 s 
+[2025-11-19 00:15:54] davids_camera_zoom_035.png drawing: 2 m 6.271000 s 
+[2025-11-19 00:15:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_036.json: 0.162000 s 
+[2025-11-19 00:15:54] There are 25 sets of 100 batches.
+[2025-11-19 00:18:07] davids_camera_zoom_036.png all: 2 m 13.897000 s 
+[2025-11-19 00:18:07] davids_camera_zoom_036.png drawing: 2 m 13.733000 s 
+[2025-11-19 00:18:08] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_037.json: 0.161000 s 
+[2025-11-19 00:18:08] There are 25 sets of 100 batches.
+[2025-11-19 00:20:20] davids_camera_zoom_037.png all: 2 m 12.325000 s 
+[2025-11-19 00:20:20] davids_camera_zoom_037.png drawing: 2 m 12.161000 s 
+[2025-11-19 00:20:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_038.json: 0.157000 s 
+[2025-11-19 00:20:20] There are 25 sets of 100 batches.
+[2025-11-19 00:22:34] davids_camera_zoom_038.png all: 2 m 14.362000 s 
+[2025-11-19 00:22:34] davids_camera_zoom_038.png drawing: 2 m 14.202000 s 
+[2025-11-19 00:22:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_039.json: 0.189000 s 
+[2025-11-19 00:22:34] There are 25 sets of 100 batches.
+[2025-11-19 00:24:41] davids_camera_zoom_039.png all: 2 m 6.874000 s 
+[2025-11-19 00:24:41] davids_camera_zoom_039.png drawing: 2 m 6.681000 s 
+[2025-11-19 00:24:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_040.json: 0.153000 s 
+[2025-11-19 00:24:41] There are 25 sets of 100 batches.
+[2025-11-19 00:26:54] davids_camera_zoom_040.png all: 2 m 12.868000 s 
+[2025-11-19 00:26:54] davids_camera_zoom_040.png drawing: 2 m 12.711000 s 
+[2025-11-19 00:26:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_041.json: 0.154000 s 
+[2025-11-19 00:26:54] There are 25 sets of 100 batches.
+[2025-11-19 00:29:09] davids_camera_zoom_041.png all: 2 m 15.524000 s 
+[2025-11-19 00:29:09] davids_camera_zoom_041.png drawing: 2 m 15.364000 s 
+[2025-11-19 00:29:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_042.json: 0.156000 s 
+[2025-11-19 00:29:10] There are 25 sets of 100 batches.
+[2025-11-19 00:31:27] davids_camera_zoom_042.png all: 2 m 17.252001 s 
+[2025-11-19 00:31:27] davids_camera_zoom_042.png drawing: 2 m 17.091999 s 
+[2025-11-19 00:31:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_043.json: 0.147000 s 
+[2025-11-19 00:31:27] There are 25 sets of 100 batches.
+[2025-11-19 00:33:37] davids_camera_zoom_043.png all: 2 m 9.860000 s 
+[2025-11-19 00:33:37] davids_camera_zoom_043.png drawing: 2 m 9.708000 s 
+[2025-11-19 00:33:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_044.json: 0.157000 s 
+[2025-11-19 00:33:37] There are 25 sets of 100 batches.
+[2025-11-19 00:35:53] davids_camera_zoom_044.png all: 2 m 16.056000 s 
+[2025-11-19 00:35:53] davids_camera_zoom_044.png drawing: 2 m 15.895000 s 
+[2025-11-19 00:35:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_045.json: 0.158000 s 
+[2025-11-19 00:35:53] There are 25 sets of 100 batches.
+[2025-11-19 00:38:09] davids_camera_zoom_045.png all: 2 m 15.871000 s 
+[2025-11-19 00:38:09] davids_camera_zoom_045.png drawing: 2 m 15.709000 s 
+[2025-11-19 00:38:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_046.json: 0.152000 s 
+[2025-11-19 00:38:09] There are 25 sets of 100 batches.
+[2025-11-19 00:40:27] davids_camera_zoom_046.png all: 2 m 18.218000 s 
+[2025-11-19 00:40:27] davids_camera_zoom_046.png drawing: 2 m 18.059999 s 
+[2025-11-19 00:40:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_047.json: 0.153000 s 
+[2025-11-19 00:40:27] There are 25 sets of 100 batches.
+[2025-11-19 00:42:38] davids_camera_zoom_047.png all: 2 m 10.943000 s 
+[2025-11-19 00:42:38] davids_camera_zoom_047.png drawing: 2 m 10.785000 s 
+[2025-11-19 00:42:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_048.json: 0.159000 s 
+[2025-11-19 00:42:38] There are 25 sets of 100 batches.
+[2025-11-19 00:44:55] davids_camera_zoom_048.png all: 2 m 17.108000 s 
+[2025-11-19 00:44:55] davids_camera_zoom_048.png drawing: 2 m 16.944000 s 
+[2025-11-19 00:44:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_049.json: 0.139000 s 
+[2025-11-19 00:44:55] There are 25 sets of 100 batches.
+[2025-11-19 00:47:12] davids_camera_zoom_049.png all: 2 m 17.222000 s 
+[2025-11-19 00:47:12] davids_camera_zoom_049.png drawing: 2 m 17.080000 s 
+[2025-11-19 00:47:12] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_050.json: 0.166000 s 
+[2025-11-19 00:47:12] There are 25 sets of 100 batches.
+[2025-11-19 00:49:34] davids_camera_zoom_050.png all: 2 m 22.229000 s 
+[2025-11-19 00:49:34] davids_camera_zoom_050.png drawing: 2 m 22.059000 s 
+[2025-11-19 00:49:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_051.json: 0.149000 s 
+[2025-11-19 00:49:34] There are 25 sets of 100 batches.
+[2025-11-19 00:51:49] davids_camera_zoom_051.png all: 2 m 14.197000 s 
+[2025-11-19 00:51:49] davids_camera_zoom_051.png drawing: 2 m 14.044000 s 
+[2025-11-19 00:51:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_052.json: 0.135000 s 
+[2025-11-19 00:51:49] There are 25 sets of 100 batches.
+[2025-11-19 00:54:10] davids_camera_zoom_052.png all: 2 m 21.343000 s 
+[2025-11-19 00:54:10] davids_camera_zoom_052.png drawing: 2 m 21.204000 s 
+[2025-11-19 00:54:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_053.json: 0.135000 s 
+[2025-11-19 00:54:10] There are 25 sets of 100 batches.
+[2025-11-19 00:56:29] davids_camera_zoom_053.png all: 2 m 19.291000 s 
+[2025-11-19 00:56:29] davids_camera_zoom_053.png drawing: 2 m 19.152000 s 
+[2025-11-19 00:56:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_054.json: 0.148000 s 
+[2025-11-19 00:56:29] There are 25 sets of 100 batches.
+[2025-11-19 00:58:53] davids_camera_zoom_054.png all: 2 m 24.101000 s 
+[2025-11-19 00:58:53] davids_camera_zoom_054.png drawing: 2 m 23.948999 s 
+[2025-11-19 00:58:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_055.json: 0.130000 s 
+[2025-11-19 00:58:53] There are 25 sets of 100 batches.
+[2025-11-19 01:01:11] davids_camera_zoom_055.png all: 2 m 17.959999 s 
+[2025-11-19 01:01:11] davids_camera_zoom_055.png drawing: 2 m 17.826000 s 
+[2025-11-19 01:01:11] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_056.json: 0.143000 s 
+[2025-11-19 01:01:11] There are 25 sets of 100 batches.
+[2025-11-19 01:03:39] davids_camera_zoom_056.png all: 2 m 27.820999 s 
+[2025-11-19 01:03:39] davids_camera_zoom_056.png drawing: 2 m 27.674999 s 
+[2025-11-19 01:03:39] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_057.json: 0.158000 s 
+[2025-11-19 01:03:39] There are 25 sets of 100 batches.
+[2025-11-19 01:05:59] davids_camera_zoom_057.png all: 2 m 20.318001 s 
+[2025-11-19 01:05:59] davids_camera_zoom_057.png drawing: 2 m 20.157000 s 
+[2025-11-19 01:06:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_058.json: 0.155000 s 
+[2025-11-19 01:06:00] There are 25 sets of 100 batches.
+[2025-11-19 01:08:25] davids_camera_zoom_058.png all: 2 m 25.723000 s 
+[2025-11-19 01:08:25] davids_camera_zoom_058.png drawing: 2 m 25.566000 s 
+[2025-11-19 01:08:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_059.json: 0.145000 s 
+[2025-11-19 01:08:25] There are 25 sets of 100 batches.
+[2025-11-19 01:10:44] davids_camera_zoom_059.png all: 2 m 18.476000 s 
+[2025-11-19 01:10:44] davids_camera_zoom_059.png drawing: 2 m 18.327000 s 
+[2025-11-19 01:10:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_060.json: 0.172000 s 
+[2025-11-19 01:10:44] There are 25 sets of 100 batches.
+[2025-11-19 01:13:09] davids_camera_zoom_060.png all: 2 m 25.302999 s 
+[2025-11-19 01:13:09] davids_camera_zoom_060.png drawing: 2 m 25.127001 s 
+[2025-11-19 01:13:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_061.json: 0.140000 s 
+[2025-11-19 01:13:09] There are 25 sets of 100 batches.
+[2025-11-19 01:15:33] davids_camera_zoom_061.png all: 2 m 23.957001 s 
+[2025-11-19 01:15:33] davids_camera_zoom_061.png drawing: 2 m 23.813999 s 
+[2025-11-19 01:15:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_062.json: 0.142000 s 
+[2025-11-19 01:15:33] There are 25 sets of 100 batches.
+[2025-11-19 01:18:00] davids_camera_zoom_062.png all: 2 m 27.267000 s 
+[2025-11-19 01:18:00] davids_camera_zoom_062.png drawing: 2 m 27.120001 s 
+[2025-11-19 01:18:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_063.json: 0.148000 s 
+[2025-11-19 01:18:00] There are 25 sets of 100 batches.
+[2025-11-19 01:20:22] davids_camera_zoom_063.png all: 2 m 21.396999 s 
+[2025-11-19 01:20:22] davids_camera_zoom_063.png drawing: 2 m 21.246000 s 
+[2025-11-19 01:20:22] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_064.json: 0.149000 s 
+[2025-11-19 01:20:22] There are 25 sets of 100 batches.
+[2025-11-19 01:22:49] davids_camera_zoom_064.png all: 2 m 26.933001 s 
+[2025-11-19 01:22:49] davids_camera_zoom_064.png drawing: 2 m 26.781000 s 
+[2025-11-19 01:22:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_065.json: 0.171000 s 
+[2025-11-19 01:22:49] There are 25 sets of 100 batches.
+[2025-11-19 01:25:15] davids_camera_zoom_065.png all: 2 m 26.148001 s 
+[2025-11-19 01:25:15] davids_camera_zoom_065.png drawing: 2 m 25.973000 s 
+[2025-11-19 01:25:15] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_066.json: 0.161000 s 
+[2025-11-19 01:25:15] There are 25 sets of 100 batches.
+[2025-11-19 01:27:46] davids_camera_zoom_066.png all: 2 m 31.020000 s 
+[2025-11-19 01:27:46] davids_camera_zoom_066.png drawing: 2 m 30.855000 s 
+[2025-11-19 01:27:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_067.json: 0.146000 s 
+[2025-11-19 01:27:46] There are 25 sets of 100 batches.
+[2025-11-19 01:30:09] davids_camera_zoom_067.png all: 2 m 23.367001 s 
+[2025-11-19 01:30:09] davids_camera_zoom_067.png drawing: 2 m 23.218000 s 
+[2025-11-19 01:30:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_068.json: 0.166000 s 
+[2025-11-19 01:30:09] There are 25 sets of 100 batches.
+[2025-11-19 01:32:38] davids_camera_zoom_068.png all: 2 m 29.063999 s 
+[2025-11-19 01:32:38] davids_camera_zoom_068.png drawing: 2 m 28.893999 s 
+[2025-11-19 01:32:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_069.json: 0.148000 s 
+[2025-11-19 01:32:38] There are 25 sets of 100 batches.
+[2025-11-19 01:35:07] davids_camera_zoom_069.png all: 2 m 28.972000 s 
+[2025-11-19 01:35:07] davids_camera_zoom_069.png drawing: 2 m 28.820000 s 
+[2025-11-19 01:35:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_070.json: 0.148000 s 
+[2025-11-19 01:35:07] There are 25 sets of 100 batches.
+[2025-11-19 01:37:38] davids_camera_zoom_070.png all: 2 m 30.844000 s 
+[2025-11-19 01:37:38] davids_camera_zoom_070.png drawing: 2 m 30.691999 s 
+[2025-11-19 01:37:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_071.json: 0.165000 s 
+[2025-11-19 01:37:38] There are 25 sets of 100 batches.
+[2025-11-19 01:40:02] davids_camera_zoom_071.png all: 2 m 23.867001 s 
+[2025-11-19 01:40:02] davids_camera_zoom_071.png drawing: 2 m 23.695999 s 
+[2025-11-19 01:40:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_072.json: 0.135000 s 
+[2025-11-19 01:40:02] There are 25 sets of 100 batches.
+[2025-11-19 01:42:31] davids_camera_zoom_072.png all: 2 m 28.722000 s 
+[2025-11-19 01:42:31] davids_camera_zoom_072.png drawing: 2 m 28.584000 s 
+[2025-11-19 01:42:31] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_073.json: 0.132000 s 
+[2025-11-19 01:42:31] There are 25 sets of 100 batches.
+[2025-11-19 01:45:01] davids_camera_zoom_073.png all: 2 m 30.232000 s 
+[2025-11-19 01:45:01] davids_camera_zoom_073.png drawing: 2 m 30.097000 s 
+[2025-11-19 01:45:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_074.json: 0.138000 s 
+[2025-11-19 01:45:01] There are 25 sets of 100 batches.
+[2025-11-19 01:47:33] davids_camera_zoom_074.png all: 2 m 32.473000 s 
+[2025-11-19 01:47:33] davids_camera_zoom_074.png drawing: 2 m 32.328999 s 
+[2025-11-19 01:47:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_075.json: 0.135000 s 
+[2025-11-19 01:47:33] There are 25 sets of 100 batches.
+[2025-11-19 01:49:59] davids_camera_zoom_075.png all: 2 m 25.204000 s 
+[2025-11-19 01:49:59] davids_camera_zoom_075.png drawing: 2 m 25.066000 s 
+[2025-11-19 01:49:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_076.json: 0.156000 s 
+[2025-11-19 01:49:59] There are 25 sets of 100 batches.
+[2025-11-19 01:52:30] davids_camera_zoom_076.png all: 2 m 31.166000 s 
+[2025-11-19 01:52:30] davids_camera_zoom_076.png drawing: 2 m 31.007000 s 
+[2025-11-19 01:52:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_077.json: 0.172000 s 
+[2025-11-19 01:52:30] There are 25 sets of 100 batches.
+[2025-11-19 01:55:00] davids_camera_zoom_077.png all: 2 m 30.507000 s 
+[2025-11-19 01:55:00] davids_camera_zoom_077.png drawing: 2 m 30.330000 s 
+[2025-11-19 01:55:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_078.json: 0.128000 s 
+[2025-11-19 01:55:00] There are 25 sets of 100 batches.
+[2025-11-19 01:57:34] davids_camera_zoom_078.png all: 2 m 33.964001 s 
+[2025-11-19 01:57:34] davids_camera_zoom_078.png drawing: 2 m 33.831001 s 
+[2025-11-19 01:57:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_079.json: 0.151000 s 
+[2025-11-19 01:57:34] There are 25 sets of 100 batches.
+[2025-11-19 02:00:02] davids_camera_zoom_079.png all: 2 m 27.631001 s 
+[2025-11-19 02:00:02] davids_camera_zoom_079.png drawing: 2 m 27.476999 s 
+[2025-11-19 02:00:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_080.json: 0.161000 s 
+[2025-11-19 02:00:02] There are 25 sets of 100 batches.
+[2025-11-19 02:02:35] davids_camera_zoom_080.png all: 2 m 33.404999 s 
+[2025-11-19 02:02:35] davids_camera_zoom_080.png drawing: 2 m 33.237999 s 
+[2025-11-19 02:02:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_081.json: 0.146000 s 
+[2025-11-19 02:02:35] There are 25 sets of 100 batches.
+[2025-11-19 02:05:11] davids_camera_zoom_081.png all: 2 m 35.957001 s 
+[2025-11-19 02:05:11] davids_camera_zoom_081.png drawing: 2 m 35.807999 s 
+[2025-11-19 02:05:11] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_082.json: 0.150000 s 
+[2025-11-19 02:05:11] There are 25 sets of 100 batches.
+[2025-11-19 02:07:48] davids_camera_zoom_082.png all: 2 m 37.058998 s 
+[2025-11-19 02:07:48] davids_camera_zoom_082.png drawing: 2 m 36.905998 s 
+[2025-11-19 02:07:48] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_083.json: 0.160000 s 
+[2025-11-19 02:07:48] There are 25 sets of 100 batches.
+[2025-11-19 02:10:16] davids_camera_zoom_083.png all: 2 m 28.042999 s 
+[2025-11-19 02:10:16] davids_camera_zoom_083.png drawing: 2 m 27.879000 s 
+[2025-11-19 02:10:16] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_084.json: 0.125000 s 
+[2025-11-19 02:10:16] There are 25 sets of 100 batches.
+[2025-11-19 02:12:51] davids_camera_zoom_084.png all: 2 m 34.528999 s 
+[2025-11-19 02:12:51] davids_camera_zoom_084.png drawing: 2 m 34.401001 s 
+[2025-11-19 02:12:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_085.json: 0.141000 s 
+[2025-11-19 02:12:51] There are 25 sets of 100 batches.
+[2025-11-19 02:15:25] davids_camera_zoom_085.png all: 2 m 34.502998 s 
+[2025-11-19 02:15:25] davids_camera_zoom_085.png drawing: 2 m 34.360001 s 
+[2025-11-19 02:15:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_086.json: 0.140000 s 
+[2025-11-19 02:15:26] There are 25 sets of 100 batches.
+[2025-11-19 02:18:03] davids_camera_zoom_086.png all: 2 m 37.634998 s 
+[2025-11-19 02:18:03] davids_camera_zoom_086.png drawing: 2 m 37.491001 s 
+[2025-11-19 02:18:03] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_087.json: 0.160000 s 
+[2025-11-19 02:18:03] There are 25 sets of 100 batches.
+[2025-11-19 02:20:33] davids_camera_zoom_087.png all: 2 m 29.815001 s 
+[2025-11-19 02:20:33] davids_camera_zoom_087.png drawing: 2 m 29.652000 s 
+[2025-11-19 02:20:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_088.json: 0.136000 s 
+[2025-11-19 02:20:33] There are 25 sets of 100 batches.
+[2025-11-19 02:23:09] davids_camera_zoom_088.png all: 2 m 36.597000 s 
+[2025-11-19 02:23:09] davids_camera_zoom_088.png drawing: 2 m 36.458000 s 
+[2025-11-19 02:23:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_089.json: 0.157000 s 
+[2025-11-19 02:23:10] There are 25 sets of 100 batches.
+[2025-11-19 02:25:44] davids_camera_zoom_089.png all: 2 m 34.478001 s 
+[2025-11-19 02:25:44] davids_camera_zoom_089.png drawing: 2 m 34.318001 s 
+[2025-11-19 02:25:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_090.json: 0.129000 s 
+[2025-11-19 02:25:44] There are 25 sets of 100 batches.
+[2025-11-19 02:28:23] davids_camera_zoom_090.png all: 2 m 39.312000 s 
+[2025-11-19 02:28:23] davids_camera_zoom_090.png drawing: 2 m 39.181000 s 
+[2025-11-19 02:28:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_091.json: 0.158000 s 
+[2025-11-19 02:28:23] There are 25 sets of 100 batches.
+[2025-11-19 02:30:54] davids_camera_zoom_091.png all: 2 m 31.188999 s 
+[2025-11-19 02:30:54] davids_camera_zoom_091.png drawing: 2 m 31.027000 s 
+[2025-11-19 02:30:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_092.json: 0.153000 s 
+[2025-11-19 02:30:55] There are 25 sets of 100 batches.
+[2025-11-19 02:33:32] davids_camera_zoom_092.png all: 2 m 37.818001 s 
+[2025-11-19 02:33:32] davids_camera_zoom_092.png drawing: 2 m 37.660999 s 
+[2025-11-19 02:33:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_093.json: 0.158000 s 
+[2025-11-19 02:33:32] There are 25 sets of 100 batches.
+[2025-11-19 02:36:10] davids_camera_zoom_093.png all: 2 m 37.250999 s 
+[2025-11-19 02:36:10] davids_camera_zoom_093.png drawing: 2 m 37.089001 s 
+[2025-11-19 02:36:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_094.json: 0.145000 s 
+[2025-11-19 02:36:10] There are 25 sets of 100 batches.
+[2025-11-19 02:38:50] davids_camera_zoom_094.png all: 2 m 40.564999 s 
+[2025-11-19 02:38:50] davids_camera_zoom_094.png drawing: 2 m 40.417000 s 
+[2025-11-19 02:38:50] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_095.json: 0.147000 s 
+[2025-11-19 02:38:50] There are 25 sets of 100 batches.
+[2025-11-19 02:41:24] davids_camera_zoom_095.png all: 2 m 34.202999 s 
+[2025-11-19 02:41:24] davids_camera_zoom_095.png drawing: 2 m 34.053001 s 
+[2025-11-19 02:41:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_096.json: 0.159000 s 
+[2025-11-19 02:41:24] There are 25 sets of 100 batches.
+[2025-11-19 02:44:05] davids_camera_zoom_096.png all: 2 m 40.701000 s 
+[2025-11-19 02:44:05] davids_camera_zoom_096.png drawing: 2 m 40.537998 s 
+[2025-11-19 02:44:05] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_097.json: 0.137000 s 
+[2025-11-19 02:44:05] There are 25 sets of 100 batches.
+[2025-11-19 02:46:44] davids_camera_zoom_097.png all: 2 m 38.587002 s 
+[2025-11-19 02:46:44] davids_camera_zoom_097.png drawing: 2 m 38.444000 s 
+[2025-11-19 02:46:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_098.json: 0.151000 s 
+[2025-11-19 02:46:44] There are 25 sets of 100 batches.
+[2025-11-19 02:49:26] davids_camera_zoom_098.png all: 2 m 42.247002 s 
+[2025-11-19 02:49:26] davids_camera_zoom_098.png drawing: 2 m 42.092999 s 
+[2025-11-19 02:49:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_099.json: 0.155000 s 
+[2025-11-19 02:49:26] There are 25 sets of 100 batches.
+[2025-11-19 02:51:59] davids_camera_zoom_099.png all: 2 m 32.808998 s 
+[2025-11-19 02:51:59] davids_camera_zoom_099.png drawing: 2 m 32.651001 s 
+[2025-11-19 02:51:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_100.json: 0.146000 s 
+[2025-11-19 02:51:59] There are 25 sets of 100 batches.
+[2025-11-19 02:54:42] davids_camera_zoom_100.png all: 2 m 43.401001 s 
+[2025-11-19 02:54:42] davids_camera_zoom_100.png drawing: 2 m 43.250000 s 
+[2025-11-19 02:54:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_101.json: 0.148000 s 
+[2025-11-19 02:54:42] There are 25 sets of 100 batches.
+[2025-11-19 02:57:26] davids_camera_zoom_101.png all: 2 m 43.652000 s 
+[2025-11-19 02:57:26] davids_camera_zoom_101.png drawing: 2 m 43.500999 s 
+[2025-11-19 02:57:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_102.json: 0.138000 s 
+[2025-11-19 02:57:26] There are 25 sets of 100 batches.
+[2025-11-19 03:00:09] davids_camera_zoom_102.png all: 2 m 43.201000 s 
+[2025-11-19 03:00:09] davids_camera_zoom_102.png drawing: 2 m 43.060001 s 
+[2025-11-19 03:00:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_103.json: 0.113000 s 
+[2025-11-19 03:00:09] There are 25 sets of 100 batches.
+[2025-11-19 03:02:45] davids_camera_zoom_103.png all: 2 m 36.116001 s 
+[2025-11-19 03:02:45] davids_camera_zoom_103.png drawing: 2 m 36.000000 s 
+[2025-11-19 03:02:45] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_104.json: 0.151000 s 
+[2025-11-19 03:02:45] There are 25 sets of 100 batches.
+[2025-11-19 03:05:27] davids_camera_zoom_104.png all: 2 m 41.953999 s 
+[2025-11-19 03:05:27] davids_camera_zoom_104.png drawing: 2 m 41.799999 s 
+[2025-11-19 03:05:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_105.json: 0.148000 s 
+[2025-11-19 03:05:27] There are 25 sets of 100 batches.
+[2025-11-19 03:08:10] davids_camera_zoom_105.png all: 2 m 42.667000 s 
+[2025-11-19 03:08:10] davids_camera_zoom_105.png drawing: 2 m 42.514000 s 
+[2025-11-19 03:08:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_106.json: 0.144000 s 
+[2025-11-19 03:08:10] There are 25 sets of 100 batches.
+[2025-11-19 03:10:55] davids_camera_zoom_106.png all: 2 m 45.740002 s 
+[2025-11-19 03:10:55] davids_camera_zoom_106.png drawing: 2 m 45.592999 s 
+[2025-11-19 03:10:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_107.json: 0.146000 s 
+[2025-11-19 03:10:56] There are 25 sets of 100 batches.
+[2025-11-19 03:13:32] davids_camera_zoom_107.png all: 2 m 36.765999 s 
+[2025-11-19 03:13:32] davids_camera_zoom_107.png drawing: 2 m 36.613998 s 
+[2025-11-19 03:13:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_108.json: 0.144000 s 
+[2025-11-19 03:13:32] There are 25 sets of 100 batches.
+[2025-11-19 03:16:17] davids_camera_zoom_108.png all: 2 m 44.931000 s 
+[2025-11-19 03:16:17] davids_camera_zoom_108.png drawing: 2 m 44.784000 s 
+[2025-11-19 03:16:17] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_109.json: 0.150000 s 
+[2025-11-19 03:16:17] There are 25 sets of 100 batches.
+[2025-11-19 03:19:00] davids_camera_zoom_109.png all: 2 m 42.484001 s 
+[2025-11-19 03:19:00] davids_camera_zoom_109.png drawing: 2 m 42.330002 s 
+[2025-11-19 03:19:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_110.json: 0.138000 s 
+[2025-11-19 03:19:00] There are 25 sets of 100 batches.
+[2025-11-19 03:21:47] davids_camera_zoom_110.png all: 2 m 46.884998 s 
+[2025-11-19 03:21:47] davids_camera_zoom_110.png drawing: 2 m 46.742001 s 
+[2025-11-19 03:21:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_111.json: 0.152000 s 
+[2025-11-19 03:21:47] There are 25 sets of 100 batches.
+[2025-11-19 03:24:23] davids_camera_zoom_111.png all: 2 m 36.771999 s 
+[2025-11-19 03:24:23] davids_camera_zoom_111.png drawing: 2 m 36.616001 s 
+[2025-11-19 03:24:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_112.json: 0.131000 s 
+[2025-11-19 03:24:24] There are 25 sets of 100 batches.
+[2025-11-19 03:27:10] davids_camera_zoom_112.png all: 2 m 46.544998 s 
+[2025-11-19 03:27:10] davids_camera_zoom_112.png drawing: 2 m 46.410999 s 
+[2025-11-19 03:27:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_113.json: 0.133000 s 
+[2025-11-19 03:27:10] There are 25 sets of 100 batches.
+[2025-11-19 03:29:54] davids_camera_zoom_113.png all: 2 m 44.331001 s 
+[2025-11-19 03:29:54] davids_camera_zoom_113.png drawing: 2 m 44.194000 s 
+[2025-11-19 03:29:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_114.json: 0.127000 s 
+[2025-11-19 03:29:54] There are 25 sets of 100 batches.
+[2025-11-19 03:32:42] davids_camera_zoom_114.png all: 2 m 48.039001 s 
+[2025-11-19 03:32:42] davids_camera_zoom_114.png drawing: 2 m 47.907001 s 
+[2025-11-19 03:32:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_115.json: 0.131000 s 
+[2025-11-19 03:32:42] There are 25 sets of 100 batches.
+[2025-11-19 03:35:20] davids_camera_zoom_115.png all: 2 m 37.999001 s 
+[2025-11-19 03:35:20] davids_camera_zoom_115.png drawing: 2 m 37.865002 s 
+[2025-11-19 03:35:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_116.json: 0.168000 s 
+[2025-11-19 03:35:20] There are 25 sets of 100 batches.
+[2025-11-19 03:38:08] davids_camera_zoom_116.png all: 2 m 47.567001 s 
+[2025-11-19 03:38:08] davids_camera_zoom_116.png drawing: 2 m 47.396000 s 
+[2025-11-19 03:38:08] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_117.json: 0.133000 s 
+[2025-11-19 03:38:08] There are 25 sets of 100 batches.
+[2025-11-19 03:40:54] davids_camera_zoom_117.png all: 2 m 45.835999 s 
+[2025-11-19 03:40:54] davids_camera_zoom_117.png drawing: 2 m 45.699001 s 
+[2025-11-19 03:40:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_118.json: 0.171000 s 
+[2025-11-19 03:40:54] There are 25 sets of 100 batches.
+[2025-11-19 03:43:43] davids_camera_zoom_118.png all: 2 m 49.692001 s 
+[2025-11-19 03:43:43] davids_camera_zoom_118.png drawing: 2 m 49.514999 s 
+[2025-11-19 03:43:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_119.json: 0.172000 s 
+[2025-11-19 03:43:44] There are 25 sets of 100 batches.
+[2025-11-19 03:46:24] davids_camera_zoom_119.png all: 2 m 40.070999 s 
+[2025-11-19 03:46:24] davids_camera_zoom_119.png drawing: 2 m 39.895000 s 
+[2025-11-19 03:46:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_120.json: 0.145000 s 
+[2025-11-19 03:46:24] There are 25 sets of 100 batches.
+[2025-11-19 03:49:12] davids_camera_zoom_120.png all: 2 m 48.037998 s 
+[2025-11-19 03:49:12] davids_camera_zoom_120.png drawing: 2 m 47.889999 s 
+[2025-11-19 03:49:12] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_121.json: 0.164000 s 
+[2025-11-19 03:49:12] There are 25 sets of 100 batches.
+[2025-11-19 03:51:59] davids_camera_zoom_121.png all: 2 m 47.680000 s 
+[2025-11-19 03:51:59] davids_camera_zoom_121.png drawing: 2 m 47.512001 s 
+[2025-11-19 03:51:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_122.json: 0.146000 s 
+[2025-11-19 03:51:59] There are 25 sets of 100 batches.
+[2025-11-19 03:54:50] davids_camera_zoom_122.png all: 2 m 51.120998 s 
+[2025-11-19 03:54:50] davids_camera_zoom_122.png drawing: 2 m 50.973000 s 
+[2025-11-19 03:54:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_123.json: 0.122000 s 
+[2025-11-19 03:54:51] There are 25 sets of 100 batches.
+[2025-11-19 03:57:34] davids_camera_zoom_123.png all: 2 m 43.639999 s 
+[2025-11-19 03:57:34] davids_camera_zoom_123.png drawing: 2 m 43.514000 s 
+[2025-11-19 03:57:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_124.json: 0.167000 s 
+[2025-11-19 03:57:34] There are 25 sets of 100 batches.
+[2025-11-19 04:00:25] davids_camera_zoom_124.png all: 2 m 51.407001 s 
+[2025-11-19 04:00:25] davids_camera_zoom_124.png drawing: 2 m 51.236000 s 
+[2025-11-19 04:00:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_125.json: 0.134000 s 
+[2025-11-19 04:00:26] There are 25 sets of 100 batches.
+[2025-11-19 04:03:13] davids_camera_zoom_125.png all: 2 m 47.292000 s 
+[2025-11-19 04:03:13] davids_camera_zoom_125.png drawing: 2 m 47.155998 s 
+[2025-11-19 04:03:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_126.json: 0.141000 s 
+[2025-11-19 04:03:13] There are 25 sets of 100 batches.
+[2025-11-19 04:06:07] davids_camera_zoom_126.png all: 2 m 53.751999 s 
+[2025-11-19 04:06:07] davids_camera_zoom_126.png drawing: 2 m 53.608002 s 
+[2025-11-19 04:06:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_127.json: 0.113000 s 
+[2025-11-19 04:06:07] There are 25 sets of 100 batches.
+[2025-11-19 04:08:52] davids_camera_zoom_127.png all: 2 m 45.370998 s 
+[2025-11-19 04:08:52] davids_camera_zoom_127.png drawing: 2 m 45.255001 s 
+[2025-11-19 04:08:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_128.json: 0.116000 s 
+[2025-11-19 04:08:52] There are 25 sets of 100 batches.
+[2025-11-19 04:11:42] davids_camera_zoom_128.png all: 2 m 49.981998 s 
+[2025-11-19 04:11:42] davids_camera_zoom_128.png drawing: 2 m 49.862000 s 
+[2025-11-19 04:11:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_129.json: 0.123000 s 
+[2025-11-19 04:11:42] There are 25 sets of 100 batches.
+[2025-11-19 04:14:33] davids_camera_zoom_129.png all: 2 m 50.629002 s 
+[2025-11-19 04:14:33] davids_camera_zoom_129.png drawing: 2 m 50.502998 s 
+[2025-11-19 04:14:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_130.json: 0.148000 s 
+[2025-11-19 04:14:33] There are 25 sets of 100 batches.
+[2025-11-19 04:17:28] davids_camera_zoom_130.png all: 2 m 55.417000 s 
+[2025-11-19 04:17:28] davids_camera_zoom_130.png drawing: 2 m 55.262001 s 
+[2025-11-19 04:17:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_131.json: 0.134000 s 
+[2025-11-19 04:17:28] There are 25 sets of 100 batches.
+[2025-11-19 04:20:13] davids_camera_zoom_131.png all: 2 m 45.240002 s 
+[2025-11-19 04:20:13] davids_camera_zoom_131.png drawing: 2 m 45.103001 s 
+[2025-11-19 04:20:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_132.json: 0.140000 s 
+[2025-11-19 04:20:13] There are 25 sets of 100 batches.
+[2025-11-19 04:23:06] davids_camera_zoom_132.png all: 2 m 52.512001 s 
+[2025-11-19 04:23:06] davids_camera_zoom_132.png drawing: 2 m 52.366001 s 
+[2025-11-19 04:23:06] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_133.json: 0.141000 s 
+[2025-11-19 04:23:06] There are 25 sets of 100 batches.
+[2025-11-19 04:25:58] davids_camera_zoom_133.png all: 2 m 52.112999 s 
+[2025-11-19 04:25:58] davids_camera_zoom_133.png drawing: 2 m 51.967999 s 
+[2025-11-19 04:25:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_134.json: 0.127000 s 
+[2025-11-19 04:25:58] There are 25 sets of 100 batches.
+[2025-11-19 04:28:53] davids_camera_zoom_134.png all: 2 m 55.414001 s 
+[2025-11-19 04:28:53] davids_camera_zoom_134.png drawing: 2 m 55.284000 s 
+[2025-11-19 04:28:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_135.json: 0.151000 s 
+[2025-11-19 04:28:53] There are 25 sets of 100 batches.
+[2025-11-19 04:31:41] davids_camera_zoom_135.png all: 2 m 47.916000 s 
+[2025-11-19 04:31:41] davids_camera_zoom_135.png drawing: 2 m 47.758999 s 
+[2025-11-19 04:31:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_136.json: 0.156000 s 
+[2025-11-19 04:31:41] There are 25 sets of 100 batches.
+[2025-11-19 04:34:33] davids_camera_zoom_136.png all: 2 m 51.874001 s 
+[2025-11-19 04:34:33] davids_camera_zoom_136.png drawing: 2 m 51.714001 s 
+[2025-11-19 04:34:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_137.json: 0.154000 s 
+[2025-11-19 04:34:33] There are 25 sets of 100 batches.
+[2025-11-19 04:37:23] davids_camera_zoom_137.png all: 2 m 50.174999 s 
+[2025-11-19 04:37:23] davids_camera_zoom_137.png drawing: 2 m 50.015999 s 
+[2025-11-19 04:37:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_138.json: 0.136000 s 
+[2025-11-19 04:37:23] There are 25 sets of 100 batches.
+[2025-11-19 04:40:19] davids_camera_zoom_138.png all: 2 m 55.667000 s 
+[2025-11-19 04:40:19] davids_camera_zoom_138.png drawing: 2 m 55.526001 s 
+[2025-11-19 04:40:19] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_139.json: 0.162000 s 
+[2025-11-19 04:40:19] There are 25 sets of 100 batches.
+[2025-11-19 04:43:05] davids_camera_zoom_139.png all: 2 m 45.909000 s 
+[2025-11-19 04:43:05] davids_camera_zoom_139.png drawing: 2 m 45.743999 s 
+[2025-11-19 04:43:05] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_140.json: 0.144000 s 
+[2025-11-19 04:43:05] There are 25 sets of 100 batches.
+[2025-11-19 04:46:00] davids_camera_zoom_140.png all: 2 m 55.349998 s 
+[2025-11-19 04:46:00] davids_camera_zoom_140.png drawing: 2 m 55.202000 s 
+[2025-11-19 04:46:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_141.json: 0.141000 s 
+[2025-11-19 04:46:00] There are 25 sets of 100 batches.
+[2025-11-19 04:48:54] davids_camera_zoom_141.png all: 2 m 54.155998 s 
+[2025-11-19 04:48:54] davids_camera_zoom_141.png drawing: 2 m 54.013000 s 
+[2025-11-19 04:48:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_142.json: 0.148000 s 
+[2025-11-19 04:48:55] There are 25 sets of 100 batches.
+[2025-11-19 04:51:53] davids_camera_zoom_142.png all: 2 m 58.265999 s 
+[2025-11-19 04:51:53] davids_camera_zoom_142.png drawing: 2 m 58.113998 s 
+[2025-11-19 04:51:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_143.json: 0.156000 s 
+[2025-11-19 04:51:53] There are 25 sets of 100 batches.
+[2025-11-19 04:54:41] davids_camera_zoom_143.png all: 2 m 48.588001 s 
+[2025-11-19 04:54:41] davids_camera_zoom_143.png drawing: 2 m 48.428001 s 
+[2025-11-19 04:54:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_144.json: 0.146000 s 
+[2025-11-19 04:54:41] There are 25 sets of 100 batches.
+[2025-11-19 04:57:37] davids_camera_zoom_144.png all: 2 m 55.660000 s 
+[2025-11-19 04:57:37] davids_camera_zoom_144.png drawing: 2 m 55.509998 s 
+[2025-11-19 04:57:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_145.json: 0.154000 s 
+[2025-11-19 04:57:37] There are 25 sets of 100 batches.
+[2025-11-19 05:00:32] davids_camera_zoom_145.png all: 2 m 54.826000 s 
+[2025-11-19 05:00:32] davids_camera_zoom_145.png drawing: 2 m 54.667999 s 
+[2025-11-19 05:00:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_146.json: 0.168000 s 
+[2025-11-19 05:00:32] There are 25 sets of 100 batches.
+[2025-11-19 05:03:29] davids_camera_zoom_146.png all: 2 m 56.831001 s 
+[2025-11-19 05:03:29] davids_camera_zoom_146.png drawing: 2 m 56.659000 s 
+[2025-11-19 05:03:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_147.json: 0.132000 s 
+[2025-11-19 05:03:29] There are 25 sets of 100 batches.
+[2025-11-19 05:06:18] davids_camera_zoom_147.png all: 2 m 49.006001 s 
+[2025-11-19 05:06:18] davids_camera_zoom_147.png drawing: 2 m 48.869999 s 
+[2025-11-19 05:06:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_148.json: 0.143000 s 
+[2025-11-19 05:06:18] There are 25 sets of 100 batches.
+[2025-11-19 05:09:17] davids_camera_zoom_148.png all: 2 m 59.678001 s 
+[2025-11-19 05:09:17] davids_camera_zoom_148.png drawing: 2 m 59.530998 s 
+[2025-11-19 05:09:17] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_149.json: 0.130000 s 
+[2025-11-19 05:09:17] There are 25 sets of 100 batches.
+[2025-11-19 05:12:13] davids_camera_zoom_149.png all: 2 m 55.945000 s 
+[2025-11-19 05:12:13] davids_camera_zoom_149.png drawing: 2 m 55.813000 s 
+[2025-11-19 05:12:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_150.json: 0.155000 s 
+[2025-11-19 05:12:13] There are 25 sets of 100 batches.
+[2025-11-19 05:15:12] davids_camera_zoom_150.png all: 2 m 58.817001 s 
+[2025-11-19 05:15:12] davids_camera_zoom_150.png drawing: 2 m 58.657001 s 
+[2025-11-19 05:15:12] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_151.json: 0.164000 s 
+[2025-11-19 05:15:12] There are 25 sets of 100 batches.
+[2025-11-19 05:18:02] davids_camera_zoom_151.png all: 2 m 49.848999 s 
+[2025-11-19 05:18:02] davids_camera_zoom_151.png drawing: 2 m 49.681000 s 
+[2025-11-19 05:18:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_152.json: 0.174000 s 
+[2025-11-19 05:18:02] There are 25 sets of 100 batches.
+[2025-11-19 05:20:59] davids_camera_zoom_152.png all: 2 m 57.155998 s 
+[2025-11-19 05:20:59] davids_camera_zoom_152.png drawing: 2 m 56.978001 s 
+[2025-11-19 05:20:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_153.json: 0.160000 s 
+[2025-11-19 05:20:59] There are 25 sets of 100 batches.
+[2025-11-19 05:23:56] davids_camera_zoom_153.png all: 2 m 57.105000 s 
+[2025-11-19 05:23:56] davids_camera_zoom_153.png drawing: 2 m 56.942001 s 
+[2025-11-19 05:23:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_154.json: 0.137000 s 
+[2025-11-19 05:23:56] There are 25 sets of 100 batches.
+[2025-11-19 05:26:55] davids_camera_zoom_154.png all: 2 m 59.268002 s 
+[2025-11-19 05:26:55] davids_camera_zoom_154.png drawing: 2 m 59.127998 s 
+[2025-11-19 05:26:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_155.json: 0.141000 s 
+[2025-11-19 05:26:56] There are 25 sets of 100 batches.
+[2025-11-19 05:29:47] davids_camera_zoom_155.png all: 2 m 51.441002 s 
+[2025-11-19 05:29:47] davids_camera_zoom_155.png drawing: 2 m 51.297001 s 
+[2025-11-19 05:29:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_156.json: 0.128000 s 
+[2025-11-19 05:29:47] There are 25 sets of 100 batches.
+[2025-11-19 05:32:46] davids_camera_zoom_156.png all: 2 m 58.630001 s 
+[2025-11-19 05:32:46] davids_camera_zoom_156.png drawing: 2 m 58.499001 s 
+[2025-11-19 05:32:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_157.json: 0.141000 s 
+[2025-11-19 05:32:46] There are 25 sets of 100 batches.
+[2025-11-19 05:35:43] davids_camera_zoom_157.png all: 2 m 57.506001 s 
+[2025-11-19 05:35:43] davids_camera_zoom_157.png drawing: 2 m 57.362000 s 
+[2025-11-19 05:35:43] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_158.json: 0.138000 s 
+[2025-11-19 05:35:43] There are 25 sets of 100 batches.
+[2025-11-19 05:38:43] davids_camera_zoom_158.png all: 3 m 0.115000 s 
+[2025-11-19 05:38:43] davids_camera_zoom_158.png drawing: 2 m 59.972000 s 
+[2025-11-19 05:38:43] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_159.json: 0.151000 s 
+[2025-11-19 05:38:43] There are 25 sets of 100 batches.
+[2025-11-19 05:41:36] davids_camera_zoom_159.png all: 2 m 52.514000 s 
+[2025-11-19 05:41:36] davids_camera_zoom_159.png drawing: 2 m 52.358002 s 
+[2025-11-19 05:41:36] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_160.json: 0.148000 s 
+[2025-11-19 05:41:36] There are 25 sets of 100 batches.
+[2025-11-19 05:44:34] davids_camera_zoom_160.png all: 2 m 58.407001 s 
+[2025-11-19 05:44:34] davids_camera_zoom_160.png drawing: 2 m 58.255001 s 
+[2025-11-19 05:44:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_161.json: 0.158000 s 
+[2025-11-19 05:44:34] There are 25 sets of 100 batches.
+[2025-11-19 05:47:34] davids_camera_zoom_161.png all: 2 m 59.381001 s 
+[2025-11-19 05:47:34] davids_camera_zoom_161.png drawing: 2 m 59.217999 s 
+[2025-11-19 05:47:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_162.json: 0.117000 s 
+[2025-11-19 05:47:34] There are 25 sets of 100 batches.
+[2025-11-19 05:50:35] davids_camera_zoom_162.png all: 3 m 1.881000 s 
+[2025-11-19 05:50:35] davids_camera_zoom_162.png drawing: 3 m 1.760000 s 
+[2025-11-19 05:50:36] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_163.json: 0.141000 s 
+[2025-11-19 05:50:36] There are 25 sets of 100 batches.
+[2025-11-19 05:53:29] davids_camera_zoom_163.png all: 2 m 53.153999 s 
+[2025-11-19 05:53:29] davids_camera_zoom_163.png drawing: 2 m 53.008999 s 
+[2025-11-19 05:53:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_164.json: 0.153000 s 
+[2025-11-19 05:53:29] There are 25 sets of 100 batches.
+[2025-11-19 05:56:34] davids_camera_zoom_164.png all: 3 m 4.969000 s 
+[2025-11-19 05:56:34] davids_camera_zoom_164.png drawing: 3 m 4.812000 s 
+[2025-11-19 05:56:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_165.json: 0.146000 s 
+[2025-11-19 05:56:34] There are 25 sets of 100 batches.
+[2025-11-19 05:59:33] davids_camera_zoom_165.png all: 2 m 59.629002 s 
+[2025-11-19 05:59:33] davids_camera_zoom_165.png drawing: 2 m 59.480000 s 
+[2025-11-19 05:59:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_166.json: 0.142000 s 
+[2025-11-19 05:59:33] There are 25 sets of 100 batches.
+[2025-11-19 06:02:35] davids_camera_zoom_166.png all: 3 m 2.046000 s 
+[2025-11-19 06:02:35] davids_camera_zoom_166.png drawing: 3 m 1.899000 s 
+[2025-11-19 06:02:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_167.json: 0.141000 s 
+[2025-11-19 06:02:35] There are 25 sets of 100 batches.
+[2025-11-19 06:05:27] davids_camera_zoom_167.png all: 2 m 52.000999 s 
+[2025-11-19 06:05:27] davids_camera_zoom_167.png drawing: 2 m 51.856998 s 
+[2025-11-19 06:05:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_168.json: 0.154000 s 
+[2025-11-19 06:05:27] There are 25 sets of 100 batches.
+[2025-11-19 06:08:28] davids_camera_zoom_168.png all: 3 m 0.425000 s 
+[2025-11-19 06:08:28] davids_camera_zoom_168.png drawing: 3 m 0.268000 s 
+[2025-11-19 06:08:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_169.json: 0.144000 s 
+[2025-11-19 06:08:28] There are 25 sets of 100 batches.
+[2025-11-19 06:11:28] davids_camera_zoom_169.png all: 3 m 0.143000 s 
+[2025-11-19 06:11:28] davids_camera_zoom_169.png drawing: 2 m 59.994999 s 
+[2025-11-19 06:11:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_170.json: 0.141000 s 
+[2025-11-19 06:11:28] There are 25 sets of 100 batches.
+[2025-11-19 06:14:29] davids_camera_zoom_170.png all: 3 m 1.390000 s 
+[2025-11-19 06:14:29] davids_camera_zoom_170.png drawing: 3 m 1.246000 s 
+[2025-11-19 06:14:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_171.json: 0.152000 s 
+[2025-11-19 06:14:29] There are 25 sets of 100 batches.
+[2025-11-19 06:17:25] davids_camera_zoom_171.png all: 2 m 55.896000 s 
+[2025-11-19 06:17:25] davids_camera_zoom_171.png drawing: 2 m 55.740002 s 
+[2025-11-19 06:17:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_172.json: 0.177000 s 
+[2025-11-19 06:17:25] There are 25 sets of 100 batches.
+[2025-11-19 06:20:28] davids_camera_zoom_172.png all: 3 m 2.748000 s 
+[2025-11-19 06:20:28] davids_camera_zoom_172.png drawing: 3 m 2.568000 s 
+[2025-11-19 06:20:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_173.json: 0.144000 s 
+[2025-11-19 06:20:28] There are 25 sets of 100 batches.
+[2025-11-19 06:23:29] davids_camera_zoom_173.png all: 3 m 1.550000 s 
+[2025-11-19 06:23:29] davids_camera_zoom_173.png drawing: 3 m 1.403000 s 
+[2025-11-19 06:23:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_174.json: 0.149000 s 
+[2025-11-19 06:23:30] There are 25 sets of 100 batches.
+[2025-11-19 06:26:32] davids_camera_zoom_174.png all: 3 m 2.647000 s 
+[2025-11-19 06:26:32] davids_camera_zoom_174.png drawing: 3 m 2.494000 s 
+[2025-11-19 06:26:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_175.json: 0.160000 s 
+[2025-11-19 06:26:32] There are 25 sets of 100 batches.
+[2025-11-19 06:29:26] davids_camera_zoom_175.png all: 2 m 53.754002 s 
+[2025-11-19 06:29:26] davids_camera_zoom_175.png drawing: 2 m 53.589001 s 
+[2025-11-19 06:29:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_176.json: 0.164000 s 
+[2025-11-19 06:29:26] There are 25 sets of 100 batches.
+[2025-11-19 06:32:28] davids_camera_zoom_176.png all: 3 m 1.844000 s 
+[2025-11-19 06:32:28] davids_camera_zoom_176.png drawing: 3 m 1.676000 s 
+[2025-11-19 06:32:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_177.json: 0.129000 s 
+[2025-11-19 06:32:28] There are 25 sets of 100 batches.
+[2025-11-19 06:35:29] davids_camera_zoom_177.png all: 3 m 1.172000 s 
+[2025-11-19 06:35:29] davids_camera_zoom_177.png drawing: 3 m 1.039000 s 
+[2025-11-19 06:35:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_178.json: 0.148000 s 
+[2025-11-19 06:35:29] There are 25 sets of 100 batches.
+[2025-11-19 06:38:32] davids_camera_zoom_178.png all: 3 m 3.454000 s 
+[2025-11-19 06:38:32] davids_camera_zoom_178.png drawing: 3 m 3.288000 s 
+[2025-11-19 06:38:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_179.json: 0.156000 s 
+[2025-11-19 06:38:33] There are 25 sets of 100 batches.
+[2025-11-19 06:41:27] davids_camera_zoom_179.png all: 2 m 54.728001 s 
+[2025-11-19 06:41:27] davids_camera_zoom_179.png drawing: 2 m 54.567001 s 
+[2025-11-19 06:41:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_180.json: 0.144000 s 
+[2025-11-19 06:41:27] There are 25 sets of 100 batches.
+[2025-11-19 06:44:31] davids_camera_zoom_180.png all: 3 m 3.933000 s 
+[2025-11-19 06:44:31] davids_camera_zoom_180.png drawing: 3 m 3.786000 s 
+[2025-11-19 06:44:31] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_181.json: 0.146000 s 
+[2025-11-19 06:44:31] There are 25 sets of 100 batches.
+[2025-11-19 06:47:32] davids_camera_zoom_181.png all: 3 m 1.263000 s 
+[2025-11-19 06:47:32] davids_camera_zoom_181.png drawing: 3 m 1.113000 s 
+[2025-11-19 06:47:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_182.json: 0.161000 s 
+[2025-11-19 06:47:33] There are 25 sets of 100 batches.
+[2025-11-19 06:50:37] davids_camera_zoom_182.png all: 3 m 4.427000 s 
+[2025-11-19 06:50:37] davids_camera_zoom_182.png drawing: 3 m 4.263000 s 
+[2025-11-19 06:50:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_183.json: 0.181000 s 
+[2025-11-19 06:50:37] There are 25 sets of 100 batches.
+[2025-11-19 06:53:35] davids_camera_zoom_183.png all: 2 m 58.287998 s 
+[2025-11-19 06:53:35] davids_camera_zoom_183.png drawing: 2 m 58.103001 s 
+[2025-11-19 06:53:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_184.json: 0.143000 s 
+[2025-11-19 06:53:35] There are 25 sets of 100 batches.
+[2025-11-19 06:56:39] davids_camera_zoom_184.png all: 3 m 3.904000 s 
+[2025-11-19 06:56:39] davids_camera_zoom_184.png drawing: 3 m 3.757000 s 
+[2025-11-19 06:56:39] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_185.json: 0.122000 s 
+[2025-11-19 06:56:39] There are 25 sets of 100 batches.
+[2025-11-19 06:59:43] davids_camera_zoom_185.png all: 3 m 4.177000 s 
+[2025-11-19 06:59:43] davids_camera_zoom_185.png drawing: 3 m 4.052000 s 
+[2025-11-19 06:59:43] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_186.json: 0.140000 s 
+[2025-11-19 06:59:43] There are 25 sets of 100 batches.
+[2025-11-19 07:02:50] davids_camera_zoom_186.png all: 3 m 6.659000 s 
+[2025-11-19 07:02:50] davids_camera_zoom_186.png drawing: 3 m 6.515000 s 
+[2025-11-19 07:02:50] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_187.json: 0.174000 s 
+[2025-11-19 07:02:50] There are 25 sets of 100 batches.
+[2025-11-19 07:05:48] davids_camera_zoom_187.png all: 2 m 57.916000 s 
+[2025-11-19 07:05:48] davids_camera_zoom_187.png drawing: 2 m 57.738998 s 
+[2025-11-19 07:05:48] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_188.json: 0.132000 s 
+[2025-11-19 07:05:48] There are 25 sets of 100 batches.
+[2025-11-19 07:08:52] davids_camera_zoom_188.png all: 3 m 4.152000 s 
+[2025-11-19 07:08:52] davids_camera_zoom_188.png drawing: 3 m 4.017000 s 
+[2025-11-19 07:08:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_189.json: 0.183000 s 
+[2025-11-19 07:08:52] There are 25 sets of 100 batches.
+[2025-11-19 07:11:54] davids_camera_zoom_189.png all: 3 m 2.226000 s 
+[2025-11-19 07:11:54] davids_camera_zoom_189.png drawing: 3 m 2.039000 s 
+[2025-11-19 07:11:54] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_190.json: 0.163000 s 
+[2025-11-19 07:11:54] There are 25 sets of 100 batches.
+[2025-11-19 07:15:01] davids_camera_zoom_190.png all: 3 m 6.922000 s 
+[2025-11-19 07:15:01] davids_camera_zoom_190.png drawing: 3 m 6.756000 s 
+[2025-11-19 07:15:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_191.json: 0.122000 s 
+[2025-11-19 07:15:01] There are 25 sets of 100 batches.
+[2025-11-19 07:17:58] davids_camera_zoom_191.png all: 2 m 57.243999 s 
+[2025-11-19 07:17:58] davids_camera_zoom_191.png drawing: 2 m 57.118999 s 
+[2025-11-19 07:17:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_192.json: 0.137000 s 
+[2025-11-19 07:17:58] There are 25 sets of 100 batches.
+[2025-11-19 07:21:04] davids_camera_zoom_192.png all: 3 m 5.674000 s 
+[2025-11-19 07:21:04] davids_camera_zoom_192.png drawing: 3 m 5.533000 s 
+[2025-11-19 07:21:04] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_193.json: 0.146000 s 
+[2025-11-19 07:21:04] There are 25 sets of 100 batches.
+[2025-11-19 07:24:08] davids_camera_zoom_193.png all: 3 m 3.928000 s 
+[2025-11-19 07:24:08] davids_camera_zoom_193.png drawing: 3 m 3.778000 s 
+[2025-11-19 07:24:08] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_194.json: 0.121000 s 
+[2025-11-19 07:24:08] There are 25 sets of 100 batches.
+[2025-11-19 07:27:17] davids_camera_zoom_194.png all: 3 m 8.568000 s 
+[2025-11-19 07:27:17] davids_camera_zoom_194.png drawing: 3 m 8.441000 s 
+[2025-11-19 07:27:17] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_195.json: 0.169000 s 
+[2025-11-19 07:27:17] There are 25 sets of 100 batches.
+[2025-11-19 07:30:14] davids_camera_zoom_195.png all: 2 m 57.916000 s 
+[2025-11-19 07:30:14] davids_camera_zoom_195.png drawing: 2 m 57.742001 s 
+[2025-11-19 07:30:15] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_196.json: 0.145000 s 
+[2025-11-19 07:30:15] There are 25 sets of 100 batches.
+[2025-11-19 07:33:19] davids_camera_zoom_196.png all: 3 m 4.878000 s 
+[2025-11-19 07:33:19] davids_camera_zoom_196.png drawing: 3 m 4.728000 s 
+[2025-11-19 07:33:19] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_197.json: 0.133000 s 
+[2025-11-19 07:33:19] There are 25 sets of 100 batches.
+[2025-11-19 07:36:23] davids_camera_zoom_197.png all: 3 m 3.635000 s 
+[2025-11-19 07:36:23] davids_camera_zoom_197.png drawing: 3 m 3.499000 s 
+[2025-11-19 07:36:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_198.json: 0.177000 s 
+[2025-11-19 07:36:23] There are 25 sets of 100 batches.
+[2025-11-19 07:39:31] davids_camera_zoom_198.png all: 3 m 8.402000 s 
+[2025-11-19 07:39:31] davids_camera_zoom_198.png drawing: 3 m 8.222000 s 
+[2025-11-19 07:39:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_199.json: 0.148000 s 
+[2025-11-19 07:39:32] There are 25 sets of 100 batches.
+[2025-11-19 07:42:30] davids_camera_zoom_199.png all: 2 m 58.098000 s 
+[2025-11-19 07:42:30] davids_camera_zoom_199.png drawing: 2 m 57.946999 s 
+[2025-11-19 07:42:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_200.json: 0.140000 s 
+[2025-11-19 07:42:30] There are 25 sets of 100 batches.
+[2025-11-19 07:45:38] davids_camera_zoom_200.png all: 3 m 8.365000 s 
+[2025-11-19 07:45:38] davids_camera_zoom_200.png drawing: 3 m 8.222000 s 
+[2025-11-19 07:45:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_201.json: 0.136000 s 
+[2025-11-19 07:45:38] There are 25 sets of 100 batches.
+[2025-11-19 07:48:46] davids_camera_zoom_201.png all: 3 m 7.963000 s 
+[2025-11-19 07:48:46] davids_camera_zoom_201.png drawing: 3 m 7.822000 s 
+[2025-11-19 07:48:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_202.json: 0.143000 s 
+[2025-11-19 07:48:46] There are 25 sets of 100 batches.
+[2025-11-19 07:51:56] davids_camera_zoom_202.png all: 3 m 10.114000 s 
+[2025-11-19 07:51:56] davids_camera_zoom_202.png drawing: 3 m 9.968000 s 
+[2025-11-19 07:51:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_203.json: 0.166000 s 
+[2025-11-19 07:51:56] There are 25 sets of 100 batches.
+[2025-11-19 07:54:56] davids_camera_zoom_203.png all: 3 m 0.295000 s 
+[2025-11-19 07:54:56] davids_camera_zoom_203.png drawing: 3 m 0.127000 s 
+[2025-11-19 07:54:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_204.json: 0.130000 s 
+[2025-11-19 07:54:56] There are 25 sets of 100 batches.
+[2025-11-19 07:58:09] davids_camera_zoom_204.png all: 3 m 13.136000 s 
+[2025-11-19 07:58:09] davids_camera_zoom_204.png drawing: 3 m 13.000000 s 
+[2025-11-19 07:58:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_205.json: 0.146000 s 
+[2025-11-19 07:58:10] There are 25 sets of 100 batches.
+[2025-11-19 08:01:19] davids_camera_zoom_205.png all: 3 m 9.235000 s 
+[2025-11-19 08:01:19] davids_camera_zoom_205.png drawing: 3 m 9.085000 s 
+[2025-11-19 08:01:19] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_206.json: 0.170000 s 
+[2025-11-19 08:01:19] There are 25 sets of 100 batches.
+[2025-11-19 08:04:41] davids_camera_zoom_206.png all: 3 m 22.128000 s 
+[2025-11-19 08:04:41] davids_camera_zoom_206.png drawing: 3 m 21.954000 s 
+[2025-11-19 08:04:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_207.json: 0.134000 s 
+[2025-11-19 08:04:41] There are 25 sets of 100 batches.
+[2025-11-19 08:07:44] davids_camera_zoom_207.png all: 3 m 3.135000 s 
+[2025-11-19 08:07:44] davids_camera_zoom_207.png drawing: 3 m 2.997000 s 
+[2025-11-19 08:07:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_208.json: 0.139000 s 
+[2025-11-19 08:07:44] There are 25 sets of 100 batches.
+[2025-11-19 08:10:53] davids_camera_zoom_208.png all: 3 m 9.155000 s 
+[2025-11-19 08:10:53] davids_camera_zoom_208.png drawing: 3 m 9.013000 s 
+[2025-11-19 08:10:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_209.json: 0.155000 s 
+[2025-11-19 08:10:53] There are 25 sets of 100 batches.
+[2025-11-19 08:14:02] davids_camera_zoom_209.png all: 3 m 8.697000 s 
+[2025-11-19 08:14:02] davids_camera_zoom_209.png drawing: 3 m 8.537000 s 
+[2025-11-19 08:14:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_210.json: 0.147000 s 
+[2025-11-19 08:14:02] There are 25 sets of 100 batches.
+[2025-11-19 08:17:13] davids_camera_zoom_210.png all: 3 m 11.189000 s 
+[2025-11-19 08:17:13] davids_camera_zoom_210.png drawing: 3 m 11.039000 s 
+[2025-11-19 08:17:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_211.json: 0.148000 s 
+[2025-11-19 08:17:13] There are 25 sets of 100 batches.
+[2025-11-19 08:20:15] davids_camera_zoom_211.png all: 3 m 1.683000 s 
+[2025-11-19 08:20:15] davids_camera_zoom_211.png drawing: 3 m 1.531000 s 
+[2025-11-19 08:20:15] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_212.json: 0.154000 s 
+[2025-11-19 08:20:15] There are 25 sets of 100 batches.
+[2025-11-19 08:23:25] davids_camera_zoom_212.png all: 3 m 10.715000 s 
+[2025-11-19 08:23:25] davids_camera_zoom_212.png drawing: 3 m 10.558000 s 
+[2025-11-19 08:23:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_213.json: 0.156000 s 
+[2025-11-19 08:23:26] There are 25 sets of 100 batches.
+[2025-11-19 08:26:34] davids_camera_zoom_213.png all: 3 m 8.818000 s 
+[2025-11-19 08:26:34] davids_camera_zoom_213.png drawing: 3 m 8.656000 s 
+[2025-11-19 08:26:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_214.json: 0.152000 s 
+[2025-11-19 08:26:34] There are 25 sets of 100 batches.
+[2025-11-19 08:29:46] davids_camera_zoom_214.png all: 3 m 11.747000 s 
+[2025-11-19 08:29:46] davids_camera_zoom_214.png drawing: 3 m 11.591000 s 
+[2025-11-19 08:29:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_215.json: 0.155000 s 
+[2025-11-19 08:29:46] There are 25 sets of 100 batches.
+[2025-11-19 08:32:49] davids_camera_zoom_215.png all: 3 m 2.623000 s 
+[2025-11-19 08:32:49] davids_camera_zoom_215.png drawing: 3 m 2.465000 s 
+[2025-11-19 08:32:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_216.json: 0.152000 s 
+[2025-11-19 08:32:49] There are 25 sets of 100 batches.
+[2025-11-19 08:35:58] davids_camera_zoom_216.png all: 3 m 9.455000 s 
+[2025-11-19 08:35:58] davids_camera_zoom_216.png drawing: 3 m 9.301000 s 
+[2025-11-19 08:35:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_217.json: 0.149000 s 
+[2025-11-19 08:35:58] There are 25 sets of 100 batches.
+[2025-11-19 08:39:07] davids_camera_zoom_217.png all: 3 m 8.939000 s 
+[2025-11-19 08:39:07] davids_camera_zoom_217.png drawing: 3 m 8.787000 s 
+[2025-11-19 08:39:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_218.json: 0.147000 s 
+[2025-11-19 08:39:07] There are 25 sets of 100 batches.
+[2025-11-19 08:42:18] davids_camera_zoom_218.png all: 3 m 11.144000 s 
+[2025-11-19 08:42:18] davids_camera_zoom_218.png drawing: 3 m 10.993000 s 
+[2025-11-19 08:42:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_219.json: 0.151000 s 
+[2025-11-19 08:42:18] There are 25 sets of 100 batches.
+[2025-11-19 08:45:20] davids_camera_zoom_219.png all: 3 m 1.410000 s 
+[2025-11-19 08:45:20] davids_camera_zoom_219.png drawing: 3 m 1.254000 s 
+[2025-11-19 08:45:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_220.json: 0.138000 s 
+[2025-11-19 08:45:20] There are 25 sets of 100 batches.
+[2025-11-19 08:48:34] davids_camera_zoom_220.png all: 3 m 14.261000 s 
+[2025-11-19 08:48:34] davids_camera_zoom_220.png drawing: 3 m 14.120000 s 
+[2025-11-19 08:48:34] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_221.json: 0.154000 s 
+[2025-11-19 08:48:34] There are 25 sets of 100 batches.
+[2025-11-19 08:51:44] davids_camera_zoom_221.png all: 3 m 10.049000 s 
+[2025-11-19 08:51:44] davids_camera_zoom_221.png drawing: 3 m 9.891000 s 
+[2025-11-19 08:51:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_222.json: 0.143000 s 
+[2025-11-19 08:51:44] There are 25 sets of 100 batches.
+[2025-11-19 08:54:56] davids_camera_zoom_222.png all: 3 m 12.300000 s 
+[2025-11-19 08:54:56] davids_camera_zoom_222.png drawing: 3 m 12.154000 s 
+[2025-11-19 08:54:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_223.json: 0.130000 s 
+[2025-11-19 08:54:56] There are 25 sets of 100 batches.
+[2025-11-19 08:58:01] davids_camera_zoom_223.png all: 3 m 4.532000 s 
+[2025-11-19 08:58:01] davids_camera_zoom_223.png drawing: 3 m 4.398000 s 
+[2025-11-19 08:58:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_224.json: 0.143000 s 
+[2025-11-19 08:58:01] There are 25 sets of 100 batches.
+[2025-11-19 09:01:13] davids_camera_zoom_224.png all: 3 m 12.540000 s 
+[2025-11-19 09:01:13] davids_camera_zoom_224.png drawing: 3 m 12.394000 s 
+[2025-11-19 09:01:14] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_225.json: 0.157000 s 
+[2025-11-19 09:01:14] There are 25 sets of 100 batches.
+[2025-11-19 09:04:23] davids_camera_zoom_225.png all: 3 m 9.498000 s 
+[2025-11-19 09:04:23] davids_camera_zoom_225.png drawing: 3 m 9.338000 s 
+[2025-11-19 09:04:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_226.json: 0.139000 s 
+[2025-11-19 09:04:23] There are 25 sets of 100 batches.
+[2025-11-19 09:07:38] davids_camera_zoom_226.png all: 3 m 15.414000 s 
+[2025-11-19 09:07:38] davids_camera_zoom_226.png drawing: 3 m 15.272000 s 
+[2025-11-19 09:07:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_227.json: 0.135000 s 
+[2025-11-19 09:07:38] There are 25 sets of 100 batches.
+[2025-11-19 09:10:41] davids_camera_zoom_227.png all: 3 m 3.117000 s 
+[2025-11-19 09:10:41] davids_camera_zoom_227.png drawing: 3 m 2.979000 s 
+[2025-11-19 09:10:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_228.json: 0.156000 s 
+[2025-11-19 09:10:42] There are 25 sets of 100 batches.
+[2025-11-19 09:13:59] davids_camera_zoom_228.png all: 3 m 17.346001 s 
+[2025-11-19 09:13:59] davids_camera_zoom_228.png drawing: 3 m 17.187000 s 
+[2025-11-19 09:13:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_229.json: 0.164000 s 
+[2025-11-19 09:13:59] There are 25 sets of 100 batches.
+[2025-11-19 09:17:10] davids_camera_zoom_229.png all: 3 m 11.519000 s 
+[2025-11-19 09:17:10] davids_camera_zoom_229.png drawing: 3 m 11.351000 s 
+[2025-11-19 09:17:10] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_230.json: 0.162000 s 
+[2025-11-19 09:17:10] There are 25 sets of 100 batches.
+[2025-11-19 09:20:24] davids_camera_zoom_230.png all: 3 m 13.708000 s 
+[2025-11-19 09:20:24] davids_camera_zoom_230.png drawing: 3 m 13.543000 s 
+[2025-11-19 09:20:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_231.json: 0.137000 s 
+[2025-11-19 09:20:24] There are 25 sets of 100 batches.
+[2025-11-19 09:23:30] davids_camera_zoom_231.png all: 3 m 5.637000 s 
+[2025-11-19 09:23:30] davids_camera_zoom_231.png drawing: 3 m 5.496000 s 
+[2025-11-19 09:23:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_232.json: 0.153000 s 
+[2025-11-19 09:23:30] There are 25 sets of 100 batches.
+[2025-11-19 09:26:44] davids_camera_zoom_232.png all: 3 m 14.478000 s 
+[2025-11-19 09:26:44] davids_camera_zoom_232.png drawing: 3 m 14.322000 s 
+[2025-11-19 09:26:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_233.json: 0.142000 s 
+[2025-11-19 09:26:44] There are 25 sets of 100 batches.
+[2025-11-19 09:29:56] davids_camera_zoom_233.png all: 3 m 11.436000 s 
+[2025-11-19 09:29:56] davids_camera_zoom_233.png drawing: 3 m 11.289000 s 
+[2025-11-19 09:29:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_234.json: 0.144000 s 
+[2025-11-19 09:29:56] There are 25 sets of 100 batches.
+[2025-11-19 09:33:11] davids_camera_zoom_234.png all: 3 m 15.160000 s 
+[2025-11-19 09:33:11] davids_camera_zoom_234.png drawing: 3 m 15.013000 s 
+[2025-11-19 09:33:11] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_235.json: 0.147000 s 
+[2025-11-19 09:33:11] There are 25 sets of 100 batches.
+[2025-11-19 09:36:24] davids_camera_zoom_235.png all: 3 m 13.290000 s 
+[2025-11-19 09:36:24] davids_camera_zoom_235.png drawing: 3 m 13.140000 s 
+[2025-11-19 09:36:24] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_236.json: 0.156000 s 
+[2025-11-19 09:36:24] There are 25 sets of 100 batches.
+[2025-11-19 09:39:38] davids_camera_zoom_236.png all: 3 m 14.300000 s 
+[2025-11-19 09:39:38] davids_camera_zoom_236.png drawing: 3 m 14.141000 s 
+[2025-11-19 09:39:39] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_237.json: 0.161000 s 
+[2025-11-19 09:39:39] There are 25 sets of 100 batches.
+[2025-11-19 09:42:50] davids_camera_zoom_237.png all: 3 m 12.127000 s 
+[2025-11-19 09:42:51] davids_camera_zoom_237.png drawing: 3 m 11.960000 s 
+[2025-11-19 09:42:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_238.json: 0.154000 s 
+[2025-11-19 09:42:51] There are 25 sets of 100 batches.
+[2025-11-19 09:46:06] davids_camera_zoom_238.png all: 3 m 15.934000 s 
+[2025-11-19 09:46:06] davids_camera_zoom_238.png drawing: 3 m 15.777000 s 
+[2025-11-19 09:46:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_239.json: 0.148000 s 
+[2025-11-19 09:46:07] There are 25 sets of 100 batches.
+[2025-11-19 09:49:13] davids_camera_zoom_239.png all: 3 m 6.470000 s 
+[2025-11-19 09:49:13] davids_camera_zoom_239.png drawing: 3 m 6.319000 s 
+[2025-11-19 09:49:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_240.json: 0.162000 s 
+[2025-11-19 09:49:13] There are 25 sets of 100 batches.
+[2025-11-19 09:52:32] davids_camera_zoom_240.png all: 3 m 19.132999 s 
+[2025-11-19 09:52:32] davids_camera_zoom_240.png drawing: 3 m 18.968000 s 
+[2025-11-19 09:52:32] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_241.json: 0.158000 s 
+[2025-11-19 09:52:32] There are 25 sets of 100 batches.
+[2025-11-19 09:55:46] davids_camera_zoom_241.png all: 3 m 13.674000 s 
+[2025-11-19 09:55:46] davids_camera_zoom_241.png drawing: 3 m 13.513000 s 
+[2025-11-19 09:55:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_242.json: 0.151000 s 
+[2025-11-19 09:55:46] There are 25 sets of 100 batches.
+[2025-11-19 09:59:03] davids_camera_zoom_242.png all: 3 m 17.061001 s 
+[2025-11-19 09:59:03] davids_camera_zoom_242.png drawing: 3 m 16.907000 s 
+[2025-11-19 09:59:03] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_243.json: 0.156000 s 
+[2025-11-19 09:59:03] There are 25 sets of 100 batches.
+[2025-11-19 10:02:13] davids_camera_zoom_243.png all: 3 m 9.893000 s 
+[2025-11-19 10:02:13] davids_camera_zoom_243.png drawing: 3 m 9.733000 s 
+[2025-11-19 10:02:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_244.json: 0.137000 s 
+[2025-11-19 10:02:13] There are 25 sets of 100 batches.
+[2025-11-19 10:05:29] davids_camera_zoom_244.png all: 3 m 15.996000 s 
+[2025-11-19 10:05:29] davids_camera_zoom_244.png drawing: 3 m 15.856000 s 
+[2025-11-19 10:05:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_245.json: 0.145000 s 
+[2025-11-19 10:05:29] There are 25 sets of 100 batches.
+[2025-11-19 10:08:43] davids_camera_zoom_245.png all: 3 m 14.102000 s 
+[2025-11-19 10:08:43] davids_camera_zoom_245.png drawing: 3 m 13.951000 s 
+[2025-11-19 10:08:43] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_246.json: 0.155000 s 
+[2025-11-19 10:08:43] There are 25 sets of 100 batches.
+[2025-11-19 10:11:58] davids_camera_zoom_246.png all: 3 m 15.365000 s 
+[2025-11-19 10:11:58] davids_camera_zoom_246.png drawing: 3 m 15.207000 s 
+[2025-11-19 10:11:58] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_247.json: 0.163000 s 
+[2025-11-19 10:11:58] There are 25 sets of 100 batches.
+[2025-11-19 10:15:09] davids_camera_zoom_247.png all: 3 m 10.523000 s 
+[2025-11-19 10:15:09] davids_camera_zoom_247.png drawing: 3 m 10.357000 s 
+[2025-11-19 10:15:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_248.json: 0.153000 s 
+[2025-11-19 10:15:09] There are 25 sets of 100 batches.
+[2025-11-19 10:18:26] davids_camera_zoom_248.png all: 3 m 17.007999 s 
+[2025-11-19 10:18:26] davids_camera_zoom_248.png drawing: 3 m 16.849001 s 
+[2025-11-19 10:18:26] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_249.json: 0.134000 s 
+[2025-11-19 10:18:26] There are 25 sets of 100 batches.
+[2025-11-19 10:21:43] davids_camera_zoom_249.png all: 3 m 17.612000 s 
+[2025-11-19 10:21:43] davids_camera_zoom_249.png drawing: 3 m 17.476000 s 
+[2025-11-19 10:21:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_250.json: 0.155000 s 
+[2025-11-19 10:21:44] There are 25 sets of 100 batches.
+[2025-11-19 10:25:06] davids_camera_zoom_250.png all: 3 m 22.912001 s 
+[2025-11-19 10:25:06] davids_camera_zoom_250.png drawing: 3 m 22.754000 s 
+[2025-11-19 10:25:06] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_251.json: 0.130000 s 
+[2025-11-19 10:25:06] There are 25 sets of 100 batches.
+[2025-11-19 10:28:18] davids_camera_zoom_251.png all: 3 m 11.805000 s 
+[2025-11-19 10:28:18] davids_camera_zoom_251.png drawing: 3 m 11.672000 s 
+[2025-11-19 10:28:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_252.json: 0.137000 s 
+[2025-11-19 10:28:18] There are 25 sets of 100 batches.
+[2025-11-19 10:31:39] davids_camera_zoom_252.png all: 3 m 20.400000 s 
+[2025-11-19 10:31:39] davids_camera_zoom_252.png drawing: 3 m 20.259001 s 
+[2025-11-19 10:31:39] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_253.json: 0.144000 s 
+[2025-11-19 10:31:39] There are 25 sets of 100 batches.
+[2025-11-19 10:34:55] davids_camera_zoom_253.png all: 3 m 16.370001 s 
+[2025-11-19 10:34:55] davids_camera_zoom_253.png drawing: 3 m 16.224001 s 
+[2025-11-19 10:34:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_254.json: 0.150000 s 
+[2025-11-19 10:34:55] There are 25 sets of 100 batches.
+[2025-11-19 10:38:13] davids_camera_zoom_254.png all: 3 m 18.110001 s 
+[2025-11-19 10:38:13] davids_camera_zoom_254.png drawing: 3 m 17.955999 s 
+[2025-11-19 10:38:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_255.json: 0.173000 s 
+[2025-11-19 10:38:13] There are 25 sets of 100 batches.
+[2025-11-19 10:41:23] davids_camera_zoom_255.png all: 3 m 9.902000 s 
+[2025-11-19 10:41:23] davids_camera_zoom_255.png drawing: 3 m 9.726000 s 
+[2025-11-19 10:41:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_256.json: 0.154000 s 
+[2025-11-19 10:41:23] There are 25 sets of 100 batches.
+[2025-11-19 10:44:42] davids_camera_zoom_256.png all: 3 m 18.583000 s 
+[2025-11-19 10:44:42] davids_camera_zoom_256.png drawing: 3 m 18.427000 s 
+[2025-11-19 10:44:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_257.json: 0.156000 s 
+[2025-11-19 10:44:42] There are 25 sets of 100 batches.
+[2025-11-19 10:47:57] davids_camera_zoom_257.png all: 3 m 15.562000 s 
+[2025-11-19 10:47:57] davids_camera_zoom_257.png drawing: 3 m 15.401000 s 
+[2025-11-19 10:47:57] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_258.json: 0.159000 s 
+[2025-11-19 10:47:57] There are 25 sets of 100 batches.
+[2025-11-19 10:51:16] davids_camera_zoom_258.png all: 3 m 18.639000 s 
+[2025-11-19 10:51:16] davids_camera_zoom_258.png drawing: 3 m 18.476000 s 
+[2025-11-19 10:51:16] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_259.json: 0.136000 s 
+[2025-11-19 10:51:16] There are 25 sets of 100 batches.
+[2025-11-19 10:54:27] davids_camera_zoom_259.png all: 3 m 11.149000 s 
+[2025-11-19 10:54:27] davids_camera_zoom_259.png drawing: 3 m 11.010000 s 
+[2025-11-19 10:54:27] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_260.json: 0.145000 s 
+[2025-11-19 10:54:27] There are 25 sets of 100 batches.
+[2025-11-19 10:57:49] davids_camera_zoom_260.png all: 3 m 21.636999 s 
+[2025-11-19 10:57:49] davids_camera_zoom_260.png drawing: 3 m 21.489000 s 
+[2025-11-19 10:57:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_261.json: 0.153000 s 
+[2025-11-19 10:57:49] There are 25 sets of 100 batches.
+[2025-11-19 11:01:06] davids_camera_zoom_261.png all: 3 m 17.440001 s 
+[2025-11-19 11:01:06] davids_camera_zoom_261.png drawing: 3 m 17.283001 s 
+[2025-11-19 11:01:06] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_262.json: 0.142000 s 
+[2025-11-19 11:01:06] There are 25 sets of 100 batches.
+[2025-11-19 11:04:24] davids_camera_zoom_262.png all: 3 m 18.407000 s 
+[2025-11-19 11:04:24] davids_camera_zoom_262.png drawing: 3 m 18.261000 s 
+[2025-11-19 11:04:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_263.json: 0.168000 s 
+[2025-11-19 11:04:25] There are 25 sets of 100 batches.
+[2025-11-19 11:07:33] davids_camera_zoom_263.png all: 3 m 8.876000 s 
+[2025-11-19 11:07:33] davids_camera_zoom_263.png drawing: 3 m 8.704000 s 
+[2025-11-19 11:07:33] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_264.json: 0.142000 s 
+[2025-11-19 11:07:33] There are 25 sets of 100 batches.
+[2025-11-19 11:10:52] davids_camera_zoom_264.png all: 3 m 18.988001 s 
+[2025-11-19 11:10:52] davids_camera_zoom_264.png drawing: 3 m 18.841999 s 
+[2025-11-19 11:10:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_265.json: 0.160000 s 
+[2025-11-19 11:10:52] There are 25 sets of 100 batches.
+[2025-11-19 11:14:13] davids_camera_zoom_265.png all: 3 m 20.361000 s 
+[2025-11-19 11:14:13] davids_camera_zoom_265.png drawing: 3 m 20.198000 s 
+[2025-11-19 11:14:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_266.json: 0.129000 s 
+[2025-11-19 11:14:13] There are 25 sets of 100 batches.
+[2025-11-19 11:17:35] davids_camera_zoom_266.png all: 3 m 22.347000 s 
+[2025-11-19 11:17:35] davids_camera_zoom_266.png drawing: 3 m 22.215000 s 
+[2025-11-19 11:17:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_267.json: 0.157000 s 
+[2025-11-19 11:17:35] There are 25 sets of 100 batches.
+[2025-11-19 11:20:47] davids_camera_zoom_267.png all: 3 m 12.483000 s 
+[2025-11-19 11:20:47] davids_camera_zoom_267.png drawing: 3 m 12.322000 s 
+[2025-11-19 11:20:48] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_268.json: 0.144000 s 
+[2025-11-19 11:20:48] There are 25 sets of 100 batches.
+[2025-11-19 11:24:08] davids_camera_zoom_268.png all: 3 m 20.681000 s 
+[2025-11-19 11:24:08] davids_camera_zoom_268.png drawing: 3 m 20.534000 s 
+[2025-11-19 11:24:08] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_269.json: 0.155000 s 
+[2025-11-19 11:24:08] There are 25 sets of 100 batches.
+[2025-11-19 11:27:28] davids_camera_zoom_269.png all: 3 m 19.409000 s 
+[2025-11-19 11:27:28] davids_camera_zoom_269.png drawing: 3 m 19.249001 s 
+[2025-11-19 11:27:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_270.json: 0.141000 s 
+[2025-11-19 11:27:28] There are 25 sets of 100 batches.
+[2025-11-19 11:30:47] davids_camera_zoom_270.png all: 3 m 19.447001 s 
+[2025-11-19 11:30:47] davids_camera_zoom_270.png drawing: 3 m 19.302999 s 
+[2025-11-19 11:30:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_271.json: 0.149000 s 
+[2025-11-19 11:30:47] There are 25 sets of 100 batches.
+[2025-11-19 11:33:58] davids_camera_zoom_271.png all: 3 m 11.335000 s 
+[2025-11-19 11:33:58] davids_camera_zoom_271.png drawing: 3 m 11.183000 s 
+[2025-11-19 11:33:59] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_272.json: 0.142000 s 
+[2025-11-19 11:33:59] There are 25 sets of 100 batches.
+[2025-11-19 11:37:18] davids_camera_zoom_272.png all: 3 m 19.938000 s 
+[2025-11-19 11:37:18] davids_camera_zoom_272.png drawing: 3 m 19.794001 s 
+[2025-11-19 11:37:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_273.json: 0.149000 s 
+[2025-11-19 11:37:19] There are 25 sets of 100 batches.
+[2025-11-19 11:40:38] davids_camera_zoom_273.png all: 3 m 19.421000 s 
+[2025-11-19 11:40:38] davids_camera_zoom_273.png drawing: 3 m 19.270000 s 
+[2025-11-19 11:40:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_274.json: 0.123000 s 
+[2025-11-19 11:40:38] There are 25 sets of 100 batches.
+[2025-11-19 11:44:01] davids_camera_zoom_274.png all: 3 m 23.091999 s 
+[2025-11-19 11:44:01] davids_camera_zoom_274.png drawing: 3 m 22.965000 s 
+[2025-11-19 11:44:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_275.json: 0.124000 s 
+[2025-11-19 11:44:01] There are 25 sets of 100 batches.
+[2025-11-19 11:47:13] davids_camera_zoom_275.png all: 3 m 12.407000 s 
+[2025-11-19 11:47:13] davids_camera_zoom_275.png drawing: 3 m 12.280000 s 
+[2025-11-19 11:47:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_276.json: 0.168000 s 
+[2025-11-19 11:47:13] There are 25 sets of 100 batches.
+[2025-11-19 11:50:37] davids_camera_zoom_276.png all: 3 m 23.761999 s 
+[2025-11-19 11:50:37] davids_camera_zoom_276.png drawing: 3 m 23.591000 s 
+[2025-11-19 11:50:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_277.json: 0.152000 s 
+[2025-11-19 11:50:37] There are 25 sets of 100 batches.
+[2025-11-19 11:54:03] davids_camera_zoom_277.png all: 3 m 25.933001 s 
+[2025-11-19 11:54:03] davids_camera_zoom_277.png drawing: 3 m 25.778999 s 
+[2025-11-19 11:54:03] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_278.json: 0.147000 s 
+[2025-11-19 11:54:03] There are 25 sets of 100 batches.
+[2025-11-19 11:57:25] davids_camera_zoom_278.png all: 3 m 21.624001 s 
+[2025-11-19 11:57:25] davids_camera_zoom_278.png drawing: 3 m 21.473000 s 
+[2025-11-19 11:57:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_279.json: 0.144000 s 
+[2025-11-19 11:57:25] There are 25 sets of 100 batches.
+[2025-11-19 12:00:37] davids_camera_zoom_279.png all: 3 m 12.700000 s 
+[2025-11-19 12:00:37] davids_camera_zoom_279.png drawing: 3 m 12.550000 s 
+[2025-11-19 12:00:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_280.json: 0.126000 s 
+[2025-11-19 12:00:37] There are 25 sets of 100 batches.
+[2025-11-19 12:04:01] davids_camera_zoom_280.png all: 3 m 23.254999 s 
+[2025-11-19 12:04:01] davids_camera_zoom_280.png drawing: 3 m 23.125000 s 
+[2025-11-19 12:04:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_281.json: 0.143000 s 
+[2025-11-19 12:04:01] There are 25 sets of 100 batches.
+[2025-11-19 12:07:21] davids_camera_zoom_281.png all: 3 m 20.459999 s 
+[2025-11-19 12:07:21] davids_camera_zoom_281.png drawing: 3 m 20.313999 s 
+[2025-11-19 12:07:21] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_282.json: 0.133000 s 
+[2025-11-19 12:07:21] There are 25 sets of 100 batches.
+[2025-11-19 12:10:42] davids_camera_zoom_282.png all: 3 m 21.382000 s 
+[2025-11-19 12:10:42] davids_camera_zoom_282.png drawing: 3 m 21.246000 s 
+[2025-11-19 12:10:43] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_283.json: 0.124000 s 
+[2025-11-19 12:10:43] There are 25 sets of 100 batches.
+[2025-11-19 12:13:56] davids_camera_zoom_283.png all: 3 m 13.231000 s 
+[2025-11-19 12:13:56] davids_camera_zoom_283.png drawing: 3 m 13.105000 s 
+[2025-11-19 12:13:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_284.json: 0.146000 s 
+[2025-11-19 12:13:56] There are 25 sets of 100 batches.
+[2025-11-19 12:17:20] davids_camera_zoom_284.png all: 3 m 24.007000 s 
+[2025-11-19 12:17:20] davids_camera_zoom_284.png drawing: 3 m 23.855000 s 
+[2025-11-19 12:17:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_285.json: 0.130000 s 
+[2025-11-19 12:17:20] There are 25 sets of 100 batches.
+[2025-11-19 12:20:40] davids_camera_zoom_285.png all: 3 m 20.242001 s 
+[2025-11-19 12:20:40] davids_camera_zoom_285.png drawing: 3 m 20.108999 s 
+[2025-11-19 12:20:40] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_286.json: 0.143000 s 
+[2025-11-19 12:20:40] There are 25 sets of 100 batches.
+[2025-11-19 12:24:02] davids_camera_zoom_286.png all: 3 m 21.792000 s 
+[2025-11-19 12:24:02] davids_camera_zoom_286.png drawing: 3 m 21.646999 s 
+[2025-11-19 12:24:02] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_287.json: 0.148000 s 
+[2025-11-19 12:24:02] There are 25 sets of 100 batches.
+[2025-11-19 12:27:17] davids_camera_zoom_287.png all: 3 m 15.685000 s 
+[2025-11-19 12:27:17] davids_camera_zoom_287.png drawing: 3 m 15.533000 s 
+[2025-11-19 12:27:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_288.json: 0.139000 s 
+[2025-11-19 12:27:18] There are 25 sets of 100 batches.
+[2025-11-19 12:30:45] davids_camera_zoom_288.png all: 3 m 27.096001 s 
+[2025-11-19 12:30:45] davids_camera_zoom_288.png drawing: 3 m 26.954000 s 
+[2025-11-19 12:30:45] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_289.json: 0.146000 s 
+[2025-11-19 12:30:45] There are 25 sets of 100 batches.
+[2025-11-19 12:34:05] davids_camera_zoom_289.png all: 3 m 20.100000 s 
+[2025-11-19 12:34:05] davids_camera_zoom_289.png drawing: 3 m 19.948000 s 
+[2025-11-19 12:34:05] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_290.json: 0.129000 s 
+[2025-11-19 12:34:05] There are 25 sets of 100 batches.
+[2025-11-19 12:37:28] davids_camera_zoom_290.png all: 3 m 22.938000 s 
+[2025-11-19 12:37:28] davids_camera_zoom_290.png drawing: 3 m 22.806000 s 
+[2025-11-19 12:37:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_291.json: 0.147000 s 
+[2025-11-19 12:37:28] There are 25 sets of 100 batches.
+[2025-11-19 12:40:42] davids_camera_zoom_291.png all: 3 m 14.353000 s 
+[2025-11-19 12:40:42] davids_camera_zoom_291.png drawing: 3 m 14.202000 s 
+[2025-11-19 12:40:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_292.json: 0.132000 s 
+[2025-11-19 12:40:42] There are 25 sets of 100 batches.
+[2025-11-19 12:44:07] davids_camera_zoom_292.png all: 3 m 25.351000 s 
+[2025-11-19 12:44:07] davids_camera_zoom_292.png drawing: 3 m 25.216000 s 
+[2025-11-19 12:44:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_293.json: 0.117000 s 
+[2025-11-19 12:44:07] There are 25 sets of 100 batches.
+[2025-11-19 12:47:28] davids_camera_zoom_293.png all: 3 m 20.566000 s 
+[2025-11-19 12:47:28] davids_camera_zoom_293.png drawing: 3 m 20.444000 s 
+[2025-11-19 12:47:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_294.json: 0.148000 s 
+[2025-11-19 12:47:28] There are 25 sets of 100 batches.
+[2025-11-19 12:50:52] davids_camera_zoom_294.png all: 3 m 23.754999 s 
+[2025-11-19 12:50:52] davids_camera_zoom_294.png drawing: 3 m 23.603001 s 
+[2025-11-19 12:50:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_295.json: 0.137000 s 
+[2025-11-19 12:50:52] There are 25 sets of 100 batches.
+[2025-11-19 12:54:07] davids_camera_zoom_295.png all: 3 m 15.100000 s 
+[2025-11-19 12:54:07] davids_camera_zoom_295.png drawing: 3 m 14.960000 s 
+[2025-11-19 12:54:07] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_296.json: 0.147000 s 
+[2025-11-19 12:54:07] There are 25 sets of 100 batches.
+[2025-11-19 12:57:31] davids_camera_zoom_296.png all: 3 m 24.461000 s 
+[2025-11-19 12:57:31] davids_camera_zoom_296.png drawing: 3 m 24.309999 s 
+[2025-11-19 12:57:31] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_297.json: 0.129000 s 
+[2025-11-19 12:57:31] There are 25 sets of 100 batches.
+[2025-11-19 13:00:53] davids_camera_zoom_297.png all: 3 m 21.495001 s 
+[2025-11-19 13:00:53] davids_camera_zoom_297.png drawing: 3 m 21.363001 s 
+[2025-11-19 13:00:53] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_298.json: 0.142000 s 
+[2025-11-19 13:00:53] There are 25 sets of 100 batches.
+[2025-11-19 13:04:16] davids_camera_zoom_298.png all: 3 m 22.927999 s 
+[2025-11-19 13:04:16] davids_camera_zoom_298.png drawing: 3 m 22.783001 s 
+[2025-11-19 13:04:16] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_299.json: 0.123000 s 
+[2025-11-19 13:04:16] There are 25 sets of 100 batches.
+[2025-11-19 13:07:28] davids_camera_zoom_299.png all: 3 m 12.391000 s 
+[2025-11-19 13:07:28] davids_camera_zoom_299.png drawing: 3 m 12.264000 s 
+[2025-11-19 13:07:28] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_300.json: 0.166000 s 
+[2025-11-19 13:07:28] There are 25 sets of 100 batches.
+[2025-11-19 13:10:51] davids_camera_zoom_300.png all: 3 m 22.628000 s 
+[2025-11-19 13:10:51] davids_camera_zoom_300.png drawing: 3 m 22.455999 s 
+[2025-11-19 13:10:51] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_301.json: 0.135000 s 
+[2025-11-19 13:10:51] There are 25 sets of 100 batches.
+[2025-11-19 13:14:20] davids_camera_zoom_301.png all: 3 m 29.322001 s 
+[2025-11-19 13:14:20] davids_camera_zoom_301.png drawing: 3 m 29.181999 s 
+[2025-11-19 13:14:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_302.json: 0.123000 s 
+[2025-11-19 13:14:20] There are 25 sets of 100 batches.
+[2025-11-19 13:17:44] davids_camera_zoom_302.png all: 3 m 24.009001 s 
+[2025-11-19 13:17:44] davids_camera_zoom_302.png drawing: 3 m 23.884001 s 
+[2025-11-19 13:17:44] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_303.json: 0.159000 s 
+[2025-11-19 13:17:44] There are 25 sets of 100 batches.
+[2025-11-19 13:21:00] davids_camera_zoom_303.png all: 3 m 15.559000 s 
+[2025-11-19 13:21:00] davids_camera_zoom_303.png drawing: 3 m 15.397000 s 
+[2025-11-19 13:21:00] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_304.json: 0.132000 s 
+[2025-11-19 13:21:00] There are 25 sets of 100 batches.
+[2025-11-19 13:24:23] davids_camera_zoom_304.png all: 3 m 23.580000 s 
+[2025-11-19 13:24:23] davids_camera_zoom_304.png drawing: 3 m 23.445000 s 
+[2025-11-19 13:24:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_305.json: 0.130000 s 
+[2025-11-19 13:24:23] There are 25 sets of 100 batches.
+[2025-11-19 13:27:46] davids_camera_zoom_305.png all: 3 m 22.466000 s 
+[2025-11-19 13:27:46] davids_camera_zoom_305.png drawing: 3 m 22.332001 s 
+[2025-11-19 13:27:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_306.json: 0.152000 s 
+[2025-11-19 13:27:46] There are 25 sets of 100 batches.
+[2025-11-19 13:31:11] davids_camera_zoom_306.png all: 3 m 24.988001 s 
+[2025-11-19 13:31:11] davids_camera_zoom_306.png drawing: 3 m 24.834000 s 
+[2025-11-19 13:31:11] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_307.json: 0.150000 s 
+[2025-11-19 13:31:11] There are 25 sets of 100 batches.
+[2025-11-19 13:34:25] davids_camera_zoom_307.png all: 3 m 14.635000 s 
+[2025-11-19 13:34:25] davids_camera_zoom_307.png drawing: 3 m 14.482000 s 
+[2025-11-19 13:34:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_308.json: 0.122000 s 
+[2025-11-19 13:34:25] There are 25 sets of 100 batches.
+[2025-11-19 13:37:52] davids_camera_zoom_308.png all: 3 m 26.475000 s 
+[2025-11-19 13:37:52] davids_camera_zoom_308.png drawing: 3 m 26.349001 s 
+[2025-11-19 13:37:52] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_309.json: 0.136000 s 
+[2025-11-19 13:37:52] There are 25 sets of 100 batches.
+[2025-11-19 13:41:14] davids_camera_zoom_309.png all: 3 m 21.995001 s 
+[2025-11-19 13:41:14] davids_camera_zoom_309.png drawing: 3 m 21.855000 s 
+[2025-11-19 13:41:14] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_310.json: 0.150000 s 
+[2025-11-19 13:41:14] There are 25 sets of 100 batches.
+[2025-11-19 13:44:37] davids_camera_zoom_310.png all: 3 m 23.194000 s 
+[2025-11-19 13:44:37] davids_camera_zoom_310.png drawing: 3 m 23.039000 s 
+[2025-11-19 13:44:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_311.json: 0.154000 s 
+[2025-11-19 13:44:37] There are 25 sets of 100 batches.
+[2025-11-19 13:47:54] davids_camera_zoom_311.png all: 3 m 17.400000 s 
+[2025-11-19 13:47:54] davids_camera_zoom_311.png drawing: 3 m 17.243000 s 
+[2025-11-19 13:47:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_312.json: 0.139000 s 
+[2025-11-19 13:47:55] There are 25 sets of 100 batches.
+[2025-11-19 13:51:18] davids_camera_zoom_312.png all: 3 m 23.535000 s 
+[2025-11-19 13:51:18] davids_camera_zoom_312.png drawing: 3 m 23.392000 s 
+[2025-11-19 13:51:18] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_313.json: 0.125000 s 
+[2025-11-19 13:51:18] There are 25 sets of 100 batches.
+[2025-11-19 13:54:41] davids_camera_zoom_313.png all: 3 m 23.309999 s 
+[2025-11-19 13:54:41] davids_camera_zoom_313.png drawing: 3 m 23.181999 s 
+[2025-11-19 13:54:41] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_314.json: 0.133000 s 
+[2025-11-19 13:54:41] There are 25 sets of 100 batches.
+[2025-11-19 13:58:06] davids_camera_zoom_314.png all: 3 m 24.561001 s 
+[2025-11-19 13:58:06] davids_camera_zoom_314.png drawing: 3 m 24.423000 s 
+[2025-11-19 13:58:06] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_315.json: 0.155000 s 
+[2025-11-19 13:58:06] There are 25 sets of 100 batches.
+[2025-11-19 14:01:22] davids_camera_zoom_315.png all: 3 m 16.483000 s 
+[2025-11-19 14:01:22] davids_camera_zoom_315.png drawing: 3 m 16.323999 s 
+[2025-11-19 14:01:22] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_316.json: 0.127000 s 
+[2025-11-19 14:01:22] There are 25 sets of 100 batches.
+[2025-11-19 14:04:49] davids_camera_zoom_316.png all: 3 m 26.354000 s 
+[2025-11-19 14:04:49] davids_camera_zoom_316.png drawing: 3 m 26.224001 s 
+[2025-11-19 14:04:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_317.json: 0.158000 s 
+[2025-11-19 14:04:49] There are 25 sets of 100 batches.
+[2025-11-19 14:08:13] davids_camera_zoom_317.png all: 3 m 24.410999 s 
+[2025-11-19 14:08:13] davids_camera_zoom_317.png drawing: 3 m 24.250999 s 
+[2025-11-19 14:08:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_318.json: 0.149000 s 
+[2025-11-19 14:08:13] There are 25 sets of 100 batches.
+[2025-11-19 14:11:38] davids_camera_zoom_318.png all: 3 m 24.622999 s 
+[2025-11-19 14:11:38] davids_camera_zoom_318.png drawing: 3 m 24.471001 s 
+[2025-11-19 14:11:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_319.json: 0.148000 s 
+[2025-11-19 14:11:38] There are 25 sets of 100 batches.
+[2025-11-19 14:14:55] davids_camera_zoom_319.png all: 3 m 16.747000 s 
+[2025-11-19 14:14:55] davids_camera_zoom_319.png drawing: 3 m 16.596001 s 
+[2025-11-19 14:14:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_320.json: 0.131000 s 
+[2025-11-19 14:14:55] There are 25 sets of 100 batches.
+[2025-11-19 14:18:24] davids_camera_zoom_320.png all: 3 m 29.947001 s 
+[2025-11-19 14:18:24] davids_camera_zoom_320.png drawing: 3 m 29.813000 s 
+[2025-11-19 14:18:25] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_321.json: 0.130000 s 
+[2025-11-19 14:18:25] There are 25 sets of 100 batches.
+[2025-11-19 14:21:49] davids_camera_zoom_321.png all: 3 m 24.504000 s 
+[2025-11-19 14:21:49] davids_camera_zoom_321.png drawing: 3 m 24.368999 s 
+[2025-11-19 14:21:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_322.json: 0.127000 s 
+[2025-11-19 14:21:49] There are 25 sets of 100 batches.
+[2025-11-19 14:25:12] davids_camera_zoom_322.png all: 3 m 23.417000 s 
+[2025-11-19 14:25:12] davids_camera_zoom_322.png drawing: 3 m 23.285000 s 
+[2025-11-19 14:25:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_323.json: 0.160000 s 
+[2025-11-19 14:25:13] There are 25 sets of 100 batches.
+[2025-11-19 14:28:30] davids_camera_zoom_323.png all: 3 m 17.504999 s 
+[2025-11-19 14:28:30] davids_camera_zoom_323.png drawing: 3 m 17.341000 s 
+[2025-11-19 14:28:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_324.json: 0.147000 s 
+[2025-11-19 14:28:30] There are 25 sets of 100 batches.
+[2025-11-19 14:31:55] davids_camera_zoom_324.png all: 3 m 24.636000 s 
+[2025-11-19 14:31:55] davids_camera_zoom_324.png drawing: 3 m 24.483999 s 
+[2025-11-19 14:31:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_325.json: 0.147000 s 
+[2025-11-19 14:31:55] There are 25 sets of 100 batches.
+[2025-11-19 14:35:21] davids_camera_zoom_325.png all: 3 m 25.962000 s 
+[2025-11-19 14:35:21] davids_camera_zoom_325.png drawing: 3 m 25.812000 s 
+[2025-11-19 14:35:21] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_326.json: 0.151000 s 
+[2025-11-19 14:35:21] There are 25 sets of 100 batches.
+[2025-11-19 14:38:47] davids_camera_zoom_326.png all: 3 m 26.459999 s 
+[2025-11-19 14:38:47] davids_camera_zoom_326.png drawing: 3 m 26.305000 s 
+[2025-11-19 14:38:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_327.json: 0.133000 s 
+[2025-11-19 14:38:47] There are 25 sets of 100 batches.
+[2025-11-19 14:42:05] davids_camera_zoom_327.png all: 3 m 17.951000 s 
+[2025-11-19 14:42:05] davids_camera_zoom_327.png drawing: 3 m 17.813999 s 
+[2025-11-19 14:42:05] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_328.json: 0.132000 s 
+[2025-11-19 14:42:05] There are 25 sets of 100 batches.
+[2025-11-19 14:45:30] davids_camera_zoom_328.png all: 3 m 25.014999 s 
+[2025-11-19 14:45:30] davids_camera_zoom_328.png drawing: 3 m 24.878000 s 
+[2025-11-19 14:45:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_329.json: 0.117000 s 
+[2025-11-19 14:45:30] There are 25 sets of 100 batches.
+[2025-11-19 14:48:55] davids_camera_zoom_329.png all: 3 m 25.386999 s 
+[2025-11-19 14:48:55] davids_camera_zoom_329.png drawing: 3 m 25.267000 s 
+[2025-11-19 14:48:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_330.json: 0.137000 s 
+[2025-11-19 14:48:56] There are 25 sets of 100 batches.
+[2025-11-19 14:52:21] davids_camera_zoom_330.png all: 3 m 25.386999 s 
+[2025-11-19 14:52:21] davids_camera_zoom_330.png drawing: 3 m 25.246000 s 
+[2025-11-19 14:52:21] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_331.json: 0.141000 s 
+[2025-11-19 14:52:21] There are 25 sets of 100 batches.
+[2025-11-19 14:55:38] davids_camera_zoom_331.png all: 3 m 17.492001 s 
+[2025-11-19 14:55:38] davids_camera_zoom_331.png drawing: 3 m 17.348000 s 
+[2025-11-19 14:55:38] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_332.json: 0.129000 s 
+[2025-11-19 14:55:38] There are 25 sets of 100 batches.
+[2025-11-19 14:59:05] davids_camera_zoom_332.png all: 3 m 27.094000 s 
+[2025-11-19 14:59:05] davids_camera_zoom_332.png drawing: 3 m 26.962000 s 
+[2025-11-19 14:59:06] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_333.json: 0.125000 s 
+[2025-11-19 14:59:06] There are 25 sets of 100 batches.
+[2025-11-19 15:02:30] davids_camera_zoom_333.png all: 3 m 24.546000 s 
+[2025-11-19 15:02:30] davids_camera_zoom_333.png drawing: 3 m 24.417999 s 
+[2025-11-19 15:02:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_334.json: 0.136000 s 
+[2025-11-19 15:02:30] There are 25 sets of 100 batches.
+[2025-11-19 15:05:54] davids_camera_zoom_334.png all: 3 m 24.429001 s 
+[2025-11-19 15:05:54] davids_camera_zoom_334.png drawing: 3 m 24.290001 s 
+[2025-11-19 15:05:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_335.json: 0.141000 s 
+[2025-11-19 15:05:55] There are 25 sets of 100 batches.
+[2025-11-19 15:09:13] davids_camera_zoom_335.png all: 3 m 18.691999 s 
+[2025-11-19 15:09:13] davids_camera_zoom_335.png drawing: 3 m 18.548000 s 
+[2025-11-19 15:09:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_336.json: 0.138000 s 
+[2025-11-19 15:09:13] There are 25 sets of 100 batches.
+[2025-11-19 15:12:37] davids_camera_zoom_336.png all: 3 m 24.033001 s 
+[2025-11-19 15:12:37] davids_camera_zoom_336.png drawing: 3 m 23.892000 s 
+[2025-11-19 15:12:37] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_337.json: 0.151000 s 
+[2025-11-19 15:12:37] There are 25 sets of 100 batches.
+[2025-11-19 15:16:05] davids_camera_zoom_337.png all: 3 m 27.580000 s 
+[2025-11-19 15:16:05] davids_camera_zoom_337.png drawing: 3 m 27.424999 s 
+[2025-11-19 15:16:05] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_338.json: 0.145000 s 
+[2025-11-19 15:16:05] There are 25 sets of 100 batches.
+[2025-11-19 15:19:30] davids_camera_zoom_338.png all: 3 m 25.296000 s 
+[2025-11-19 15:19:30] davids_camera_zoom_338.png drawing: 3 m 25.146999 s 
+[2025-11-19 15:19:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_339.json: 0.142000 s 
+[2025-11-19 15:19:30] There are 25 sets of 100 batches.
+[2025-11-19 15:22:49] davids_camera_zoom_339.png all: 3 m 19.049000 s 
+[2025-11-19 15:22:49] davids_camera_zoom_339.png drawing: 3 m 18.903000 s 
+[2025-11-19 15:22:49] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_340.json: 0.148000 s 
+[2025-11-19 15:22:49] There are 25 sets of 100 batches.
+[2025-11-19 15:26:16] davids_camera_zoom_340.png all: 3 m 26.719000 s 
+[2025-11-19 15:26:16] davids_camera_zoom_340.png drawing: 3 m 26.566999 s 
+[2025-11-19 15:26:16] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_341.json: 0.154000 s 
+[2025-11-19 15:26:16] There are 25 sets of 100 batches.
+[2025-11-19 15:29:42] davids_camera_zoom_341.png all: 3 m 25.955999 s 
+[2025-11-19 15:29:42] davids_camera_zoom_341.png drawing: 3 m 25.797001 s 
+[2025-11-19 15:29:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_342.json: 0.143000 s 
+[2025-11-19 15:29:42] There are 25 sets of 100 batches.
+[2025-11-19 15:33:09] davids_camera_zoom_342.png all: 3 m 26.903999 s 
+[2025-11-19 15:33:09] davids_camera_zoom_342.png drawing: 3 m 26.757999 s 
+[2025-11-19 15:33:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_343.json: 0.137000 s 
+[2025-11-19 15:33:09] There are 25 sets of 100 batches.
+[2025-11-19 15:36:28] davids_camera_zoom_343.png all: 3 m 19.763000 s 
+[2025-11-19 15:36:28] davids_camera_zoom_343.png drawing: 3 m 19.620001 s 
+[2025-11-19 15:36:29] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_344.json: 0.120000 s 
+[2025-11-19 15:36:29] There are 25 sets of 100 batches.
+[2025-11-19 15:39:55] davids_camera_zoom_344.png all: 3 m 26.924999 s 
+[2025-11-19 15:39:55] davids_camera_zoom_344.png drawing: 3 m 26.801001 s 
+[2025-11-19 15:39:56] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_345.json: 0.133000 s 
+[2025-11-19 15:39:56] There are 25 sets of 100 batches.
+[2025-11-19 15:43:19] davids_camera_zoom_345.png all: 3 m 23.976999 s 
+[2025-11-19 15:43:19] davids_camera_zoom_345.png drawing: 3 m 23.837999 s 
+[2025-11-19 15:43:20] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_346.json: 0.135000 s 
+[2025-11-19 15:43:20] There are 25 sets of 100 batches.
+[2025-11-19 15:46:46] davids_camera_zoom_346.png all: 3 m 26.775999 s 
+[2025-11-19 15:46:46] davids_camera_zoom_346.png drawing: 3 m 26.629999 s 
+[2025-11-19 15:46:46] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_347.json: 0.133000 s 
+[2025-11-19 15:46:46] There are 25 sets of 100 batches.
+[2025-11-19 15:50:04] davids_camera_zoom_347.png all: 3 m 17.561001 s 
+[2025-11-19 15:50:04] davids_camera_zoom_347.png drawing: 3 m 17.424000 s 
+[2025-11-19 15:50:04] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_348.json: 0.144000 s 
+[2025-11-19 15:50:04] There are 25 sets of 100 batches.
+[2025-11-19 15:53:30] davids_camera_zoom_348.png all: 3 m 26.301001 s 
+[2025-11-19 15:53:30] davids_camera_zoom_348.png drawing: 3 m 26.153000 s 
+[2025-11-19 15:53:30] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_349.json: 0.130000 s 
+[2025-11-19 15:53:30] There are 25 sets of 100 batches.
+[2025-11-19 15:56:55] davids_camera_zoom_349.png all: 3 m 25.268999 s 
+[2025-11-19 15:56:55] davids_camera_zoom_349.png drawing: 3 m 25.134001 s 
+[2025-11-19 15:56:55] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_350.json: 0.126000 s 
+[2025-11-19 15:56:55] There are 25 sets of 100 batches.
+[2025-11-19 16:00:23] davids_camera_zoom_350.png all: 3 m 27.851999 s 
+[2025-11-19 16:00:23] davids_camera_zoom_350.png drawing: 3 m 27.723000 s 
+[2025-11-19 16:00:23] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_351.json: 0.154000 s 
+[2025-11-19 16:00:23] There are 25 sets of 100 batches.
+[2025-11-19 16:03:42] davids_camera_zoom_351.png all: 3 m 18.889999 s 
+[2025-11-19 16:03:42] davids_camera_zoom_351.png drawing: 3 m 18.730000 s 
+[2025-11-19 16:03:42] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_352.json: 0.151000 s 
+[2025-11-19 16:03:42] There are 25 sets of 100 batches.
+[2025-11-19 16:07:09] davids_camera_zoom_352.png all: 3 m 26.966999 s 
+[2025-11-19 16:07:09] davids_camera_zoom_352.png drawing: 3 m 26.811001 s 
+[2025-11-19 16:07:09] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_353.json: 0.167000 s 
+[2025-11-19 16:07:09] There are 25 sets of 100 batches.
+[2025-11-19 16:10:35] davids_camera_zoom_353.png all: 3 m 26.091000 s 
+[2025-11-19 16:10:35] davids_camera_zoom_353.png drawing: 3 m 25.921000 s 
+[2025-11-19 16:10:35] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_354.json: 0.129000 s 
+[2025-11-19 16:10:35] There are 25 sets of 100 batches.
+[2025-11-19 16:14:01] davids_camera_zoom_354.png all: 3 m 25.353001 s 
+[2025-11-19 16:14:01] davids_camera_zoom_354.png drawing: 3 m 25.221001 s 
+[2025-11-19 16:14:01] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_355.json: 0.172000 s 
+[2025-11-19 16:14:01] There are 25 sets of 100 batches.
+[2025-11-19 16:17:19] davids_camera_zoom_355.png all: 3 m 18.730000 s 
+[2025-11-19 16:17:19] davids_camera_zoom_355.png drawing: 3 m 18.554001 s 
+[2025-11-19 16:17:19] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_356.json: 0.169000 s 
+[2025-11-19 16:17:19] There are 25 sets of 100 batches.
+[2025-11-19 16:20:47] davids_camera_zoom_356.png all: 3 m 27.636000 s 
+[2025-11-19 16:20:47] davids_camera_zoom_356.png drawing: 3 m 27.464001 s 
+[2025-11-19 16:20:47] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_357.json: 0.133000 s 
+[2025-11-19 16:20:47] There are 25 sets of 100 batches.
+[2025-11-19 16:24:13] davids_camera_zoom_357.png all: 3 m 25.865000 s 
+[2025-11-19 16:24:13] davids_camera_zoom_357.png drawing: 3 m 25.731001 s 
+[2025-11-19 16:24:13] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_358.json: 0.133000 s 
+[2025-11-19 16:24:13] There are 25 sets of 100 batches.
+[2025-11-19 16:27:39] davids_camera_zoom_358.png all: 3 m 26.641001 s 
+[2025-11-19 16:27:39] davids_camera_zoom_358.png drawing: 3 m 26.504999 s 
+[2025-11-19 16:27:40] jsonFiles/hw2/inputs/raven/camera_zoom_david/davids_camera_zoom_359.json: 0.165000 s 
+[2025-11-19 16:27:40] There are 25 sets of 100 batches.
+[2025-11-19 16:30:58] davids_camera_zoom_359.png all: 3 m 18.263000 s 
+[2025-11-19 16:30:58] davids_camera_zoom_359.png drawing: 3 m 18.094999 s 
+[2025-11-19 16:30:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_000.json: 0.159000 s 
+[2025-11-19 16:30:58] There are 25 sets of 100 batches.
+[2025-11-19 16:32:51] davids_camera_000.png all: 1 m 53.687000 s 
+[2025-11-19 16:32:51] davids_camera_000.png drawing: 1 m 53.522999 s 
+[2025-11-19 16:32:52] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_001.json: 0.143000 s 
+[2025-11-19 16:32:52] There are 25 sets of 100 batches.
+[2025-11-19 16:34:45] davids_camera_001.png all: 1 m 53.099998 s 
+[2025-11-19 16:34:45] davids_camera_001.png drawing: 1 m 52.952999 s 
+[2025-11-19 16:34:45] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_002.json: 0.143000 s 
+[2025-11-19 16:34:45] There are 25 sets of 100 batches.
+[2025-11-19 16:36:39] davids_camera_002.png all: 1 m 54.639999 s 
+[2025-11-19 16:36:39] davids_camera_002.png drawing: 1 m 54.493000 s 
+[2025-11-19 16:36:39] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_003.json: 0.152000 s 
+[2025-11-19 16:36:39] There are 25 sets of 100 batches.
+[2025-11-19 16:38:30] davids_camera_003.png all: 1 m 50.438999 s 
+[2025-11-19 16:38:30] davids_camera_003.png drawing: 1 m 50.285000 s 
+[2025-11-19 16:38:30] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_004.json: 0.177000 s 
+[2025-11-19 16:38:30] There are 25 sets of 100 batches.
+[2025-11-19 16:40:25] davids_camera_004.png all: 1 m 55.719002 s 
+[2025-11-19 16:40:25] davids_camera_004.png drawing: 1 m 55.539001 s 
+[2025-11-19 16:40:26] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_005.json: 0.166000 s 
+[2025-11-19 16:40:26] There are 25 sets of 100 batches.
+[2025-11-19 16:42:20] davids_camera_005.png all: 1 m 54.285999 s 
+[2025-11-19 16:42:20] davids_camera_005.png drawing: 1 m 54.116001 s 
+[2025-11-19 16:42:20] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_006.json: 0.152000 s 
+[2025-11-19 16:42:20] There are 25 sets of 100 batches.
+[2025-11-19 16:44:16] davids_camera_006.png all: 1 m 56.536999 s 
+[2025-11-19 16:44:16] davids_camera_006.png drawing: 1 m 56.381001 s 
+[2025-11-19 16:44:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_007.json: 0.151000 s 
+[2025-11-19 16:44:16] There are 25 sets of 100 batches.
+[2025-11-19 16:46:10] davids_camera_007.png all: 1 m 54.266998 s 
+[2025-11-19 16:46:10] davids_camera_007.png drawing: 1 m 54.111000 s 
+[2025-11-19 16:46:11] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_008.json: 0.145000 s 
+[2025-11-19 16:46:11] There are 25 sets of 100 batches.
+[2025-11-19 16:48:07] davids_camera_008.png all: 1 m 56.882999 s 
+[2025-11-19 16:48:07] davids_camera_008.png drawing: 1 m 56.735001 s 
+[2025-11-19 16:48:08] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_009.json: 0.155000 s 
+[2025-11-19 16:48:08] There are 25 sets of 100 batches.
+[2025-11-19 16:50:03] davids_camera_009.png all: 1 m 55.363998 s 
+[2025-11-19 16:50:03] davids_camera_009.png drawing: 1 m 55.205002 s 
+[2025-11-19 16:50:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_010.json: 0.123000 s 
+[2025-11-19 16:50:03] There are 25 sets of 100 batches.
+[2025-11-19 16:51:59] davids_camera_010.png all: 1 m 56.426998 s 
+[2025-11-19 16:51:59] davids_camera_010.png drawing: 1 m 56.299999 s 
+[2025-11-19 16:51:59] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_011.json: 0.140000 s 
+[2025-11-19 16:51:59] There are 25 sets of 100 batches.
+[2025-11-19 16:53:50] davids_camera_011.png all: 1 m 50.938999 s 
+[2025-11-19 16:53:50] davids_camera_011.png drawing: 1 m 50.796001 s 
+[2025-11-19 16:53:50] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_012.json: 0.129000 s 
+[2025-11-19 16:53:50] There are 25 sets of 100 batches.
+[2025-11-19 16:55:49] davids_camera_012.png all: 1 m 59.264999 s 
+[2025-11-19 16:55:49] davids_camera_012.png drawing: 1 m 59.132000 s 
+[2025-11-19 16:55:50] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_013.json: 0.161000 s 
+[2025-11-19 16:55:50] There are 25 sets of 100 batches.
+[2025-11-19 16:57:45] davids_camera_013.png all: 1 m 55.661999 s 
+[2025-11-19 16:57:45] davids_camera_013.png drawing: 1 m 55.498001 s 
+[2025-11-19 16:57:45] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_014.json: 0.157000 s 
+[2025-11-19 16:57:45] There are 25 sets of 100 batches.
+[2025-11-19 16:59:42] davids_camera_014.png all: 1 m 56.730000 s 
+[2025-11-19 16:59:42] davids_camera_014.png drawing: 1 m 56.570000 s 
+[2025-11-19 16:59:42] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_015.json: 0.183000 s 
+[2025-11-19 16:59:42] There are 25 sets of 100 batches.
+[2025-11-19 17:01:36] davids_camera_015.png all: 1 m 54.335999 s 
+[2025-11-19 17:01:36] davids_camera_015.png drawing: 1 m 54.148998 s 
+[2025-11-19 17:01:36] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_016.json: 0.147000 s 
+[2025-11-19 17:01:36] There are 25 sets of 100 batches.
+[2025-11-19 17:03:32] davids_camera_016.png all: 1 m 56.091000 s 
+[2025-11-19 17:03:32] davids_camera_016.png drawing: 1 m 55.941002 s 
+[2025-11-19 17:03:32] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_017.json: 0.159000 s 
+[2025-11-19 17:03:32] There are 25 sets of 100 batches.
+[2025-11-19 17:05:28] davids_camera_017.png all: 1 m 55.951000 s 
+[2025-11-19 17:05:28] davids_camera_017.png drawing: 1 m 55.789001 s 
+[2025-11-19 17:05:28] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_018.json: 0.161000 s 
+[2025-11-19 17:05:28] There are 25 sets of 100 batches.
+[2025-11-19 17:07:25] davids_camera_018.png all: 1 m 56.976002 s 
+[2025-11-19 17:07:25] davids_camera_018.png drawing: 1 m 56.812000 s 
+[2025-11-19 17:07:25] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_019.json: 0.169000 s 
+[2025-11-19 17:07:25] There are 25 sets of 100 batches.
+[2025-11-19 17:09:18] davids_camera_019.png all: 1 m 52.938000 s 
+[2025-11-19 17:09:18] davids_camera_019.png drawing: 1 m 52.765999 s 
+[2025-11-19 17:09:18] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_020.json: 0.152000 s 
+[2025-11-19 17:09:18] There are 25 sets of 100 batches.
+[2025-11-19 17:11:16] davids_camera_020.png all: 1 m 58.097000 s 
+[2025-11-19 17:11:16] davids_camera_020.png drawing: 1 m 57.941002 s 
+[2025-11-19 17:11:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_021.json: 0.156000 s 
+[2025-11-19 17:11:16] There are 25 sets of 100 batches.
+[2025-11-19 17:13:13] davids_camera_021.png all: 1 m 57.018002 s 
+[2025-11-19 17:13:13] davids_camera_021.png drawing: 1 m 56.858002 s 
+[2025-11-19 17:13:13] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_022.json: 0.153000 s 
+[2025-11-19 17:13:13] There are 25 sets of 100 batches.
+[2025-11-19 17:15:12] davids_camera_022.png all: 1 m 58.305000 s 
+[2025-11-19 17:15:12] davids_camera_022.png drawing: 1 m 58.147999 s 
+[2025-11-19 17:15:12] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_023.json: 0.147000 s 
+[2025-11-19 17:15:12] There are 25 sets of 100 batches.
+[2025-11-19 17:17:05] davids_camera_023.png all: 1 m 53.381001 s 
+[2025-11-19 17:17:05] davids_camera_023.png drawing: 1 m 53.230999 s 
+[2025-11-19 17:17:05] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_024.json: 0.161000 s 
+[2025-11-19 17:17:05] There are 25 sets of 100 batches.
+[2025-11-19 17:19:03] davids_camera_024.png all: 1 m 58.181999 s 
+[2025-11-19 17:19:03] davids_camera_024.png drawing: 1 m 58.016998 s 
+[2025-11-19 17:19:03] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_025.json: 0.163000 s 
+[2025-11-19 17:19:03] There are 25 sets of 100 batches.
+[2025-11-19 17:21:00] davids_camera_025.png all: 1 m 56.680000 s 
+[2025-11-19 17:21:00] davids_camera_025.png drawing: 1 m 56.514000 s 
+[2025-11-19 17:21:00] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_026.json: 0.171000 s 
+[2025-11-19 17:21:00] There are 25 sets of 100 batches.
+[2025-11-19 17:22:58] davids_camera_026.png all: 1 m 58.439999 s 
+[2025-11-19 17:22:58] davids_camera_026.png drawing: 1 m 58.259998 s 
+[2025-11-19 17:22:58] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_027.json: 0.151000 s 
+[2025-11-19 17:22:58] There are 25 sets of 100 batches.
+[2025-11-19 17:24:53] davids_camera_027.png all: 1 m 54.306999 s 
+[2025-11-19 17:24:53] davids_camera_027.png drawing: 1 m 54.152000 s 
+[2025-11-19 17:24:53] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_028.json: 0.146000 s 
+[2025-11-19 17:24:53] There are 25 sets of 100 batches.
+[2025-11-19 17:26:51] davids_camera_028.png all: 1 m 58.710999 s 
+[2025-11-19 17:26:51] davids_camera_028.png drawing: 1 m 58.557999 s 
+[2025-11-19 17:26:51] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_029.json: 0.134000 s 
+[2025-11-19 17:26:51] There are 25 sets of 100 batches.
+[2025-11-19 17:28:50] davids_camera_029.png all: 1 m 58.168999 s 
+[2025-11-19 17:28:50] davids_camera_029.png drawing: 1 m 58.029999 s 
+[2025-11-19 17:28:50] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_030.json: 0.158000 s 
+[2025-11-19 17:28:50] There are 25 sets of 100 batches.
+[2025-11-19 17:30:49] davids_camera_030.png all: 1 m 59.845001 s 
+[2025-11-19 17:30:49] davids_camera_030.png drawing: 1 m 59.683998 s 
+[2025-11-19 17:30:50] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_031.json: 0.136000 s 
+[2025-11-19 17:30:50] There are 25 sets of 100 batches.
+[2025-11-19 17:32:44] davids_camera_031.png all: 1 m 54.195000 s 
+[2025-11-19 17:32:44] davids_camera_031.png drawing: 1 m 54.054001 s 
+[2025-11-19 17:32:44] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_032.json: 0.149000 s 
+[2025-11-19 17:32:44] There are 25 sets of 100 batches.
+[2025-11-19 17:34:40] davids_camera_032.png all: 1 m 56.824001 s 
+[2025-11-19 17:34:40] davids_camera_032.png drawing: 1 m 56.668999 s 
+[2025-11-19 17:34:41] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_033.json: 0.144000 s 
+[2025-11-19 17:34:41] There are 25 sets of 100 batches.
+[2025-11-19 17:36:36] davids_camera_033.png all: 1 m 56.035999 s 
+[2025-11-19 17:36:36] davids_camera_033.png drawing: 1 m 55.889000 s 
+[2025-11-19 17:36:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_034.json: 0.160000 s 
+[2025-11-19 17:36:37] There are 25 sets of 100 batches.
+[2025-11-19 17:38:34] davids_camera_034.png all: 1 m 57.075001 s 
+[2025-11-19 17:38:34] davids_camera_034.png drawing: 1 m 56.911999 s 
+[2025-11-19 17:38:34] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_035.json: 0.150000 s 
+[2025-11-19 17:38:34] There are 25 sets of 100 batches.
+[2025-11-19 17:40:26] davids_camera_035.png all: 1 m 52.931000 s 
+[2025-11-19 17:40:26] davids_camera_035.png drawing: 1 m 52.777000 s 
+[2025-11-19 17:40:27] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_036.json: 0.167000 s 
+[2025-11-19 17:40:27] There are 25 sets of 100 batches.
+[2025-11-19 17:42:24] davids_camera_036.png all: 1 m 57.136002 s 
+[2025-11-19 17:42:24] davids_camera_036.png drawing: 1 m 56.964001 s 
+[2025-11-19 17:42:24] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_037.json: 0.153000 s 
+[2025-11-19 17:42:24] There are 25 sets of 100 batches.
+[2025-11-19 17:44:19] davids_camera_037.png all: 1 m 55.257000 s 
+[2025-11-19 17:44:19] davids_camera_037.png drawing: 1 m 55.101002 s 
+[2025-11-19 17:44:19] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_038.json: 0.158000 s 
+[2025-11-19 17:44:19] There are 25 sets of 100 batches.
+[2025-11-19 17:46:16] davids_camera_038.png all: 1 m 56.682999 s 
+[2025-11-19 17:46:16] davids_camera_038.png drawing: 1 m 56.521000 s 
+[2025-11-19 17:46:16] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_039.json: 0.139000 s 
+[2025-11-19 17:46:16] There are 25 sets of 100 batches.
+[2025-11-19 17:48:10] davids_camera_039.png all: 1 m 54.318001 s 
+[2025-11-19 17:48:10] davids_camera_039.png drawing: 1 m 54.175999 s 
+[2025-11-19 17:48:10] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_040.json: 0.156000 s 
+[2025-11-19 17:48:10] There are 25 sets of 100 batches.
+[2025-11-19 17:50:07] davids_camera_040.png all: 1 m 57.037998 s 
+[2025-11-19 17:50:07] davids_camera_040.png drawing: 1 m 56.877998 s 
+[2025-11-19 17:50:07] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_041.json: 0.157000 s 
+[2025-11-19 17:50:07] There are 25 sets of 100 batches.
+[2025-11-19 17:51:59] davids_camera_041.png all: 1 m 51.727001 s 
+[2025-11-19 17:51:59] davids_camera_041.png drawing: 1 m 51.567001 s 
+[2025-11-19 17:51:59] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_042.json: 0.139000 s 
+[2025-11-19 17:51:59] There are 25 sets of 100 batches.
+[2025-11-19 17:53:37] davids_camera_042.png all: 1 m 37.912998 s 
+[2025-11-19 17:53:37] davids_camera_042.png drawing: 1 m 37.769001 s 
+[2025-11-19 17:53:37] jsonFiles/hw2/inputs/raven/camera_around_david/davids_camera_043.json: 0.121000 s 
+[2025-11-19 17:53:37] There are 25 sets of 100 batches.
