@@ -5,6 +5,8 @@
 #ifndef CENG795_TRANSFORMATION_H
 #define CENG795_TRANSFORMATION_H
 
+#include <memory>
+
 #include "../../typedefs.h"
 #include "../base/SceneData.h"
 #include "Matrix.h"
@@ -18,6 +20,7 @@ public:
     virtual TransformationType getTransformationType() const;
     virtual Transformation *inv() const = 0;
     void getNormalTransform();
+    virtual std::unique_ptr<Transformation> clone() const = 0;
 };
 
 class Rotate : public Transformation
@@ -31,6 +34,9 @@ public:
     Rotate operator=(const Rotate& rotate);
     TransformationType getTransformationType() const override;
     Transformation *inv() const override;
+
+    std::unique_ptr<Transformation> clone() const override;
+
 };
 
 class Translate : public Transformation
@@ -44,6 +50,8 @@ public:
     Translate operator=(const Translate &c);
     TransformationType getTransformationType() const override;
     Transformation *inv() const override;
+
+    std::unique_ptr<Transformation> clone() const override;
 };
 
 
@@ -60,6 +68,7 @@ public:
     Scale operator=(const Scale &c);
     TransformationType getTransformationType() const override;
     Transformation *inv() const override;
+    std::unique_ptr<Transformation> clone() const override;
 };
 
 class Composite : public Transformation
@@ -72,6 +81,7 @@ public:
     TransformationType getTransformationType() const override;
     Composite();
     Transformation *inv() const override;
+    std::unique_ptr<Transformation> clone() const override;
 };
 
 

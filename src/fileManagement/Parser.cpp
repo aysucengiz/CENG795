@@ -72,15 +72,15 @@ void Parser::getCameras(json inp, SceneInput &sceneInput){
 
 void Parser::addLight(json pointLights, SceneInput &sceneInput)
 {
-    Transformation *t;
+    std::unique_ptr<Transformation> t;
     if (pointLights.contains("Transformations"))
     {
-        t = getTransFromStr(pointLights["Transformations"].get<std::string>(),sceneInput.transforms);
+        t = getTransFromStr(pointLights["Transformations"].get<std::string>(),sceneInput.transforms)->clone();
         t->getNormalTransform();
     }
     else
     {
-        t = new Composite();
+        t = std::make_unique<Composite>();
     }
     PointLight pl(
             std::stoi(pointLights["_id"].get<std::string>()) - 1,
@@ -232,15 +232,6 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         sceneInput.Vertices[i].n = sceneInput.Vertices[i].n.normalize();
     }
 
-
-    for(int i=0; i < sceneInput.objects.size(); i++)
-    {
-        if (sceneInput.objects[i]->getObjectType() == ObjectType::INSTANCE)
-        {
-            dynamic_cast<Instance *>(sceneInput.objects[i])->forwardTrans->getNormalTransform();
-            dynamic_cast<Instance *>(sceneInput.objects[i])->backwardTrans->getNormalTransform();
-        }
-    }
 }
 
 
@@ -287,7 +278,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
 
     if (Cameras.contains("Transformations"))
     {
-        Transformation *t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
+        std::unique_ptr<Transformation> t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
         t->getNormalTransform();
         if (Cameras["Transformations"].get<std::string>().find('s') != std::string::npos)
         {
@@ -309,7 +300,6 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
         Gaze = (*t *Vec4r(Vec3r(Gaze))).getVec3r();
         up = Vec3r(Cameras["Up"]);
 
-        delete t;
 
     }
 
@@ -325,7 +315,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
     if(PRINTINIT) std::cout << c << std::endl;
 }
 
-Scale Parser::getScaleFromStr(std::string transStr, std::vector<Transformation*>& transforms)
+Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>>& transforms)
 {
     std::istringstream ss(transStr);
     Scale s(1.0,1.0,1.0);
@@ -337,7 +327,7 @@ Scale Parser::getScaleFromStr(std::string transStr, std::vector<Transformation*>
             int startID =trans2_scaleStartID;
             if (transforms[startID+transID - 1]->getTransformationType() == TransformationType::SCALE)
             {
-                Scale *temp = dynamic_cast<Scale *>(transforms[startID+transID - 1]);
+                Scale *temp = dynamic_cast<Scale *>(transforms[startID+transID - 1].get());
                 s.x *= temp->x;
                 s.y *= temp->y;
                 s.z *= temp->z;
@@ -379,29 +369,29 @@ void Parser::addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id)
     }
 
     if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2] ) return;
-    Triangle *tempt = new Triangle(std::stoi(tri["_id"].get<std::string>()),
+    std::shared_ptr<Triangle> tempt = std::make_shared<Triangle>(std::stoi(tri["_id"].get<std::string>()),
                                 sceneInput.Vertices[ind[0] - 1],
                                 sceneInput.Vertices[ind[1] - 1],
                                 sceneInput.Vertices[ind[2] - 1],
                                 sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1]);
 
-    if (tri.contains("Transformations")) addInstance(tri["Transformations"].get<std::string>(), tempt, sceneInput);
-    else sceneInput.objects.push_back(tempt);
+    if (tri.contains("Transformations")) addInstance(tri["Transformations"].get<std::string>(), std::move(tempt), sceneInput);
+    else sceneInput.objects.push_back(std::move(tempt));
     if(PRINTINIT) std::cout << sceneInput.objects[curr_id] << std::endl;
     curr_id++;
 }
 
 void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    Sphere *temps = new Sphere(
+    std::shared_ptr<Sphere> temps =std::make_shared<Sphere>(
                                 std::stoi(s["_id"].get<std::string>()),
                                 sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
                                 std::stod(s["Radius"].get<std::string>()),
                                 sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
                             );
 
-    if (s.contains("Transformations"))addInstance(s["Transformations"].get<std::string>(), temps, sceneInput);
-    else  sceneInput.objects.push_back(temps);
+    if (s.contains("Transformations"))addInstance(s["Transformations"].get<std::string>(), std::move(temps), sceneInput);
+    else  sceneInput.objects.push_back(std::move(temps));
     if(PRINTINIT) std::cout << sceneInput.objects[curr_id]<< std::endl;
 
 
@@ -458,7 +448,7 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
         }
 
 
-        Mesh *tempm = new Mesh(std::stoi(mes["_id"].get<std::string>()),
+        std::shared_ptr<Mesh> tempm = std::make_shared<Mesh>(std::stoi(mes["_id"].get<std::string>()),
                 sm,
                 sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
                 dataLine,
@@ -466,35 +456,34 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
                 sceneInput.Vertices,
                 true,
                 numVerticesUntilNow);
-        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput);
-        else                                   sceneInput.objects.push_back(tempm);
+        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), std::move(tempm), sceneInput);
+        else                                   sceneInput.objects.push_back(std::move(tempm));
 
         curr_id++;
         if(PRINTINIT) std::cout <<  "Mesh " << tempm->_id << " has " << tempm->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
     }
 }
 
-void Parser::addInstance(std::string transformations, Object *original, SceneInput &sceneInput)
+void Parser::addInstance(std::string transformations, std::shared_ptr<Object> original, SceneInput &sceneInput)
 {
 
-    sceneInput.objects.push_back(new Instance(
+    sceneInput.objects.push_back(std::make_shared<Instance>(
                                     original->_id,
                                     original,
                                     getTransFromStr(transformations, sceneInput.transforms),
                                     original->material,
                                     true
                                     ));
-    Instance *i = dynamic_cast<Instance*>(sceneInput.objects[sceneInput.objects.size()-1]);
-    if (PRINTINIT) std::cout << "Instance " << i->_id << " of " << i->original->getObjectType() << std::endl;
+    if (PRINTINIT) std::cout << "Instance " << sceneInput.objects[sceneInput.objects.size()-1]->_id << " of " << dynamic_cast<Instance*>(sceneInput.objects[sceneInput.objects.size()-1].get())->original->getObjectType() << std::endl;
 }
 
 void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    Object *orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects);
+    std::shared_ptr<Object> orig_obj = getOriginalObjPtr(ObjectType::MESH,std::stoi(s["_baseMeshId"].get<std::string>()), sceneInput.objects);
     // std::cout << "original: " << orig_obj->_id << std::endl;
     std::string resetTransform = s.contains("_resetTransform") ? s["_resetTransform"].get<std::string>() : "false";
-    if (resetTransform == "true") while (orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = dynamic_cast<Instance*>(orig_obj)->original;
-    sceneInput.objects.push_back(new Instance(
+    if (resetTransform == "true") while (orig_obj->getObjectType() == ObjectType::INSTANCE) orig_obj = (dynamic_cast<Instance*>(orig_obj.get())->original)->clone();
+    sceneInput.objects.push_back(std::make_shared<Instance>(
                                     std::stoi(s["_id"].get<std::string>()),
                                     orig_obj,
                                     getTransFromStr(s["Transformations"].get<std::string>(), sceneInput.transforms),
@@ -502,7 +491,7 @@ void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
                                     false
                                     ));
 
-    if(PRINTINIT) std::cout << "Instance " <<sceneInput.objects[curr_id]->_id << " of " << dynamic_cast<Instance*>(sceneInput.objects[curr_id])->original->_id<< std::endl;
+    if(PRINTINIT) std::cout << "Instance " <<sceneInput.objects[curr_id]->_id << " of " << dynamic_cast<Instance*>(sceneInput.objects[curr_id].get())->original->_id<< std::endl;
 
     curr_id++;
 }
@@ -511,15 +500,15 @@ void Parser::addInstance(json s, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 {
-    Plane *tempp= new Plane(
+    std::shared_ptr<Plane> tempp= std::make_shared<Plane>(
                                 std::stoi(p["_id"].get<std::string>()),
                                 sceneInput.Vertices[std::stoi(p["Point"].get<std::string>()) - 1].v,
                                 p["Normal"].get<std::string>(),
                                 sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
                         );
 
-    if (p.contains("Transformations"))addInstance(p["Transformations"].get<std::string>(), tempp, sceneInput);
-    else sceneInput.objects.push_back(tempp);
+    if (p.contains("Transformations")) addInstance(p["Transformations"].get<std::string>(), std::move(tempp), sceneInput);
+    else sceneInput.objects.push_back(std::move(tempp));
     if(PRINTINIT) std::cout <<  sceneInput.objects[curr_id]<< std::endl;
 
     curr_id++;
@@ -528,14 +517,13 @@ void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addTranslation(json t, SceneInput &sceneInput)
 {
-    Translate *temp = new Translate(Vertex(t["_data"]));
-    sceneInput.transforms.push_back(temp);
+    sceneInput.transforms.push_back(std::make_unique<Translate>(Vertex(t["_data"])));
     if(PRINTINIT) std::cout << sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 }
 
 void Parser::addScaling(json t, SceneInput &sceneInput)
 {
-    sceneInput.transforms.push_back(new Scale(Vertex(t["_data"])));
+    sceneInput.transforms.push_back(std::make_unique<Scale>(Vertex(t["_data"])));
     if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 }
 
@@ -548,12 +536,12 @@ void Parser::addRotation(json t, SceneInput &sceneInput)
     if (ss.fail()) {
         throw std::invalid_argument("Invalid Vertex string: " + t["_data"].get<std::string>());
     }
-    sceneInput.transforms.push_back(new Rotate(Ray(Vertex(0,0,0),Vec3r(x,y,z)), angle));
+    sceneInput.transforms.push_back(std::make_unique<Rotate>(Ray(Vertex(0,0,0),Vec3r(x,y,z)), angle));
     if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 
 }
 
-Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transformation *>& transforms)
+std::unique_ptr<Transformation> Parser::getTransFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>>& transforms)
 {
     std::istringstream ss(transStr);
     std::vector<Transformation *> temp;
@@ -567,14 +555,14 @@ Transformation *Parser::getTransFromStr(std::string transStr, std::vector<Transf
         else startID = 0;
         // std::cout << transChar << " " << startID << std::endl;
 
-        temp.push_back(transforms[startID+transID - 1]);
+        temp.push_back(transforms[startID+transID - 1].get());
     }
 
-    Transformation *transformation = new Composite(temp);
+    std::unique_ptr<Transformation> transformation = std::make_unique<Composite>(temp);
     return transformation;
 }
 
-Object *Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object *>& objs)
+std::shared_ptr<Object> Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<std::shared_ptr<Object>>& objs)
 {
     for(int startID = 0; startID < objs.size(); startID++)
     {

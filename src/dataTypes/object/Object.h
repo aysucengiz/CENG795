@@ -34,6 +34,7 @@ public:
     virtual ~Object();
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, bool v = true);
 
+    virtual std::shared_ptr<Object> clone() const = 0;
 };
 
 ///////////////////////////////////////////////
@@ -52,6 +53,8 @@ public:
 
     Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material, ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
+
+    std::shared_ptr<Object> clone() const override;
 };
 
 class Plane : public Object
@@ -65,6 +68,7 @@ public:
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
+    std::shared_ptr<Object> clone() const override;
 };
 
 
@@ -82,17 +86,18 @@ public:
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
+    std::shared_ptr<Object> clone() const override;
 };
 
 class Instance : public Object
 {
 public:
     bool orig;
-    Object* original;
-    Transformation* forwardTrans;
-    Transformation* backwardTrans;
+    std::shared_ptr<Object> original;
+    std::unique_ptr<Transformation> forwardTrans;
+    std::unique_ptr<Transformation> backwardTrans;
 
-    Instance(uint32_t id, Object* original, Transformation* trans, Material& mat, bool orig, bool v = true);
+    Instance(uint32_t id, std::shared_ptr<Object> original, std::unique_ptr<Transformation>  trans, Material& mat, bool orig, bool v = true);
     ~Instance();
 
     ObjectType getObjectType() const override;
@@ -100,13 +105,13 @@ public:
     Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
 
 
-    void addTransformation(Transformation* trans);
     void computeGlobal();
     Ray getLocal(Ray& r);
     Vertex getLocal(const Vertex& v);
     Vec3r getGlobal(Vec3r& v);
     Vertex getGlobal(Vertex v) const;
     Vec3r getLocal(Vec3r& v);
+    std::shared_ptr<Object> clone() const override;
 };
 
 
@@ -131,7 +136,7 @@ struct SceneInput
     std::vector<PointLight> PointLights;
 
     // object info
-    std::deque<Object*> objects;
+    std::deque<std::shared_ptr<Object>> objects;
 
     // num info
     uint32_t numCameras;
@@ -140,7 +145,7 @@ struct SceneInput
     uint32_t numLights;
 
     // transformations
-    std::vector<Transformation*> transforms;
+    std::vector<std::unique_ptr<Transformation>> transforms;
 
     // precomputed near plane info
     Vec3r u;
@@ -154,7 +159,7 @@ struct HitRecord
 {
     Vertex intersection_point;
     Vec3r normal;
-    Object const* obj;
+    Object const * obj;
     uint32_t currTri;
 };
 

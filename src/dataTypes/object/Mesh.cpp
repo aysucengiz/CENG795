@@ -40,7 +40,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                     Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
                     globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
                     globalBbox.vMin = minVert2(minv,globalBbox.vMin);
-                    Faces.push_back(new Triangle(Faces.size(),
+                    Faces.push_back(std::make_unique<Triangle>(Faces.size(),
                                                 vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                                                 m,
                                                 shadingtype,
@@ -63,7 +63,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                     globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
                     globalBbox.vMin = minVert2(minv,globalBbox.vMin);
 
-                    Faces.push_back(new Triangle(Faces.size(),
+                    Faces.push_back(std::make_unique<Triangle>(Faces.size(),
                         vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
                         m, shadingtype,
                         v,
@@ -99,7 +99,8 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
     {
         if (ACCELERATE)
         {
-            return bvh.traverse(ray,t_min,Faces,shadow_test,back_cull);
+
+            return bvh.traverse(ray,t_min, Faces,shadow_test,back_cull);
         }
         else
         {
@@ -124,4 +125,9 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
     }
     return result;
 
+}
+
+
+std::shared_ptr<Object> Mesh::clone() const {
+    return const_cast<Mesh*>(this)->shared_from_this();
 }

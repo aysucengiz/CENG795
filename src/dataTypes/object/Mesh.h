@@ -7,10 +7,10 @@
 #include "Object.h"
 #include "../../acceleration/BVH.h"
 
-class Mesh : public Object
+class Mesh : public Object, public std::enable_shared_from_this<Mesh>
 {
 public:
-    std::vector<Triangle*> Faces;
+    std::vector<std::unique_ptr<Triangle>> Faces;
     ShadingType shadingtype;
     uint32_t currTri;
     BVH bvh;
@@ -24,6 +24,7 @@ public:
     ObjectType getObjectType() const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
+    std::shared_ptr<Object> clone() const override;
 };
 
 #endif //CENG795_MESH_H

@@ -122,6 +122,10 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
     main_center.z = (a.v + b.v + c.v).z / 3.0;
 }
 
+std::shared_ptr<Object> Triangle::clone() const {
+    return std::make_shared<Triangle>(*this);
+}
+
 ////////////////////////////////////////////////
 ////////////////// SPHERE /////////////////////
 ////////////////////////////////////////////////
@@ -193,6 +197,9 @@ Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID) const
     return (v-center.v).normalize();
 }
 
+std::shared_ptr<Object> Sphere::clone() const {
+    return std::make_shared<Sphere>(*this);
+}
 
 ////////////////////////////////////////////////
 /////////////////// PLANE /////////////////////
@@ -243,41 +250,34 @@ Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri) const { return n;}
 
 
 
+std::shared_ptr<Object> Plane::clone() const {
+    return std::make_shared<Plane>(*this);
+}
+
 ////////////////////////////////////////////////
 ///////////////// INSTANCE /////////////////////
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, Object *original, Transformation *trans, Material &mat, bool orig, bool v) : original(original),
+Instance::Instance(uint32_t id, std::shared_ptr<Object> o, std::unique_ptr<Transformation> trans, Material &mat, bool orig, bool v) :
 Object(mat,id,
-    Vertex(),Vertex(),v)
+    Vertex(),Vertex(),v), forwardTrans(std::move(trans))
 {
-    switch (trans->getTransformationType())
-    {
-    case TransformationType::ROTATE:
-        forwardTrans = new Rotate(*dynamic_cast<Rotate*>(trans));
-        break;
-    case TransformationType::SCALE:
-        forwardTrans = new Scale(*dynamic_cast<Scale*>(trans));
-        break;
-    case TransformationType::TRANSLATE:
-        forwardTrans = new Translate(*dynamic_cast<Translate*>(trans));
-        break;
-    case TransformationType::COMPOSITE:
-    default:
-        forwardTrans = new Composite(*dynamic_cast<Composite*>(trans));
-        break;
+
+    if (orig) { // unique
+        original = o->clone();
+    } else { // share
+        original = o;
     }
-    backwardTrans = forwardTrans->inv();
+    backwardTrans = forwardTrans->inv()->clone();
     computeGlobal();
     main_center =((*forwardTrans) * Vec4r(original->main_center)).getVertex();
+    forwardTrans->getNormalTransform();
+    backwardTrans->getNormalTransform();
 }
 
 Instance::~Instance()
 {
-    delete forwardTrans;
-    delete backwardTrans;
-    if (orig && original != nullptr) delete original;
 }
 
 ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
@@ -320,20 +320,7 @@ Vec3r Instance::getNormal(const Vertex &v, uint32_t triID) const {
 }
 
 
-void Instance::addTransformation(Transformation *trans)
-{
-    if (trans->getTransformationType() == TransformationType::ROTATE)
-    {
-        Rotate tempR(Ray(main_center,dynamic_cast<Rotate*>(trans)->axis.dir),dynamic_cast<Rotate*>(trans)->angle);
-        forwardTrans->arr = (tempR * (*forwardTrans)).arr;
-    }
-    else if  (trans->getTransformationType() == TransformationType::SCALE)
-    {
-        Scale tempS(main_center,dynamic_cast<Scale*>(trans)->x,dynamic_cast<Scale*>(trans)->y,dynamic_cast<Scale*>(trans)->z );
-        forwardTrans->arr = (tempS * (*forwardTrans)).arr;
-    }
-    else forwardTrans->arr = ((*trans) * (*forwardTrans)).arr;
-}
+
 
 void Instance::computeGlobal()
 {
@@ -395,5 +382,14 @@ Vertex Instance::getGlobal(Vertex v) const
 }
 
 
+std::shared_ptr<Object> Instance::clone() const {
+    return std::make_shared<Instance>(
+    _id,
+    original,
+    forwardTrans->clone(),
+    material,
+    orig
+);
+}
 
 

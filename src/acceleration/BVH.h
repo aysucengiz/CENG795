@@ -42,15 +42,15 @@ public:
     int partition(int start, int end, Axes a, T &objects);
 
     void getScene(SceneInput &scene);
-    void getScene(std::vector<Triangle *> &triangles);
+    void getScene(std::vector<std::unique_ptr<Triangle>> &triangles);
 
     template<typename T>
     real getSAH(Axes &a, uint32_t start, uint32_t end, real areaC,T &objects);
     template<typename T>
     int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects);
 
-    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
-    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const std::vector<Triangle *> &objects, bool shadow_test , bool back_cull) const;
+    template<typename Container>
+    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull) const;
 
 };
 
