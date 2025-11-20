@@ -21,7 +21,7 @@ using json = nlohmann::json;
 
 namespace Parser {
 
-    void parseScene(std::string inpFile, SceneInput &sceneInput);
+    void parseScene(std::string inpFile, SceneInput &sceneInput, uint32_t maxDepth, real DefaultShadowEps, real DefaultIntersEps, real print_init);
     std::vector<int> parseTrioFromString(std::string inp);
     json getJsonDataFromFile(std::string inpFile);
 

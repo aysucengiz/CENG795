@@ -13,6 +13,8 @@
 #include "../matrix/transformation.h"
 #include "../object/BBox.h"
 
+inline bool ACCELERATE = false;
+
 class Object
 {
 public:
@@ -117,6 +119,9 @@ public:
 
 struct SceneInput
 {
+    bool back_cull;
+    PivotType pt;
+    uint32_t MaxObjCount;
     // info about image
     unsigned char* image;
     uint32_t MaxRecursionDepth;

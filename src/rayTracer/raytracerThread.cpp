@@ -93,7 +93,7 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 {
     real t_min = INFINITY;
 
-    if constexpr (ACCELERATE)
+    if (ACCELERATE)
     {
         if (bvh.traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
             return true;
@@ -124,7 +124,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
     // std::cout << "Computecolor" << std::endl;
 
     if (depth > scene.MaxRecursionDepth) return curr_color;
-    bool back_cull = m1.AbsorptionCoefficient.isBlack() ? BACK_CULLING : false;
+    bool back_cull = m1.AbsorptionCoefficient.isBlack() ? scene.back_cull : false;
     checkObjIntersection(ray, t_min, hit_record,back_cull);
 
     if (hit_record.obj != nullptr &&

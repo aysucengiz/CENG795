@@ -8,28 +8,6 @@
 
 typedef float real;
 
-#define THREAD_PROGRESS 100
-#define THREAD_ENDL 80000
-
-#define ROW_THREAD false
-#define BATCH_THREAD true
-
-#define LOG_ON true
-#define BACK_CULLING true
-#define ACCELERATE true
-#define MAX_OBJ_IN_NODE 4
-#define PIVOT_TYPE SAH
-
-#define PRINTINIT false
-#define PRINTBVH false
-#define DEFAULT_MAX_DEPTH 50
-#define DEFAULT_SHADOW_EPS 1e-3
-#define DEFAULT_INTERS_EPS 1e-3
-#define PLANE_SHADOW_EPS 1e-2
-static constexpr uint32_t batch_w = 16;
-static constexpr uint32_t batch_h = batch_w;
-
-
 enum class MaterialType{
     NONE,
     NORMAL,
@@ -86,6 +64,15 @@ enum class PivotType
     SAH
 };
 
+enum class AccelerationType
+{
+    BVH
+};
 
+enum class ThreadType
+{
+    ROW,
+    BATCH
+};
 
 #endif //CENG795_TYPEDEFS_H

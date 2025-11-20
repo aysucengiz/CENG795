@@ -13,12 +13,14 @@
 //////////////////// MESH //////////////////////
 ////////////////////////////////////////////////
 
-Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices, bool v, uint32_t start_index, bool computeVNormals)
-    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),v ){
+Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices,PivotType pt,
+         uint32_t maxobj, bool v, uint32_t start_index,
+         bool computeVNormals)
+    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),v ), bvh(pt,maxobj){
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
-    // std::cout << st << std::endl;
+    std::cout << "MESH CONSTRUCTOR" << std::endl;
 
     globalBbox.vMax = Vertex(-INFINITY,-INFINITY,-INFINITY);
     globalBbox.vMin = Vertex(INFINITY,INFINITY,INFINITY);
@@ -68,6 +70,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                         m, shadingtype,
                         v,
                         computeVNormals));
+                    std::cout << *Faces[Faces.size()-1] << std::endl;
                 }
 
             }
@@ -76,6 +79,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
     main_center.x = (globalBbox.vMax.x + globalBbox.vMin.x) / 2.0;
     main_center.y = (globalBbox.vMax.y + globalBbox.vMin.y) / 2.0;
     main_center.z = (globalBbox.vMax.z + globalBbox.vMin.z) / 2.0;
+    std::cout << "now will get bvh" << std::endl;
     if (ACCELERATE) bvh.getScene(Faces);
 
 }

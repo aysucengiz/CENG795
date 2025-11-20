@@ -7,6 +7,7 @@
 
 namespace Parser
 {
+    bool PRINTINIT = false;
     uint32_t type1_triStartID;
     uint32_t type2_sphereStartID;
     uint32_t type3_meshStartID;
@@ -26,22 +27,23 @@ json Parser::getJsonDataFromFile(std::string inpFile){
 }
 
 
-void Parser::parseScene(std::string inpFile, SceneInput &sceneInput){
+void Parser::parseScene(std::string inpFile, SceneInput &sceneInput, uint32_t maxDepth, real DefaultShadowEps, real DefaultIntersEps, real print_init){
+    PRINTINIT = print_init;
     json inp = getJsonDataFromFile(inpFile);
     std::string root = inpFile.substr(0, inpFile.find_last_of('/')) + "/";
 
     if(PRINTINIT) std::cout << "Scene Input: " << std::endl;
 
-    sceneInput.MaxRecursionDepth =  inp["Scene"].contains("MaxRecursionDepth") ? std::stoi(inp["Scene"]["MaxRecursionDepth"].get<std::string>()) : DEFAULT_MAX_DEPTH ;
+    sceneInput.MaxRecursionDepth =  inp["Scene"].contains("MaxRecursionDepth") ? std::stoi(inp["Scene"]["MaxRecursionDepth"].get<std::string>()) : maxDepth ;
     if(PRINTINIT) std::cout << "MaxRecursionDepth: " << sceneInput.MaxRecursionDepth << std::endl;
 
     sceneInput.BackgroundColor = inp["Scene"].contains("BackgroundColor") ? Color(inp["Scene"]["BackgroundColor"].get<std::string>()) : Color(0,0,0);
     if(PRINTINIT) std::cout << "BackgroundColor: " << sceneInput.BackgroundColor << std::endl;
 
-    sceneInput.ShadowRayEpsilon = inp["Scene"].contains("ShadowRayEpsilon") ? std::stod(inp["Scene"]["ShadowRayEpsilon"].get<std::string>()) : DEFAULT_SHADOW_EPS;
+    sceneInput.ShadowRayEpsilon = inp["Scene"].contains("ShadowRayEpsilon") ? std::stod(inp["Scene"]["ShadowRayEpsilon"].get<std::string>()) : DefaultShadowEps;
     if(PRINTINIT) std::cout << "ShadowRayEpsilon: " << sceneInput.ShadowRayEpsilon << std::endl;
 
-    sceneInput.IntersectionTestEpsilon = inp["Scene"].contains("IntersectionTestEpsilon") ?  std::stod(inp["Scene"]["IntersectionTestEpsilon"].get<std::string>()) : DEFAULT_INTERS_EPS;
+    sceneInput.IntersectionTestEpsilon = inp["Scene"].contains("IntersectionTestEpsilon") ?  std::stod(inp["Scene"]["IntersectionTestEpsilon"].get<std::string>()) : DefaultIntersEps;
     if(PRINTINIT) std::cout << "IntersectionTestEpsilon: " << sceneInput.IntersectionTestEpsilon << std::endl;
 
     if (inp["Scene"].contains("Transformations"))
@@ -196,6 +198,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     type3_meshStartID = curr_id;
 
     // getMeshes
+    std::cout << "mesh" << std::endl;
     if(inp.contains("Mesh")){
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
@@ -203,6 +206,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id,root);
     }
     type4_instStartID = curr_id;
+    std::cout <<"mesh done" << std::endl;
 
 
     // getMeshInstances
@@ -400,6 +404,7 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root)
 {
+    std::cout << "will add a new mesh" << std::endl;
     std::string sm = mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat";
     std::string typeString = "";
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
@@ -453,7 +458,7 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
                 sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
                 dataLine,
                 read_from_file,
-                sceneInput.Vertices,
+                sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
                 true,
                 numVerticesUntilNow);
         if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), std::move(tempm), sceneInput);

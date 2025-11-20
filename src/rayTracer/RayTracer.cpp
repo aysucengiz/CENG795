@@ -7,9 +7,54 @@
 #include <string>
 #include <iostream>
 
+#include "./fileManagement/PPM.h"
+#include "./fileManagement/json.hpp"
+using json = nlohmann::json;
+
 long RaytracerThread::done_threads = 0;
 
+RayTracer::RayTracer(json configs) :
+    // prints
+    print_init(configs["Prints"]["Initialization"]),
+    print_progress(configs["Prints"]["Progress"]),
+    bvh(configs["Acceleration"]["PivotType"],configs["Acceleration"]["MaxObjInNode"],configs["Prints"]["AccelerationCreation"]),
 
+    // output dir
+    output_path(configs["Raytracer"]["OutputDir"]),
+
+    // thread info
+    thread_type(configs["Raytracer"]["Threads"]["Thread"]),
+    batch_w(configs["Raytracer"]["Threads"]["batchWidth"]),
+    batch_h(configs["Raytracer"]["Threads"]["batchHeight"]),
+    thread_group_size(configs["Raytracer"]["Threads"]["ThreadGroupSize"]),
+    thread_add_endl_after(configs["Raytracer"]["Threads"]["ThreadEndlAfter"]),
+
+    // logger info
+    log_it(configs["Raytracer"]["Logger"]["LogTime"]),
+    logFileName(configs["Raytracer"]["Logger"]["LogDir"]),
+
+    // acceleration info
+    AccelerationStruct(configs["Acceleration"]["AccelerationStruct"]),
+
+    // defaults
+    maxDepth(configs["Defaults"]["DefaultMaxDepth"]),
+    DefaultShadowEps(configs["Defaults"]["DefaultShadowEps"]),
+    DefaultIntersEps(configs["Defaults"]["DefaultIntersEps"])
+{
+    project_root = std::filesystem::current_path();
+    scene.back_cull = configs["Acceleration"]["BackCulling"];
+    scene.pt = configs["Acceleration"]["PivotType"];
+    scene.MaxObjCount = configs["Acceleration"]["MaxObjInNode"];
+    ACCELERATE = configs["Acceleration"]["BackCulling"];
+    auto now = std::chrono::system_clock::now();
+    std::time_t time_now = std::chrono::system_clock::to_time_t(now);
+    std::tm local_tm = *std::localtime(&time_now);
+
+    filename << logFileName << "render_log_"
+             << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
+
+    log("Log started.");
+}
 
 std::string RayTracer::timeString(long duration)
 {
@@ -29,20 +74,7 @@ std::string RayTracer::timeString(long duration)
     return str;
 }
 
-RayTracer::RayTracer()
-{
-    project_root = std::filesystem::current_path();
-    output_path = "outputs/";
-    auto now = std::chrono::system_clock::now();
-    std::time_t time_now = std::chrono::system_clock::to_time_t(now);
-    std::tm local_tm = *std::localtime(&time_now);
 
-    filename << "logs/render_log_"
-             << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
-    bvh.pivotType = PivotType::PIVOT_TYPE;
-
-    log("Log started.");
-}
 
 RayTracer::~RayTracer()
 {
@@ -52,7 +84,7 @@ RayTracer::~RayTracer()
 
 void RayTracer::log(std::string logText)
 {
-    if (!LOG_ON) return;
+    if (!log_it) return;
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
@@ -74,10 +106,12 @@ void RayTracer::parseScene(std::string input_path){
     //for (int i=0; i< scene.objects.size(); i++){if (scene.objects[i]) delete scene.objects[i];}
     scene.objects.clear();
     scene.Vertices.clear();
-    Parser::parseScene(input_path, scene);
+    std::cout << "Loading scene..." << std::endl;
+    Parser::parseScene(input_path, scene, maxDepth, DefaultShadowEps, DefaultIntersEps, print_init);
+    std::cout << "Scene loaded." << std::endl;
     scene.numCameras = scene.Cameras.size();
     scene.numLights = scene.PointLights.size();
-    if (ACCELERATE) bvh.getScene(scene);
+    if (AccelerationStruct == AccelerationType::BVH) bvh.getScene(scene);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
     log( input_path + ": " +  timeString(duration));
@@ -136,7 +170,7 @@ void RayTracer::drawScene(uint32_t c){
 
     scene.image = new unsigned char[width * height * 3];
 
-    if (ROW_THREAD)
+    if (thread_type == ThreadType::ROW)
     {
         std::vector<RaytracerThread> raytracers;
         for (uint32_t y = 0; y < height; y++){
@@ -148,7 +182,7 @@ void RayTracer::drawScene(uint32_t c){
             raytracers[y].drawRow(y);
         }
     }
-    else if (BATCH_THREAD)
+    else if (thread_type == ThreadType::BATCH)
     {
         uint32_t rowcount = (height + batch_h -1) /  batch_h;
         uint32_t colcount = (width + batch_w -1) /  batch_w;

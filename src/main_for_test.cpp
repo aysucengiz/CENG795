@@ -12,14 +12,17 @@
 // Hw 2
 // her şey halloldu :)
 
+// hw 3
+// TODO: config değişikliğini diğer maine de ekle
 
 int main(void) {
-    RayTracer raytracer;
+    json data = Parser::getJsonDataFromFile("configs.json");
+    RayTracer raytracer(data["Configuration"]);
 
-    raytracer.drawAllFiles("jsonFiles/hw1/inputs/");
-    raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
-    raytracer.drawAllFiles("jsonFiles/hw1/inputs/akif_uslu/");
-    raytracer.drawAllFiles("jsonFiles/hw1/inputs/deniz_sayin/");
+    raytracer.drawFile("jsonFiles/hw1/inputs/simple.json");
+    // raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
+    // raytracer.drawAllFiles("jsonFiles/hw1/inputs/akif_uslu/");
+    // raytracer.drawAllFiles("jsonFiles/hw1/inputs/deniz_sayin/");
 
     return 0;
     raytracer.log("\n\nHW 1 !!!!!!!!!!!!!!!!!!!");

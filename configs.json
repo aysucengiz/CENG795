@@ -1,0 +1,35 @@
+{
+  "Configuration": {
+    "Prints": {
+      "Initialization": true,
+      "AccelerationCreation": true,
+      "Progress": true
+    },
+    "Raytracer": {
+      "OutputDir": "outputs/",
+      "Threads": {
+        "Thread": 1,
+        "batchWidth": 16,
+        "batchHeight": 16,
+        "ThreadGroupSize": 100,
+        "ThreadEndlAfter": 80000
+      },
+      "Logger": {
+        "LogTime": true,
+        "LogDir": "logs/"
+      }
+    },
+    "Acceleration": {
+      "Accelerate": true,
+      "AccelerationStruct": 0,
+      "MaxObjInNode": 16,
+      "PivotType": 2,
+      "BackCulling": true
+    },
+    "Defaults": {
+      "DefaultMaxDepth": 50,
+      "DefaultShadowEps": 1e-3,
+      "DefaultIntersEps": 1e-3
+    }
+  }
+}

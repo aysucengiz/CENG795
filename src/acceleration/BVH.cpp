@@ -68,7 +68,7 @@ real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, T& objects)
 template<typename T>
 int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects)
 {
-    if (PRINTBVH) std::cout << "BVH::getPivot" << std::endl;
+    if (print_acc_init) std::cout << "BVH::getPivot" << std::endl;
     real pivot;
     switch (pt)
     {
@@ -95,16 +95,16 @@ int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& obje
     int swap_pos = start;
     for (int runn_idx = start; runn_idx < end; runn_idx++)
     {
-        // if (PRINTBVH)std::cout << objects[runn_idx]->main_center[curr_axis] << " ";
+        // if (print_acc_init)std::cout << objects[runn_idx]->main_center[curr_axis] << " ";
         if (pivot > objects[runn_idx]->main_center[a])
         {
             std::swap(objects[runn_idx], objects[swap_pos]);
             swap_pos++;
         }
     }
-    // if (PRINTBVH)std::cout << std::endl;
+    // if (print_acc_init)std::cout << std::endl;
 
-    if (PRINTBVH)
+    if (print_acc_init)
         std::cout << "curr_axis: " << a << " pivot: " << pivot << " start: " << start <<
             " swap_pos: " << swap_pos << " end: " << end << std::endl;
     return swap_pos;
@@ -115,7 +115,7 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &obj
 {
     int swap_pos = getSwapPos(pt, bbox, a, start, end, objects);
 
-    if ((swap_pos == end || swap_pos == start) && (end - start > MAX_OBJ_IN_NODE))
+    if ((swap_pos == end || swap_pos == start) && (end - start > MaxObjInNode))
     { // bölemedik, ama maxtan da fazla çıktı
         if (pt == PivotType::SAH) swap_pos = getSwapPos(PivotType::MEDIAN, bbox, a, swap_pos, end, objects);
         else
@@ -131,9 +131,9 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &obj
         }
     }
 
-    if ((swap_pos == end || swap_pos == start) && (end - start > MAX_OBJ_IN_NODE))
+    if ((swap_pos == end || swap_pos == start) && (end - start > MaxObjInNode))
     { // arkadaş, hala olmadı
-        swap_pos = start + MAX_OBJ_IN_NODE;
+            swap_pos = start + MaxObjInNode;
     }
 
     return swap_pos;
@@ -145,12 +145,14 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &obj
 template<typename T>
 int BVH::partition(int start, int end, Axes a, T &objects)
 {
+    // std::cout << (int) pivotType << std::endl;
+    // std::cout << MaxObjInNode << std::endl;
     int curr_idx = nodes.size();
 
     nodes.push_back(BVHNode());
 
-    if (PRINTBVH)std::cout << "-------------------" << std::endl;
-    if (PRINTBVH)std::cout << "start: " << start << " end: " << end << std::endl;
+    if (print_acc_init)std::cout << "-------------------" << std::endl;
+    if (print_acc_init)std::cout << "start: " << start << " end: " << end << std::endl;
 
     nodes[curr_idx].bbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
     nodes[curr_idx].bbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
@@ -187,7 +189,7 @@ int BVH::partition(int start, int end, Axes a, T &objects)
 
 void BVH::getScene(SceneInput& scene)
 {
-    if (PRINTBVH)std::cout << "getScene" << std::endl;
+    if (print_acc_init)std::cout << "getScene" << std::endl;
     // std::cout << scene.numObjects << " " << scene.objects.size()<< std::endl;
     nodes.clear();
 
@@ -200,20 +202,21 @@ void BVH::getScene(SceneInput& scene)
         scene.objects[i]->_id = i;
     }
 
-    if (PRINTBVH)
+    if (print_acc_init)
         std::cout << *this;
 
-    if (PRINTBVH) std::cout << "gotScene" << std::endl;
+    if (print_acc_init) std::cout << "gotScene" << std::endl;
 }
 
 void  BVH::getScene(std::vector<std::unique_ptr<Triangle>> &triangles)
 {
-    if (PRINTBVH)std::cout << "getScene" << std::endl;
-    // std::cout << scene.numObjects << " " << scene.objects.size()<< std::endl;
+    if (print_acc_init)std::cout << "getScene" << std::endl;
+    std::cout <<" aaaa" << std::endl;
     nodes.clear();
 
 
     partition(0, triangles.size(), Axes::x, triangles);
+    std::cout <<" aaDONEaa" << std::endl;
 
 
     for (int i = 0; i < triangles.size(); i++)
@@ -221,10 +224,10 @@ void  BVH::getScene(std::vector<std::unique_ptr<Triangle>> &triangles)
         triangles[i]->_id = i;
     }
 
-    if (PRINTBVH)
+    if (print_acc_init)
         std::cout << *this;
 
-    if (PRINTBVH) std::cout << "gotScene" << std::endl;
+    if (print_acc_init) std::cout << "gotScene" << std::endl;
 }
 
 template<typename Container>

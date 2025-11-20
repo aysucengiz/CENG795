@@ -17,7 +17,9 @@ public:
 
     Mesh(uint32_t id, std::string st, Material& m, std::string s,
          bool read_from_file,
-         std::deque<CVertex>& vertices, bool v = true,
+         std::deque<CVertex>& vertices,
+         PivotType pt,
+         uint32_t maxobj, bool v = true,
          uint32_t start_index = 0,
          bool computeVNormals = true);
 

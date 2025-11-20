@@ -34,7 +34,11 @@ public:
     BBox bboxA;
     BBox bboxB;
     std::vector<BVHNode> nodes;
-    PivotType pivotType;
+    const PivotType pivotType;
+    const bool print_acc_init;
+    const uint32_t MaxObjInNode;
+
+    BVH(PivotType pt, uint32_t maxObj, bool printit = false) :MaxObjInNode(maxObj), pivotType(pt),  print_acc_init(printit) {}
 
     template<typename T>
     int divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &objects);
