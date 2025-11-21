@@ -12,12 +12,12 @@
 using json = nlohmann::json;
 
 long RaytracerThread::done_threads = 0;
-
+bool BVH::print_acc_init = false;
 RayTracer::RayTracer(json configs) :
     // prints
     print_init(configs["Prints"]["Initialization"]),
     print_progress(configs["Prints"]["Progress"]),
-    bvh(configs["Acceleration"]["PivotType"],configs["Acceleration"]["MaxObjInNode"],configs["Prints"]["AccelerationCreation"]),
+    bvh(configs["Acceleration"]["PivotType"],configs["Acceleration"]["MaxObjInNode"]),
 
     // output dir
     output_path(configs["Raytracer"]["OutputDir"]),
@@ -41,18 +41,19 @@ RayTracer::RayTracer(json configs) :
     DefaultShadowEps(configs["Defaults"]["DefaultShadowEps"]),
     DefaultIntersEps(configs["Defaults"]["DefaultIntersEps"])
 {
+    // std::cout << configs.dump(2) << std::endl;
+    BVH::print_acc_init = configs["Prints"]["AccelerationCreation"];
     project_root = std::filesystem::current_path();
     scene.back_cull = configs["Acceleration"]["BackCulling"];
     scene.pt = configs["Acceleration"]["PivotType"];
     scene.MaxObjCount = configs["Acceleration"]["MaxObjInNode"];
-    ACCELERATE = configs["Acceleration"]["BackCulling"];
+    ACCELERATE = configs["Acceleration"]["Accelerate"];
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
 
-    filename << logFileName << "render_log_"
-             << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
-
+    // filename << logFileName << "render_log_"
+    //          << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
     log("Log started.");
 }
 
@@ -98,17 +99,16 @@ void RayTracer::log(std::string logText)
 }
 
 void RayTracer::parseScene(std::string input_path){
-    //log("----- Parsing scene from " + input_path + " -----");
+    log("----- Parsing scene from " + input_path + " -----");
     start_time = std::chrono::high_resolution_clock::now();
     scene.Cameras.clear();
     scene.PointLights.clear();
     scene.Materials.clear();
-    //for (int i=0; i< scene.objects.size(); i++){if (scene.objects[i]) delete scene.objects[i];}
     scene.objects.clear();
     scene.Vertices.clear();
-    std::cout << "Loading scene..." << std::endl;
+    // std::cout << "Loading " << input_path << std::endl;
     Parser::parseScene(input_path, scene, maxDepth, DefaultShadowEps, DefaultIntersEps, print_init);
-    std::cout << "Scene loaded." << std::endl;
+    // std::cout << "Scene loaded." << std::endl;
     scene.numCameras = scene.Cameras.size();
     scene.numLights = scene.PointLights.size();
     if (AccelerationStruct == AccelerationType::BVH) bvh.getScene(scene);
@@ -129,13 +129,13 @@ void RayTracer::drawAllFiles(std::string path_to_dir){
     for (const auto& file: std::filesystem::directory_iterator(path_to_dir))
     {
         if (file.is_regular_file() && file.path().extension() == ".json") {
-            std::cout << output_path << "\n";
+            // std::cout << output_path << "\n";
             orig_out = output_path;
             std::filesystem::path rel_path = std::filesystem::relative(file.path().parent_path(), project_root);
             output_path = output_path + rel_path.string() + "/";
             std::filesystem::path dir(output_path);
             std::filesystem::create_directories(project_root / dir);
-            std::cout << output_path << "\n";
+            // std::cout << output_path << "\n";
             parseScene(file.path());
             drawAllScenes();
             output_path = orig_out;
@@ -156,7 +156,7 @@ void RayTracer::drawScene(uint32_t c){
     this->camID = c;
     RaytracerThread::done_threads = 0;
     Camera cam = scene.Cameras[camID];
-    //log("----- Drawing " + cam.ImageName + " -----");
+    log("Drawing " + cam.ImageName);
     auto start = std::chrono::high_resolution_clock::now();
     scene.u = x_product(cam.Up, -cam.Gaze);
     scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t;

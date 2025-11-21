@@ -74,7 +74,7 @@ void Parser::getCameras(json inp, SceneInput &sceneInput){
 
 void Parser::addLight(json pointLights, SceneInput &sceneInput)
 {
-    std::unique_ptr<Transformation> t;
+    std::shared_ptr<Transformation> t;
     if (pointLights.contains("Transformations"))
     {
         t = getTransFromStr(pointLights["Transformations"].get<std::string>(),sceneInput.transforms)->clone();
@@ -82,7 +82,7 @@ void Parser::addLight(json pointLights, SceneInput &sceneInput)
     }
     else
     {
-        t = std::make_unique<Composite>();
+        t = std::make_shared<Composite>();
     }
     PointLight pl(
             std::stoi(pointLights["_id"].get<std::string>()) - 1,
@@ -198,7 +198,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
     type3_meshStartID = curr_id;
 
     // getMeshes
-    std::cout << "mesh" << std::endl;
+    // std::cout << "mesh" << std::endl;
     if(inp.contains("Mesh")){
         json& Meshes = inp["Mesh"];
         int numMeshes = Meshes.size();
@@ -206,7 +206,7 @@ void Parser::getObjects(json inp, SceneInput &sceneInput, std::string root){
         else for(int i=0; i < numMeshes; i++) addMesh(Meshes[i],sceneInput, curr_id,root);
     }
     type4_instStartID = curr_id;
-    std::cout <<"mesh done" << std::endl;
+    // std::cout <<"mesh done" << std::endl;
 
 
     // getMeshInstances
@@ -282,7 +282,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
 
     if (Cameras.contains("Transformations"))
     {
-        std::unique_ptr<Transformation> t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
+        std::shared_ptr<Transformation> t = getTransFromStr(Cameras["Transformations"].get<std::string>(),sceneInput.transforms);
         t->getNormalTransform();
         if (Cameras["Transformations"].get<std::string>().find('s') != std::string::npos)
         {
@@ -319,7 +319,7 @@ void Parser::addCamera(json Cameras, SceneInput &sceneInput)
     if(PRINTINIT) std::cout << c << std::endl;
 }
 
-Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>>& transforms)
+Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms)
 {
     std::istringstream ss(transStr);
     Scale s(1.0,1.0,1.0);
@@ -404,7 +404,7 @@ void Parser::addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root)
 {
-    std::cout << "will add a new mesh" << std::endl;
+    // std::cout << "will add a new mesh" << std::endl;
     std::string sm = mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat";
     std::string typeString = "";
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
@@ -454,15 +454,15 @@ void Parser::addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::s
 
 
         std::shared_ptr<Mesh> tempm = std::make_shared<Mesh>(std::stoi(mes["_id"].get<std::string>()),
-                sm,
-                sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
-                dataLine,
-                read_from_file,
-                sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
-                true,
-                numVerticesUntilNow);
-        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), std::move(tempm), sceneInput);
-        else                                   sceneInput.objects.push_back(std::move(tempm));
+                                                            sm,
+                                                            sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1],
+                                                            dataLine,
+                                                            read_from_file,
+                                                            sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
+                                                            true,
+                                                            numVerticesUntilNow);
+        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput);
+        else                                   sceneInput.objects.push_back(tempm);
 
         curr_id++;
         if(PRINTINIT) std::cout <<  "Mesh " << tempm->_id << " has " << tempm->Faces.size() << " faces." << std::endl; //std::cout <<  temp_m << std::endl;
@@ -512,7 +512,7 @@ void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
                                 sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
                         );
 
-    if (p.contains("Transformations")) addInstance(p["Transformations"].get<std::string>(), std::move(tempp), sceneInput);
+    if (p.contains("Transformations")) addInstance(p["Transformations"].get<std::string>(), tempp, sceneInput);
     else sceneInput.objects.push_back(std::move(tempp));
     if(PRINTINIT) std::cout <<  sceneInput.objects[curr_id]<< std::endl;
 
@@ -522,13 +522,13 @@ void Parser::addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id)
 
 void Parser::addTranslation(json t, SceneInput &sceneInput)
 {
-    sceneInput.transforms.push_back(std::make_unique<Translate>(Vertex(t["_data"])));
+    sceneInput.transforms.push_back(std::make_shared<Translate>(Vertex(t["_data"])));
     if(PRINTINIT) std::cout << sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 }
 
 void Parser::addScaling(json t, SceneInput &sceneInput)
 {
-    sceneInput.transforms.push_back(std::make_unique<Scale>(Vertex(t["_data"])));
+    sceneInput.transforms.push_back(std::make_shared<Scale>(Vertex(t["_data"])));
     if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 }
 
@@ -541,12 +541,12 @@ void Parser::addRotation(json t, SceneInput &sceneInput)
     if (ss.fail()) {
         throw std::invalid_argument("Invalid Vertex string: " + t["_data"].get<std::string>());
     }
-    sceneInput.transforms.push_back(std::make_unique<Rotate>(Ray(Vertex(0,0,0),Vec3r(x,y,z)), angle));
+    sceneInput.transforms.push_back(std::make_shared<Rotate>(Ray(Vertex(0,0,0),Vec3r(x,y,z)), angle));
     if(PRINTINIT) std::cout <<  sceneInput.transforms[sceneInput.transforms.size()-1]<< std::endl;
 
 }
 
-std::unique_ptr<Transformation> Parser::getTransFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>>& transforms)
+std::shared_ptr<Transformation> Parser::getTransFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms)
 {
     std::istringstream ss(transStr);
     std::vector<Transformation *> temp;
@@ -563,7 +563,7 @@ std::unique_ptr<Transformation> Parser::getTransFromStr(std::string transStr, st
         temp.push_back(transforms[startID+transID - 1].get());
     }
 
-    std::unique_ptr<Transformation> transformation = std::make_unique<Composite>(temp);
+    std::shared_ptr<Transformation> transformation = std::make_shared<Composite>(temp);
     return transformation;
 }
 

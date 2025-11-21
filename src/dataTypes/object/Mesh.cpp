@@ -20,7 +20,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
-    std::cout << "MESH CONSTRUCTOR" << std::endl;
+    // std::cout << "MESH CONSTRUCTOR" << std::endl;
 
     globalBbox.vMax = Vertex(-INFINITY,-INFINITY,-INFINITY);
     globalBbox.vMin = Vertex(INFINITY,INFINITY,INFINITY);
@@ -42,7 +42,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                     Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
                     globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
                     globalBbox.vMin = minVert2(minv,globalBbox.vMin);
-                    Faces.push_back(std::make_unique<Triangle>(Faces.size(),
+                    Faces.push_back(new Triangle(Faces.size(),
                                                 vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                                                 m,
                                                 shadingtype,
@@ -65,12 +65,12 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                     globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
                     globalBbox.vMin = minVert2(minv,globalBbox.vMin);
 
-                    Faces.push_back(std::make_unique<Triangle>(Faces.size(),
+                    Faces.push_back(new Triangle(Faces.size(),
                         vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
                         m, shadingtype,
                         v,
                         computeVNormals));
-                    std::cout << *Faces[Faces.size()-1] << std::endl;
+                    // std::cout << *Faces[Faces.size()-1] << std::endl;
                 }
 
             }
@@ -79,8 +79,9 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
     main_center.x = (globalBbox.vMax.x + globalBbox.vMin.x) / 2.0;
     main_center.y = (globalBbox.vMax.y + globalBbox.vMin.y) / 2.0;
     main_center.z = (globalBbox.vMax.z + globalBbox.vMin.z) / 2.0;
-    std::cout << "now will get bvh" << std::endl;
+    // std::cout << "now will get bvh" << std::endl;
     if (ACCELERATE) bvh.getScene(Faces);
+    // std::cout << "GOT THE BVH" << std::endl;
 
 }
 
@@ -134,4 +135,12 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
 
 std::shared_ptr<Object> Mesh::clone() const {
     return const_cast<Mesh*>(this)->shared_from_this();
+}
+
+Mesh::~Mesh()
+{
+    for (auto t : Faces) {
+        delete t;
+    }
+    Faces.clear(); // optional
 }

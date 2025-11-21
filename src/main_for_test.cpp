@@ -19,12 +19,13 @@ int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     RayTracer raytracer(data["Configuration"]);
 
+    // std::cout << raytracer << std::endl;
+    raytracer.drawFile("jsonFiles/hw1/inputs/two_spheres.json");
     raytracer.drawFile("jsonFiles/hw1/inputs/simple.json");
     // raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
     // raytracer.drawAllFiles("jsonFiles/hw1/inputs/akif_uslu/");
     // raytracer.drawAllFiles("jsonFiles/hw1/inputs/deniz_sayin/");
 
-    return 0;
     raytracer.log("\n\nHW 1 !!!!!!!!!!!!!!!!!!!");
     raytracer.drawAllFiles("jsonFiles/hw1/inputs/");
     raytracer.log("\n\nThe following are simple scenes:");

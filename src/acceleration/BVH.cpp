@@ -14,52 +14,52 @@
 
 
 
-template<typename T>
-real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, T& objects)
+template<template<typename, typename...> class Container, typename T>
+real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, Container<T>& objects, BBox &bbox)
 {
-    BBox bboxtempSmall;
-    BBox bboxtempBig;
     Axes best_a = a;
     real best_pivot = objects[0]->main_center[a];
     real min_split_cost = end - start;
     real split_cost;
-    Axes curr_a = a;
-    real pivot = objects[0]->main_center[a];
+    Axes curr_a;
+    real pivot;
+    std::vector<BBox> bboxtempSmall(end - start);
+    std::vector<BBox> bboxtempBig(end - start);
 
-    for (int i = start; i < end; i++)
+
+
+    curr_a = a;
+    //for (int axis = 0; axis < 3; axis++)
     {
-        curr_a = a;
-        for (int axis = 0; axis < 3; axis++)
+        std::sort(objects.begin() + start, objects.begin() + end,
+                            [curr_a](T& lhs, T& rhs) { return lhs->main_center[curr_a] < rhs->main_center[curr_a]; });
+
+
+        int size = end - start;
+        bboxtempSmall[0] = objects[start]->globalBbox;
+        bboxtempBig[size - 1] = objects[end-1]->globalBbox;
+        for (int i = 1; i < size; ++i) {
+            bboxtempSmall[i].vMin = minVert2(bboxtempSmall[i-1].vMin, objects[start+i]->globalBbox.vMin);
+            bboxtempSmall[i].vMax = maxVert2(bboxtempSmall[i-1].vMax, objects[start+i]->globalBbox.vMax);
+            bboxtempBig[size-i-1].vMin = minVert2(bboxtempBig[size-i].vMin, objects[end -i-1]->globalBbox.vMin);
+            bboxtempBig[size-i-1].vMax = maxVert2(bboxtempBig[size-i].vMax, objects[end -i-1]->globalBbox.vMax);
+        }
+
+
+        for (int i = start; i < end; i++)
         {
-            bboxtempSmall.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
-            bboxtempSmall.vMin = Vertex(INFINITY, INFINITY, INFINITY);
-            bboxtempBig.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
-            bboxtempBig.vMin = Vertex(INFINITY, INFINITY, INFINITY);
             pivot = objects[i]->main_center[curr_a];
 
-            for (int k = start; k < end; k++)
-            {
-                if (objects[k]->main_center[curr_a] < pivot)
-                {
-                    bboxtempSmall.vMax = maxVert2(objects[k]->globalBbox.vMax, bboxtempSmall.vMax);
-                    bboxtempSmall.vMin = minVert2(objects[k]->globalBbox.vMin, bboxtempSmall.vMin);
-                }
-                else
-                {
-                    bboxtempBig.vMax = maxVert2(objects[k]->globalBbox.vMax, bboxtempBig.vMax);
-                    bboxtempBig.vMin = minVert2(objects[k]->globalBbox.vMin, bboxtempBig.vMin);
-                }
-            }
-
-            split_cost = 0.125 +  bboxtempSmall.getArea()* areaC * (i - start) + bboxtempBig.getArea() * areaC * (end - i);
+            split_cost = 0.125 +  bboxtempSmall[i-start].getArea()* areaC * (i - start) + bboxtempBig[i-start].getArea() * areaC * (end - i);
             if (split_cost < min_split_cost)
             {
                 min_split_cost = split_cost;
                 best_a = curr_a;
                 best_pivot = pivot;
             }
-            curr_a = next(curr_a);
         }
+
+    //    curr_a = next(curr_a);
     }
     a = best_a;
     return best_pivot;
@@ -75,7 +75,7 @@ int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& obje
     case PivotType::SAH:
         {
             real areaC = 1 / (bbox.getArea());
-            pivot = getSAH(a, start, end, areaC, objects);
+            pivot = getSAH(a, start, end, areaC, objects,bbox);
             break;
         }
     case PivotType::MEDIAN:
@@ -93,15 +93,19 @@ int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& obje
     }
 
     int swap_pos = start;
-    for (int runn_idx = start; runn_idx < end; runn_idx++)
+    if (PivotType::SAH != pt)
     {
-        // if (print_acc_init)std::cout << objects[runn_idx]->main_center[curr_axis] << " ";
-        if (pivot > objects[runn_idx]->main_center[a])
+        for (int runn_idx = start; runn_idx < end; runn_idx++)
         {
-            std::swap(objects[runn_idx], objects[swap_pos]);
-            swap_pos++;
+            // if (print_acc_init)std::cout << objects[runn_idx]->main_center[curr_axis] << " ";
+            if (pivot > objects[runn_idx]->main_center[a])
+            {
+                std::swap(objects[runn_idx], objects[swap_pos]);
+                swap_pos++;
+            }
         }
     }
+
     // if (print_acc_init)std::cout << std::endl;
 
     if (print_acc_init)
@@ -145,6 +149,7 @@ int BVH::divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &obj
 template<typename T>
 int BVH::partition(int start, int end, Axes a, T &objects)
 {
+    print_acc_init= false;
     // std::cout << (int) pivotType << std::endl;
     // std::cout << MaxObjInNode << std::endl;
     int curr_idx = nodes.size();
@@ -152,7 +157,7 @@ int BVH::partition(int start, int end, Axes a, T &objects)
     nodes.push_back(BVHNode());
 
     if (print_acc_init)std::cout << "-------------------" << std::endl;
-    if (print_acc_init)std::cout << "start: " << start << " end: " << end << std::endl;
+    if (print_acc_init)std::cout << "start: " << start << " end: " << end << " size: " << objects.size() << std::endl;
 
     nodes[curr_idx].bbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
     nodes[curr_idx].bbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
@@ -208,15 +213,15 @@ void BVH::getScene(SceneInput& scene)
     if (print_acc_init) std::cout << "gotScene" << std::endl;
 }
 
-void  BVH::getScene(std::vector<std::unique_ptr<Triangle>> &triangles)
+void  BVH::getScene(std::vector<Triangle*> &triangles)
 {
     if (print_acc_init)std::cout << "getScene" << std::endl;
-    std::cout <<" aaaa" << std::endl;
+    // std::cout <<" aaaa" << std::endl;
     nodes.clear();
 
-
+    if (print_acc_init)std::cout << "Will partition" << std::endl;
     partition(0, triangles.size(), Axes::x, triangles);
-    std::cout <<" aaDONEaa" << std::endl;
+    if (print_acc_init)std::cout <<" Partition done" << std::endl;
 
 
     for (int i = 0; i < triangles.size(); i++)
@@ -224,10 +229,13 @@ void  BVH::getScene(std::vector<std::unique_ptr<Triangle>> &triangles)
         triangles[i]->_id = i;
     }
 
-    if (print_acc_init)
-        std::cout << *this;
+    // std::cout << nodes[0] << std::endl;
+    // std::cout << print_acc_init << std::endl;
+    // std::cout << MaxObjInNode << std::endl;
+    // std::cout << pivotType << std::endl;
+    // std::cout << bboxA << std::endl;
 
-    if (print_acc_init) std::cout << "gotScene" << std::endl;
+    if (print_acc_init) std::cout << *this;
 }
 
 template<typename Container>
@@ -284,8 +292,8 @@ Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const C
     return result;
 }
 
-template Object::intersectResult BVH::traverse<std::vector<std::unique_ptr<Triangle>>>(
-    const Ray&, const real&, const std::vector<std::unique_ptr<Triangle>>&, bool, bool) const;
+template Object::intersectResult BVH::traverse<std::vector<Triangle*>>(
+    const Ray&, const real&, const std::vector<Triangle*>&, bool, bool) const;
 
 template Object::intersectResult BVH::traverse<std::deque<std::shared_ptr<Object>>>(
     const Ray&, const real&, const std::deque<std::shared_ptr<Object>>&, bool, bool) const;

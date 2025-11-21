@@ -10,7 +10,7 @@
 class Mesh : public Object, public std::enable_shared_from_this<Mesh>
 {
 public:
-    std::vector<std::unique_ptr<Triangle>> Faces;
+    std::vector<Triangle*> Faces;
     ShadingType shadingtype;
     uint32_t currTri;
     BVH bvh;
@@ -27,6 +27,7 @@ public:
     Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
     std::shared_ptr<Object> clone() const override;
+    ~Mesh();
 };
 
 #endif //CENG795_MESH_H

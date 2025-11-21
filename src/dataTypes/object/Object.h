@@ -96,10 +96,10 @@ class Instance : public Object
 public:
     bool orig;
     std::shared_ptr<Object> original;
-    std::unique_ptr<Transformation> forwardTrans;
-    std::unique_ptr<Transformation> backwardTrans;
+    std::shared_ptr<Transformation> forwardTrans;
+    std::shared_ptr<Transformation> backwardTrans;
 
-    Instance(uint32_t id, std::shared_ptr<Object> original, std::unique_ptr<Transformation>  trans, Material& mat, bool orig, bool v = true);
+    Instance(uint32_t id, std::shared_ptr<Object> original, std::shared_ptr<Transformation>  trans, Material& mat, bool orig, bool v = true);
     ~Instance();
 
     ObjectType getObjectType() const override;
@@ -150,7 +150,7 @@ struct SceneInput
     uint32_t numLights;
 
     // transformations
-    std::vector<std::unique_ptr<Transformation>> transforms;
+    std::vector<std::shared_ptr<Transformation>> transforms;
 
     // precomputed near plane info
     Vec3r u;

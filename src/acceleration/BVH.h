@@ -35,10 +35,10 @@ public:
     BBox bboxB;
     std::vector<BVHNode> nodes;
     const PivotType pivotType;
-    const bool print_acc_init;
+    static bool print_acc_init;
     const uint32_t MaxObjInNode;
 
-    BVH(PivotType pt, uint32_t maxObj, bool printit = false) :MaxObjInNode(maxObj), pivotType(pt),  print_acc_init(printit) {}
+    BVH(PivotType pt, uint32_t maxObj) :MaxObjInNode(maxObj), pivotType(pt) {}
 
     template<typename T>
     int divideToTwo(PivotType pt, BBox bbox, Axes a, int start, int end, T &objects);
@@ -46,10 +46,9 @@ public:
     int partition(int start, int end, Axes a, T &objects);
 
     void getScene(SceneInput &scene);
-    void getScene(std::vector<std::unique_ptr<Triangle>> &triangles);
-
-    template<typename T>
-    real getSAH(Axes &a, uint32_t start, uint32_t end, real areaC,T &objects);
+    void getScene(std::vector<Triangle*> &triangles);
+    template<template<typename, typename...> class Container, typename T>
+    real getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, Container<T>& objects, BBox &bbox);
     template<typename T>
     int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects);
 

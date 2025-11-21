@@ -11,6 +11,8 @@
 #include "../dataTypes/object/Mesh.h"
 #include "../dataTypes/../acceleration/BVH.h"
 
+class RayTracer;
+
 
 // overload - color
 Color operator *(const Color &a, const Color &b);
@@ -84,6 +86,6 @@ std::ostream& operator<<(std::ostream& os, Scale &t);
 std::ostream& operator<<(std::ostream& os, Composite &t);
 
 std::ostream& operator<<(std::ostream& os, std::array<std::array<double,4>,4> &arr);
-
+std::ostream& operator<<(std::ostream& os, const RayTracer& rt);
 
 #endif //CENG795_OVERLOADS_H

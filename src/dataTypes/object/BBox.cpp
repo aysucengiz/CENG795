@@ -6,7 +6,7 @@
 #include "../../functions/helpers.h"
 #include "../../functions/overloads.h"
 
-BBox::BBox()
+BBox::BBox(): vMax(-INFINITY, -INFINITY, -INFINITY), vMin(INFINITY, INFINITY, INFINITY)
 {
 };
 

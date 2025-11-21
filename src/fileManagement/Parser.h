@@ -46,10 +46,10 @@ namespace Parser {
     void addScaling(json p, SceneInput &sceneInput);
     void addRotation(json p, SceneInput &sceneInput);
 
-    Scale getScaleFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>>& transforms);
+    Scale getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms);
     void getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double,4> &nearPlane);
 
-    std::unique_ptr<Transformation> getTransFromStr(std::string transStr, std::vector<std::unique_ptr<Transformation>> &transforms);
+    std::shared_ptr<Transformation> getTransFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>> &transforms);
     std::shared_ptr<Object> getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<std::shared_ptr<Object>> &objs);
 };
 

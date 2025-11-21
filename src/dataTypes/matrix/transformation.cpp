@@ -101,8 +101,8 @@ Transformation *Rotate::inv() const
 
 TransformationType Rotate::getTransformationType() const { return TransformationType::ROTATE;}
 
-std::unique_ptr<Transformation> Rotate::clone() const  {
-    return std::make_unique<Rotate>(*this);
+std::shared_ptr<Transformation> Rotate::clone() const  {
+    return std::make_shared<Rotate>(*this);
 }
 
 ////////////////////////////////////////////////
@@ -143,16 +143,16 @@ Transformation *Translate::inv() const
     return new Translate(-x,-y,-z);
 }
 
-std::unique_ptr<Transformation> Translate::clone() const  {
-    return std::make_unique<Translate>(*this);  // uses copy constructor
+std::shared_ptr<Transformation> Translate::clone() const  {
+    return std::make_shared<Translate>(*this);  // uses copy constructor
 }
 
-std::unique_ptr<Transformation> Scale::clone() const  {
-    return std::make_unique<Scale>(*this);  // uses copy constructor
+std::shared_ptr<Transformation> Scale::clone() const  {
+    return std::make_shared<Scale>(*this);  // uses copy constructor
 }
 
-std::unique_ptr<Transformation> Composite::clone() const  {
-    return std::make_unique<Composite>(*this);  // uses copy constructor
+std::shared_ptr<Transformation> Composite::clone() const  {
+    return std::make_shared<Composite>(*this);  // uses copy constructor
 }
 
 Scale::Scale(Vertex v) : center(Vertex()), x(v.x), y(v.y), z(v.z)

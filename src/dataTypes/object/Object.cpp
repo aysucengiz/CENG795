@@ -259,7 +259,7 @@ std::shared_ptr<Object> Plane::clone() const {
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, std::shared_ptr<Object> o, std::unique_ptr<Transformation> trans, Material &mat, bool orig, bool v) :
+Instance::Instance(uint32_t id, std::shared_ptr<Object> o, std::shared_ptr<Transformation> trans, Material &mat, bool orig, bool v) :
 Object(mat,id,
     Vertex(),Vertex(),v), forwardTrans(std::move(trans))
 {
