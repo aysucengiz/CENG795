@@ -52,8 +52,9 @@ RayTracer::RayTracer(json configs) :
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
 
-    // filename << logFileName << "render_log_"
-    //          << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
+    std::filesystem::create_directories(project_root / logFileName);
+    filename << logFileName << "render_log_"
+             << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << ".txt";
     log("Log started.");
 }
 

@@ -10,6 +10,7 @@
 #include <iostream>
 #include "SceneData.h"
 #include "../../functions/helpers.h"
+#include "../../functions/overloads.h"
 #include "../matrix/Matrix.h"
 
 
@@ -77,6 +78,21 @@ Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> l
 ////////////////////////////////////////////////
 
 PointLight::PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
+
+Color PointLight::getIrradianceAt(Vertex v)
+{
+    Vec3r vec = v - Position;
+    return Intensity / dot_product(vec, vec);
+}
+
+AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n), size(s),A(s*s){}
+
+Color AreaLight::getIrradianceAt(Vertex v)
+{ // TODO: sampling
+    Vec3r vec = v - Position;
+ return Intensity *A * dot_product(n,vec.normalize()) / dot_product(vec, vec);
+}
+
 
 
 ////////////////////////////////////////////////

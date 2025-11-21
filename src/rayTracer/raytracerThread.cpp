@@ -151,12 +151,12 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
                 if (!isUnderShadow(shadow_ray))
                 {
                     real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize()); // TODO: burada normalize etmemek mi lazım acep -> ama sanamadım açı istiyoruz
-                    Color I_R_2 = scene.PointLights[i].Intensity / dot_product(shadow_ray.dir, shadow_ray.dir);
+                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.intersection_point);
                     if (cos_theta > 0)
                     {
                         //std::cout << "Draw" << std::endl;
-                        curr_color += diffuseTerm(hit_record, cos_theta, I_R_2) + specularTerm(
-                            hit_record, ray, cos_theta, I_R_2, shadow_ray);
+                        curr_color += diffuseTerm(hit_record, cos_theta, irradiance) + specularTerm(
+                            hit_record, ray, cos_theta, irradiance, shadow_ray);
                         Color ac1 = m1.AbsorptionCoefficient;
                         if (!ac1.isBlack())
                         {
@@ -202,7 +202,7 @@ Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t i)
 {
     Ray shadow_ray;
     shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    shadow_ray.dir = scene.PointLights[i].Position - shadow_ray.pos;
+    shadow_ray.dir = scene.PointLights[i]->Position - shadow_ray.pos;
     return shadow_ray;
 }
 

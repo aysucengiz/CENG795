@@ -42,17 +42,35 @@ struct Camera{
     uint32_t width;
     uint32_t height;
     std::string ImageName;
+    uint32_t numSamples;
+    real FocusDistance;
+    real ApertureSize;
 
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname);
 
 };
 
-struct PointLight{
+class PointLight{
+public:
     uint32_t _id;
     Vertex Position;
     Color Intensity;
 
     PointLight(uint32_t id, Vertex pos, Color intens);
+    virtual Color getIrradianceAt(Vertex v);
+};
+
+class AreaLight : public PointLight
+{
+public:
+    Vec3r  n;
+    real size;
+    real A;
+    std::vector<Vertex> samples;
+
+
+    AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real Size);
+    Color getIrradianceAt(Vertex v) override;
 };
 
 struct Material{
@@ -66,6 +84,7 @@ struct Material{
     Color AbsorptionCoefficient;
     real RefractionIndex;
     real AbsorptionIndex;
+    real Roughness;
 
     Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
         std::string type = "",

@@ -138,7 +138,7 @@ struct SceneInput
 
     // light info
     Color AmbientLight;
-    std::vector<PointLight> PointLights;
+    std::vector<PointLight*> PointLights;
 
     // object info
     std::deque<std::shared_ptr<Object>> objects;
