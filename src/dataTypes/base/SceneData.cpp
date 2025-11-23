@@ -9,6 +9,10 @@
 #include <cmath>
 #include <iostream>
 #include "SceneData.h"
+
+#include <random>
+
+
 #include "../../functions/helpers.h"
 #include "../../functions/overloads.h"
 #include "../matrix/Matrix.h"
@@ -29,6 +33,10 @@ Color::Color(std::string inp) {
     }
 }
 
+Color Color::c_sqrt() const
+{
+    return Color(sqrt(r),sqrt(g),sqrt(b));
+}
 Color& Color::operator+=(const Color& other) {
     r += other.r;
     g += other.g;
@@ -60,16 +68,74 @@ Color Color::exponent()
 ////////////////////////////////////////////////
 
 
-Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname)
-                : _id(id), Position(pos), nearDistance(nd), ImageName(imname), width(width), height(height)
+Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
+    uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st)
+    : _id(id), Position(pos), nearDistance(nd), ImageName(imname), width(width), height(height),
+      numSamples(numSamples), FocusDistance(focusDistance), ApertureSize(apertureSize)
 {
     Gaze = g.normalize();
-    Up = x_product(-Gaze,x_product(u.normalize(),-Gaze)).normalize();
+    V = x_product(u.normalize(), -Gaze).normalize();
+    Up = x_product(-Gaze, V).normalize();
 
     l = locs[0];
     r = locs[1];
     b = locs[2];
     t = locs[3];
+    initializeSamples(st);
+}
+
+
+std::mt19937 gRandomGeneratorC;
+void Camera::initializeSamples(SamplingType st)
+{
+    samples.clear();
+    if (numSamples == 1)
+    {
+        samples.push_back({0.5,0.5});
+        return;
+    }
+
+    samples.reserve(numSamples);
+    std::pair<int,int> row_col = closestFactors(numSamples);
+    switch (st)
+    {
+    case SamplingType::UNIFORM:
+        {
+            double spacing_x = 1.0 / (row_col.first+1);
+            double spacing_y = 1.0 / (row_col.second+1);
+            for (int y=0; y < row_col.second; y++)
+                for (int x=0; x < row_col.first; x++)
+                    samples.push_back({x*spacing_x, y*spacing_y});
+        }break;
+    case SamplingType::STRATIFIED:
+        {
+            double spacing_x = 1.0 / row_col.first;
+            double spacing_y = 1.0 / row_col.second;
+            for (int y=0; y < row_col.second; y++)
+                for (int x=0; x < row_col.first; x++)
+                    samples.push_back({(x+getRandom())*spacing_x, (y+getRandom())*spacing_y});
+        }
+        break;
+    case SamplingType::N_ROOKS:
+        {
+            std::vector<int> cols(numSamples);
+            for (int i = 0; i < numSamples; i++) cols[i] = i;
+            std::shuffle(cols.begin(), cols.end(), gRandomGeneratorC);
+
+            double spacing = 1.0 / numSamples;
+            for (int i = 0; i < numSamples; i++)
+                    samples.push_back({(cols[i]+getRandom())*spacing, (i+getRandom())*spacing});
+        }
+        break;
+    case SamplingType::MULTI_JITTERED: // TODO: not implemented
+    case SamplingType::RANDOM:
+    default:
+        samples.reserve(numSamples);
+        for (int i = 0; i < numSamples; i++) samples.push_back({getRandom(),getRandom()});
+        break;
+    }
+
+
 }
 
 
@@ -100,7 +166,7 @@ Color AreaLight::getIrradianceAt(Vertex v)
 ////////////////////////////////////////////////
 
 Material::Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
-        std::string type, Color mr, Color ac, real refrIndex, real ai)
+        std::string type, Color mr, Color ac, real refrIndex, real ai, real r)
         : _id(id),
         AmbientReflectance(ar),
         DiffuseReflectance(dr),
@@ -109,7 +175,8 @@ Material::Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
         MirrorReflectance(mr),
         AbsorptionCoefficient(ac),
         RefractionIndex(refrIndex),
-        AbsorptionIndex(ai)
+        AbsorptionIndex(ai),
+        Roughness(r)
 {
     if (type == "dielectric") materialType = MaterialType::DIELECTRIC;
     else if (type == "conductor") materialType = MaterialType::CONDUCTOR;

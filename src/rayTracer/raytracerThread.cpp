@@ -3,31 +3,96 @@
 //
 
 #include "raytracerThread.h"
+
+#include <random>
+
 #include "functions/overloads.h"
 #include "../functions/helpers.h"
 #include <stack>
+
+
+std::mt19937 gRandomGeneratorT;
+
+Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std::array<double,2>> &locs)
+{
+    if (colors.size() == 1) return colors[0];
+    Color result = Color(0.0,0.0,0.0);
+    int size = colors.size();
+    switch (scene.filter_type)
+    {
+    case FilterType::GAUSSIAN:
+        {
+            // Here x and y are distances from the pixel center
+            Color mean = Mean(colors);
+            Color inv_stdev_2 = InvStdDev(mean,colors) *0.5;
+            Color sumG = Color(0.0, 0.0, 0.0);
+            Color sumGI = Color(0.0, 0.0, 0.0);
+            for (int i=0; i< size; i++)
+            {
+                Color g = G(locs[i], inv_stdev_2);
+                sumG  += g;
+                sumGI += g * colors[i];
+            }
+            result = sumGI / sumG;
+        }
+        break;
+    case FilterType::BOX:
+    default:
+        {
+            for (int i=0; i< colors.size(); i++) result += colors[i];
+            result = result / size;
+        }
+        break;
+    }
+    return result;
+}
+
+void RaytracerThread::writeToImage(uint32_t &curr_pixel, Color &final_color)
+{
+    scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
+    scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
+    scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
+}
+
+void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
+{
+    std::vector<Color> colors;
+    colors.reserve(cam.numSamples);
+    Ray viewing_ray;
+    // std::shuffle(sampleIdxShuffled.begin(), sampleIdxShuffled.end(), gRandomGeneratorT);
+    for (int i=0; i < cam.numSamples; i++)
+    {
+        viewing_ray = computeViewingRay(x, y, i);
+        colors.push_back(computeColor(viewing_ray, 0, air));
+    }
+    Color final_color = Filter(colors,cam.samples);
+    writeToImage(curr_pixel, final_color);
+}
+
+void RaytracerThread::PrintProgress()
+{
+    #pragma omp atomic
+        done_threads++;
+    #pragma omp critical
+        {
+            if (done_threads % scene.thread_group_size == 0)
+                std::cout << done_threads / scene.thread_group_size << "\t";
+            fflush(stdout);
+            if (done_threads % scene.thread_add_endl_after == 0 || done_threads == cam.height)
+                std::cout << std::endl;
+        }
+}
 
 void RaytracerThread::drawRow(uint32_t y)
 {
     uint32_t curr_pixel = y * cam.width * 3;
     uint32_t width = cam.width;
     Color final_color;
-    real dist = 0.0;
     for (uint32_t x = 0; x < width; x++)
     {
-        dist = 0.0;
-        Ray viewing_ray = computeViewingRay(x, y);
-        final_color = computeColor(viewing_ray, 0,air);
-        scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
-        scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
-        scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
+        drawPixel(curr_pixel, x, y);
     }
-    // done_threads++;
-    // if (done_threads % 10 == 0)
-    //     std::cout << done_threads << " ";
-    // fflush(stdout);
-    // if (done_threads % 400 == 0 || done_threads == cam.height)
-    //     std::cout << std::endl;
+
 }
 
 void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
@@ -45,47 +110,29 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
     {
         for (uint32_t x = start_x; x < end_x; x++)
         {
-            try
-            {
-                Ray viewing_ray = computeViewingRay(x, y);
-                final_color = computeColor(viewing_ray, 0, air);
-                scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
-                scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
-                scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
-            }
-            catch(...)
-            {
-                std::cerr << "Exception thrown!" << std::endl;
-                std::cerr << "curr_pixel: " <<curr_pixel << "\t y: " << y << "\t x: " << x << std::endl;
-            }
+            drawPixel(curr_pixel, x, y);
+
         }
         curr_pixel += allw_batchw_3;
     }
-// #pragma omp atomic
-//     done_threads++;
-// #pragma omp critical
-//     {
-//         if (done_threads % THREAD_PROGRESS == 0)
-//             std::cout << done_threads / THREAD_PROGRESS << "\t";
-//         fflush(stdout);
-//         if (done_threads % (THREAD_PROGRESS * 40) == 0 || done_threads == cam.height)
-//             std::cout << std::endl;
-//     }
+
 }
 
 
 
 
-Ray RaytracerThread::computeViewingRay(uint32_t x, uint32_t y)
+Ray RaytracerThread::computeViewingRay(int x, int y, int i)
 {
     Ray viewing_ray;
-    real s_u = (x + 0.5) * (cam.r - cam.l) / cam.width;
-    real s_v = (y + 0.5) * (cam.t - cam.b) / cam.height;
+    real s_u = (x +cam.samples[i][0]) * (cam.r - cam.l) / cam.width;
+    real s_v = (y +cam.samples[i][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
 
-    viewing_ray.dir = s - cam.Position;
+    if (cam.ApertureSize >0) viewing_ray.pos = cam.Position + cam.Up *cam.samples[sampleIdxShuffled[i]][0] + cam.V * cam.samples[sampleIdxShuffled[i]][1];
+    else                viewing_ray.pos = cam.Position;
+    viewing_ray.dir = s - viewing_ray.pos;
     viewing_ray.dir = viewing_ray.dir.normalize();
-    viewing_ray.pos = cam.Position;
+    time = 0;//getRandom(); // TODO: motion denemesi için aç
     return viewing_ray;
 }
 
@@ -95,21 +142,21 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 
     if (ACCELERATE)
     {
-        if (bvh.traverse(shadow_ray, t_min, scene. objects, true, false).obj != nullptr)
+        if (bvh.traverse(shadow_ray, t_min, scene. objects, true, false, time).obj != nullptr)
             return true;
     }
     else
     {
         for (int j = 0; j < scene.numObjects; j++)
         {
-            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false).obj != nullptr)
+            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false,time).obj != nullptr)
                 return true;
         }
     }
 
     for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
-        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false).obj != nullptr)
+        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true,false,time).obj != nullptr)
             return true;
     }
     return false;
@@ -150,7 +197,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
                 Ray shadow_ray = compute_shadow_ray(hit_record, i);
                 if (!isUnderShadow(shadow_ray))
                 {
-                    real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize()); // TODO: burada normalize etmemek mi lazım acep -> ama sanamadım açı istiyoruz
+                    real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
                     Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.intersection_point);
                     if (cos_theta > 0)
                     {
@@ -217,7 +264,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
 
     for (int i = scene.numObjects; i < scene.numPlanes; i++)
     {
-        temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false, back_cull);
+        temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false, back_cull,time);
 
         if (temp_obj.obj != nullptr)
         {
@@ -229,7 +276,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
 
     if (ACCELERATE)
     {
-        temp_obj= bvh.traverse(ray, t_min, scene.objects, false, back_cull);
+        temp_obj= bvh.traverse(ray, t_min, scene.objects, false, back_cull,time);
         if (temp_obj.obj != nullptr)
         {
             hit_record.obj = temp_obj.obj;
@@ -241,7 +288,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
     {
         for (int i = 0; i < scene.numObjects; i++)
         {
-            temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false,back_cull);
+            temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false,back_cull,time);
 
             if (temp_obj.obj != nullptr)
             {
@@ -256,7 +303,8 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
     if (hit_record.obj != nullptr)
     {
         hit_record.intersection_point = ray.pos + ray.dir * temp_obj.t_min;
-        hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point,hit_record.currTri);
+        hit_record.normal = hit_record.obj->getNormal(hit_record.intersection_point,hit_record.currTri, time);
+
     }
 }
 
@@ -390,6 +438,7 @@ Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord
     Ray reflected_ray = reflectionRay(ray,type,hit_record);
     Color temp;
     temp = computeColor(reflected_ray, depth + 1, m1);
+    // std::cout << hit_record.normal << std::endl;
 
     if (type == MaterialType::CONDUCTOR)
     {

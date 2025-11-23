@@ -3,6 +3,9 @@
 //
 
 #include "helpers.h"
+
+#include <random>
+
 #include "overloads.h"
 #include "../dataTypes/object/Object.h"
 #include "../dataTypes/object/Mesh.h"
@@ -18,7 +21,7 @@ real min3(real a, real b, real c)
 }
 
 
-Vertex maxVert3(Vertex &a, Vertex &b, Vertex &c)
+Vertex maxVert3(Vertex a, Vertex b, Vertex c)
 {
     return Vertex(
         max3(a.x, b.x, c.x),
@@ -27,7 +30,7 @@ Vertex maxVert3(Vertex &a, Vertex &b, Vertex &c)
     );
 }
 
-Vertex minVert3(Vertex &a, Vertex &b, Vertex &c)
+Vertex minVert3(Vertex a, Vertex b, Vertex c)
 {
     return Vertex(
         min3(a.x, b.x, c.x),
@@ -77,6 +80,48 @@ Axes next(Axes a)
     if (a == Axes::y) return Axes::z;
     if (a == Axes::z) return Axes::x;
     else return Axes::x;
+}
+
+
+Color G(std::array<double,2> locs, Color &inv_stddev_2)
+{
+    return inv_stddev_2/M_PI * (-inv_stddev_2*(locs[0]*locs[0] + locs[1]*locs[1])).exponent();
+}
+
+Color Mean(std::vector<Color> &colors)
+{
+    int size = colors.size();
+    Color mean = Color(0.0, 0.0, 0.0);
+    for (int i=0; i< size; i++) mean += colors[i];
+    return mean / real(size);
+}
+
+Color InvStdDev(Color &mean, std::vector<Color> &colors)
+{
+    int size = colors.size();
+    Color inv_stdev_2 = Color(0.0,0.0,0.0);
+    for (int i=0; i< size; i++) inv_stdev_2 += (colors[i]-mean) * (colors[i]-mean);
+    inv_stdev_2 =  inv_stdev_2 / (size - 1);
+    return Color(1.0,1.0,1.0) / inv_stdev_2;
+}
+
+
+std::mt19937 gRandomGenerator;
+std::uniform_real_distribution<> gNURandomDistribution(0, 1);
+double getRandom()
+{
+    return gNURandomDistribution(gRandomGenerator);
+}
+
+std::pair<int,int> closestFactors(int n) {
+    int a = static_cast<int>(std::sqrt(n));
+    while (a > 0) {
+        if (n % a == 0) {
+            return {a, n / a};
+        }
+        a--;
+    }
+    return {1, n};
 }
 
 

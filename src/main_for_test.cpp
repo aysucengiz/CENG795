@@ -13,16 +13,19 @@
 // her şey halloldu :)
 
 // hw 3
-// TODO: config değişikliğini diğer maine de ekle
+// TODO: light sampling nasıl olacak?
+// TODO: aperture nasıl olacak?
+// TODO: motion blur eklenecek
 
 int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
+    std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
 
+    raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_boxes_dynamic.json");
+    return 0;
+
     // std::cout << raytracer << std::endl;
-    raytracer.drawFile("jsonFiles/hw1/inputs/two_spheres.json");
-    raytracer.drawFile("jsonFiles/hw1/inputs/simple.json");
-    // raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
     // raytracer.drawAllFiles("jsonFiles/hw1/inputs/akif_uslu/");
     // raytracer.drawAllFiles("jsonFiles/hw1/inputs/deniz_sayin/");
 
@@ -44,8 +47,6 @@ int main(void) {
 
     raytracer.log("\n\nThe following are time consuming scenes:");
     raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
-    // raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_ply.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_right_ply.json");
     // raytracer.drawFile("jsonFiles/hw2/inputs/raven/dragon/dragon_new_top_ply.json");

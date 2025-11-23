@@ -23,7 +23,7 @@ public:
     {
         Object const* obj;
         real t_min;
-        uint32_t currTri;
+        int32_t currTri = -1;
     };
     uint32_t _id;
     Material& material;
@@ -31,12 +31,11 @@ public:
     Vertex main_center;
     bool visible;
     virtual ObjectType getObjectType() const = 0;
-    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const = 0;
-    virtual Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const = 0;
+    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const = 0;
+    virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, double time) const = 0;
     virtual ~Object();
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, bool v = true);
 
-    virtual std::shared_ptr<Object> clone() const = 0;
 };
 
 ///////////////////////////////////////////////
@@ -50,13 +49,12 @@ public:
     ShadingType shadingType;
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, double time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
 
     Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material, ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
 
-    std::shared_ptr<Object> clone() const override;
 };
 
 class Plane : public Object
@@ -68,9 +66,9 @@ public:
     Plane(uint32_t id, Vertex& v, std::string normal, Material& material, bool vis = true);
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
-    std::shared_ptr<Object> clone() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+
 };
 
 
@@ -86,34 +84,36 @@ public:
     Sphere(uint32_t id, CVertex& c, real r, Material& m, bool v = true);
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
-    std::shared_ptr<Object> clone() const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+
 };
 
 class Instance : public Object
 {
 public:
     bool orig;
-    std::shared_ptr<Object> original;
+    Vec3r motion;
+    bool has_motion;
+
+    Object* original;
     std::shared_ptr<Transformation> forwardTrans;
     std::shared_ptr<Transformation> backwardTrans;
 
-    Instance(uint32_t id, std::shared_ptr<Object> original, std::shared_ptr<Transformation>  trans, Material& mat, bool orig, bool v = true);
+    Instance(uint32_t id, Object* original, std::shared_ptr<Transformation>  trans, Material& mat, Vec3r m, bool orig, bool v = true);
     ~Instance();
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri = 0) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
 
 
     void computeGlobal();
     Ray getLocal(Ray& r);
-    Vertex getLocal(const Vertex& v);
+    Vertex getLocal(const Vertex& v, double time) const;
     Vec3r getGlobal(Vec3r& v);
-    Vertex getGlobal(Vertex v) const;
+    Vertex getGlobal(Vertex v, double time) const;
     Vec3r getLocal(Vec3r& v);
-    std::shared_ptr<Object> clone() const override;
 };
 
 
@@ -128,6 +128,11 @@ struct SceneInput
     Color BackgroundColor;
     double ShadowRayEpsilon;
     double IntersectionTestEpsilon;
+    SamplingType sampling_type;
+    FilterType filter_type;
+
+    uint32_t thread_group_size;
+    uint32_t thread_add_endl_after;
 
     // materials and cam  info
     std::vector<Material> Materials;
@@ -141,7 +146,7 @@ struct SceneInput
     std::vector<PointLight*> PointLights;
 
     // object info
-    std::deque<std::shared_ptr<Object>> objects;
+    std::deque<Object*> objects;
 
     // num info
     uint32_t numCameras;

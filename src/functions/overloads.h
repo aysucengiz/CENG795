@@ -13,12 +13,22 @@
 
 class RayTracer;
 
+// overload - type assignment
+FilterType getFilter(const std::string &s);
+SamplingType getSampling(const std::string &s);
+ThreadType getThread(const std::string &s);
+AccelerationType getAcceleration(const std::string &s);
+PivotType getPivot(const std::string &s);
 
 // overload - color
 Color operator *(const Color &a, const Color &b);
 Color operator -(const Color &a, const Color &b);
 Color operator +(const Color &a, const Color &b);
 Color operator /(const Color &a, const real b);
+Color operator /(const real b, const Color &a);
+Color operator /(const Color &b, const Color& a);
+
+
 Color operator *(const Color &a, const real b);
 
 // overload - vector

@@ -33,11 +33,10 @@ public:
     const ThreadType thread_type;
     const uint16_t batch_w;
     const uint16_t batch_h;
-    const uint16_t thread_group_size;
-    const uint32_t thread_add_endl_after;
 
     // logger info
-    const bool log_it;
+    const bool log_to_file;
+    const bool log_to_console;
     std::ofstream logFile;
     const std::string logFileName;
 

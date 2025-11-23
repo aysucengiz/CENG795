@@ -25,32 +25,36 @@ real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, Container<T>
     real pivot;
     std::vector<BBox> bboxtempSmall(end - start);
     std::vector<BBox> bboxtempBig(end - start);
+    std::vector<T> objects_copied(end-start);
+    // std::cout << "1" << std::endl;
+    std::copy(objects.begin()+start, objects.begin()+end, objects_copied.begin());
+    // std::cout << "2" << std::endl;
 
 
 
     curr_a = a;
-    //for (int axis = 0; axis < 3; axis++)
+    for (int axis = 0; axis < 3; axis++)
     {
-        std::sort(objects.begin() + start, objects.begin() + end,
-                            [curr_a](T& lhs, T& rhs) { return lhs->main_center[curr_a] < rhs->main_center[curr_a]; });
+        std::sort(objects_copied.begin(), objects_copied.end() ,
+                            [&curr_a](T& lhs, T& rhs) { return lhs->main_center[curr_a] < rhs->main_center[curr_a]; });
 
 
         int size = end - start;
-        bboxtempSmall[0] = objects[start]->globalBbox;
-        bboxtempBig[size - 1] = objects[end-1]->globalBbox;
+        bboxtempSmall[0] = objects_copied[0]->globalBbox;
+        bboxtempBig[size - 1] = objects_copied[end-start-1]->globalBbox;
         for (int i = 1; i < size; ++i) {
-            bboxtempSmall[i].vMin = minVert2(bboxtempSmall[i-1].vMin, objects[start+i]->globalBbox.vMin);
-            bboxtempSmall[i].vMax = maxVert2(bboxtempSmall[i-1].vMax, objects[start+i]->globalBbox.vMax);
-            bboxtempBig[size-i-1].vMin = minVert2(bboxtempBig[size-i].vMin, objects[end -i-1]->globalBbox.vMin);
-            bboxtempBig[size-i-1].vMax = maxVert2(bboxtempBig[size-i].vMax, objects[end -i-1]->globalBbox.vMax);
+            bboxtempSmall[i].vMin = minVert2(bboxtempSmall[i-1].vMin, objects_copied[i]->globalBbox.vMin);
+            bboxtempSmall[i].vMax = maxVert2(bboxtempSmall[i-1].vMax, objects_copied[i]->globalBbox.vMax);
+            bboxtempBig[size-i-1].vMin = minVert2(bboxtempBig[size-i].vMin, objects_copied[end-start -i-1]->globalBbox.vMin);
+            bboxtempBig[size-i-1].vMax = maxVert2(bboxtempBig[size-i].vMax, objects_copied[end-start -i-1]->globalBbox.vMax);
         }
 
 
-        for (int i = start; i < end; i++)
+        for (int i = 0; i < end-start; i++)
         {
-            pivot = objects[i]->main_center[curr_a];
+            pivot = objects_copied[i]->main_center[curr_a];
 
-            split_cost = 0.125 +  bboxtempSmall[i-start].getArea()* areaC * (i - start) + bboxtempBig[i-start].getArea() * areaC * (end - i);
+            split_cost = 0.125 +  bboxtempSmall[i].getArea()* areaC * (i ) + bboxtempBig[i].getArea() * areaC * (end -start - i);
             if (split_cost < min_split_cost)
             {
                 min_split_cost = split_cost;
@@ -59,7 +63,7 @@ real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, Container<T>
             }
         }
 
-    //    curr_a = next(curr_a);
+       curr_a = next(curr_a);
     }
     a = best_a;
     return best_pivot;
@@ -68,6 +72,8 @@ real BVH::getSAH(Axes& a, uint32_t start, uint32_t end, real areaC, Container<T>
 template<typename T>
 int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects)
 {
+
+    int swap_pos = start;
     if (print_acc_init) std::cout << "BVH::getPivot" << std::endl;
     real pivot;
     switch (pt)
@@ -92,8 +98,7 @@ int BVH::getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& obje
         break;
     }
 
-    int swap_pos = start;
-    if (PivotType::SAH != pt)
+    // if (PivotType::SAH != pt)
     {
         for (int runn_idx = start; runn_idx < end; runn_idx++)
         {
@@ -224,10 +229,10 @@ void  BVH::getScene(std::vector<Triangle*> &triangles)
     if (print_acc_init)std::cout <<" Partition done" << std::endl;
 
 
-    for (int i = 0; i < triangles.size(); i++)
-    {
-        triangles[i]->_id = i;
-    }
+    // for (int i = 0; i < triangles.size(); i++)
+    // {
+    //     triangles[i]->_id = i;
+    // }
 
     // std::cout << nodes[0] << std::endl;
     // std::cout << print_acc_init << std::endl;
@@ -239,7 +244,7 @@ void  BVH::getScene(std::vector<Triangle*> &triangles)
 }
 
 template<typename Container>
-Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull) const
+Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull, double time) const
 {
     //std::cout << "BVH::traverse" << std::endl;
     Object::intersectResult result;
@@ -266,13 +271,15 @@ Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const C
                 int finID = node.firstObjID + node.objCount;
                 for (int i=node.firstObjID; i< finID; i++)
                 {
-                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull);
+                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull, time);
                     if (shadow_test && temp.obj != nullptr) return temp;
                     if (temp.obj != nullptr)
                     {
                         result.obj = temp.obj;
-                        result.currTri = temp.currTri;
+                        if constexpr (std::is_same_v<Container, std::vector<Triangle*>>) result.currTri = i;
+                        else result.currTri = temp.currTri;
                         result.t_min = temp.t_min;
+                        // std::cout << result.currTri << std::endl;
                     }
                 }
             }
@@ -293,7 +300,7 @@ Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const C
 }
 
 template Object::intersectResult BVH::traverse<std::vector<Triangle*>>(
-    const Ray&, const real&, const std::vector<Triangle*>&, bool, bool) const;
+    const Ray&, const real&, const std::vector<Triangle*>&, bool, bool, double) const;
 
-template Object::intersectResult BVH::traverse<std::deque<std::shared_ptr<Object>>>(
-    const Ray&, const real&, const std::deque<std::shared_ptr<Object>>&, bool, bool) const;
+template Object::intersectResult BVH::traverse<std::deque<Object*>>(
+    const Ray&, const real&, const std::deque<Object*>&, bool, bool, double) const;

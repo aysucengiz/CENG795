@@ -18,6 +18,20 @@ void Transformation::getNormalTransform()
     normalTransform = this->Inverse().Transpose();
 }
 
+
+bool Transformation::isIdentity()
+{
+    M4trix mI = Identity();
+    for (int i=0; i<4 ;i++)
+    {
+        for (int j=0; j<4; j++)
+        {
+            if (arr[i][j] != mI[i][j]) return false;
+        }
+    }
+    return true;
+}
+
 ////////////////////////////////////////////////
 ///////////////// Rotate /////////////////////
 ////////////////////////////////////////////////
@@ -111,6 +125,19 @@ std::shared_ptr<Transformation> Rotate::clone() const  {
 
 
 Translate::Translate(Vertex v) : x(v.x), y(v.y), z(v.z)
+{
+    arr = {
+        {
+            {{1, 0, 0, x}},
+            {{0, 1, 0, y}},
+            {{0, 0, 1, z}},
+            {{0, 0, 0, 1}}
+        }
+    };
+    normalTransform = Identity();
+}
+
+Translate::Translate(Vec3r v) : x(v.i), y(v.j), z(v.k)
 {
     arr = {
         {

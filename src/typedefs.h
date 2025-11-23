@@ -66,13 +66,36 @@ enum class PivotType
 
 enum class AccelerationType
 {
+    NONE,
+    GRID,
+    KD_TREE,
     BVH
 };
 
 enum class ThreadType
 {
+    NONE,
     ROW,
     BATCH
+};
+
+enum class SamplingType
+{
+    UNIFORM,
+    RANDOM,
+    STRATIFIED,
+    N_ROOKS,
+    MULTI_JITTERED,
+    VAN_DER_CORPUT,
+    HALTON,
+    HAMMERSLEY
+};
+
+enum class FilterType
+{
+    BOX,
+    GAUSSIAN,
+    GAUSSIAN_ZERO
 };
 
 #endif //CENG795_TYPEDEFS_H

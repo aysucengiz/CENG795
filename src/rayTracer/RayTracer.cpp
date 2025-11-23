@@ -17,37 +17,42 @@ RayTracer::RayTracer(json configs) :
     // prints
     print_init(configs["Prints"]["Initialization"]),
     print_progress(configs["Prints"]["Progress"]),
-    bvh(configs["Acceleration"]["PivotType"],configs["Acceleration"]["MaxObjInNode"]),
+    bvh(getPivot(configs["Acceleration"]["PivotType"]),configs["Acceleration"]["MaxObjInNode"]),
 
     // output dir
     output_path(configs["Raytracer"]["OutputDir"]),
 
     // thread info
-    thread_type(configs["Raytracer"]["Threads"]["Thread"]),
+    thread_type(getThread(configs["Raytracer"]["Threads"]["Thread"].get<std::string>())),
     batch_w(configs["Raytracer"]["Threads"]["batchWidth"]),
     batch_h(configs["Raytracer"]["Threads"]["batchHeight"]),
-    thread_group_size(configs["Raytracer"]["Threads"]["ThreadGroupSize"]),
-    thread_add_endl_after(configs["Raytracer"]["Threads"]["ThreadEndlAfter"]),
 
     // logger info
-    log_it(configs["Raytracer"]["Logger"]["LogTime"]),
+    log_to_file(configs["Raytracer"]["Logger"]["LogToFile"]),
+    log_to_console(configs["Raytracer"]["Logger"]["LogToConsole"]),
     logFileName(configs["Raytracer"]["Logger"]["LogDir"]),
 
     // acceleration info
-    AccelerationStruct(configs["Acceleration"]["AccelerationStruct"]),
+    AccelerationStruct(getAcceleration(configs["Acceleration"]["AccelerationStruct"].get<std::string>())),
+
+
 
     // defaults
     maxDepth(configs["Defaults"]["DefaultMaxDepth"]),
     DefaultShadowEps(configs["Defaults"]["DefaultShadowEps"]),
     DefaultIntersEps(configs["Defaults"]["DefaultIntersEps"])
 {
+    scene.thread_group_size = configs["Raytracer"]["Threads"]["ThreadGroupSize"];
+    scene.thread_add_endl_after = configs["Raytracer"]["Threads"]["ThreadEndlAfter"];
     // std::cout << configs.dump(2) << std::endl;
     BVH::print_acc_init = configs["Prints"]["AccelerationCreation"];
     project_root = std::filesystem::current_path();
     scene.back_cull = configs["Acceleration"]["BackCulling"];
-    scene.pt = configs["Acceleration"]["PivotType"];
+    scene.pt = getPivot(configs["Acceleration"]["PivotType"].get<std::string>());
     scene.MaxObjCount = configs["Acceleration"]["MaxObjInNode"];
-    ACCELERATE = configs["Acceleration"]["Accelerate"];
+    scene.filter_type = getFilter(configs["Sampling"]["FilterType"].get<std::string>());
+    scene.sampling_type = getSampling(configs["Sampling"]["SamplingType"].get<std::string>());
+    ACCELERATE = (AccelerationStruct != AccelerationType::NONE );
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
@@ -86,21 +91,26 @@ RayTracer::~RayTracer()
 
 void RayTracer::log(std::string logText)
 {
-    if (!log_it) return;
+    if (!log_to_file && !log_to_console) return;
     auto now = std::chrono::system_clock::now();
     std::time_t time_now = std::chrono::system_clock::to_time_t(now);
     std::tm local_tm = *std::localtime(&time_now);
-
-    logFile.open(filename.str(), std::ios::out | std::ios::app);
-    if (logFile.is_open()) {
-        logFile << "[" <<std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S") << "] " << logText << "\n";
-        logFile.close();
+    if (log_to_file)
+    {
+        logFile.open(filename.str(), std::ios::out | std::ios::app);
+        if (logFile.is_open()) {
+            logFile << "[" <<std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S") << "] " << logText << "\n";
+            logFile.close();
+        }
     }
-    std::cout << "[" <<std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S") << "] " << logText << "\n";
+    if (log_to_console)
+    {
+        std::cout << "[" <<std::put_time(&local_tm, "%H:%M:%S") << "] " << logText << "\n";
+    }
 }
 
 void RayTracer::parseScene(std::string input_path){
-    log("----- Parsing scene from " + input_path + " -----");
+    log("----- " + input_path + " -----");
     start_time = std::chrono::high_resolution_clock::now();
     scene.Cameras.clear();
     scene.PointLights.clear();
@@ -115,7 +125,7 @@ void RayTracer::parseScene(std::string input_path){
     if (AccelerationStruct == AccelerationType::BVH) bvh.getScene(scene);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    log( input_path + ": " +  timeString(duration));
+    log( "parsing: " +  timeString(duration));
 
 }
 
@@ -157,7 +167,7 @@ void RayTracer::drawScene(uint32_t c){
     this->camID = c;
     RaytracerThread::done_threads = 0;
     Camera cam = scene.Cameras[camID];
-    log("Drawing " + cam.ImageName);
+    // log("Drawing " + cam.ImageName);
     auto start = std::chrono::high_resolution_clock::now();
     scene.u = x_product(cam.Up, -cam.Gaze);
     scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t;
@@ -204,9 +214,9 @@ void RayTracer::drawScene(uint32_t c){
     delete[] scene.image;
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
-    log(cam.ImageName + " all: " +  timeString(duration_all));
 
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start).count();
-    log(cam.ImageName + " drawing: " +  timeString(duration));
+    log("drawing: " +  timeString(duration));
+    log("all: " +  timeString(duration_all));
 
 }

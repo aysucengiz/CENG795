@@ -21,6 +21,7 @@ public:
     virtual Transformation *inv() const = 0;
     void getNormalTransform();
     virtual std::shared_ptr<Transformation> clone() const = 0;
+    bool isIdentity();
 };
 
 class Rotate : public Transformation
@@ -45,6 +46,7 @@ private:
 public:
     real x,y,z;
     Translate(Vertex v);
+    Translate(Vec3r v);
     Translate(real x, real y, real z);
     Translate(const Translate &c);
     Translate operator=(const Translate &c);

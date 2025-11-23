@@ -22,6 +22,7 @@ struct Color{
     Color();
     Color(real r, real g, real b);
     Color(std::string inp);
+    Color c_sqrt() const;
     Color& operator+=(const Color& other);
     bool isBlack() const;
     Color operator-();
@@ -34,6 +35,7 @@ struct Camera{
     Vertex Position;
     Vec3r Gaze;
     Vec3r Up;
+    Vec3r V;
     real l;
     real r;
     real b;
@@ -45,13 +47,17 @@ struct Camera{
     uint32_t numSamples;
     real FocusDistance;
     real ApertureSize;
+    std::vector<std::array<double, 2>> samples;
 
-    Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname);
+    Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
+        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st);
 
+    void initializeSamples(SamplingType st);
 };
 
 class PointLight{
 public:
+    virtual ~PointLight() = default;
     uint32_t _id;
     Vertex Position;
     Color Intensity;
@@ -91,7 +97,8 @@ struct Material{
         Color mr = Color(),
         Color ac = Color(1.0,1.0,1.0),
         real refrIndex = 1.0,
-        real ai = 0);
+        real ai = 0,
+        real r = 0.0);
 };
 
 

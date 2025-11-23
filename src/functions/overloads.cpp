@@ -8,6 +8,47 @@
 
 #include "rayTracer/RayTracer.h"
 
+// overload- get type from string
+FilterType getFilter(const std::string& s) {
+    if (s == "box") return FilterType::BOX;
+    if (s == "gaussian") return FilterType::GAUSSIAN;
+    if (s == "gaussian_zero") return FilterType::GAUSSIAN_ZERO;
+    throw std::invalid_argument("Invalid FilterType string: " + s);
+}
+
+SamplingType getSampling(const std::string& s) {
+    if (s == "uniform") return SamplingType::UNIFORM;
+    if (s == "random") return SamplingType::RANDOM;
+    if (s == "stratified") return SamplingType::STRATIFIED;
+    if (s == "n_rooks") return SamplingType::N_ROOKS;
+    if (s == "multi_jittered") return SamplingType::MULTI_JITTERED;
+    if (s == "van_der_corput") return SamplingType::VAN_DER_CORPUT;
+    if (s == "halton") return SamplingType::HALTON;
+    if (s == "hammersley") return SamplingType::HAMMERSLEY;
+    throw std::invalid_argument("Invalid SamplingType string: " + s);
+}
+
+ThreadType getThread(const std::string& s) {
+    if (s == "none") return ThreadType::NONE;
+    if (s == "row") return ThreadType::ROW;
+    if (s == "batch") return ThreadType::BATCH;
+    throw std::invalid_argument("Invalid ThreadType string: " + s);
+}
+
+AccelerationType getAcceleration(const std::string& s) {
+    if (s == "none") return AccelerationType::NONE;
+    if (s == "grid") return AccelerationType::GRID;
+    if (s == "kd_tree") return AccelerationType::KD_TREE;
+    if (s == "bvh") return AccelerationType::BVH;
+    throw std::invalid_argument("Invalid AccelerationType string: " + s);
+}
+
+PivotType getPivot(const std::string& s) {
+    if (s == "middle") return PivotType::MIDDLE;
+    if (s == "median") return PivotType::MEDIAN;
+    if (s == "sah") return PivotType::SAH;
+    throw std::invalid_argument("Invalid PivotType string: " + s);
+}
 
 // overload - color
 
@@ -38,6 +79,19 @@ Color operator /(const Color& a, const real b)
     return Color(a.r / b,
                  a.g / b,
                  a.b / b);
+}
+
+Color operator /(const real b, const Color& a)
+{
+    return Color(b/a.r ,
+                 b/a.g,
+                 b/a.b );
+}
+Color operator /(const Color &b, const Color& a)
+{
+    return Color(b.r/a.r ,
+                 b.g/a.g,
+                 b.b/a.b );
 }
 
 Color operator *(const Color& a, const real b)
@@ -336,7 +390,11 @@ std::ostream& operator<<(std::ostream& os, const Camera& c)
         << "\n\tUp:" << c.Up
         << "\n\tplane:" << c.l << " " << c.r << " " << c.b << " " << c.t << " " << c.nearDistance
         << "\n\tImageResolution:" << c.width << " " << c.height
-        << "\n\tImageName:" << c.ImageName;
+        << "\n\tImageName:" << c.ImageName
+        << "\n\tnumSamples:" << c.numSamples
+        << "\n\tFocusDistance:" << c.FocusDistance
+        << "\n\tApertureSize:" << c.ApertureSize
+    ;
     return os;
 }
 
@@ -366,7 +424,7 @@ std::ostream& operator<<(std::ostream& os, const SceneInput& s)
 
     os << "PointLights:\n";
     for (const auto& pl : s.PointLights)
-        os << "  " << pl << "\n";
+        os << "  " << *pl << "\n";
 
     os << "Materials:\n";
     for (const auto& mat : s.Materials)
@@ -458,7 +516,8 @@ std::ostream& operator<<(std::ostream& os, const Instance& i)
         << "\n\tObject:" << i.original->getObjectType() << " " << i.original->_id
         << "\n\tforwardTrans:" << i.forwardTrans->getTransformationType() << " " << i.forwardTrans
         << "\tbackwardTrans:" << i.backwardTrans->getTransformationType() << " " << i.backwardTrans
-        << "\n\tglobalBbox:" << i.globalBbox;
+        << "\n\tglobalBbox:" << i.globalBbox
+        << "\n\tmotion:" << i.motion;
     return os;
 }
 
@@ -535,11 +594,9 @@ std::ostream& operator<<(std::ostream& os, const RayTracer& rt)
     os << "  thread_type: " << static_cast<int>(rt.thread_type) << "\n";
     os << "  batch_w: " << rt.batch_w << "\n";
     os << "  batch_h: " << rt.batch_h << "\n";
-    os << "  thread_group_size: " << rt.thread_group_size << "\n";
-    os << "  thread_add_endl_after: " << rt.thread_add_endl_after << "\n";
 
     // Logger info
-    os << "  log_it: " << std::boolalpha << rt.log_it << "\n";
+    os << "  log_it: " << std::boolalpha << rt.log_to_file << "\n";
     os << "  logFileName: " << rt.logFileName << "\n";
     os << "  logFile.is_open: " << std::boolalpha << rt.logFile.is_open() << "\n";
 

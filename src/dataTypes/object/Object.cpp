@@ -15,10 +15,9 @@
 ////////////////////////////////////////////////
 
 Object::~Object() = default;
-Object::Object(Material &m, uint32_t id,
-        Vertex vMax, Vertex vMin, bool v)
+Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin,  bool v)
         : material(m), _id(id),
-          globalBbox(vMax, vMin), visible(v){}
+          globalBbox(vMax, vMin), visible(v) {}
 
 
 ////////////////////////////////////////////////
@@ -27,7 +26,7 @@ Object::Object(Material &m, uint32_t id,
 
 ObjectType Triangle::getObjectType()  const{ return ObjectType::TRIANGLE; }
 
-Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull) const
+Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time) const
 {
     intersectResult result;
     result.currTri = 0;
@@ -75,7 +74,9 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
     return result;
 }
 
-Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID)  const
+
+
+Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, double time)  const
 {
     if (shadingType == ShadingType::SMOOTH)
     {
@@ -122,15 +123,11 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
     main_center.z = (a.v + b.v + c.v).z / 3.0;
 }
 
-std::shared_ptr<Object> Triangle::clone() const {
-    return std::make_shared<Triangle>(*this);
-}
-
 ////////////////////////////////////////////////
 ////////////////// SPHERE /////////////////////
 ////////////////////////////////////////////////
 ///
-Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, bool v)
+Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m,  bool v)
         : Object(m,id, Vertex(c.v.x+r, c.v.y+r,c.v.z+r),
             Vertex(c.v.x-r, c.v.y-r,c.v.z-r), v),  center(c), radius(r)
 {
@@ -142,7 +139,7 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, bool v)
 ObjectType Sphere::getObjectType()  const{ return ObjectType::SPHERE; }
 
 
-Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull)  const
+Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time)  const
 {
     intersectResult result;
     result.currTri = 0;
@@ -192,20 +189,18 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
     return result;
 }
 
-Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID) const
+Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID, double time) const
 {
     return (v-center.v).normalize();
 }
 
-std::shared_ptr<Object> Sphere::clone() const {
-    return std::make_shared<Sphere>(*this);
-}
+
 
 ////////////////////////////////////////////////
 /////////////////// PLANE /////////////////////
 ////////////////////////////////////////////////
 
-Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material, bool vis) :
+Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material,  bool vis) :
 Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY),vis), point(v)
 {
     std::istringstream ss(normal);
@@ -220,7 +215,7 @@ Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINI
 
 ObjectType Plane::getObjectType() const {return ObjectType::PLANE;}
 
-Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull) const {
+Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time) const {
     real dot_r_n = dot_product(r.dir, n);
     intersectResult result;
     result.currTri = 0;
@@ -246,26 +241,23 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
     return result;
 }
 
-Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri) const { return n;}
+Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, double time) const { return n;}
 
-
-
-std::shared_ptr<Object> Plane::clone() const {
-    return std::make_shared<Plane>(*this);
-}
 
 ////////////////////////////////////////////////
 ///////////////// INSTANCE /////////////////////
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, std::shared_ptr<Object> o, std::shared_ptr<Transformation> trans, Material &mat, bool orig, bool v) :
+Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans, Material &mat,Vec3r m,  bool orig, bool v) :
 Object(mat,id,
     Vertex(),Vertex(),v), forwardTrans(std::move(trans))
 {
-
+    motion = Vec3r(0.0,0.0,0.0);
+    has_motion = false;
+    if (m.i == 0.0 && m.j == 0.0 && m.k == 0.0) has_motion = false;
     if (orig) { // unique
-        original = o->clone();
+        original = o;
     } else { // share
         original = o;
     }
@@ -282,7 +274,46 @@ Instance::~Instance()
 
 ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
 
- Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull) const {
+ Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull, double time) const {
+
+    //std::cout << "Check Intersection of Instance" << std::endl;
+    // intersectResult result;
+    // result.t_min = t_min;
+    // result.currTri = 0;
+    // result.obj = nullptr;
+    // Composite temp_f ,temp_b;
+    // Transformation* bwt = backwardTrans.get();
+    // Transformation* fwt = forwardTrans.get();
+    // if (has_motion && time>0)
+    // {
+    //     Vec3r motion_At_time = motion*time;
+    //     temp_f = Translate(motion_At_time) * (*fwt);
+    //     temp_b = Translate(-motion_At_time) * (*bwt);
+    //     fwt = &temp_f;
+    //     bwt = &temp_b;
+    // }
+    // if (!shadow_test)
+    // {
+    //     Ray localRay = (*bwt) * ray;
+    //     result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
+    //     result.obj = result.obj ? this :nullptr;
+    //     return result;
+    // }
+    // else
+    // {
+    //     Ray localRay = (*bwt) * ray; // get the local light point
+    //     result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
+    //     if (result.obj)
+    //     {
+    //         Vertex intersect = localRay.pos + localRay.dir * t_min;
+    //         Vertex globalIntersect = ((*fwt) * Vec4r(intersect)).getVertex(); // o + t*d
+    //         result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+    //         result.obj = this;
+    //         return result;
+    //     }
+    //     result.obj = nullptr;
+    //     return result;
+    // }
 
     //std::cout << "Check Intersection of Instance" << std::endl;
     intersectResult result;
@@ -292,20 +323,21 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
     if (!shadow_test)
     {
         Ray localRay = (*backwardTrans) * ray;
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0.0);
         result.obj = result.obj ? this :nullptr;
         return result;
     }
     else
     {
         Ray localRay = (*backwardTrans) * ray; // get the local light point
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull);
+        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0.0);
         if (result.obj)
         {
             Vertex intersect = localRay.pos + localRay.dir * t_min;
-            Vertex globalIntersect = getGlobal(intersect); // o + t*d
+            Vertex globalIntersect = getGlobal(intersect,0.0); // o + t*d
             result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
             result.obj = this;
+            // if (original->getObjectType()==ObjectType::MESH )std::cout << result.currTri << std::endl;
             return result;
         }
         result.obj = nullptr;
@@ -313,10 +345,26 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
     }
 }
 
-Vec3r Instance::getNormal(const Vertex &v, uint32_t triID) const {
-    Vertex localV = ((*backwardTrans) * Vec4r(v)).getVertex();
-    Vec3r res = original->getNormal(localV,triID);
+Vec3r Instance::getNormal(const Vertex &v, uint32_t triID, double time) const {
+    // Composite temp_f ,temp_b;
+    // Transformation* bwt = backwardTrans.get();
+    // Transformation* fwt = forwardTrans.get();
+    // if (has_motion)
+    // {
+    //     Vec3r motion_At_time = motion*time;
+    //     temp_f = Translate(motion_At_time) * (*forwardTrans);
+    //     temp_b = Translate(-motion_At_time) * (*backwardTrans);
+    //     fwt = &temp_f;
+    //     fwt->getNormalTransform();
+    //     bwt = &temp_b;
+    // }
+    // Vertex localV = getLocal(v,time);
+    // Vec3r res = original->getNormal(localV,triID, 0);
+    // return  ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
+    Vertex localV =  getLocal(v,time);
+    Vec3r res = original->getNormal(localV,triID,0.0);
     return  ((forwardTrans->normalTransform) * Vec4r(res)).getVec3r().normalize();
+
 }
 
 
@@ -326,7 +374,6 @@ void Instance::computeGlobal()
 {
     if (forwardTrans != nullptr && backwardTrans != nullptr)
     {
-
         globalBbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
         globalBbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
         Vertex v[2] = {original->globalBbox.vMax,original->globalBbox.vMin};
@@ -336,8 +383,17 @@ void Instance::computeGlobal()
             {
                 for (int k = 0; k < 2; k++)
                 {
-                    globalBbox.vMax = maxVert2(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z)));
-                    globalBbox.vMin = minVert2(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z)));
+                    if (has_motion)
+                    {
+                        globalBbox.vMax = maxVert3(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),1.0),getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
+                        globalBbox.vMin = minVert3(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),1.0),getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
+
+                    }
+                    else
+                    {
+                        globalBbox.vMax = maxVert2(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
+                        globalBbox.vMin = minVert2(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
+                    }
                 }
             }
         }
@@ -352,7 +408,7 @@ Ray Instance::getLocal(Ray &r)
     return result;
 }
 
-Vertex Instance::getLocal(const Vertex &v)
+Vertex Instance::getLocal(const Vertex &v, double time) const
 {
     Vertex result;
     result = ((*backwardTrans) * Vec4r(v)).getVertex();
@@ -374,22 +430,13 @@ Vec3r Instance::getGlobal(Vec3r &v)
     return result;
 }
 
-Vertex Instance::getGlobal(Vertex v) const
+Vertex Instance::getGlobal(Vertex v, double time) const
 {
     Vertex result;
-    result = ((*forwardTrans) * Vec4r(v)).getVertex();
+    // if (time>0) result = (Translate(motion*time) *(*forwardTrans) * Vec4r(v)).getVertex();
+    // else
+        result = ((*forwardTrans) * Vec4r(v)).getVertex();
     return result;
-}
-
-
-std::shared_ptr<Object> Instance::clone() const {
-    return std::make_shared<Instance>(
-    _id,
-    original,
-    forwardTrans->clone(),
-    material,
-    orig
-);
 }
 
 

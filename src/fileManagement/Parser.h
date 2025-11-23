@@ -40,7 +40,7 @@ namespace Parser {
     void addLight(json pointLights, SceneInput &sceneInput);
     void addCamera(json Camera, SceneInput &sceneInput);
     void addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id);
-    void addInstance(std::string transformations, std::shared_ptr<Object> original, SceneInput &sceneInput);
+    void addInstance(std::string transformations, Object* original, SceneInput& sceneInput, Vec3r motion);
     void addInstance(json p, SceneInput &sceneInput, uint32_t &curr_id);
     void addTranslation(json Camera, SceneInput &sceneInput);
     void addScaling(json p, SceneInput &sceneInput);
@@ -50,7 +50,7 @@ namespace Parser {
     void getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double,4> &nearPlane);
 
     std::shared_ptr<Transformation> getTransFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>> &transforms);
-    std::shared_ptr<Object> getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<std::shared_ptr<Object>> &objs);
+    Object* getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object*> &objs);
 };
 
 
