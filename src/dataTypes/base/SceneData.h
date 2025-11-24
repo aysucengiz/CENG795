@@ -53,6 +53,7 @@ struct Camera{
         uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st);
 
     void initializeSamples(SamplingType st);
+    Vertex getPos(int i) const;
 };
 
 class PointLight{
@@ -63,7 +64,9 @@ public:
     Color Intensity;
 
     PointLight(uint32_t id, Vertex pos, Color intens);
-    virtual Color getIrradianceAt(Vertex v);
+    virtual LightType getLightType();
+    virtual Color getIrradianceAt(Vertex v, std::array<real, 2> sample);
+    virtual Vertex getPos(std::array<real, 2> sample);
 };
 
 class AreaLight : public PointLight
@@ -73,10 +76,14 @@ public:
     real size;
     real A;
     std::vector<Vertex> samples;
+    Vec3r u;
+    Vec3r v;
 
 
     AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real Size);
-    Color getIrradianceAt(Vertex v) override;
+    Color getIrradianceAt(Vertex v, std::array<real, 2> sample) override;
+    LightType getLightType() override;
+    Vertex getPos(std::array<real, 2> sample) override;
 };
 
 struct Material{

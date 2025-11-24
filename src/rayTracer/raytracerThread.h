@@ -22,8 +22,7 @@ private:
     const Camera &cam;
     const BVH &bvh;
     const Material air;
-    std::vector<int> sampleIdxs;
-    std::vector<int> sampleIdxShuffled;
+    std::vector<int> sampleIdxPixel;
     real time;
 
     // for recursive refraction
@@ -36,15 +35,21 @@ public:
     RaytracerThread(SceneInput &_scene, Camera &camID, BVH &_bvh) :
     scene(_scene), cam(camID), bvh(_bvh), air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0)
     {
-        sampleIdxs.reserve(cam.numSamples);
+        sampleIdxPixel.reserve(cam.numSamples);
         for (int i = 0; i < cam.numSamples; i++)
         {
-            sampleIdxs.push_back(i);
-            sampleIdxShuffled.push_back(i);
+            sampleIdxPixel.push_back(i);
         }
     }
 
-    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0) {}
+    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0)
+    {
+        sampleIdxPixel.reserve(cam.numSamples);
+        for (int i = 0; i < cam.numSamples; i++)
+        {
+            sampleIdxPixel.push_back(i);
+        }
+    }
     Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
     Color Filter(std::vector<Color>& colors, const std::vector<std::array<real,2>> &locs);
     void writeToImage(uint32_t& curr_pixel, Color& final_color);
@@ -56,9 +61,9 @@ public:
     Color computeColor(Ray &ray, int depth, const Material &m1);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);
-    Ray compute_shadow_ray(const HitRecord &hit_record,uint32_t i);
+    Ray compute_shadow_ray(const HitRecord& hit_record, uint32_t i, std::array<real, 2> sample) const;
     static Color diffuseTerm(const HitRecord &hit_record, real cos_theta, Color I_R_2);
-    Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2, Ray &shadow_ray) const;
+    static Color specularTerm(const HitRecord &hit_record, const Ray &ray, real cos_theta, Color I_R_2, Ray &shadow_ray);
 
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, const Material &m1);
     Color refract(Ray &ray, int depth, const Material &m1, const Material &m2, HitRecord &hit_record);

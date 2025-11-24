@@ -136,12 +136,17 @@ void Camera::initializeSamples(SamplingType st)
         break;
     }
 
-    for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
+    // for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
 
 
 
 }
 
+Vertex Camera::getPos(int i) const
+{
+    if (ApertureSize > 0)  return Position + (Up *(samples[i][0]-0.5) + V * (samples[i][1]-0.5))*ApertureSize;
+    else                   return Position;
+}
 
 ////////////////////////////////////////////////
 /////////////// PointLight /////////////////////
@@ -149,17 +154,40 @@ void Camera::initializeSamples(SamplingType st)
 
 PointLight::PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
 
-Color PointLight::getIrradianceAt(Vertex v)
+Color PointLight::getIrradianceAt(Vertex v, std::array<real,2> sample)
 {
     Vec3r vec = v - Position;
     return Intensity / dot_product(vec, vec);
 }
 
-AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n), size(s),A(s*s){}
+Vertex PointLight::getPos(std::array<real, 2> sample)
+{
+    return Position;
+}
 
-Color AreaLight::getIrradianceAt(Vertex v)
-{ // TODO: sampling
-    Vec3r vec = v - Position;
+LightType PointLight::getLightType() {return LightType::POINT;}
+LightType AreaLight::getLightType() {return LightType::AREA;}
+
+
+Vertex AreaLight::getPos(std::array<real,2> sample)
+{
+    return Position + (v*sample[0] + u*sample[1]) * size;
+}
+
+AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n.normalize()), size(s),A(s*s)
+{
+    real c = std::min(n.i, std::min(n.j,n.k));
+    if      (c==n.i){ u.i = 0; u.j = -n.k; u.k = n.j;}
+    else if (c==n.j){ u.j = 0; u.i = -n.k; u.k = n.i;}
+    else if (c==n.k){ u.k = 0; u.j = -n.i; u.i = n.j;}
+
+    u = u.normalize();
+    v = x_product(u,n);
+}
+
+Color AreaLight::getIrradianceAt(Vertex v, std::array<real, 2> sample)
+{
+    Vec3r vec = v - getPos(sample);
  return Intensity *A * dot_product(n,vec.normalize()) / dot_product(vec, vec);
 }
 

@@ -98,4 +98,9 @@ enum class FilterType
     GAUSSIAN_ZERO
 };
 
+enum class LightType
+{
+    POINT,
+    AREA
+};
 #endif //CENG795_TYPEDEFS_H

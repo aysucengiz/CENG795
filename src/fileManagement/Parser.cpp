@@ -101,7 +101,7 @@ void Parser::addLight(json pointLights, SceneInput& sceneInput)
         pl = new AreaLight(
             std::stoi(pointLights["_id"].get<std::string>()) - 1,
             (*t * Vec4r(Vertex(pointLights["Position"]))).getVertex(),
-            Color(pointLights["Intensity"]),
+            Color(pointLights["Radiance"]),
             (t->normalTransform * Vec4r(Vec3r(pointLights["Normal"]))).getVec3r(),
             std::stod(pointLights["Size"].get<std::string>()) - 1
         );

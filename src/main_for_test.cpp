@@ -13,9 +13,8 @@
 // her şey halloldu :)
 
 // hw 3
-// TODO: light sampling nasıl olacak?
-// TODO: aperture nasıl olacak?
-// TODO: motion blur eklenecek
+// TODO: cornellboxta delikler var
+// TODO: biraz noise var
 
 int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");

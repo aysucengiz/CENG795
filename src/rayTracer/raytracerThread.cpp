@@ -62,7 +62,6 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
 
 
 
-std::mt19937 gRandomGeneratorT;
 
 Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std::array<real,2>> &locs)
 {
@@ -105,12 +104,15 @@ void RaytracerThread::writeToImage(uint32_t &curr_pixel, Color &final_color)
     scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
 }
 
+
+std::mt19937 gRandomGeneratorT;
+
 void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
 {
     std::vector<Color> colors;
     colors.reserve(cam.numSamples);
     Ray viewing_ray;
-    std::shuffle(sampleIdxShuffled.begin(), sampleIdxShuffled.end(), gRandomGeneratorT);
+    std::shuffle(sampleIdxPixel.begin(), sampleIdxPixel.end(), gRandomGeneratorT);
     for (int i=0; i < cam.numSamples; i++)
     {
         viewing_ray = computeViewingRay(x, y, i);
@@ -126,22 +128,20 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
 Ray RaytracerThread::computeViewingRay(int x, int y, int i)
 {
     Ray viewing_ray;
-    real s_u = (x +cam.samples[i][0]) * (cam.r - cam.l) / cam.width;
-    real s_v = (y +cam.samples[i][1]) * (cam.t - cam.b) / cam.height;
+    real s_u = (x +cam.samples[sampleIdxPixel[i]][0]) * (cam.r - cam.l) / cam.width;
+    real s_v = (y +cam.samples[sampleIdxPixel[i]][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
+
+    viewing_ray.pos = cam.getPos(i);
+    viewing_ray.dir = s - cam.Position;
+
     if (cam.ApertureSize >0)
     {
-        viewing_ray.pos = cam.Position + cam.Up *(cam.samples[sampleIdxShuffled[i]][0]-0.5) + cam.V * (cam.samples[sampleIdxShuffled[i]][1]-0.5);
-        Vec3r dir = (s - cam.Position);
-        real t_fp = cam.FocusDistance / dot_product(dir,cam.Gaze);
-        viewing_ray.dir = (cam.Position + dir * t_fp) - viewing_ray.pos;
+        real t_fp = cam.FocusDistance / dot_product(viewing_ray.dir,cam.Gaze);
+        viewing_ray.dir = (cam.Position + viewing_ray.dir * t_fp) - viewing_ray.pos;
     }
-    else
-    {
-        viewing_ray.pos = cam.Position;
-        viewing_ray.dir = s - viewing_ray.pos;
-        viewing_ray.dir = viewing_ray.dir.normalize();
-    }
+
+    viewing_ray.dir = viewing_ray.dir.normalize();
     time = getRandomTime();
     return viewing_ray;
 }
@@ -204,11 +204,12 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
         {
             for (int i = 0; i < scene.numLights; i++)
             {
-                Ray shadow_ray = compute_shadow_ray(hit_record, i);
+                std::array<real,2> sample = {getRandom(),getRandom()};
+                Ray shadow_ray = compute_shadow_ray(hit_record, i, sample);
                 if (!isUnderShadow(shadow_ray))
                 {
                     real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.intersection_point);
+                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.intersection_point, sample);
                     if (cos_theta > 0)
                     {
                         //std::cout << "Draw" << std::endl;
@@ -245,7 +246,7 @@ Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, real cos_theta, 
 }
 
 Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray, real cos_theta, Color I_R_2,
-                                    Ray& shadow_ray) const
+                                    Ray& shadow_ray)
 {
     Material& m = hit_record.obj->material;
     if (m.SpecularReflectance.isBlack()) return Color();
@@ -255,11 +256,11 @@ Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray,
     return m.SpecularReflectance * I_R_2 * pow(cos_alpha, m.PhongExponent);
 }
 
-Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t i)
+Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t i, std::array<real,2> sample) const
 {
     Ray shadow_ray;
     shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    shadow_ray.dir = scene.PointLights[i]->Position - shadow_ray.pos;
+    shadow_ray.dir = scene.PointLights[i]->getPos(sample) - shadow_ray.pos;
     return shadow_ray;
 }
 
@@ -378,7 +379,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
     {
         if (dot_product(ray.dir, hit_record.normal) < 0)
         {   // entering
-            reflected = reflect(ray, depth + 1,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
+            reflected = reflect(ray, depth,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
         }
         else
         {   // (not) leaving
@@ -401,7 +402,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
         }
         else
         {   // leaving
-            refracted = computeColor(refractedRay,depth + 1, m2) * Ft;
+            refracted = computeColor(refractedRay,depth, m2) * Ft;
         }
     }
 
