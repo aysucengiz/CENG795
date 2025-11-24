@@ -22,5 +22,6 @@ Color G(std::array<real,2> locs, Color &inv_stddev_2);
 Color InvStdDev(Color &mean, std::vector<Color> &colors);
 Color Mean(std::vector<Color> &colors);
 real getRandom();
+real getRandomTime();
 std::pair<int,int> closestFactors(int n);
 #endif //CENG795_HELPERS_H
