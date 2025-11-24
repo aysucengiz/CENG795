@@ -434,9 +434,7 @@ Vertex Instance::getGlobal(Vertex v, real time) const
         fwt = &temp_f;
     }
     Vertex result;
-    if (time>0) result = (Translate(motion*time) *(*forwardTrans) * Vec4r(v)).getVertex();
-    else
-        result = ((*forwardTrans) * Vec4r(v)).getVertex();
+    result = ((*fwt) * Vec4r(v)).getVertex();
     return result;
 }
 

@@ -113,7 +113,7 @@ real getRandom()
     return gNURandomDistribution(gRandomGenerator);
 }
 std::mt19937 gRandomGeneratorTime;
-std::uniform_real_distribution<> gNURandomDistributionTime(0.9, 1);
+std::uniform_real_distribution<> gNURandomDistributionTime(0.8, 1);
 real getRandomTime()
 {
     return gNURandomDistributionTime(gRandomGeneratorTime);

@@ -132,7 +132,7 @@ Ray RaytracerThread::computeViewingRay(int x, int y, int i)
     else                     viewing_ray.pos = cam.Position;
     viewing_ray.dir = s - viewing_ray.pos;
     viewing_ray.dir = viewing_ray.dir.normalize();
-    time = getRandom();
+    time = getRandomTime();
     // std::cout << s << std::endl;
     return viewing_ray;
 }
