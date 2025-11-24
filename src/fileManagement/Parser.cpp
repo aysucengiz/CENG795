@@ -87,12 +87,12 @@ void Parser::addLight(json pointLights, SceneInput& sceneInput)
     if (pointLights.contains("Transformations"))
     {
         t = getTransFromStr(pointLights["Transformations"].get<std::string>(), sceneInput.transforms)->clone();
-        t->getNormalTransform();
     }
     else
     {
         t = std::make_shared<Composite>();
     }
+    t->getNormalTransform();
 
     PointLight* pl;
 

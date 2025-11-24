@@ -171,24 +171,30 @@ LightType AreaLight::getLightType() {return LightType::AREA;}
 
 Vertex AreaLight::getPos(std::array<real,2> sample)
 {
-    return Position + (v*sample[0] + u*sample[1]) * size;
+    return Position + (v*(sample[0]-0.5) + u*(sample[1]-0.5)) * size;
 }
+
+
 
 AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n.normalize()), size(s),A(s*s)
 {
-    real c = std::min(n.i, std::min(n.j,n.k));
-    if      (c==n.i){ u.i = 0; u.j = -n.k; u.k = n.j;}
-    else if (c==n.j){ u.j = 0; u.i = -n.k; u.k = n.i;}
-    else if (c==n.k){ u.k = 0; u.j = -n.i; u.i = n.j;}
+    real c = std::min(fabs(n.i), std::min(fabs(n.j),fabs(n.k)));
+    if      (c==fabs(n.i)){ u.i = 0; u.j = -n.k; u.k = n.j;}
+    else if (c==fabs(n.j)){ u.j = 0; u.i = -n.k; u.k = n.i;}
+    else if (c==fabs(n.k)){ u.k = 0; u.j = -n.i; u.i = n.j;}
 
+    std::cout << "u: " <<u << std::endl;
+    std::cout << "n: " <<n << std::endl;
     u = u.normalize();
-    v = x_product(u,n);
+    v = x_product(u,n).normalize();
+    std::cout << "u: " <<u << std::endl;
+    std::cout << "v: " << v << std::endl;
 }
 
-Color AreaLight::getIrradianceAt(Vertex v, std::array<real, 2> sample)
+Color AreaLight::getIrradianceAt(Vertex vec, std::array<real, 2> sample)
 {
-    Vec3r vec = v - getPos(sample);
- return Intensity *A * dot_product(n,vec.normalize()) / dot_product(vec, vec);
+    Vec3r l = vec - getPos(sample);
+    return Intensity *A * fabs(dot_product(n,l.normalize()))/ dot_product(l, l);
 }
 
 

@@ -379,7 +379,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
     {
         if (dot_product(ray.dir, hit_record.normal) < 0)
         {   // entering
-            reflected = reflect(ray, depth,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
+            reflected = reflect(ray, depth + 1,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
         }
         else
         {   // (not) leaving
@@ -402,7 +402,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
         }
         else
         {   // leaving
-            refracted = computeColor(refractedRay,depth, m2) * Ft;
+            refracted = computeColor(refractedRay,depth + 1, m2) * Ft;
         }
     }
 
