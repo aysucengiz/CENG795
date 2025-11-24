@@ -1,8 +1,8 @@
 {
   "Configuration": {
     "Prints": {
-      "Initialization": true,
-      "AccelerationCreation": true,
+      "Initialization": false,
+      "AccelerationCreation": false,
       "Progress": true
     },
     "Raytracer": {
@@ -24,11 +24,11 @@
       "AccelerationStruct": "bvh",
       "MaxObjInNode": 16,
       "PivotType": "sah",
-      "BackCulling": false
+      "BackCulling": true
     },
     "Sampling": {
       "SamplingType": "stratified",
-      "FilterType": "box"
+      "FilterType": "gaussian"
     },
     "Defaults": {
       "DefaultMaxDepth": 50,

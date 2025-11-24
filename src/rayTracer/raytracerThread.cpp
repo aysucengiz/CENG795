@@ -13,7 +13,7 @@
 
 std::mt19937 gRandomGeneratorT;
 
-Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std::array<double,2>> &locs)
+Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std::array<real,2>> &locs)
 {
     if (colors.size() == 1) return colors[0];
     Color result = Color(0.0,0.0,0.0);
@@ -115,6 +115,7 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         }
         curr_pixel += allw_batchw_3;
     }
+    if (scene.print_progress) PrintProgress();
 
 }
 
@@ -127,12 +128,12 @@ Ray RaytracerThread::computeViewingRay(int x, int y, int i)
     real s_u = (x +cam.samples[i][0]) * (cam.r - cam.l) / cam.width;
     real s_v = (y +cam.samples[i][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
-
     if (cam.ApertureSize >0) viewing_ray.pos = cam.Position + cam.Up *cam.samples[sampleIdxShuffled[i]][0] + cam.V * cam.samples[sampleIdxShuffled[i]][1];
-    else                viewing_ray.pos = cam.Position;
+    else                     viewing_ray.pos = cam.Position;
     viewing_ray.dir = s - viewing_ray.pos;
     viewing_ray.dir = viewing_ray.dir.normalize();
-    time = 0;//getRandom(); // TODO: motion denemesi için aç
+    time = getRandom();
+    // std::cout << s << std::endl;
     return viewing_ray;
 }
 
@@ -412,7 +413,7 @@ Ray RaytracerThread::reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_re
         n = -n;
         cos_theta = -cos_theta;
     }
-    double epsilon = scene.ShadowRayEpsilon;
+    real epsilon = scene.ShadowRayEpsilon;
     if (MaterialType::DIELECTRIC == type)epsilon = scene.IntersectionTestEpsilon;
     reflected_ray.pos = hit_record.intersection_point + n * epsilon;
     reflected_ray.dir = ray.dir + n * 2 * cos_theta;

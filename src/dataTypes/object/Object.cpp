@@ -26,7 +26,7 @@ Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin,  bool v)
 
 ObjectType Triangle::getObjectType()  const{ return ObjectType::TRIANGLE; }
 
-Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time) const
+Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time) const
 {
     intersectResult result;
     result.currTri = 0;
@@ -76,7 +76,7 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
 
 
 
-Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, double time)  const
+Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, real time)  const
 {
     if (shadingType == ShadingType::SMOOTH)
     {
@@ -139,7 +139,7 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m,  bool v)
 ObjectType Sphere::getObjectType()  const{ return ObjectType::SPHERE; }
 
 
-Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time)  const
+Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time)  const
 {
     intersectResult result;
     result.currTri = 0;
@@ -189,7 +189,7 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
     return result;
 }
 
-Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID, double time) const
+Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID, real time) const
 {
     return (v-center.v).normalize();
 }
@@ -215,7 +215,7 @@ Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINI
 
 ObjectType Plane::getObjectType() const {return ObjectType::PLANE;}
 
-Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, double time) const {
+Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time) const {
     real dot_r_n = dot_product(r.dir, n);
     intersectResult result;
     result.currTri = 0;
@@ -241,7 +241,7 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
     return result;
 }
 
-Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, double time) const { return n;}
+Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, real time) const { return n;}
 
 
 ////////////////////////////////////////////////
@@ -253,9 +253,9 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
 Object(mat,id,
     Vertex(),Vertex(),v), forwardTrans(std::move(trans))
 {
-    motion = Vec3r(0.0,0.0,0.0);
-    has_motion = false;
+    motion = m;
     if (m.i == 0.0 && m.j == 0.0 && m.k == 0.0) has_motion = false;
+    else has_motion = true;
     if (orig) { // unique
         original = o;
     } else { // share
@@ -274,100 +274,69 @@ Instance::~Instance()
 
 ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
 
- Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull, double time) const {
+ Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull, real time) const {
 
-    //std::cout << "Check Intersection of Instance" << std::endl;
-    // intersectResult result;
-    // result.t_min = t_min;
-    // result.currTri = 0;
-    // result.obj = nullptr;
-    // Composite temp_f ,temp_b;
-    // Transformation* bwt = backwardTrans.get();
-    // Transformation* fwt = forwardTrans.get();
-    // if (has_motion && time>0)
-    // {
-    //     Vec3r motion_At_time = motion*time;
-    //     temp_f = Translate(motion_At_time) * (*fwt);
-    //     temp_b = Translate(-motion_At_time) * (*bwt);
-    //     fwt = &temp_f;
-    //     bwt = &temp_b;
-    // }
-    // if (!shadow_test)
-    // {
-    //     Ray localRay = (*bwt) * ray;
-    //     result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
-    //     result.obj = result.obj ? this :nullptr;
-    //     return result;
-    // }
-    // else
-    // {
-    //     Ray localRay = (*bwt) * ray; // get the local light point
-    //     result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
-    //     if (result.obj)
-    //     {
-    //         Vertex intersect = localRay.pos + localRay.dir * t_min;
-    //         Vertex globalIntersect = ((*fwt) * Vec4r(intersect)).getVertex(); // o + t*d
-    //         result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
-    //         result.obj = this;
-    //         return result;
-    //     }
-    //     result.obj = nullptr;
-    //     return result;
-    // }
-
-    //std::cout << "Check Intersection of Instance" << std::endl;
-    intersectResult result;
-    result.t_min = t_min;
-    result.currTri = 0;
-    result.obj = nullptr;
-    if (!shadow_test)
-    {
-        Ray localRay = (*backwardTrans) * ray;
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0.0);
-        result.obj = result.obj ? this :nullptr;
-        return result;
-    }
-    else
-    {
-        Ray localRay = (*backwardTrans) * ray; // get the local light point
-        result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0.0);
-        if (result.obj)
-        {
-            Vertex intersect = localRay.pos + localRay.dir * t_min;
-            Vertex globalIntersect = getGlobal(intersect,0.0); // o + t*d
-            result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
-            result.obj = this;
-            // if (original->getObjectType()==ObjectType::MESH )std::cout << result.currTri << std::endl;
-            return result;
-        }
-        result.obj = nullptr;
-        return result;
-    }
-}
-
-Vec3r Instance::getNormal(const Vertex &v, uint32_t triID, double time) const {
-    // Composite temp_f ,temp_b;
-    // Transformation* bwt = backwardTrans.get();
-    // Transformation* fwt = forwardTrans.get();
-    // if (has_motion)
-    // {
-    //     Vec3r motion_At_time = motion*time;
-    //     temp_f = Translate(motion_At_time) * (*forwardTrans);
-    //     temp_b = Translate(-motion_At_time) * (*backwardTrans);
-    //     fwt = &temp_f;
-    //     fwt->getNormalTransform();
-    //     bwt = &temp_b;
-    // }
-    // Vertex localV = getLocal(v,time);
-    // Vec3r res = original->getNormal(localV,triID, 0);
-    // return  ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
-    Vertex localV =  getLocal(v,time);
-    Vec3r res = original->getNormal(localV,triID,0.0);
-    return  ((forwardTrans->normalTransform) * Vec4r(res)).getVec3r().normalize();
+    // std::cout << "Check Intersection of Instance" << std::endl;
+     intersectResult result;
+     result.t_min = t_min;
+     result.currTri = 0;
+     result.obj = nullptr;
+     Composite temp_f ,temp_b;
+     Transformation* bwt = backwardTrans.get();
+     Transformation* fwt = forwardTrans.get();
+     if (has_motion && time>0)
+     {
+         Vec3r motion_At_time = motion*time;
+         temp_f = Translate(motion_At_time) * (*fwt);
+         temp_b = Translate(-motion_At_time) * (*bwt);
+         fwt = &temp_f;
+         bwt = &temp_b;
+     }
+     if (!shadow_test)
+     {
+         Ray localRay = (*bwt) * ray;
+         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,time);
+         result.obj = result.obj ? this :nullptr;
+         return result;
+     }
+     else
+     {
+         Ray localRay = (*bwt) * ray; // get the local light point
+         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,time);
+         if (result.obj)
+         {
+             Vertex intersect = localRay.pos + localRay.dir * t_min;
+             Vertex globalIntersect = ((*fwt) * Vec4r(intersect)).getVertex(); // o + t*d
+             result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+             result.obj = this;
+             return result;
+         }
+         result.obj = nullptr;
+         return result;
+     }
 
 }
 
+Vec3r Instance::getNormal(const Vertex &v, uint32_t triID, real time) const {
+    Vertex localV = getLocal(v,time);
+    Vec3r res = original->getNormal(localV,triID, 0);
+    return  getGlobalNormal(res,time);
 
+}
+
+Vec3r Instance::getGlobalNormal(const Vec3r& res, double time) const
+{
+    Composite temp_f;
+    Transformation* fwt = forwardTrans.get();
+    if (has_motion)
+    {
+        Vec3r motion_At_time = motion*time;
+        temp_f = Translate(motion_At_time) * (*forwardTrans);
+        fwt = &temp_f;
+        fwt->getNormalTransform();
+    }
+    return ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
+}
 
 
 void Instance::computeGlobal()
@@ -408,33 +377,65 @@ Ray Instance::getLocal(Ray &r)
     return result;
 }
 
-Vertex Instance::getLocal(const Vertex &v, double time) const
+Vertex Instance::getLocal(const Vertex &v, real time) const
 {
+    Composite temp_b;
+    Transformation* bwt = backwardTrans.get();
+    if (has_motion && time > 0)
+    {
+        Vec3r motion_At_time = motion*time;
+        temp_b = Translate(-motion_At_time) * (*backwardTrans);
+        bwt = &temp_b;
+    }
     Vertex result;
-    result = ((*backwardTrans) * Vec4r(v)).getVertex();
+    result = ((*bwt) * Vec4r(v)).getVertex();
     return result;
 }
 
-Vec3r Instance::getLocal(Vec3r &v)
+Vec3r Instance::getLocal(Vec3r &v, real time)
 {
+    Composite temp_b;
+    Transformation* bwt = backwardTrans.get();
+    if (has_motion && time > 0)
+    {
+        Vec3r motion_At_time = motion*time;
+        temp_b = Translate(-motion_At_time) * (*backwardTrans);
+        bwt = &temp_b;
+    }
     Vec3r result;
-    result = ((*backwardTrans) * Vec4r(v)).getVec3r();
+    result = ((*bwt) * Vec4r(v)).getVec3r();
     return result;
 }
 
 
-Vec3r Instance::getGlobal(Vec3r &v)
+Vec3r Instance::getGlobal(Vec3r &v, double time)
 {
+    Composite temp_f;
+    Transformation* fwt = forwardTrans.get();
+    if (has_motion && time > 0)
+    {
+        Vec3r motion_At_time = motion*time;
+        temp_f = Translate(motion_At_time) * (*forwardTrans);
+        fwt = &temp_f;
+    }
     Vec3r result;
-    result = ((*forwardTrans) * Vec4r(v)).getVec3r();
+    result = ((*fwt) * Vec4r(v)).getVec3r();
     return result;
 }
 
-Vertex Instance::getGlobal(Vertex v, double time) const
+Vertex Instance::getGlobal(Vertex v, real time) const
 {
+    Composite temp_f;
+    Transformation* fwt = forwardTrans.get();
+    if (has_motion && time > 0)
+    {
+        Vec3r motion_At_time = motion*time;
+        temp_f = Translate(motion_At_time) * (*forwardTrans);
+        fwt = &temp_f;
+    }
     Vertex result;
-    // if (time>0) result = (Translate(motion*time) *(*forwardTrans) * Vec4r(v)).getVertex();
-    // else
+    if (time>0) result = (Translate(motion*time) *(*forwardTrans) * Vec4r(v)).getVertex();
+    else
         result = ((*forwardTrans) * Vec4r(v)).getVertex();
     return result;
 }

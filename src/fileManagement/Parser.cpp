@@ -237,7 +237,7 @@ void Parser::getObjects(json inp, SceneInput& sceneInput, std::string root)
         else for (int i = 0; i < numMeshes; i++) addMesh(Meshes[i], sceneInput, curr_id, root);
     }
     type4_instStartID = curr_id;
-    // std::cout <<"mesh done" << std::endl;
+    // std::cout <<"---------------------mesh done------------------" << std::endl;
 
 
     // getMeshInstances
@@ -502,11 +502,11 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
                                                              numVerticesUntilNow);
         if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput,
                                                         mes.contains("MotionBlur") ? Vec3r(mes["MotionBlur"]) : Vec3r(0.0,0.0,0.0));
-        // else if (mes.contains("MotionBlur"))addInstance("", tempm, sceneInput, Vec3r(mes["MotionBlur"]));
+        else if (mes.contains("MotionBlur"))addInstance("", tempm, sceneInput, Vec3r(mes["MotionBlur"]));
         else sceneInput.objects.push_back(tempm);
 
         curr_id++;
-        if (PRINTINIT) std::cout << "Mesh " << tempm->_id << " has " << tempm->Faces.size() << " faces." << std::endl;
+        if (PRINTINIT) std::cout <<*tempm << std::endl;
         //std::cout <<  temp_m << std::endl;
     }
 }
@@ -522,7 +522,6 @@ void Parser::addInstance(std::string transformations, Object* original, SceneInp
         motion,
         true
     ));
-
     if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
 }
 
@@ -540,6 +539,7 @@ void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
             orig_obj = (dynamic_cast<Instance*>(orig_obj)->original);
         }
     }
+    std::cout <<"motionblur: " <<( s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0)) << std::endl;
     sceneInput.objects.push_back(new Instance(
         std::stoi(s["_id"].get<std::string>()),
         orig_obj,
@@ -547,14 +547,11 @@ void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
         s.contains("Material")
             ? sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
             : orig_obj->material,
-        s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(),
+        s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0),
         false
     ));
 
-    std::cout << "---------------------------INSTANCE---------------------------\n";
-    std::cout << sceneInput.objects[sceneInput.objects.size()-1]->material.materialType << std::endl;
-    std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
-    // if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
+    if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
     curr_id++;
 }
 
@@ -608,7 +605,6 @@ std::shared_ptr<Transformation> Parser::getTransFromStr(std::string transStr,
                                                         std::vector<std::shared_ptr<Transformation>>& transforms)
 {
     std::shared_ptr<Transformation> transformation;
-    std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
     std::cout << transStr << std::endl;
     if (transStr == "")
     {

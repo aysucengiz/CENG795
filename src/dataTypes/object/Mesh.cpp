@@ -41,7 +41,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
             if (vertices.size() <= start_index+f[i][1])std::cout << vertices.size() <<" : " << start_index-1+f[i][1]<< std::endl;
             if (vertices.size() <= start_index+f[i][2])std::cout << vertices.size() <<" : " << start_index-1+f[i][2]<< std::endl;
 
-            if (f[i].size() == 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2] )
+            if (f[i].size() >= 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2] )
             {
                 Vertex minv = minVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
                 Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][1]].v,vertices[start_index+f[i][2]].v);
@@ -49,6 +49,20 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 globalBbox.vMin = minVert2(minv,globalBbox.vMin);
                 triangles.push_back(Triangle(triangles.size(),
                                             vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
+                                            m,
+                                            shadingtype,
+                                            v,
+                                            computeVNormals));
+            }
+
+            if (f[i].size() == 4 && f[i][3] != f[i][0] && f[i][3] != f[i][2])
+            {
+                Vertex minv = minVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][2]].v,vertices[start_index+f[i][3]].v);
+                Vertex maxv = maxVert3(vertices[start_index+f[i][0]].v,vertices[start_index+f[i][2]].v,vertices[start_index+f[i][3]].v);
+                globalBbox.vMax = maxVert2(maxv,globalBbox.vMax);
+                globalBbox.vMin = minVert2(minv,globalBbox.vMin);
+                triangles.push_back(Triangle(triangles.size(),
+                                            vertices[start_index+f[i][0]], vertices[start_index+f[i][2]], vertices[start_index+f[i][3]],
                                             m,
                                             shadingtype,
                                             v,
@@ -112,12 +126,12 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
 ObjectType Mesh::getObjectType() const{ return ObjectType::MESH; }
 
 
-Vec3r Mesh::getNormal(const Vertex &v, uint32_t triID, double time) const
+Vec3r Mesh::getNormal(const Vertex &v, uint32_t triID, real time) const
 {
     return Faces[triID]->getNormal(v,triID, time);
 }
 
-Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test, bool back_cull, double time) const
+Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test, bool back_cull, real time) const
 {
     intersectResult result;
     result.currTri = 0;

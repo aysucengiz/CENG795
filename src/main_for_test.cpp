@@ -22,6 +22,16 @@ int main(void) {
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
 
+    // raytracer.drawFile("jsonFiles/hw1/inputs/two_spheres.json");
+    // raytracer.drawFile("jsonFiles/hw1/inputs/simple.json");
+    // raytracer.drawAllFiles("jsonFiles/hw1/inputs/raven");
+    // // raytracer.drawFile("jsonFiles/hw2/inputs/ellipsoids.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/metal_glass_plates.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/akif_uslu/berserker/two_berserkers.json");
+
+    // raytracer.drawFile("jsonFiles/hw2/inputs/raven/glaring_davids.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/marching_dragons.json");
+    // raytracer.drawFile("jsonFiles/hw2/inputs/grass/grass_desert.json");
     raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_boxes_dynamic.json");
     return 0;
 

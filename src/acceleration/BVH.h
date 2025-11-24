@@ -53,7 +53,7 @@ public:
     int getSwapPos(PivotType pt, BBox bbox, Axes a, int start, int end, T& objects);
 
     template<typename Container>
-    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull, double time) const;
+    Object::intersectResult traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull, real time) const;
 
 };
 

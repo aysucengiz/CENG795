@@ -26,8 +26,8 @@ public:
          bool computeVNormals = true);
 
     ObjectType getObjectType() const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri, double time) const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
     ~Mesh();
 };
 

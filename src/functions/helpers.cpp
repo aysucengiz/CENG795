@@ -83,7 +83,7 @@ Axes next(Axes a)
 }
 
 
-Color G(std::array<double,2> locs, Color &inv_stddev_2)
+Color G(std::array<real,2> locs, Color &inv_stddev_2)
 {
     return inv_stddev_2/M_PI * (-inv_stddev_2*(locs[0]*locs[0] + locs[1]*locs[1])).exponent();
 }
@@ -108,7 +108,7 @@ Color InvStdDev(Color &mean, std::vector<Color> &colors)
 
 std::mt19937 gRandomGenerator;
 std::uniform_real_distribution<> gNURandomDistribution(0, 1);
-double getRandom()
+real getRandom()
 {
     return gNURandomDistribution(gRandomGenerator);
 }

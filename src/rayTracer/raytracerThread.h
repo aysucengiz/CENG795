@@ -24,7 +24,7 @@ private:
     const Material air;
     std::vector<int> sampleIdxs;
     std::vector<int> sampleIdxShuffled;
-    double time;
+    real time;
 
     // for recursive refraction
     //real n1;
@@ -46,7 +46,7 @@ public:
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0) {}
     Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
-    Color Filter(std::vector<Color>& colors, const std::vector<std::array<double,2>> &locs);
+    Color Filter(std::vector<Color>& colors, const std::vector<std::array<real,2>> &locs);
     void writeToImage(uint32_t& curr_pixel, Color& final_color);
     void drawPixel(uint32_t& curr_pixel, uint32_t x, uint32_t y);
     void PrintProgress();

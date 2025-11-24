@@ -18,9 +18,9 @@ Vertex minVert2(Vertex a, Vertex b);
 real dot_product(const Vec3r &a, const Vec3r &b);
 real determinant(const Vec3r &first, const Vec3r &second, const Vec3r &third );
 Axes next(Axes a);
-Color G(std::array<double,2> locs, Color &inv_stddev_2);
+Color G(std::array<real,2> locs, Color &inv_stddev_2);
 Color InvStdDev(Color &mean, std::vector<Color> &colors);
 Color Mean(std::vector<Color> &colors);
-double getRandom();
+real getRandom();
 std::pair<int,int> closestFactors(int n);
 #endif //CENG795_HELPERS_H

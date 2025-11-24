@@ -31,8 +31,8 @@ public:
     Vertex main_center;
     bool visible;
     virtual ObjectType getObjectType() const = 0;
-    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const = 0;
-    virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, double time) const = 0;
+    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const = 0;
+    virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, bool v = true);
 
@@ -49,8 +49,8 @@ public:
     ShadingType shadingType;
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, double time) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, real time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
 
     Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material, ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
@@ -66,8 +66,8 @@ public:
     Plane(uint32_t id, Vertex& v, std::string normal, Material& material, bool vis = true);
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
 
 };
 
@@ -84,8 +84,8 @@ public:
     Sphere(uint32_t id, CVertex& c, real r, Material& m, bool v = true);
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
 
 };
 
@@ -104,21 +104,23 @@ public:
     ~Instance();
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, double time) const override;
-    Vec3r getNormal(const Vertex& v, uint32_t currTri , double time) const override;
+    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
+    Vec3r getGlobalNormal(const Vec3r& res, double time) const;
 
 
     void computeGlobal();
     Ray getLocal(Ray& r);
-    Vertex getLocal(const Vertex& v, double time) const;
-    Vec3r getGlobal(Vec3r& v);
-    Vertex getGlobal(Vertex v, double time) const;
-    Vec3r getLocal(Vec3r& v);
+    Vertex getLocal(const Vertex& v, real time) const;
+    Vec3r getGlobal(Vec3r& v, double time);
+    Vertex getGlobal(Vertex v, real time) const;
+    Vec3r getLocal(Vec3r& v, real time);
 };
 
 
 struct SceneInput
 {
+    bool print_progress;
     bool back_cull;
     PivotType pt;
     uint32_t MaxObjCount;
