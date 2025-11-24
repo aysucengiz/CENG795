@@ -10,6 +10,57 @@
 #include "../functions/helpers.h"
 #include <stack>
 
+void RaytracerThread::PrintProgress()
+{
+#pragma omp atomic
+    done_threads++;
+#pragma omp critical
+    {
+        if (done_threads % scene.thread_group_size == 0)
+            std::cout << done_threads / scene.thread_group_size << "\t";
+        fflush(stdout);
+        if (done_threads % scene.thread_add_endl_after == 0 || done_threads == cam.height)
+            std::cout << std::endl;
+    }
+}
+
+void RaytracerThread::drawRow(uint32_t y)
+{
+    uint32_t curr_pixel = y * cam.width * 3;
+    uint32_t width = cam.width;
+    Color final_color;
+    for (uint32_t x = 0; x < width; x++)
+    {
+        drawPixel(curr_pixel, x, y);
+    }
+
+}
+
+void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
+{
+    uint32_t width = cam.width;
+    uint32_t height = cam.height;
+    uint32_t start_y = start_idx / width;
+    uint32_t start_x = start_idx % width;
+    uint32_t curr_pixel = start_idx * 3;
+    uint32_t end_y = std::min(start_y + h, height);
+    uint32_t end_x = std::min(start_x + w, width);
+    uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
+    Color final_color;
+    for (uint32_t y = start_y; y < end_y; y++)
+    {
+        for (uint32_t x = start_x; x < end_x; x++)
+        {
+            drawPixel(curr_pixel, x, y);
+
+        }
+        curr_pixel += allw_batchw_3;
+    }
+    if (scene.print_progress) PrintProgress();
+
+}
+
+
 
 std::mt19937 gRandomGeneratorT;
 
@@ -59,7 +110,7 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     std::vector<Color> colors;
     colors.reserve(cam.numSamples);
     Ray viewing_ray;
-    // std::shuffle(sampleIdxShuffled.begin(), sampleIdxShuffled.end(), gRandomGeneratorT);
+    std::shuffle(sampleIdxShuffled.begin(), sampleIdxShuffled.end(), gRandomGeneratorT);
     for (int i=0; i < cam.numSamples; i++)
     {
         viewing_ray = computeViewingRay(x, y, i);
@@ -67,56 +118,6 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     }
     Color final_color = Filter(colors,cam.samples);
     writeToImage(curr_pixel, final_color);
-}
-
-void RaytracerThread::PrintProgress()
-{
-    #pragma omp atomic
-        done_threads++;
-    #pragma omp critical
-        {
-            if (done_threads % scene.thread_group_size == 0)
-                std::cout << done_threads / scene.thread_group_size << "\t";
-            fflush(stdout);
-            if (done_threads % scene.thread_add_endl_after == 0 || done_threads == cam.height)
-                std::cout << std::endl;
-        }
-}
-
-void RaytracerThread::drawRow(uint32_t y)
-{
-    uint32_t curr_pixel = y * cam.width * 3;
-    uint32_t width = cam.width;
-    Color final_color;
-    for (uint32_t x = 0; x < width; x++)
-    {
-        drawPixel(curr_pixel, x, y);
-    }
-
-}
-
-void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
-{
-    uint32_t width = cam.width;
-    uint32_t height = cam.height;
-    uint32_t start_y = start_idx / width;
-    uint32_t start_x = start_idx % width;
-    uint32_t curr_pixel = start_idx * 3;
-    uint32_t end_y = std::min(start_y + h, height);
-    uint32_t end_x = std::min(start_x + w, width);
-    uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
-    Color final_color;
-    for (uint32_t y = start_y; y < end_y; y++)
-    {
-        for (uint32_t x = start_x; x < end_x; x++)
-        {
-            drawPixel(curr_pixel, x, y);
-
-        }
-        curr_pixel += allw_batchw_3;
-    }
-    if (scene.print_progress) PrintProgress();
-
 }
 
 
@@ -128,10 +129,19 @@ Ray RaytracerThread::computeViewingRay(int x, int y, int i)
     real s_u = (x +cam.samples[i][0]) * (cam.r - cam.l) / cam.width;
     real s_v = (y +cam.samples[i][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
-    if (cam.ApertureSize >0) viewing_ray.pos = cam.Position + cam.Up *cam.samples[sampleIdxShuffled[i]][0] + cam.V * cam.samples[sampleIdxShuffled[i]][1];
-    else                     viewing_ray.pos = cam.Position;
-    viewing_ray.dir = s - viewing_ray.pos;
-    viewing_ray.dir = viewing_ray.dir.normalize();
+    if (cam.ApertureSize >0)
+    {
+        viewing_ray.pos = cam.Position + cam.Up *(cam.samples[sampleIdxShuffled[i]][0]-0.5) + cam.V * (cam.samples[sampleIdxShuffled[i]][1]-0.5);
+        Vec3r dir = (s - cam.Position);
+        real t_fp = cam.FocusDistance / dot_product(dir,cam.Gaze);
+        viewing_ray.dir = (cam.Position + dir * t_fp) - viewing_ray.pos;
+    }
+    else
+    {
+        viewing_ray.pos = cam.Position;
+        viewing_ray.dir = s - viewing_ray.pos;
+        viewing_ray.dir = viewing_ray.dir.normalize();
+    }
     time = getRandomTime();
     return viewing_ray;
 }
