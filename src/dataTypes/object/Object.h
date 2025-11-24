@@ -112,6 +112,7 @@ public:
     void computeGlobal();
     Ray getLocal(Ray& r);
     Vertex getLocal(const Vertex& v, real time) const;
+    Ray getLocal(const Ray& r, real time) const;
     Vec3r getGlobal(Vec3r& v, double time);
     Vertex getGlobal(Vertex v, real time) const;
     Vec3r getLocal(Vec3r& v, real time);

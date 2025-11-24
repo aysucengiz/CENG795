@@ -281,32 +281,22 @@ ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
      result.t_min = t_min;
      result.currTri = 0;
      result.obj = nullptr;
-     Composite temp_f ,temp_b;
-     Transformation* bwt = backwardTrans.get();
-     Transformation* fwt = forwardTrans.get();
-     if (has_motion && time>0)
-     {
-         Vec3r motion_At_time = motion*time;
-         temp_f = Translate(motion_At_time) * (*fwt);
-         temp_b = Translate(-motion_At_time) * (*bwt);
-         fwt = &temp_f;
-         bwt = &temp_b;
-     }
+
      if (!shadow_test)
      {
-         Ray localRay = (*bwt) * ray;
-         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,time);
+         Ray localRay = getLocal(ray,time);
+         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
          result.obj = result.obj ? this :nullptr;
          return result;
      }
      else
      {
-         Ray localRay = (*bwt) * ray; // get the local light point
-         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,time);
+         Ray localRay = getLocal(ray,time); // get the local light point
+         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
          if (result.obj)
          {
              Vertex intersect = localRay.pos + localRay.dir * t_min;
-             Vertex globalIntersect = ((*fwt) * Vec4r(intersect)).getVertex(); // o + t*d
+             Vertex globalIntersect = getGlobal(intersect,time); // o + t*d
              result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
              result.obj = this;
              return result;
@@ -324,19 +314,7 @@ Vec3r Instance::getNormal(const Vertex &v, uint32_t triID, real time) const {
 
 }
 
-Vec3r Instance::getGlobalNormal(const Vec3r& res, double time) const
-{
-    Composite temp_f;
-    Transformation* fwt = forwardTrans.get();
-    if (has_motion)
-    {
-        Vec3r motion_At_time = motion*time;
-        temp_f = Translate(motion_At_time) * (*forwardTrans);
-        fwt = &temp_f;
-        fwt->getNormalTransform();
-    }
-    return ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
-}
+
 
 
 void Instance::computeGlobal()
@@ -369,73 +347,50 @@ void Instance::computeGlobal()
     }
 }
 
-Ray Instance::getLocal(Ray &r)
-{
-    Ray result;
-    result.pos = ((*backwardTrans) * Vec4r(r.pos)).getVertex();
-    result.dir = ((*backwardTrans) * Vec4r(r.dir)).getVec3r();
-    return result;
-}
-
 Vertex Instance::getLocal(const Vertex &v, real time) const
 {
-    Composite temp_b;
-    Transformation* bwt = backwardTrans.get();
-    if (has_motion && time > 0)
-    {
-        Vec3r motion_At_time = motion*time;
-        temp_b = Translate(-motion_At_time) * (*backwardTrans);
-        bwt = &temp_b;
-    }
-    Vertex result;
-    result = ((*bwt) * Vec4r(v)).getVertex();
-    return result;
+    if (has_motion && time > 0)  return ((*backwardTrans)*Translate(-motion*time) * Vec4r(v)).getVertex();
+    else                         return ((*backwardTrans)*Vec4r(v)).getVertex();
+}
+
+Ray Instance::getLocal(const Ray& r, real time) const
+{
+    if (has_motion && time > 0) return (*backwardTrans) * Translate(-motion*time) * r;
+    else                        return (*backwardTrans) * r;
 }
 
 Vec3r Instance::getLocal(Vec3r &v, real time)
 {
-    Composite temp_b;
-    Transformation* bwt = backwardTrans.get();
-    if (has_motion && time > 0)
-    {
-        Vec3r motion_At_time = motion*time;
-        temp_b = Translate(-motion_At_time) * (*backwardTrans);
-        bwt = &temp_b;
-    }
-    Vec3r result;
-    result = ((*bwt) * Vec4r(v)).getVec3r();
-    return result;
+    if (has_motion && time > 0)  return ((*backwardTrans)*Translate(-motion*time) * Vec4r(v)).getVec3r();
+    else                         return ((*backwardTrans)*Vec4r(v)).getVec3r();
 }
 
+///// GET GLOBAL //////
 
 Vec3r Instance::getGlobal(Vec3r &v, double time)
 {
-    Composite temp_f;
-    Transformation* fwt = forwardTrans.get();
-    if (has_motion && time > 0)
-    {
-        Vec3r motion_At_time = motion*time;
-        temp_f = Translate(motion_At_time) * (*forwardTrans);
-        fwt = &temp_f;
-    }
-    Vec3r result;
-    result = ((*fwt) * Vec4r(v)).getVec3r();
-    return result;
+    if (has_motion && time > 0)  return (Translate(motion*time) *(*forwardTrans)* Vec4r(v)).getVec3r();
+    else                         return ((*forwardTrans)*Vec4r(v)).getVec3r();
 }
 
 Vertex Instance::getGlobal(Vertex v, real time) const
 {
+    if (has_motion && time > 0)  return (Translate(motion*time) *(*forwardTrans)* Vec4r(v)).getVertex();
+    else                         return ((*forwardTrans)*Vec4r(v)).getVertex();
+}
+
+Vec3r Instance::getGlobalNormal(const Vec3r& res, double time) const
+{
     Composite temp_f;
     Transformation* fwt = forwardTrans.get();
     if (has_motion && time > 0)
     {
-        Vec3r motion_At_time = motion*time;
-        temp_f = Translate(motion_At_time) * (*forwardTrans);
+        temp_f = Translate(motion*time) * (*forwardTrans);
         fwt = &temp_f;
+        fwt->getNormalTransform();
     }
-    Vertex result;
-    result = ((*fwt) * Vec4r(v)).getVertex();
-    return result;
+    return ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
 }
+
 
 
