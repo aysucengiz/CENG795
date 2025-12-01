@@ -27,7 +27,7 @@
       "BackCulling": true
     },
     "Sampling": {
-      "SamplingType": "multi_jittered",
+      "SamplingType": "stratified",
       "FilterType": "gaussian"
     },
     "Defaults": {

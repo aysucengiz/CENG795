@@ -83,6 +83,7 @@ Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> l
     t = locs[3];
     initializeSamples(st, samplesPixel);
     initializeSamples(st, samplesCamera);
+    initializeSamples(st, samplesLight);
 }
 
 
@@ -136,7 +137,7 @@ void Camera::initializeSamples(SamplingType st, std::vector<std::array<real, 2>>
             std::shuffle(cols.begin(), cols.end(), gRandomGeneratorC);
 
             std::vector<int> rows(numSamples);
-            for (int i = 0; i <numSamples; i++) cols[i] = i;
+            for (int i = 0; i <numSamples; i++) rows[i] = i;
             std::shuffle(rows.begin(), rows.end(), gRandomGeneratorC);
 
             real spacing = 1.0 / real(numSamples);
@@ -151,7 +152,7 @@ void Camera::initializeSamples(SamplingType st, std::vector<std::array<real, 2>>
         break;
     }
 
-    for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
+    // for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
 
 
 
@@ -202,12 +203,11 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : P
 
 
 
-    std::cout << "u: " <<u << std::endl;
-    std::cout << "n: " <<n << std::endl;
+    // std::cout << "n: " <<n << std::endl;
     u = u.normalize();
-    v = x_product(u,n).normalize();
-    std::cout << "u: " <<u << std::endl;
-    std::cout << "v: " << v << std::endl;
+    v = x_product(n,u).normalize();
+    // std::cout << "u: " <<u << std::endl;
+    // std::cout << "v: " << v << std::endl;
 }
 
 Color AreaLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray &shadow_ray)
@@ -215,9 +215,11 @@ Color AreaLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray 
     Vec3r wi = shadow_ray.dir.normalize();
     real cos_theta = dot_product(wi, n_surf.normalize());
     real cos_light = dot_product(n,wi);
-    if (cos_light <= 0) return Color(0.0,0.0,0.0);
+    if (cos_light <= 0) cos_light = -cos_light;
+        // return Color(0.0,0.0,0.0);
+    // if (cos_theta <= 0) -
     // std::cout << A << " " << size << " " << n << std::endl;
-    return  Intensity * A* cos_light*cos_theta / dot_product(shadow_ray.dir, shadow_ray.dir);
+    return  Intensity * A* cos_light*fabs(cos_theta) / dot_product(shadow_ray.dir, shadow_ray.dir);
 }
 
 

@@ -539,7 +539,7 @@ void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
             orig_obj = (dynamic_cast<Instance*>(orig_obj)->original);
         }
     }
-    std::cout <<"motionblur: " <<( s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0)) << std::endl;
+    if (PRINTINIT) std::cout <<"motionblur: " <<( s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0)) << std::endl;
     sceneInput.objects.push_back(new Instance(
         std::stoi(s["_id"].get<std::string>()),
         orig_obj,
@@ -605,7 +605,7 @@ std::shared_ptr<Transformation> Parser::getTransFromStr(std::string transStr,
                                                         std::vector<std::shared_ptr<Transformation>>& transforms)
 {
     std::shared_ptr<Transformation> transformation;
-    std::cout << transStr << std::endl;
+    // std::cout << transStr << std::endl;
     if (transStr == "")
     {
         transformation = std::make_shared<Translate>(Vertex(0, 0, 0));

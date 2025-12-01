@@ -111,14 +111,14 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
 
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<std::chrono::milliseconds>(stop - start).count();
-    std::cout << "mesh init: " << duration/1000.0 << std::endl;
+    // std::cout << "mesh init: " << duration/1000.0 << std::endl;
     if (ACCELERATE)
     {
         start = std::chrono::high_resolution_clock::now();
         bvh.getScene(Faces);
         stop = std::chrono::high_resolution_clock::now();
         duration = duration_cast<std::chrono::milliseconds>(stop - start).count();
-        std::cout << "bvh: " << duration/1000.0 << std::endl;
+        // std::cout << "bvh: " << duration/1000.0 << std::endl;
     }
 
 }

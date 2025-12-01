@@ -23,6 +23,7 @@ private:
     const BVH &bvh;
     const Material air;
     std::vector<int> sampleIdxPixel;
+    std::vector<int> sampleIdxLight;
     real time;
 
     // for recursive refraction
@@ -36,18 +37,22 @@ public:
     scene(_scene), cam(camID), bvh(_bvh), air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0)
     {
         sampleIdxPixel.reserve(cam.numSamples);
+        sampleIdxLight.reserve(cam.numSamples);
         for (int i = 0; i < cam.numSamples; i++)
         {
             sampleIdxPixel.push_back(i);
+            sampleIdxLight.push_back(i);
         }
     }
 
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0)
     {
         sampleIdxPixel.reserve(cam.numSamples);
+        sampleIdxLight.reserve(cam.numSamples);
         for (int i = 0; i < cam.numSamples; i++)
         {
             sampleIdxPixel.push_back(i);
+            sampleIdxLight.push_back(i);
         }
     }
     Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
@@ -58,7 +63,7 @@ public:
     void drawRow(uint32_t y);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
     Ray computeViewingRay(int x, int y, int i);
-    Color computeColor(Ray &ray, int depth, const Material &m1);
+    Color computeColor(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);
     Ray compute_shadow_ray(const HitRecord& hit_record, uint32_t i, std::array<real, 2> sample) const;

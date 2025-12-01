@@ -20,16 +20,18 @@ int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
-
+    //
     // raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_boxes_dynamic.json");
+    // raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_area.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/spheres_dof.json");
-    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight.json");
-    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight_dof.json");
-    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight_dof_glass_queen.json");
-    raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_area.json");
+    // raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight.json");
+    // raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight_dof.json");
+    // raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight_dof_glass_queen.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/dragon_dynamic.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/focusing_dragons.json");
-    // raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_boxes_dynamic.json");
+    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/deadmau5.json");
+    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/wine_glass.json");
+    raytracer.drawAllFiles("jsonFiles/hw3/inputs/tap_water/json");
     return 0;
 
     // std::cout << raytracer << std::endl;

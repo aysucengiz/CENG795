@@ -85,7 +85,7 @@ Axes next(Axes a)
 
 real G(std::array<real,2> locs, real &inv_stddev_2)
 {
-    return inv_stddev_2/M_PI * exp(-inv_stddev_2*(locs[0]*locs[0] + locs[1]*locs[1]));
+    return inv_stddev_2/M_PI * exp(-inv_stddev_2*((locs[0]-0.5)*(locs[0]-0.5) + (locs[1]-0.5)*(locs[1]-0.5)));
 }
 
 Color Mean(std::vector<Color> &colors)
@@ -98,12 +98,14 @@ Color Mean(std::vector<Color> &colors)
 
 real InvStdDev(Color &mean, std::vector<Color> &colors)
 {
-    return 1.0 / (2.0 * 0.5 * 0.5);
-    // int size = colors.size();
-    // Color inv_stdev_2 = Color(0.0,0.0,0.0);
-    // for (int i=0; i< size; i++) inv_stdev_2 += (colors[i]-mean) * (colors[i]-mean);
-    // inv_stdev_2 =  inv_stdev_2 / (size - 1);
-    // return Color(1.0,1.0,1.0) / inv_stdev_2;
+    // return 1.0 / (2.0 * 0.5 * 0.5);
+    int size = colors.size();
+    Color inv_stdev_2 = Color(0.0,0.0,0.0);
+    for (int i=0; i< size; i++) inv_stdev_2 += (colors[i]-mean) * (colors[i]-mean);
+    // std::cout << inv_stdev_2 << std::endl;
+    inv_stdev_2 =  inv_stdev_2 / (size - 1);
+    double res =  1.0 / (inv_stdev_2.r*inv_stdev_2.r + inv_stdev_2.g*inv_stdev_2.g + inv_stdev_2.b * inv_stdev_2.b);
+    return std::max(std::min(res,1.0),0.1);
 }
 
 
