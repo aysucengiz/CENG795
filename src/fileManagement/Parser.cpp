@@ -103,7 +103,7 @@ void Parser::addLight(json pointLights, SceneInput& sceneInput)
             (*t * Vec4r(Vertex(pointLights["Position"]))).getVertex(),
             Color(pointLights["Radiance"]),
             (t->normalTransform * Vec4r(Vec3r(pointLights["Normal"]))).getVec3r(),
-            std::stod(pointLights["Size"].get<std::string>()) - 1
+            std::stod(pointLights["Size"].get<std::string>())
         );
     }
     else

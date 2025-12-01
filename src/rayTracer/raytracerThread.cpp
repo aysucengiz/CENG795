@@ -74,14 +74,14 @@ Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std:
         {
             // Here x and y are distances from the pixel center
             Color mean = Mean(colors);
-            Color inv_stdev_2 = InvStdDev(mean,colors) *0.5;
-            Color sumG = Color(0.0, 0.0, 0.0);
-            Color sumGI = Color(0.0, 0.0, 0.0);
+            real inv_stdev_2 = InvStdDev(mean,colors) *0.5;
+            real sumG = 0.0;
+            Color sumGI = Color(0.0,0.0,0.0);
             for (int i=0; i< size; i++)
             {
-                Color g = G(locs[i], inv_stdev_2);
+                real g = G(locs[i], inv_stdev_2);
                 sumG  += g;
-                sumGI += g * colors[i];
+                sumGI += colors[i]*g;
             }
             result = sumGI / sumG;
         }
@@ -118,7 +118,7 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
         viewing_ray = computeViewingRay(x, y, i);
         colors.push_back(computeColor(viewing_ray, 0, air));
     }
-    Color final_color = Filter(colors,cam.samples);
+    Color final_color = Filter(colors,cam.samplesPixel);
     writeToImage(curr_pixel, final_color);
 }
 
@@ -128,8 +128,8 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
 Ray RaytracerThread::computeViewingRay(int x, int y, int i)
 {
     Ray viewing_ray;
-    real s_u = (x +cam.samples[sampleIdxPixel[i]][0]) * (cam.r - cam.l) / cam.width;
-    real s_v = (y +cam.samples[sampleIdxPixel[i]][1]) * (cam.t - cam.b) / cam.height;
+    real s_u = (x +cam.samplesPixel[sampleIdxPixel[i]][0]) * (cam.r - cam.l) / cam.width;
+    real s_v = (y +cam.samplesPixel[sampleIdxPixel[i]][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
 
     viewing_ray.pos = cam.getPos(i);
@@ -208,13 +208,11 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
                 Ray shadow_ray = compute_shadow_ray(hit_record, i, sample);
                 if (!isUnderShadow(shadow_ray))
                 {
-                    real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.intersection_point, sample);
-                    if (cos_theta > 0)
+                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.normal, sample, shadow_ray);
+                    if (!irradiance.isBlack())
                     {
                         //std::cout << "Draw" << std::endl;
-                        curr_color += diffuseTerm(hit_record, cos_theta, irradiance) + specularTerm(
-                            hit_record, ray, cos_theta, irradiance, shadow_ray);
+                        curr_color += diffuseTerm(hit_record, irradiance) + specularTerm(hit_record, ray, irradiance, shadow_ray);
                         Color ac1 = m1.AbsorptionCoefficient;
                         if (!ac1.isBlack())
                         {
@@ -240,12 +238,12 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1)
     return curr_color;
 }
 
-Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, real cos_theta, Color I_R_2)
+Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, Color I_R_2)
 {
-    return hit_record.obj->material.DiffuseReflectance * I_R_2 * cos_theta;
+    return hit_record.obj->material.DiffuseReflectance * I_R_2;
 }
 
-Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray, real cos_theta, Color I_R_2,
+Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray,Color I_R_2,
                                     Ray& shadow_ray)
 {
     Material& m = hit_record.obj->material;

@@ -81,12 +81,13 @@ Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> l
     r = locs[1];
     b = locs[2];
     t = locs[3];
-    initializeSamples(st);
+    initializeSamples(st, samplesPixel);
+    initializeSamples(st, samplesCamera);
 }
 
 
 std::mt19937 gRandomGeneratorC;
-void Camera::initializeSamples(SamplingType st)
+void Camera::initializeSamples(SamplingType st, std::vector<std::array<real, 2>> &samples)
 {
     samples.clear();
     if (numSamples == 1)
@@ -128,7 +129,21 @@ void Camera::initializeSamples(SamplingType st)
                     samples.push_back({(cols[i]+getRandom())*spacing, (i+getRandom())*spacing});
         }
         break;
-    case SamplingType::MULTI_JITTERED: // TODO: not implemented
+    case SamplingType::MULTI_JITTERED:
+        {
+            std::vector<int> cols(numSamples);
+            for (int i = 0; i < numSamples; i++) cols[i] = i;
+            std::shuffle(cols.begin(), cols.end(), gRandomGeneratorC);
+
+            std::vector<int> rows(numSamples);
+            for (int i = 0; i <numSamples; i++) cols[i] = i;
+            std::shuffle(rows.begin(), rows.end(), gRandomGeneratorC);
+
+            real spacing = 1.0 / real(numSamples);
+            for (int i=0; i < numSamples; i++)
+                    samples.push_back({(rows[i]+getRandom())*spacing, (cols[i]+getRandom())*spacing});
+        }
+        break;
     case SamplingType::RANDOM:
     default:
         samples.reserve(numSamples);
@@ -136,7 +151,7 @@ void Camera::initializeSamples(SamplingType st)
         break;
     }
 
-    // for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
+    for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
 
 
 
@@ -144,7 +159,7 @@ void Camera::initializeSamples(SamplingType st)
 
 Vertex Camera::getPos(int i) const
 {
-    if (ApertureSize > 0)  return Position + (Up *(samples[i][0]-0.5) + V * (samples[i][1]-0.5))*ApertureSize;
+    if (ApertureSize > 0)  return Position + (Up *(samplesCamera[i][0]-0.5) + V * (samplesCamera[i][1]-0.5))*ApertureSize;
     else                   return Position;
 }
 
@@ -154,10 +169,12 @@ Vertex Camera::getPos(int i) const
 
 PointLight::PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
 
-Color PointLight::getIrradianceAt(Vertex v, std::array<real,2> sample)
+Color PointLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray& shadow_ray)
 {
-    Vec3r vec = v - Position;
-    return Intensity / dot_product(vec, vec);
+    Vec3r wi = shadow_ray.dir.normalize();
+    real cos_theta = dot_product(wi, n_surf.normalize());
+    if (cos_theta <= 0) return Color(0.0,0.0,0.0);
+    return Intensity * cos_theta / dot_product(shadow_ray.dir, shadow_ray.dir);
 }
 
 Vertex PointLight::getPos(std::array<real, 2> sample)
@@ -183,6 +200,8 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : P
     else if (c==fabs(n.j)){ u.j = 0; u.i = -n.k; u.k = n.i;}
     else if (c==fabs(n.k)){ u.k = 0; u.j = -n.i; u.i = n.j;}
 
+
+
     std::cout << "u: " <<u << std::endl;
     std::cout << "n: " <<n << std::endl;
     u = u.normalize();
@@ -191,10 +210,14 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : P
     std::cout << "v: " << v << std::endl;
 }
 
-Color AreaLight::getIrradianceAt(Vertex vec, std::array<real, 2> sample)
+Color AreaLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray &shadow_ray)
 {
-    Vec3r l = vec - getPos(sample);
-    return Intensity *A * fabs(dot_product(n,l.normalize()))/ dot_product(l, l);
+    Vec3r wi = shadow_ray.dir.normalize();
+    real cos_theta = dot_product(wi, n_surf.normalize());
+    real cos_light = dot_product(n,wi);
+    if (cos_light <= 0) return Color(0.0,0.0,0.0);
+    // std::cout << A << " " << size << " " << n << std::endl;
+    return  Intensity * A* cos_light*cos_theta / dot_product(shadow_ray.dir, shadow_ray.dir);
 }
 
 

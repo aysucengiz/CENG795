@@ -21,6 +21,7 @@ int main(void) {
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
 
+    // raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_boxes_dynamic.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/spheres_dof.json");
     raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight.json");
     raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/chessboard_arealight_dof.json");
