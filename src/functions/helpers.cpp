@@ -135,6 +135,20 @@ std::pair<int,int> closestFactors(int n) {
 
 
 
+std::pair<Vec3r, Vec3r> getONB(Vec3r n)
+{
+    // orthogonal basis
+    Vec3r u, v;
+    real c = std::min(fabs(n.i), std::min(fabs(n.j),fabs(n.k)));
+    if      (c==fabs(n.i)){ u.i = 0; u.j = -n.k; u.k = n.j;}
+    else if (c==fabs(n.j)){ u.j = 0; u.i = -n.k; u.k = n.i;}
+    else if (c==fabs(n.k)){ u.k = 0; u.j = -n.i; u.i = n.j;}
+    u = u.normalize();
+    v = x_product(n,u).normalize();
+    return std::pair<Vec3r,Vec3r>(u,v);
+}
+
+
 
 
 

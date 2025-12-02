@@ -10,7 +10,8 @@
 
 int main(int argc, char* argv[])
 {
-    RayTracer raytracer;
+    json data = Parser::getJsonDataFromFile("configs.json");
+    RayTracer raytracer(data["Configuration"]);
     raytracer.parseScene(argv[1]);
     if (argc > 2) raytracer.drawScene(std::stoi(argv[2]));
     else          raytracer.drawAllScenes();

@@ -83,11 +83,11 @@ Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std:
             }
             else
             {
-                for (int i=0; i< size; i++)
+                for (int j=0; j< size; j++)
                 {
-                    real g = G(locs[i], inv_stdev_2);
+                    real g = G(locs[j], inv_stdev_2);
                     sumG  += g;
-                    sumGI += colors[i]*g;
+                    sumGI += colors[j]*g;
                 }
                 result = sumGI / sumG;
             }
@@ -96,7 +96,7 @@ Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std:
     case FilterType::BOX:
     default:
         {
-            for (int i=0; i< colors.size(); i++) result += colors[i];
+            for (int j=0; j< colors.size(); j++) result += colors[j];
             result = result / size;
         }
         break;
@@ -119,16 +119,20 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     colors.reserve(cam.numSamples);
     Ray viewing_ray;
 
-    std::mt19937 gRandomGeneratorT(919 + x + y);
-    std::shuffle(sampleIdxPixel.begin(), sampleIdxPixel.end(), gRandomGeneratorT);
+    std::mt19937 gRandomGeneratorP(919 + x + y);
+    std::shuffle(sampleIdxPixel.begin(), sampleIdxPixel.end(), gRandomGeneratorP);
     std::mt19937 gRandomGeneratorL(42 + x + y);
     std::shuffle(sampleIdxLight.begin(), sampleIdxLight.end(), gRandomGeneratorL);
-    for (int i=0; i < cam.numSamples; i++)
+    std::mt19937 gRandomGeneratorT(133 + x + y);
+    std::shuffle(sampleIdxTime.begin(), sampleIdxTime.end(), gRandomGeneratorT);
+    std::mt19937 gRandomGeneratorG(237 + x + y);
+    std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
+    for (sampleIdx=0; sampleIdx < cam.numSamples; sampleIdx++)
     {
         // if (x==380 && y==500)
         {
-            viewing_ray = computeViewingRay(x, y, i);
-            colors.push_back(computeColor(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[i]]));
+            viewing_ray = computeViewingRay(x, y);
+            colors.push_back(computeColor(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
         }}
     // if (x==380 && y==500)
     {
@@ -140,14 +144,14 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
 
 
 
-Ray RaytracerThread::computeViewingRay(int x, int y, int i)
+Ray RaytracerThread::computeViewingRay(int x, int y)
 {
     Ray viewing_ray;
-    real s_u = (x +cam.samplesPixel[sampleIdxPixel[i]][0]) * (cam.r - cam.l) / cam.width;
-    real s_v = (y +cam.samplesPixel[sampleIdxPixel[i]][1]) * (cam.t - cam.b) / cam.height;
+    real s_u = (x +cam.samplesPixel[sampleIdxPixel[sampleIdx]][0]) * (cam.r - cam.l) / cam.width;
+    real s_v = (y +cam.samplesPixel[sampleIdxPixel[sampleIdx]][1]) * (cam.t - cam.b) / cam.height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
 
-    viewing_ray.pos = cam.getPos(i);
+    viewing_ray.pos = cam.getPos(sampleIdx);
     Vec3r dir = s - cam.Position;
 
     if (cam.ApertureSize >0)
@@ -161,7 +165,7 @@ Ray RaytracerThread::computeViewingRay(int x, int y, int i)
     }
 
     viewing_ray.dir = viewing_ray.dir.normalize();
-    time = getRandomTime();
+    time = cam.samplesTime[sampleIdxTime[sampleIdx]];
     return viewing_ray;
 }
 
@@ -221,13 +225,13 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
         }
 
         {
-            for (int i = 0; i < scene.numLights; i++)
+            for (int j = 0; j < scene.numLights; j++)
             {
                 // std::array<real ,2> light_sample = {getRandom(),getRandom()};
-                Ray shadow_ray = compute_shadow_ray(hit_record, i, light_sample);
+                Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
                 if (!isUnderShadow(shadow_ray))
                 {
-                    Color irradiance = scene.PointLights[i]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray);
+                    Color irradiance = scene.PointLights[j]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray);
                     if (!irradiance.isBlack())
                     {
                         //std::cout << "Draw" << std::endl;
@@ -273,11 +277,11 @@ Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray,
     return m.SpecularReflectance * I_R_2 * pow(cos_alpha, m.PhongExponent);
 }
 
-Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t i, std::array<real,2> sample) const
+Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx, std::array<real,2> sample) const
 {
     Ray shadow_ray;
     shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    Vertex pospos = scene.PointLights[i]->getPos(sample);
+    Vertex pospos = scene.PointLights[lightIdx]->getPos(sample);
     shadow_ray.dir = pospos - shadow_ray.pos;
     return shadow_ray;
 }
@@ -291,9 +295,9 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
     temp_obj.t_min = INFINITY;
     t_min = INFINITY;
 
-    for (int i = scene.numObjects; i < scene.numPlanes; i++)
+    for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
-        temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false, back_cull,time);
+        temp_obj = scene.objects[j]->checkIntersection(ray, t_min, false, back_cull,time);
 
         if (temp_obj.obj != nullptr)
         {
@@ -315,9 +319,9 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
     }
     else
     {
-        for (int i = 0; i < scene.numObjects; i++)
+        for (int j = 0; j < scene.numObjects; j++)
         {
-            temp_obj = scene.objects[i]->checkIntersection(ray, t_min, false,back_cull,time);
+            temp_obj = scene.objects[j]->checkIntersection(ray, t_min, false,back_cull,time);
 
             if (temp_obj.obj != nullptr)
             {
@@ -337,7 +341,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
     }
 }
 
-Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec3r n, real& Fr, real& Ft)
+Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec3r n, real& Fr, real& Ft, real roughness)
 {
     real cos_theta = -dot_product(n, ray.dir);
     Vec3r n_refr = n.normalize();
@@ -372,6 +376,18 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
     if (Fr > 1.0) Fr = 1.0;
     Ft = 1.0 - Fr;
     refracted_ray.dir = (ray.dir.normalize()+ n_refr * cos_theta) * n1_n2 - n_refr * cos_phi;
+    if (roughness != 0.0)
+    {
+        std::pair<Vec3r,Vec3r> onb = getONB(n);
+        Vec3r u = onb.first;
+        Vec3r v = onb.second;
+        // reflected_ray.dir = reflected_ray.dir + (v*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][0]-0.5) +
+        //                                          u*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][1]-0.5))
+        //                                         *hit_record.obj->material.Roughness;
+        refracted_ray.dir = refracted_ray.dir + (v*(getRandom()-0.5) +
+                                                 u*(getRandom()-0.5))
+                                                *roughness;
+    }
     refracted_ray.dir = refracted_ray.dir.normalize();
     refracted_ray.pos = point + refracted_ray.dir * scene.IntersectionTestEpsilon;
     return refracted_ray;
@@ -391,13 +407,13 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
     // info about entering material
     real n2 = m2.RefractionIndex;
 
-    Ray refractedRay = refractionRay(ray, n1, n2, hit_record.intersection_point, hit_record.normal, Fr, Ft);
+    Ray refractedRay = refractionRay(ray, n1, n2, hit_record.intersection_point, hit_record.normal, Fr, Ft, hit_record.obj->material.Roughness);
 
     if (Fr > 0.0)
     {
         if (dot_product(ray.dir, hit_record.normal) < 0)
         {   // entering
-            reflected = reflect(ray, depth + 1,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
+            reflected = reflect(ray, depth,MaterialType::DIELECTRIC, hit_record,m1) * Fr;
         }
         else
         {   // (not) leaving
@@ -405,7 +421,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
             HitRecord temp_hit_record;
             real t_min = INFINITY;
             checkObjIntersection(reflection_ray,t_min,temp_hit_record,false);
-            reflected = refract(reflection_ray, depth + 1, m1,m2, temp_hit_record) * Fr;
+            if (temp_hit_record.obj != nullptr) reflected = refract(reflection_ray, depth + 1, m1,m2, temp_hit_record) * Fr;
         }// std::cout << m2.AbsorptionCoefficient << std::endl;
 
     }
@@ -416,7 +432,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
             HitRecord temp_hit_record;
             real t_min = INFINITY;
             checkObjIntersection(refractedRay,t_min,temp_hit_record,false);
-            refracted = refract(refractedRay, depth + 1, m2,m1, temp_hit_record) * Ft;
+            if (temp_hit_record.obj != nullptr) refracted = refract(refractedRay, depth + 1, m2,m1, temp_hit_record) * Ft;
         }
         else
         {   // leaving
@@ -436,16 +452,31 @@ Ray RaytracerThread::reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_re
     Ray reflected_ray;
     Vec3r n = hit_record.normal.normalize();
 
+
+
     real cos_theta = dot_product(n, -ray.dir.normalize());
     if (cos_theta < 0)
     {
         n = -n;
         cos_theta = -cos_theta;
     }
+
     real epsilon = scene.ShadowRayEpsilon;
     if (MaterialType::DIELECTRIC == type)epsilon = scene.IntersectionTestEpsilon;
     reflected_ray.pos = hit_record.intersection_point + n * epsilon;
     reflected_ray.dir = ray.dir + n * 2 * cos_theta;
+    if (hit_record.obj->material.Roughness != 0.0)
+    {
+        std::pair<Vec3r,Vec3r> onb = getONB(n);
+        Vec3r u = onb.first;
+        Vec3r v = onb.second;
+        // reflected_ray.dir = reflected_ray.dir + (v*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][0]-0.5) +
+        //                                          u*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][1]-0.5))
+        //                                         *hit_record.obj->material.Roughness;
+        reflected_ray.dir = reflected_ray.dir + (v*(getRandom()-0.5) +
+                                                 u*(getRandom()-0.5))
+                                                *hit_record.obj->material.Roughness;
+    }
     return reflected_ray;
 }
 

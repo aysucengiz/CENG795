@@ -84,6 +84,8 @@ Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> l
     initializeSamples(st, samplesPixel);
     initializeSamples(st, samplesCamera);
     initializeSamples(st, samplesLight);
+    initializeSamples(st, samplesGlossy);
+    initializeSamples2D(st, samplesTime);
 }
 
 
@@ -153,6 +155,49 @@ void Camera::initializeSamples(SamplingType st, std::vector<std::array<real, 2>>
     }
 
     // for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
+
+
+
+}
+
+
+void Camera::initializeSamples2D(SamplingType st, std::vector<real> &samples)
+{
+    samples.clear();
+    if (numSamples == 1)
+    {
+        samples.push_back(0.5);
+        return;
+    }
+
+    samples.reserve(numSamples);
+    switch (st)
+    {
+    case SamplingType::UNIFORM:
+        {
+            real spacing = 1.0 / (numSamples+1);
+            for (int x=0; x <numSamples; x++)
+               samples.push_back((x+1.0)*spacing);
+        }break;
+    case SamplingType::STRATIFIED:
+    case SamplingType::N_ROOKS:
+    case SamplingType::MULTI_JITTERED:
+        {
+
+            real spacing = 1.0 / real(numSamples);
+            for (int x=0; x <numSamples; x++)
+                samples.push_back((x+getRandom())*spacing);
+        }
+        break;
+    case SamplingType::RANDOM:
+    default:
+        samples.reserve(numSamples);
+        for (int i = 0; i < numSamples; i++) samples.push_back(getRandom());
+        break;
+    }
+
+    // for (auto sample : samples) std::cout << "sample: "<< sample[0] << " " << sample[1]  << std::endl;
+
 
 
 
