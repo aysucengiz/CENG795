@@ -113,7 +113,7 @@ void Camera::initializeSamples(SamplingType st, std::vector<std::array<real, 2>>
         }break;
     case SamplingType::STRATIFIED:
         {
-            std::cout << row_col.first << " " << row_col.second << std::endl;
+            // std::cout << row_col.first << " " << row_col.second << std::endl;
             real spacing_x = 1.0 / real(row_col.first);
             real spacing_y = 1.0 / real(row_col.second);
             for (int y=0; y < row_col.second; y++)
