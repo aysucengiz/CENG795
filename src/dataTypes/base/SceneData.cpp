@@ -215,12 +215,12 @@ Vertex Camera::getPos(int i) const
 
 PointLight::PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
 
-Color PointLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray& shadow_ray)
+Color PointLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray& shadow_ray, real dist)
 {
     Vec3r wi = shadow_ray.dir.normalize();
     real cos_theta = dot_product(wi, n_surf.normalize());
     if (cos_theta <= 0) return Color(0.0,0.0,0.0);
-    return Intensity * cos_theta / dot_product(shadow_ray.dir, shadow_ray.dir);
+    return Intensity / (dist*dist);
 }
 
 Vertex PointLight::getPos(std::array<real, 2> sample)
@@ -246,8 +246,6 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : P
     else if (c==fabs(n.j)){ u.j = 0; u.i = -n.k; u.k = n.i;}
     else if (c==fabs(n.k)){ u.k = 0; u.j = -n.i; u.i = n.j;}
 
-
-
     // std::cout << "n: " <<n << std::endl;
     u = u.normalize();
     v = x_product(n,u).normalize();
@@ -255,16 +253,12 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : P
     // std::cout << "v: " << v << std::endl;
 }
 
-Color AreaLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray &shadow_ray)
+Color AreaLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist)
 {
     Vec3r wi = shadow_ray.dir.normalize();
-    real cos_theta = dot_product(wi, n_surf.normalize());
     real cos_light = dot_product(n,wi);
     if (cos_light <= 0) cos_light = -cos_light;
-        // return Color(0.0,0.0,0.0);
-    // if (cos_theta <= 0) -
-    // std::cout << A << " " << size << " " << n << std::endl;
-    return  Intensity * A* cos_light*fabs(cos_theta) / dot_product(shadow_ray.dir, shadow_ray.dir);
+    return  Intensity * A* cos_light / (dist*dist);
 }
 
 

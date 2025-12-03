@@ -80,7 +80,7 @@ public:
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);
     Ray compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx, std::array<real, 2> sample) const;
-    static Color diffuseTerm(const HitRecord &hit_record, Color I_R_2);
+    static Color diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta);
     static Color specularTerm(const HitRecord &hit_record, const Ray &ray,Color I_R_2, Ray &shadow_ray);
 
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, const Material &m1);

@@ -25,4 +25,6 @@ real getRandom();
 real getRandomTime();
 std::pair<int,int> closestFactors(int n);
 std::pair<Vec3r,Vec3r> getONB(Vec3r n);
+
+
 #endif //CENG795_HELPERS_H

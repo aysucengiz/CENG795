@@ -4,7 +4,7 @@
 
 #include "Vectors.h"
 #include "../../functions/overloads.h"
-
+#include "../../functions/helpers.h"
 
 ////////////////////////////////////////////////
 //////////////////// VEC3R /////////////////////
@@ -40,6 +40,7 @@ Vec3r& Vec3r::operator/=(const uint32_t& other) {
 
 Vec3r Vec3r::normalize() const{return (*this)/this->mag();}
 real Vec3r::mag() const { return sqrt(i*i + j*j + k*k);}
+
 
 
 ////////////////////////////////////////////////
@@ -78,6 +79,18 @@ Ray& Ray::operator=(const Ray &r)
 Ray::Ray(Vertex p, Vec3r d) : pos(p), dir(d){}
 
 Vec3r x_product(const Vec3r &v, const Vec3r &w);
+
+
+void Ray::shiftRayBy(std::array<real, 2> samples, real roughness)
+{
+    if (roughness != 0.0)
+    {
+        std::pair<Vec3r,Vec3r> onb = getONB(dir);
+        Vec3r u = onb.first;
+        Vec3r v = onb.second;
+        dir = dir + ((v*(samples[0]-0.5) + u*(samples[1]-0.5)) *roughness);
+    }
+}
 
 ////////////////////////////////////////////////
 //////////////////// VEC4R /////////////////////

@@ -3,7 +3,7 @@
     "Prints": {
       "Initialization": false,
       "AccelerationCreation": false,
-      "Progress": true
+      "Progress": false
     },
     "Raytracer": {
       "OutputDir": "outputs/",
@@ -28,7 +28,7 @@
     },
     "Sampling": {
       "SamplingType": "stratified",
-      "FilterType": "gaussian"
+      "FilterType": "box"
     },
     "Defaults": {
       "DefaultMaxDepth": 50,

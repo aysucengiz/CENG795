@@ -5,6 +5,7 @@
 #ifndef CENG795_VECTORS_H
 #define CENG795_VECTORS_H
 
+#include <array>
 #include <sstream>
 #include <string>
 #include <cmath>
@@ -48,6 +49,7 @@ struct Ray{
     Ray(const Ray &r);
     Ray(Vertex p, Vec3r d);
     Ray& operator=(const Ray &r);
+    void shiftRayBy(std::array<real,2> samples, real roughness);
 };
 
 Vec3r x_product(const Vec3r &v, const Vec3r &w);

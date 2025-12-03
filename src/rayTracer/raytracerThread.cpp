@@ -94,12 +94,13 @@ Color RaytracerThread::Filter(std::vector<Color> &colors, const std::vector<std:
         }
         break;
     case FilterType::BOX:
-    default:
         {
             for (int j=0; j< colors.size(); j++) result += colors[j];
             result = result / size;
         }
         break;
+    default:
+        result = colors[0];
     }
     return result;
 }
@@ -129,12 +130,12 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
     for (sampleIdx=0; sampleIdx < cam.numSamples; sampleIdx++)
     {
-        // if (x==380 && y==500)
+        // if (x==647 && y==478)
         {
             viewing_ray = computeViewingRay(x, y);
             colors.push_back(computeColor(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
         }}
-    // if (x==380 && y==500)
+    // if (x==647 && y==478)
     {
         Color final_color = Filter(colors,cam.samplesPixel);
         writeToImage(curr_pixel, final_color);
@@ -231,11 +232,13 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
                 Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
                 if (!isUnderShadow(shadow_ray))
                 {
-                    Color irradiance = scene.PointLights[j]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray);
+                    Color irradiance = scene.PointLights[j]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray, (hit_record.intersection_point -  scene.PointLights[j]->getPos(light_sample)).mag());
                     if (!irradiance.isBlack())
                     {
                         //std::cout << "Draw" << std::endl;
-                        curr_color += diffuseTerm(hit_record, irradiance) + specularTerm(hit_record, ray, irradiance, shadow_ray);
+
+                        real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
+                        curr_color += diffuseTerm(hit_record, irradiance, cos_theta) + specularTerm(hit_record, ray, irradiance, shadow_ray);
                         Color ac1 = m1.AbsorptionCoefficient;
                         if (!ac1.isBlack())
                         {
@@ -261,9 +264,9 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
     return curr_color;
 }
 
-Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, Color I_R_2)
+Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta)
 {
-    return hit_record.obj->material.DiffuseReflectance * I_R_2;
+    return hit_record.obj->material.DiffuseReflectance * cos_theta* I_R_2;
 }
 
 Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray,Color I_R_2,
@@ -376,18 +379,7 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
     if (Fr > 1.0) Fr = 1.0;
     Ft = 1.0 - Fr;
     refracted_ray.dir = (ray.dir.normalize()+ n_refr * cos_theta) * n1_n2 - n_refr * cos_phi;
-    if (roughness != 0.0)
-    {
-        std::pair<Vec3r,Vec3r> onb = getONB(n);
-        Vec3r u = onb.first;
-        Vec3r v = onb.second;
-        // reflected_ray.dir = reflected_ray.dir + (v*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][0]-0.5) +
-        //                                          u*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][1]-0.5))
-        //                                         *hit_record.obj->material.Roughness;
-        refracted_ray.dir = refracted_ray.dir + (v*(getRandom()-0.5) +
-                                                 u*(getRandom()-0.5))
-                                                *roughness;
-    }
+    refracted_ray.shiftRayBy({getRandom(),getRandom()},roughness);
     refracted_ray.dir = refracted_ray.dir.normalize();
     refracted_ray.pos = point + refracted_ray.dir * scene.IntersectionTestEpsilon;
     return refracted_ray;
@@ -453,6 +445,7 @@ Ray RaytracerThread::reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_re
     Vec3r n = hit_record.normal.normalize();
 
 
+    // std::cout << n << std::endl;
 
     real cos_theta = dot_product(n, -ray.dir.normalize());
     if (cos_theta < 0)
@@ -465,18 +458,8 @@ Ray RaytracerThread::reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_re
     if (MaterialType::DIELECTRIC == type)epsilon = scene.IntersectionTestEpsilon;
     reflected_ray.pos = hit_record.intersection_point + n * epsilon;
     reflected_ray.dir = ray.dir + n * 2 * cos_theta;
-    if (hit_record.obj->material.Roughness != 0.0)
-    {
-        std::pair<Vec3r,Vec3r> onb = getONB(n);
-        Vec3r u = onb.first;
-        Vec3r v = onb.second;
-        // reflected_ray.dir = reflected_ray.dir + (v*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][0]-0.5) +
-        //                                          u*(cam.samplesGlossy[sampleIdxGlossy[sampleIdx]][1]-0.5))
-        //                                         *hit_record.obj->material.Roughness;
-        reflected_ray.dir = reflected_ray.dir + (v*(getRandom()-0.5) +
-                                                 u*(getRandom()-0.5))
-                                                *hit_record.obj->material.Roughness;
-    }
+    reflected_ray.shiftRayBy({getRandom(),getRandom()},hit_record.obj->material.Roughness);
+    reflected_ray.dir = reflected_ray.dir.normalize();
     return reflected_ray;
 }
 

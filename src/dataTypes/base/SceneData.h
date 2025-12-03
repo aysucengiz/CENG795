@@ -71,7 +71,7 @@ public:
 
     PointLight(uint32_t id, Vertex pos, Color intens);
     virtual LightType getLightType();
-    virtual Color getIrradianceAt(Vec3r n, std::array<real, 2> sample, Ray& shadow_ray);
+    virtual Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist);
     virtual Vertex getPos(std::array<real, 2> sample);
 };
 
@@ -87,7 +87,7 @@ public:
 
 
     AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real Size);
-    Color getIrradianceAt(Vec3r n,  std::array<real, 2> sample, Ray& shadow_ray) override;
+    Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist) override;
     LightType getLightType() override;
     Vertex getPos(std::array<real, 2> sample) override;
 };
