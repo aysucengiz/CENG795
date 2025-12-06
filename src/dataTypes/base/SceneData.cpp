@@ -241,14 +241,9 @@ Vertex AreaLight::getPos(std::array<real,2> sample)
 
 AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n.normalize()), size(s),A(s*s)
 {
-    real c = std::min(fabs(n.i), std::min(fabs(n.j),fabs(n.k)));
-    if      (c==fabs(n.i)){ u.i = 0; u.j = -n.k; u.k = n.j;}
-    else if (c==fabs(n.j)){ u.j = 0; u.i = -n.k; u.k = n.i;}
-    else if (c==fabs(n.k)){ u.k = 0; u.j = -n.i; u.i = n.j;}
-
-    // std::cout << "n: " <<n << std::endl;
-    u = u.normalize();
-    v = x_product(n,u).normalize();
+    std::pair<Vec3r,Vec3r> u_v = getONB(n);
+    u = u_v.first.normalize();
+    v = u_v.second.normalize();
     // std::cout << "u: " <<u << std::endl;
     // std::cout << "v: " << v << std::endl;
 }

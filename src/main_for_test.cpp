@@ -41,8 +41,8 @@ int main(void) {
     // raytracer.drawFile("jsonFiles/hw3/inputs/cornellbox_brushed_metal.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/metal_glass_plates.json");
     // raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/deadmau5_scene.json");
-    // raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/wine_glass_scene.json");
-    raytracer.drawAllFiles("jsonFiles/hw3/inputs/tap_water/json");
+    raytracer.drawFile("jsonFiles/hw3/inputs/ramazan_tokay/wine_glass_scene.json");
+    // raytracer.drawAllFiles("jsonFiles/hw3/inputs/tap_water/json");
     return 0;
 
     // std::cout << raytracer << std::endl;

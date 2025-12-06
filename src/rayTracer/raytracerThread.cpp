@@ -51,7 +51,8 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
     {
         for (uint32_t x = start_x; x < end_x; x++)
         {
-            drawPixel(curr_pixel, x, y);
+            // if (x==408 && y==452)
+                drawPixel(curr_pixel, x, y);
 
         }
         curr_pixel += allw_batchw_3;
@@ -130,16 +131,13 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
     for (sampleIdx=0; sampleIdx < cam.numSamples; sampleIdx++)
     {
-        // if (x==647 && y==478)
-        {
             viewing_ray = computeViewingRay(x, y);
             colors.push_back(computeColor(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
-        }}
-    // if (x==647 && y==478)
-    {
-        Color final_color = Filter(colors,cam.samplesPixel);
-        writeToImage(curr_pixel, final_color);
     }
+
+    Color final_color = Filter(colors,cam.samplesPixel);
+    writeToImage(curr_pixel, final_color);
+
 }
 
 
@@ -388,7 +386,14 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
 
 Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Material &m2, HitRecord& hit_record)
 {
-    if (depth > scene.MaxRecursionDepth) return Color();
+    if (depth > scene.MaxRecursionDepth)
+    {
+        Color ac1 = m1.AbsorptionCoefficient;
+        Color eCx = Color(1.0,1.0,1.0);
+        if (!ac1.isBlack())
+            eCx = (-ac1 * (ray.pos - hit_record.intersection_point).mag()).exponent();
+        return eCx;
+    }
     Color reflected, refracted;
     real Fr = 0.0, Ft = 1.0;
 
@@ -429,13 +434,14 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
         else
         {   // leaving
             std::array<real,2> sample = {getRandom(),getRandom()};
-            refracted = computeColor(refractedRay,depth + 1, m2,sample) * Ft;
+            refracted = computeColor(refractedRay,depth, m2,sample) * Ft;
         }
     }
 
     //std::cout << "Refracted" << std::endl;
     Color eCx = Color(1.0,1.0,1.0);
     if (!ac1.isBlack()) eCx = (-ac1 * (ray.pos - hit_record.intersection_point ).mag()).exponent();
+    if ((reflected + refracted - eCx).isBlack()) return eCx;
     return (reflected + refracted)* eCx;
 }
 

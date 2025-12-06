@@ -33,6 +33,8 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     PRINTINIT = print_init;
     json inp = getJsonDataFromFile(inpFile);
     std::string root = inpFile.substr(0, inpFile.find_last_of('/')) + "/";
+    if (root.starts_with(inpFile)) root = "";
+    std::cout << "root: " << root << std::endl;
 
     if (PRINTINIT) std::cout << "Scene Input: " << std::endl;
 

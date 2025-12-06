@@ -28,7 +28,7 @@
     },
     "Sampling": {
       "SamplingType": "stratified",
-      "FilterType": "box"
+      "FilterType": "gaussian"
     },
     "Defaults": {
       "DefaultMaxDepth": 50,
