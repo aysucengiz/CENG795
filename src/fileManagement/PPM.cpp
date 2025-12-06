@@ -4,6 +4,9 @@
 
 #include "PPM.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <iostream>
+
+#include "stb_image.h"
 #include "stb_image_write.h"
 
 void PPM::write_ppm(const char* filename, unsigned char* data, int width, int height)
@@ -29,3 +32,16 @@ void PPM::write_stb(const char* filename, unsigned char* data, int width, int he
 
     std::runtime_error("Failed to save image!");
 }
+
+
+unsigned char* PPM::read_image(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)
+{
+    unsigned char* data = stbi_load(filename, &width, &height, &channels_in_file, desired_channels);
+
+    if(!data)
+    {
+        std::cerr << "Adresin yanlış adresin. Bir kere de düzgün hallet şu adres işini seni file özürlüsü.\n";
+    }
+    return data;
+}
+

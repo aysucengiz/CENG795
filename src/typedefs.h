@@ -103,4 +103,11 @@ enum class LightType
     POINT,
     AREA
 };
+
+enum class TextureType
+{
+    IMAGE,
+    PERLIN,
+    CHECKERBOARD
+};
 #endif //CENG795_TYPEDEFS_H
