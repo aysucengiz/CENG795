@@ -21,7 +21,7 @@ AccelerationType getAcceleration(const std::string &s);
 PivotType getPivot(const std::string &s);
 TextureType getTextureType(const std::string &s);
 DecalMode getDecalMode(const std::string &s);
-
+Interpolation getInterpolation(const std::string &s);
 
 Texel operator -(const Texel &a, const Texel &b);
 Texel operator +(const Texel &a, const Texel &b);

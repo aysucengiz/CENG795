@@ -121,7 +121,6 @@ enum class DecalMode
     BUMP_NORMAL,
     REPLACE_ALL
 };
-
 enum class Interpolation
 {
     NEAREST,

@@ -25,9 +25,7 @@ real getRandom();
 real getRandomTime();
 std::pair<int,int> closestFactors(int n);
 std::pair<Vec3r,Vec3r> getONB(Vec3r n);
-
 real lerp(real t, real a, real b);
-real grad(int hash, real x, real y, real z);
-
-
+real lerp2D(Texel t, std::array<real, 4> a);
+real lerp3D(Vec3r t, std::array<real, 8> a);
 #endif //CENG795_HELPERS_H

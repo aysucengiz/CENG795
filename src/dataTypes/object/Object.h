@@ -30,18 +30,19 @@ public:
     Material& material;
     BBox globalBbox;
     Vertex main_center;
-    std::vector<Texture*> textures;
+    Texture *DiffuseTexture;
+    Texture *SpecularTexture;
+    Texture *NormalTexture;
     bool visible;
     virtual ObjectType getObjectType() const = 0;
     virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
-    Color diffuseTerm(Color I_R_2, real cos_theta) const;
+    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert) const;
     Color GetColourAt(Color I_R_2,real cos_theta,  const Vec3r &normal, const Ray& ray, Ray& shadow_ray) const;
-    Color specularTerm(const Vec3r &normal, const Ray& ray,Color I_R_2,
-                                        Ray& shadow_ray) const;
+    Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
+                       Ray& shadow_ray, Vertex& vert) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
-
 };
 
 ///////////////////////////////////////////////
@@ -167,6 +168,7 @@ struct SceneInput
     // transformations
     std::vector<std::shared_ptr<Transformation>> transforms;
     std::vector<Texture*> textures;
+    Texture *BackgroundTexture;
     std::vector<Image> images;
 
     // precomputed near plane info

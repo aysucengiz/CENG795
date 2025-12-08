@@ -6,6 +6,7 @@
 #define CENG795_TEXTUREMAP_H
 
 #include <functional>
+#include <random>
 
 #include "../base/SceneData.h"
 
@@ -34,10 +35,7 @@ public:
     Image(uint32_t id, std::string filename);
 };
 
-struct Decal
-{
-    DecalMode decalMode;
-};
+
 
 class Texture
 {
@@ -45,8 +43,9 @@ public:
     virtual ~Texture() = default;
     uint32_t _id;
     TextureType type;
-    Decal decal;
-    Texture(uint32_t i, TextureType t, DecalMode d) : _id(i), type(t), decal(d) {}
+    DecalMode decalMode;
+    Texture(uint32_t i, TextureType t, DecalMode d) : _id(i), type(t), decalMode(d)
+    {}
     virtual Color TextureColor(Vertex vert) = 0;
 };
 
@@ -73,17 +72,36 @@ public:
     };
 };
 
+class PerlinNoise
+{
+    static void init()
+    {
+        // TODO: pnin ilk 256 elemanını initlemedik?
+        for (int i=0; i < 256 ; i++) perm[i] = i;
+        std::shuffle(perm, perm + 256, std::mt19937(std::random_device()()));
+        for (int i=0; i < 256 ; i++) P[256+i] = P[i] = perm[i];
+    }
+    static int P[512];
+
+    static real lerp(real t, real a, real b);
+    static real grad(int hash, Vertex vert);
+    static Vec3r fade(Vertex vert);
+    static real fade(real t);
+    static int perm[256];
+public:
+    static Color perlin(real x, real y, real z);
+};
+
 class PerlinTexture : public Texture
 {
 public:
-    static int P[512];
 
     std::function<real(real)> convertNoise;
     real NoiseScale;
     int NumOctaves;
     PerlinTexture(uint32_t id, TextureType t, DecalMode d,std::function<real(real)> c, real ns, int no) : Texture(id, t, d), NumOctaves(no), convertNoise(c), NoiseScale(ns) {}
     Color TextureColor(Vertex vert) override;
-    Color perlin(real x, real y, real z);
+
 };
 
 class CheckerTexture : public Texture
@@ -96,6 +114,8 @@ public:
     CheckerTexture(uint32_t id, TextureType t, DecalMode d, Color bc, Color wc, real s, real offs) :
     Texture(id, t, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
     Color TextureColor(Vertex vert) override;
+    bool IsOnWhite(real i);
+    bool IsOnWhite(Vertex vert);
 
 };
 

@@ -15,48 +15,87 @@
 ////////////////////////////////////////////////
 
 Object::~Object() = default;
-Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin,std::vector<Texture*> ts ,  bool v)
-        : material(m), _id(id), textures(ts),
-          globalBbox(vMax, vMin), visible(v) {}
 
-Color Object::GetColourAt(Color I_R_2,real cos_theta,  const Vec3r &normal, const Ray& ray, Ray& shadow_ray) const
+Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts, bool v)
+    : material(m), _id(id),
+      globalBbox(vMax, vMin), visible(v)
 {
-    // TODO: bu termlerde eğer texture gerekli kılıyorsa kd ya da ks değiştirilecek
-    return diffuseTerm(I_R_2, cos_theta) + specularTerm(normal,ray,I_R_2,shadow_ray);
+    NormalTexture = nullptr;
+    SpecularTexture = nullptr;
+    DiffuseTexture = nullptr;
+    for (int i = 0; i < ts.size(); i++)
+    {
+        switch (ts[i]->decalMode)
+        {
+        case DecalMode::BUMP_NORMAL:
+        case DecalMode::REPLACE_NORMAL:
+            NormalTexture = ts[i];
+            break;
+        case DecalMode::BLEND_KD:
+        case DecalMode::REPLACE_KD:
+            DiffuseTexture = ts[i];
+            break;
+        case DecalMode::REPLACE_KS:
+            SpecularTexture = ts[i];
+            break;
+        case DecalMode::REPLACE_ALL:
+            SpecularTexture = ts[i];
+            DiffuseTexture = ts[i];
+            NormalTexture = ts[i];
+            break;
+        default:
+            break;
+        }
+    }
 }
 
-Color Object::diffuseTerm(Color I_R_2, real cos_theta) const
+Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray) const
 {
-    return material.DiffuseReflectance * cos_theta* I_R_2;
+    return diffuseTerm(I_R_2, cos_theta, shadow_ray.pos) + specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos);
 }
-Color Object::specularTerm(const Vec3r &normal, const Ray& ray,Color I_R_2,
-                                    Ray& shadow_ray) const
+
+Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert) const
+{
+    Color kd = material.DiffuseReflectance;
+    if (DiffuseTexture != nullptr)
+    {
+        if (DiffuseTexture->decalMode == DecalMode::REPLACE_KD) kd = DiffuseTexture->TextureColor(vert);
+        else if (DiffuseTexture->decalMode == DecalMode::BLEND_KD) kd = (kd + DiffuseTexture->TextureColor(vert))/2.0;
+    }
+    return kd * cos_theta * I_R_2;
+}
+
+Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
+                           Ray& shadow_ray, Vertex &vert) const
 {
     if (material.SpecularReflectance.isBlack()) return Color();
     Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
     real cos_alpha = dot_product(normal, h);
-    if (cos_alpha < 0) return Color();
-    return material.SpecularReflectance * I_R_2 * pow(cos_alpha, material.PhongExponent);
+    if (cos_alpha < 0) return Color(0.0,0.0,0.0);
+    Color ks = material.SpecularReflectance;
+    if (SpecularTexture != nullptr) ks = SpecularTexture->TextureColor(vert);
+    return ks * I_R_2 * pow(cos_alpha, material.PhongExponent);
 }
 
 ////////////////////////////////////////////////
 ///////////////// TRIANGLE /////////////////////
 ////////////////////////////////////////////////
 
-ObjectType Triangle::getObjectType()  const{ return ObjectType::TRIANGLE; }
+ObjectType Triangle::getObjectType() const { return ObjectType::TRIANGLE; }
 
-Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time) const
+Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
+                                                    real time) const
 {
     intersectResult result;
     result.currTri = 0;
     result.t_min = t_min;
     result.obj = nullptr;
     if (!visible) return result;
-    if (back_cull&& !shadow_test && dot_product(r.dir,n) >=0 ) return result;
+    if (back_cull && !shadow_test && dot_product(r.dir, n) >= 0) return result;
     if (globalBbox.intersects(r))
     {
         Vec3r a_o = a.v - r.pos;
-        real det_A = determinant(a_b,a_c,r.dir);
+        real det_A = determinant(a_b, a_c, r.dir);
         if (det_A == 0)
         {
             //std::cout << "a_b: " << a_b << " a_c: " << a_c << " a: " << a.v << " b: " << b.v << " c: " << c.v  <<  std::endl;
@@ -64,17 +103,18 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
             return result;
         }
 
-        real beta = determinant(a_o,a_c,r.dir) / det_A;
-        if (beta > 1)  return result;
+        real beta = determinant(a_o, a_c, r.dir) / det_A;
+        if (beta > 1) return result;
 
-        real gamma = determinant(a_b,a_o,r.dir) / det_A;
+        real gamma = determinant(a_b, a_o, r.dir) / det_A;
         if (gamma > 1) return result;
 
-        if(beta >= 0 && gamma >= 0 && beta+gamma <= 1)
-        { // there is an intersection
-            real t_temp = determinant(a_b,a_c,a_o) / det_A;
+        if (beta >= 0 && gamma >= 0 && beta + gamma <= 1)
+        {
+            // there is an intersection
+            real t_temp = determinant(a_b, a_c, a_o) / det_A;
 
-            if (!shadow_test && t_temp < t_min && t_temp>0 )
+            if (!shadow_test && t_temp < t_min && t_temp > 0)
             {
                 result.t_min = t_temp;
                 result.obj = this;
@@ -94,12 +134,22 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
 }
 
 
-
-Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, real time)  const
+Vec3r Triangle::getNormal(const Vertex& v, uint32_t triID, real time) const
 {
-
-    // TODO: bu termlerde eğer texture gerekli kılıyorsa normal manipüle edilecek
-    if (shadingType == ShadingType::SMOOTH)
+    // TODO: acaba bunu ortak fonksiyonla halletmek mümkün olur mu bana olabilir gibi geldi
+    Vec3r normal;
+    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
+    {
+        Vertex locVec; // TODO: transform from world to texel
+        Vec3r locNormal = (Color) NormalTexture->TextureColor(locVec); // TODO: color to vec3r
+        Vec3r globNormal; // TODO: transform from local to global
+        return globNormal;
+    }
+    else if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
+    {
+        // TODO: bump mapping
+    }
+    else if (shadingType == ShadingType::SMOOTH)
     {
         Vec3r b_a = b.v - a.v;
         Vec3r c_a = c.v - a.v;
@@ -119,19 +169,20 @@ Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, real time)  const
         Vec3r interpolated_normal = a.n * A_a + b.n * A_b + c.n * A_c;
         interpolated_normal = interpolated_normal.normalize();
         //if (dot_product(interpolated_normal, n) < 0.0) interpolated_normal = -interpolated_normal;
-        return interpolated_normal;
+        normal = interpolated_normal;
     }
-    else return n;
+    else normal = n;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material,std::vector<Texture*> ts ,const ShadingType st, bool v, bool computeVNormals):
-            Object(material, id,
-                maxVert3(v1.v,v2.v,v3.v),
-                minVert3(v1.v,v2.v,v3.v), ts, v
-                ),
-                shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
+Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,
+                   std::vector<Texture*> ts, const ShadingType st, bool v, bool computeVNormals) :
+    Object(material, id,
+           maxVert3(v1.v, v2.v, v3.v),
+           minVert3(v1.v, v2.v, v3.v), ts, v
+    ),
+    shadingType(st), a(v1), b(v2), c(v3), a_b(a.v - b.v), a_c(a.v - c.v)
 {
-    n = x_product((b.v-a.v), (c.v-a.v));
+    n = x_product((b.v - a.v), (c.v - a.v));
     if (computeVNormals)
     {
         a.n = n + a.n;
@@ -148,26 +199,28 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
 ////////////////// SPHERE /////////////////////
 ////////////////////////////////////////////////
 ///
-Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, std::vector<Texture*> ts , bool v)
-        : Object(m,id, Vertex(c.v.x+r, c.v.y+r,c.v.z+r),
-            Vertex(c.v.x-r, c.v.y-r,c.v.z-r), ts, v),  center(c), radius(r)
+Sphere::Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture*> ts, bool v)
+    : Object(m, id, Vertex(c.v.x + r, c.v.y + r, c.v.z + r),
+             Vertex(c.v.x - r, c.v.y - r, c.v.z - r), ts, v), center(c), radius(r)
 {
     radius2 = radius * radius;
     main_center = c.v;
 }
 
 
-ObjectType Sphere::getObjectType()  const{ return ObjectType::SPHERE; }
+ObjectType Sphere::getObjectType() const { return ObjectType::SPHERE; }
 
 
-Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time)  const
+Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
+                                                  real time) const
 {
     intersectResult result;
     result.currTri = 0;
     result.t_min = t_min;
     result.obj = nullptr;
     if (!visible) return result;
-    if (globalBbox.intersects(r)){
+    if (globalBbox.intersects(r))
+    {
         real t_temp;
         Vec3r o_c = r.pos - center.v;
 
@@ -175,25 +228,25 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
         real B = dot_product(r.dir, o_c);
         real C = dot_product(o_c, o_c) - radius2;
 
-        real BB_AC = B*B - A*C;
+        real BB_AC = B * B - A * C;
 
         if (BB_AC > 0)
         {
-            real sqrt_BB_AC_A = sqrt(BB_AC)/A;
-            real res_1 = (-B + sqrt(BB_AC) )/ A;
-            real res_2 = (-B - sqrt(BB_AC) )/ A;
+            real sqrt_BB_AC_A = sqrt(BB_AC) / A;
+            real res_1 = (-B + sqrt(BB_AC)) / A;
+            real res_2 = (-B - sqrt(BB_AC)) / A;
 
-            if (res_1 <= res_2 && res_1 > 0 && res_2 > 0)  t_temp = res_1;
-            else if (res_1 > 0 && res_2 > 0)  t_temp = res_2;
-            else if (res_1 > 0)  t_temp = res_1;
-            else if (res_2 > 0)  t_temp = res_2;
-            else  t_temp = INFINITY;
+            if (res_1 <= res_2 && res_1 > 0 && res_2 > 0) t_temp = res_1;
+            else if (res_1 > 0 && res_2 > 0) t_temp = res_2;
+            else if (res_1 > 0) t_temp = res_1;
+            else if (res_2 > 0) t_temp = res_2;
+            else t_temp = INFINITY;
         }
-        else if (BB_AC == 0) t_temp =  -B/A;
-        else /*BB_AC < 0*/   t_temp = INFINITY;
+        else if (BB_AC == 0) t_temp = -B / A;
+        else /*BB_AC < 0*/ t_temp = INFINITY;
 
 
-        if (!shadow_test && t_temp < t_min && t_temp>0 )
+        if (!shadow_test && t_temp < t_min && t_temp > 0)
         {
             result.t_min = t_temp;
             result.obj = this;
@@ -210,33 +263,47 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
     return result;
 }
 
-Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID, real time) const
+Vec3r Sphere::getNormal(const Vertex& v, uint32_t triID, real time) const
 {
-    return (v-center.v).normalize();
+    return (v - center.v).normalize();
 }
-
 
 
 ////////////////////////////////////////////////
 /////////////////// PLANE /////////////////////
 ////////////////////////////////////////////////
 
-Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material, std::vector<Texture*> ts , bool vis) :
-Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY),ts,vis), point(v)
+Plane::Plane(uint32_t id, Vertex& v, std::string normal, Material& material, std::vector<Texture*> ts, bool vis) :
+    Object(material, id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY, -INFINITY, -INFINITY), ts, vis), point(v)
 {
     std::istringstream ss(normal);
     ss >> n.i >> n.j >> n.k;
-    if (ss.fail()) {
+    if (ss.fail())
+    {
         throw std::invalid_argument("Invalid Normal string for plane: " + normal);
     }
-    if (n.i ==0.0 && n.j ==0.0){ globalBbox.vMax.z = v.z + M4T_EPS; globalBbox.vMin.z = v.z - M4T_EPS; }
-    else if (n.i ==0.0 && n.k ==0.0){ globalBbox.vMax.y = v.y + M4T_EPS; globalBbox.vMin.y = v.y - M4T_EPS; }
-    else if (n.k ==0.0 && n.j ==0.0){ globalBbox.vMax.x = v.x + M4T_EPS; globalBbox.vMin.x = v.x - M4T_EPS; }
+    if (n.i == 0.0 && n.j == 0.0)
+    {
+        globalBbox.vMax.z = v.z + M4T_EPS;
+        globalBbox.vMin.z = v.z - M4T_EPS;
+    }
+    else if (n.i == 0.0 && n.k == 0.0)
+    {
+        globalBbox.vMax.y = v.y + M4T_EPS;
+        globalBbox.vMin.y = v.y - M4T_EPS;
+    }
+    else if (n.k == 0.0 && n.j == 0.0)
+    {
+        globalBbox.vMax.x = v.x + M4T_EPS;
+        globalBbox.vMin.x = v.x - M4T_EPS;
+    }
 }
 
-ObjectType Plane::getObjectType() const {return ObjectType::PLANE;}
+ObjectType Plane::getObjectType() const { return ObjectType::PLANE; }
 
-Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time) const {
+Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
+                                                 real time) const
+{
     real dot_r_n = dot_product(r.dir, n);
     intersectResult result;
     result.currTri = 0;
@@ -244,9 +311,9 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
     result.obj = nullptr;
     if (dot_r_n == 0) return result;
 
-    real t_temp = dot_product((point - r.pos),n) / dot_r_n;
+    real t_temp = dot_product((point - r.pos), n) / dot_r_n;
 
-    if (!shadow_test && t_temp < t_min && t_temp>0 )
+    if (!shadow_test && t_temp < t_min && t_temp > 0)
     {
         result.t_min = t_temp;
         result.obj = this;
@@ -262,7 +329,7 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
     return result;
 }
 
-Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, real time) const { return n;}
+Vec3r Plane::getNormal(const Vertex& v, uint32_t currTri, real time) const { return n; }
 
 
 ////////////////////////////////////////////////
@@ -270,21 +337,27 @@ Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, real time) const { ret
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans, Material &mat,Vec3r m,std::vector<Texture*> ts ,  bool orig, bool v) :
-Object(mat,id,
-    Vertex(),Vertex(),ts, v), forwardTrans(std::move(trans))
+Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans, Material& mat, Vec3r m,
+                   std::vector<Texture*> ts, bool orig, bool v) :
+    Object(mat, id,
+           Vertex(), Vertex(), ts, v), forwardTrans(std::move(trans))
 {
     motion = m;
     if (m.i == 0.0 && m.j == 0.0 && m.k == 0.0) has_motion = false;
     else has_motion = true;
-    if (orig) { // unique
+    if (orig)
+    {
+        // unique
         original = o;
-    } else { // share
+    }
+    else
+    {
+        // share
         original = o;
     }
     backwardTrans = forwardTrans->inv()->clone();
     computeGlobal();
-    main_center =((*forwardTrans) * Vec4r(original->main_center)).getVertex();
+    main_center = ((*forwardTrans) * Vec4r(original->main_center)).getVertex();
     forwardTrans->getNormalTransform();
     backwardTrans->getNormalTransform();
 }
@@ -295,47 +368,45 @@ Instance::~Instance()
 
 ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
 
- Instance::intersectResult Instance::checkIntersection(const Ray& ray, const  real& t_min, bool shadow_test, bool back_cull, real time) const {
-
+Instance::intersectResult Instance::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test,
+                                                      bool back_cull, real time) const
+{
     // std::cout << "Check Intersection of Instance" << std::endl;
-     intersectResult result;
-     result.t_min = t_min;
-     result.currTri = 0;
-     result.obj = nullptr;
+    intersectResult result;
+    result.t_min = t_min;
+    result.currTri = 0;
+    result.obj = nullptr;
 
-     if (!shadow_test)
-     {
-         Ray localRay = getLocal(ray,time);
-         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
-         result.obj = result.obj ? this :nullptr;
-         return result;
-     }
-     else
-     {
-         Ray localRay = getLocal(ray,time); // get the local light point
-         result = original->checkIntersection(localRay, t_min, shadow_test,back_cull,0);
-         if (result.obj)
-         {
-             Vertex intersect = localRay.pos + localRay.dir * t_min;
-             Vertex globalIntersect = getGlobal(intersect,time); // o + t*d
-             result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
-             result.obj = this;
-             return result;
-         }
-         result.obj = nullptr;
-         return result;
-     }
-
+    if (!shadow_test)
+    {
+        Ray localRay = getLocal(ray, time);
+        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0);
+        result.obj = result.obj ? this : nullptr;
+        return result;
+    }
+    else
+    {
+        Ray localRay = getLocal(ray, time); // get the local light point
+        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0);
+        if (result.obj)
+        {
+            Vertex intersect = localRay.pos + localRay.dir * t_min;
+            Vertex globalIntersect = getGlobal(intersect, time); // o + t*d
+            result.t_min = (globalIntersect.x - ray.pos.x) / ray.dir.i;
+            result.obj = this;
+            return result;
+        }
+        result.obj = nullptr;
+        return result;
+    }
 }
 
-Vec3r Instance::getNormal(const Vertex &v, uint32_t triID, real time) const {
-    Vertex localV = getLocal(v,time);
-    Vec3r res = original->getNormal(localV,triID, 0);
-    return  getGlobalNormal(res,time);
-
+Vec3r Instance::getNormal(const Vertex& v, uint32_t triID, real time) const
+{
+    Vertex localV = getLocal(v, time);
+    Vec3r res = original->getNormal(localV, triID, 0);
+    return getGlobalNormal(res, time);
 }
-
-
 
 
 void Instance::computeGlobal()
@@ -344,7 +415,7 @@ void Instance::computeGlobal()
     {
         globalBbox.vMax = Vertex(-INFINITY, -INFINITY, -INFINITY);
         globalBbox.vMin = Vertex(INFINITY, INFINITY, INFINITY);
-        Vertex v[2] = {original->globalBbox.vMax,original->globalBbox.vMin};
+        Vertex v[2] = {original->globalBbox.vMax, original->globalBbox.vMin};
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 2; j++)
@@ -353,14 +424,15 @@ void Instance::computeGlobal()
                 {
                     if (has_motion)
                     {
-                        globalBbox.vMax = maxVert3(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),1.0),getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
-                        globalBbox.vMin = minVert3(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),1.0),getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
-
+                        globalBbox.vMax = maxVert3(globalBbox.vMax, getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 1.0),
+                                                   getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 0.0));
+                        globalBbox.vMin = minVert3(globalBbox.vMin, getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 1.0),
+                                                   getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 0.0));
                     }
                     else
                     {
-                        globalBbox.vMax = maxVert2(globalBbox.vMax, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
-                        globalBbox.vMin = minVert2(globalBbox.vMin, getGlobal(Vertex(v[i].x,v[j].y,v[k].z),0.0));
+                        globalBbox.vMax = maxVert2(globalBbox.vMax, getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 0.0));
+                        globalBbox.vMin = minVert2(globalBbox.vMin, getGlobal(Vertex(v[i].x, v[j].y, v[k].z), 0.0));
                     }
                 }
             }
@@ -368,36 +440,36 @@ void Instance::computeGlobal()
     }
 }
 
-Vertex Instance::getLocal(const Vertex &v, real time) const
+Vertex Instance::getLocal(const Vertex& v, real time) const
 {
-    if (has_motion && time > 0)  return ((*backwardTrans)*Translate(-motion*time) * Vec4r(v)).getVertex();
-    else                         return ((*backwardTrans)*Vec4r(v)).getVertex();
+    if (has_motion && time > 0) return ((*backwardTrans) * Translate(-motion * time) * Vec4r(v)).getVertex();
+    else return ((*backwardTrans) * Vec4r(v)).getVertex();
 }
 
 Ray Instance::getLocal(const Ray& r, real time) const
 {
-    if (has_motion && time > 0) return (*backwardTrans) * Translate(-motion*time) * r;
-    else                        return (*backwardTrans) * r;
+    if (has_motion && time > 0) return (*backwardTrans) * Translate(-motion * time) * r;
+    else return (*backwardTrans) * r;
 }
 
-Vec3r Instance::getLocal(Vec3r &v, real time)
+Vec3r Instance::getLocal(Vec3r& v, real time)
 {
-    if (has_motion && time > 0)  return ((*backwardTrans)*Translate(-motion*time) * Vec4r(v)).getVec3r();
-    else                         return ((*backwardTrans)*Vec4r(v)).getVec3r();
+    if (has_motion && time > 0) return ((*backwardTrans) * Translate(-motion * time) * Vec4r(v)).getVec3r();
+    else return ((*backwardTrans) * Vec4r(v)).getVec3r();
 }
 
 ///// GET GLOBAL //////
 
-Vec3r Instance::getGlobal(Vec3r &v, double time)
+Vec3r Instance::getGlobal(Vec3r& v, double time)
 {
-    if (has_motion && time > 0)  return (Translate(motion*time) *(*forwardTrans)* Vec4r(v)).getVec3r();
-    else                         return ((*forwardTrans)*Vec4r(v)).getVec3r();
+    if (has_motion && time > 0) return (Translate(motion * time) * (*forwardTrans) * Vec4r(v)).getVec3r();
+    else return ((*forwardTrans) * Vec4r(v)).getVec3r();
 }
 
 Vertex Instance::getGlobal(Vertex v, real time) const
 {
-    if (has_motion && time > 0)  return (Translate(motion*time) *(*forwardTrans)* Vec4r(v)).getVertex();
-    else                         return ((*forwardTrans)*Vec4r(v)).getVertex();
+    if (has_motion && time > 0) return (Translate(motion * time) * (*forwardTrans) * Vec4r(v)).getVertex();
+    else return ((*forwardTrans) * Vec4r(v)).getVertex();
 }
 
 Vec3r Instance::getGlobalNormal(const Vec3r& res, double time) const
@@ -406,12 +478,9 @@ Vec3r Instance::getGlobalNormal(const Vec3r& res, double time) const
     Transformation* fwt = forwardTrans.get();
     if (has_motion && time > 0)
     {
-        temp_f = Translate(motion*time) * (*forwardTrans);
+        temp_f = Translate(motion * time) * (*forwardTrans);
         fwt = &temp_f;
         fwt->getNormalTransform();
     }
     return ((fwt->normalTransform) * Vec4r(res)).getVec3r().normalize();
 }
-
-
-

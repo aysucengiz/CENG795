@@ -176,16 +176,25 @@ std::pair<Vec3r, Vec3r> getONB(Vec3r n)
     return std::pair<Vec3r, Vec3r>(u, v);
 }
 
-
+// TODO: sıralama önemli burada onu ayarla
 real lerp(real t, real a, real b)
 {
     return a + t * (b - a);
 }
 
-real grad(int hash, Vertex vert)
+real lerp2D(Texel t, std::array<real, 4> a)
 {
-    int h = hash & 15;
-    real u = h < 8 ? vert.x : vert.y;
-    real v = h < 4 ? vert.y : h == 12 || h == 14 ? vert.x : vert.z;
-    return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
+    real l1 = lerp(t.u, a[0], a[1]);
+    real l2 = lerp(t.u, a[2], a[3]);
+    return lerp(t.v, l1, l2);
 }
+
+real lerp3D(Vec3r t, std::array<real, 8> a)
+{
+    // assumes the vertices are in the order
+    Texel t1 = {t.i, t.j};
+    real l1 = lerp2D(t1, std::array<real,4>({a[0],a[1],a[2],a[3]}));
+    real l2 = lerp2D(t1, std::array<real,4>({a[4],a[5],a[6],a[7]}));
+    return lerp(t.k, l1, l2);
+}
+

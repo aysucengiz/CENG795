@@ -71,6 +71,16 @@ DecalMode getDecalMode(const std::string &s)
     throw std::invalid_argument("Invalid DecalMode string: " + s);
 }
 
+
+Interpolation getInterpolation(const std::string &s)
+{
+
+    if (s == "bilinear") return Interpolation::BILINEAR;
+    if (s == "nearest") return Interpolation::NEAREST;
+    if (s == "trilinear") return Interpolation::TRILINEAR;
+    throw std::invalid_argument("Invalid Interpolation string: " + s);
+}
+
 Texel operator -(const Texel &a, const Texel &b)
 {
     return Texel(a.u - b.u,

@@ -113,6 +113,7 @@ void Parser::getImages(json &inp, SceneInput& sceneInput)
 void Parser::addImage(json s, SceneInput& sceneInput)
 {
     sceneInput.images.push_back(Image(s["_id"], s["_data"]));
+    // TODO: << overloads
     if (PRINTINIT) std::cout << sceneInput.images[sceneInput.images.size()-1] << std::endl;
 }
 
@@ -135,7 +136,7 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
     Texture *temp = nullptr;
     if (t == TextureType::IMAGE)
     {
-        temp = new ImageTexture(s["_id"], t, dm, getImageFromId(s["ImageId"],sceneInput));
+        temp = new ImageTexture(s["_id"], t, dm, getImageFromId(s["ImageId"],sceneInput), getInterpolation(s["Interpolation"].get<std::string>()));
     }
     else if (t == TextureType::PERLIN)
     {
@@ -148,6 +149,7 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
             s["Scale"].get<real>(), s["Offset"].get<real>());
     }
     sceneInput.textures.push_back(temp);
+    if ( temp->decalMode == DecalMode::REPLACE_BACKGROUND) sceneInput.BackgroundTexture = temp;
     if (PRINTINIT) std::cout << temp << std::endl;
 }
 
