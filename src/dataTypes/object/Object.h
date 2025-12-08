@@ -12,6 +12,7 @@
 #include "../../fileManagement/happly.h"
 #include "../matrix/transformation.h"
 #include "../object/BBox.h"
+#include "dataTypes/texture/TextureMap.h"
 
 inline bool ACCELERATE = false;
 
@@ -29,12 +30,17 @@ public:
     Material& material;
     BBox globalBbox;
     Vertex main_center;
+    std::vector<Texture*> textures;
     bool visible;
     virtual ObjectType getObjectType() const = 0;
     virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
-    Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, bool v = true);
+    Color diffuseTerm(Color I_R_2, real cos_theta) const;
+    Color GetColourAt(Color I_R_2,real cos_theta,  const Vec3r &normal, const Ray& ray, Ray& shadow_ray) const;
+    Color specularTerm(const Vec3r &normal, const Ray& ray,Color I_R_2,
+                                        Ray& shadow_ray) const;
+    Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
 
 };
 
@@ -52,7 +58,7 @@ public:
     intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
 
-    Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material, ShadingType st = ShadingType::NONE,
+    Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,std::vector<Texture*> ts , ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
 
 };
@@ -63,7 +69,7 @@ public:
     Vertex point;
     Vec3r n;
 
-    Plane(uint32_t id, Vertex& v, std::string normal, Material& material, bool vis = true);
+    Plane(uint32_t id, Vertex& v, std::string normal, Material& material,std::vector<Texture*> ts , bool vis = true);
 
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
@@ -81,7 +87,7 @@ public:
     real radius;
     real radius2;
 
-    Sphere(uint32_t id, CVertex& c, real r, Material& m, bool v = true);
+    Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture*> ts ,bool v = true);
 
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
@@ -100,7 +106,7 @@ public:
     std::shared_ptr<Transformation> forwardTrans;
     std::shared_ptr<Transformation> backwardTrans;
 
-    Instance(uint32_t id, Object* original, std::shared_ptr<Transformation>  trans, Material& mat, Vec3r m, bool orig, bool v = true);
+    Instance(uint32_t id, Object* original, std::shared_ptr<Transformation>  trans, Material& mat, Vec3r m,std::vector<Texture*> ts , bool orig, bool v = true);
     ~Instance();
 
     ObjectType getObjectType() const override;
@@ -143,6 +149,7 @@ struct SceneInput
 
     // vertex info
     std::deque<CVertex> Vertices;
+    std::deque<std::pair<int,int>> TexCoords;
 
     // light info
     Color AmbientLight;
@@ -159,6 +166,8 @@ struct SceneInput
 
     // transformations
     std::vector<std::shared_ptr<Transformation>> transforms;
+    std::vector<Texture*> textures;
+    std::vector<Image> images;
 
     // precomputed near plane info
     Vec3r u;

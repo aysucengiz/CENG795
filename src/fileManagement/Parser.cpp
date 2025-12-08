@@ -70,6 +70,15 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
 
     getVertexData(inp["Scene"], sceneInput);
     if (PRINTINIT) std::cout << "vertices done" << std::endl;
+
+    if (inp["Scene"].contains("TexCoordData"))
+    {
+        getTexCoords(inp["Scene"]["TexCoordData"], sceneInput);
+    }
+    if (inp["Scene"].contains("Textures"))
+    {
+        getTextures(TODO, sceneInput);
+    }
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
 
@@ -80,6 +89,66 @@ void Parser::getCameras(json inp, SceneInput& sceneInput)
     int numCameras = Cameras.size();
     if (Cameras.is_object()) addCamera(Cameras, sceneInput);
     else for (int i = 0; i < numCameras; i++) addCamera(Cameras[i], sceneInput);
+}
+
+
+void Parser::getTextures(json &inp, SceneInput& sceneInput)
+{
+    getImages(inp, sceneInput);
+    getTextureMaps(inp, sceneInput);
+}
+
+void Parser::getImages(json &inp, SceneInput& sceneInput)
+{
+    if (inp.contains("Images"))
+    {
+        json& Images = inp["Images"];
+        uint32_t numImages = Images.size();
+        if (Images.is_object()) addImage(Images, sceneInput);
+        else for (int i = 0; i < numImages; i++) addImage(Images[i], sceneInput);
+    }
+
+}
+
+void Parser::addImage(json s, SceneInput& sceneInput)
+{
+    sceneInput.images.push_back(Image(s["_id"], s["_data"]));
+    if (PRINTINIT) std::cout << sceneInput.images[sceneInput.images.size()-1] << std::endl;
+}
+
+
+
+void Parser::getTextureMaps(json inp, SceneInput& sceneInput)
+{
+    if (inp.contains("TextureMap"))
+    {
+        json& TextureMaps = inp["TextureMap"];
+        uint32_t numTextureMaps = TextureMaps.size();
+        if (TextureMaps.is_object()) addTextureMap(TextureMaps, sceneInput);
+        else for (int i = 0; i < numTextureMaps; i++) addTextureMap(TextureMaps[i], sceneInput);
+    }
+}
+void Parser::addTextureMap(json s, SceneInput& sceneInput)
+{
+    TextureType t = getTextureType(s["_type"].get<std::string>());
+    DecalMode dm = getDecalMode(s["DecalMode"]);
+    Texture *temp = nullptr;
+    if (t == TextureType::IMAGE)
+    {
+        temp = new ImageTexture(s["_id"], t, dm, getImageFromId(s["ImageId"],sceneInput));
+    }
+    else if (t == TextureType::PERLIN)
+    {
+        temp = new PerlinTexture(s["_id"], t, dm, getConversionFunc(s["NoiseConversion"]), s["NoiseScale"].get<real>(),
+            s.contains("NumOctaves") ? s["NumOctaves"].get<int>() : 1);
+    }
+    else if (t==TextureType::CHECKERBOARD)
+    {
+        temp = new CheckerTexture(s["_id"], t, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
+            s["Scale"].get<real>(), s["Offset"].get<real>());
+    }
+    sceneInput.textures.push_back(temp);
+    if (PRINTINIT) std::cout << temp << std::endl;
 }
 
 
@@ -408,14 +477,17 @@ void Parser::addTriangle(json tri, SceneInput& sceneInput, uint32_t& curr_id)
 
     if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2]) return;
     Triangle* tempt = new Triangle(std::stoi(tri["_id"].get<std::string>()),
-                                                                 sceneInput.Vertices[ind[0] - 1],
-                                                                 sceneInput.Vertices[ind[1] - 1],
-                                                                 sceneInput.Vertices[ind[2] - 1],
-                                                                 sceneInput.Materials[std::stoi(
-                                                                     tri["Material"].get<std::string>()) - 1]);
+                                   sceneInput.Vertices[ind[0] - 1],
+                                   sceneInput.Vertices[ind[1] - 1],
+                                   sceneInput.Vertices[ind[2] - 1],
+                                   sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1],
+                                   tri.contains("Textures")
+                                       ? getTexturesFromStr(tri["Textures"], sceneInput)
+                                       : std::vector<Texture*>());
 
-    if (tri.contains("Transformations")) addInstance(tri["Transformations"].get<std::string>(), tempt,
-                                                     sceneInput, Vec3r(0.0, 0.0, 0.0));
+    if (tri.contains("Transformations"))
+        addInstance(tri["Transformations"].get<std::string>(), tempt,
+                    sceneInput, Vec3r(0.0, 0.0, 0.0));
     else sceneInput.objects.push_back(tempt);
     if (PRINTINIT) std::cout << sceneInput.objects[curr_id] << std::endl;
     curr_id++;
@@ -428,11 +500,13 @@ void Parser::addSphere(json s, SceneInput& sceneInput, uint32_t& curr_id)
         std::stoi(s["_id"].get<std::string>()),
         sceneInput.Vertices[std::stoi(s["Center"].get<std::string>()) - 1],
         std::stod(s["Radius"].get<std::string>()),
-        sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
+        sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1],
+        s.contains("Textures") ? getTexturesFromStr(s["Textures"], sceneInput) : std::vector<Texture*>()
     );
 
-    if (s.contains("Transformations"))addInstance(s["Transformations"].get<std::string>(), temps, sceneInput,
-                                                  s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r());
+    if (s.contains("Transformations"))
+        addInstance(s["Transformations"].get<std::string>(), temps, sceneInput,
+                    s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r());
     else if (s.contains("MotionBlur"))addInstance("", temps, sceneInput, Vec3r(s["MotionBlur"]));
     else sceneInput.objects.push_back(temps);
     if (PRINTINIT) std::cout << sceneInput.objects[curr_id] << std::endl;
@@ -494,21 +568,25 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
 
 
         Mesh* tempm = new Mesh(std::stoi(mes["_id"].get<std::string>()),
-                                                             sm,
-                                                             sceneInput.Materials[std::stoi(
-                                                                 mes["Material"].get<std::string>()) - 1],
-                                                             dataLine,
-                                                             read_from_file,
-                                                             sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
-                                                             true,
-                                                             numVerticesUntilNow);
-        if (mes.contains("Transformations")) addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput,
-                                                        mes.contains("MotionBlur") ? Vec3r(mes["MotionBlur"]) : Vec3r(0.0,0.0,0.0));
+                               sm,
+                               sceneInput.Materials[std::stoi(
+                                   mes["Material"].get<std::string>()) - 1],
+                               dataLine,
+                               read_from_file,
+                               sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
+                               mes.contains("Textures")
+                                   ? getTexturesFromStr(mes["Textures"], sceneInput)
+                                   : std::vector<Texture*>(),
+                               true,
+                               numVerticesUntilNow);
+        if (mes.contains("Transformations"))
+            addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput,
+                        mes.contains("MotionBlur") ? Vec3r(mes["MotionBlur"]) : Vec3r(0.0, 0.0, 0.0));
         else if (mes.contains("MotionBlur"))addInstance("", tempm, sceneInput, Vec3r(mes["MotionBlur"]));
         else sceneInput.objects.push_back(tempm);
 
         curr_id++;
-        if (PRINTINIT) std::cout <<*tempm << std::endl;
+        if (PRINTINIT) std::cout << *tempm << std::endl;
         //std::cout <<  temp_m << std::endl;
     }
 }
@@ -522,16 +600,17 @@ void Parser::addInstance(std::string transformations, Object* original, SceneInp
         getTransFromStr(transformations, sceneInput.transforms),
         original->material,
         motion,
+        original->textures,
         true
     ));
-    if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
+    if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size() - 1] << std::endl;
 }
 
 void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
 {
     Object* orig_obj = getOriginalObjPtr(ObjectType::MESH,
-                                                         std::stoi(s["_baseMeshId"].get<std::string>()),
-                                                         sceneInput.objects);
+                                         std::stoi(s["_baseMeshId"].get<std::string>()),
+                                         sceneInput.objects);
     // std::cout << "original: " << orig_obj->_id << std::endl;
     std::string resetTransform = s.contains("_resetTransform") ? s["_resetTransform"].get<std::string>() : "false";
     if (resetTransform == "true")
@@ -541,7 +620,9 @@ void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
             orig_obj = (dynamic_cast<Instance*>(orig_obj)->original);
         }
     }
-    if (PRINTINIT) std::cout <<"motionblur: " <<( s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0)) << std::endl;
+    if (PRINTINIT) std::cout << "motionblur: " << (s.contains("MotionBlur")
+                                                       ? Vec3r(s["MotionBlur"])
+                                                       : Vec3r(0.0, 0.0, 0.0)) << std::endl;
     sceneInput.objects.push_back(new Instance(
         std::stoi(s["_id"].get<std::string>()),
         orig_obj,
@@ -549,11 +630,12 @@ void Parser::addInstance(json s, SceneInput& sceneInput, uint32_t& curr_id)
         s.contains("Material")
             ? sceneInput.Materials[std::stoi(s["Material"].get<std::string>()) - 1]
             : orig_obj->material,
-        s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0,0.0,0.0),
+        s.contains("MotionBlur") ? Vec3r(s["MotionBlur"]) : Vec3r(0.0, 0.0, 0.0),
+        s.contains("Textures") ? getTexturesFromStr(s["Textures"], sceneInput) : std::vector<Texture*>(),
         false
     ));
 
-    if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size()-1] << std::endl;
+    if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size() - 1] << std::endl;
     curr_id++;
 }
 
@@ -564,11 +646,13 @@ void Parser::addPlane(json p, SceneInput& sceneInput, uint32_t& curr_id)
         std::stoi(p["_id"].get<std::string>()),
         sceneInput.Vertices[std::stoi(p["Point"].get<std::string>()) - 1].v,
         p["Normal"].get<std::string>(),
-        sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1]
+        sceneInput.Materials[std::stoi(p["Material"].get<std::string>()) - 1],
+        p.contains("Textures") ? getTexturesFromStr(p["Textures"], sceneInput) : std::vector<Texture*>()
     );
 
-    if (p.contains("Transformations")) addInstance(p["Transformations"].get<std::string>(), tempp, sceneInput,
-                                                        p.contains("MotionBlur") ? Vec3r(p["MotionBlur"]) : Vec3r());
+    if (p.contains("Transformations"))
+        addInstance(p["Transformations"].get<std::string>(), tempp, sceneInput,
+                    p.contains("MotionBlur") ? Vec3r(p["MotionBlur"]) : Vec3r());
     else if (p.contains("MotionBlur"))addInstance("", tempp, sceneInput, Vec3r(p["MotionBlur"]));
     else sceneInput.objects.push_back(tempp);
     if (PRINTINIT) std::cout << sceneInput.objects[curr_id] << std::endl;
@@ -648,4 +732,68 @@ Object* Parser::getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object*>&
         }
     }
     return nullptr;
+}
+
+void Parser::getTexCoords(json TexCoords, SceneInput& sceneInput)
+{
+    if (TexCoords["_type"] == "uv")
+    {
+        std::istringstream ss(TexCoords["_data"].get<std::string>());
+        int u, v;
+        while (ss >> u >> v)
+        {
+            sceneInput.TexCoords.push_back(std::pair<int, int>(u, v));
+        }
+    }
+}
+
+std::vector<Texture*> Parser::getTexturesFromStr(std::string inp, SceneInput& scene)
+{
+    std::shared_ptr<Transformation> transformation;
+    // std::cout << transStr << std::endl;
+    if (inp == "")
+    {
+        return std::vector<Texture*>();
+    }
+
+    std::istringstream ss(inp);
+    std::vector<Texture*> temp;
+    Texture* tp;
+    int id;
+    while (ss >> id)
+    {
+        tp = getTextureWithId(id, scene);
+        if (tp != nullptr)temp.push_back(tp);
+        else std::cout << "!!!!!!Could not find texture with id " << id << std::endl;
+    }
+    return temp;
+}
+
+Texture* Parser::getTextureWithId(int id, SceneInput& scene)
+{
+    std::vector<Texture*> textures = scene.textures;
+    for (int i = 0; i < textures.size(); i++)
+    {
+        if (textures[i] != nullptr && textures[i]->_id == id) return textures[i];
+    }
+    return nullptr;
+}
+
+Image &Parser::getImageFromId(int id, SceneInput& scene)
+{
+        std::vector<Image> images = scene.images;
+    for (int i = 0; i < images.size(); i++)
+    {
+        if (images[i]._id == id) return images[i];
+    }
+    std::cout << "Could not find the id!!!!: " << id << std::endl;
+    return images[0];
+}
+
+std::function<real(real)> Parser::getConversionFunc(json inp)
+{
+    std::string funcname = inp.get<std::string>();
+    if (funcname == "absval)")return Convert::Abs;
+    if (funcname == "linear)")return Convert::Linear;
+    return Convert::Linear;
 }

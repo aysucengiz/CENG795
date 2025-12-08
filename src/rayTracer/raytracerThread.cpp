@@ -236,7 +236,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
                         //std::cout << "Draw" << std::endl;
 
                         real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                        curr_color += diffuseTerm(hit_record, irradiance, cos_theta) + specularTerm(hit_record, ray, irradiance, shadow_ray);
+                        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray);
                         Color ac1 = m1.AbsorptionCoefficient;
                         if (!ac1.isBlack())
                         {
@@ -262,21 +262,9 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
     return curr_color;
 }
 
-Color RaytracerThread::diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta)
-{
-    return hit_record.obj->material.DiffuseReflectance * cos_theta* I_R_2;
-}
 
-Color RaytracerThread::specularTerm(const HitRecord& hit_record, const Ray& ray,Color I_R_2,
-                                    Ray& shadow_ray)
-{
-    Material& m = hit_record.obj->material;
-    if (m.SpecularReflectance.isBlack()) return Color();
-    Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
-    real cos_alpha = dot_product(hit_record.normal, h);
-    if (cos_alpha < 0) return Color();
-    return m.SpecularReflectance * I_R_2 * pow(cos_alpha, m.PhongExponent);
-}
+
+
 
 Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx, std::array<real,2> sample) const
 {

@@ -15,10 +15,29 @@
 ////////////////////////////////////////////////
 
 Object::~Object() = default;
-Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin,  bool v)
-        : material(m), _id(id),
+Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin,std::vector<Texture*> ts ,  bool v)
+        : material(m), _id(id), textures(ts),
           globalBbox(vMax, vMin), visible(v) {}
 
+Color Object::GetColourAt(Color I_R_2,real cos_theta,  const Vec3r &normal, const Ray& ray, Ray& shadow_ray) const
+{
+    // TODO: bu termlerde eğer texture gerekli kılıyorsa kd ya da ks değiştirilecek
+    return diffuseTerm(I_R_2, cos_theta) + specularTerm(normal,ray,I_R_2,shadow_ray);
+}
+
+Color Object::diffuseTerm(Color I_R_2, real cos_theta) const
+{
+    return material.DiffuseReflectance * cos_theta* I_R_2;
+}
+Color Object::specularTerm(const Vec3r &normal, const Ray& ray,Color I_R_2,
+                                    Ray& shadow_ray) const
+{
+    if (material.SpecularReflectance.isBlack()) return Color();
+    Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
+    real cos_alpha = dot_product(normal, h);
+    if (cos_alpha < 0) return Color();
+    return material.SpecularReflectance * I_R_2 * pow(cos_alpha, material.PhongExponent);
+}
 
 ////////////////////////////////////////////////
 ///////////////// TRIANGLE /////////////////////
@@ -78,6 +97,8 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
 
 Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, real time)  const
 {
+
+    // TODO: bu termlerde eğer texture gerekli kılıyorsa normal manipüle edilecek
     if (shadingType == ShadingType::SMOOTH)
     {
         Vec3r b_a = b.v - a.v;
@@ -103,10 +124,10 @@ Vec3r Triangle::getNormal( const Vertex &v, uint32_t triID, real time)  const
     else return n;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material, const ShadingType st, bool v, bool computeVNormals):
+Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Material &material,std::vector<Texture*> ts ,const ShadingType st, bool v, bool computeVNormals):
             Object(material, id,
                 maxVert3(v1.v,v2.v,v3.v),
-                minVert3(v1.v,v2.v,v3.v), v
+                minVert3(v1.v,v2.v,v3.v), ts, v
                 ),
                 shadingType(st), a(v1), b(v2), c(v3), a_b(a.v-b.v), a_c(a.v-c.v)
 {
@@ -127,9 +148,9 @@ Triangle::Triangle(const uint32_t id, CVertex &v1, CVertex &v2, CVertex &v3, Mat
 ////////////////// SPHERE /////////////////////
 ////////////////////////////////////////////////
 ///
-Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m,  bool v)
+Sphere::Sphere(uint32_t id, CVertex& c, real r, Material &m, std::vector<Texture*> ts , bool v)
         : Object(m,id, Vertex(c.v.x+r, c.v.y+r,c.v.z+r),
-            Vertex(c.v.x-r, c.v.y-r,c.v.z-r), v),  center(c), radius(r)
+            Vertex(c.v.x-r, c.v.y-r,c.v.z-r), ts, v),  center(c), radius(r)
 {
     radius2 = radius * radius;
     main_center = c.v;
@@ -200,8 +221,8 @@ Vec3r Sphere::getNormal(const Vertex &v, uint32_t triID, real time) const
 /////////////////// PLANE /////////////////////
 ////////////////////////////////////////////////
 
-Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material,  bool vis) :
-Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY),vis), point(v)
+Plane::Plane(uint32_t id, Vertex &v, std::string normal, Material &material, std::vector<Texture*> ts , bool vis) :
+Object(material,id, Vertex(INFINITY,INFINITY,INFINITY), Vertex(-INFINITY,-INFINITY,-INFINITY),ts,vis), point(v)
 {
     std::istringstream ss(normal);
     ss >> n.i >> n.j >> n.k;
@@ -249,9 +270,9 @@ Vec3r Plane::getNormal(const Vertex &v, uint32_t currTri, real time) const { ret
 ////////////////////////////////////////////////
 
 
-Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans, Material &mat,Vec3r m,  bool orig, bool v) :
+Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans, Material &mat,Vec3r m,std::vector<Texture*> ts ,  bool orig, bool v) :
 Object(mat,id,
-    Vertex(),Vertex(),v), forwardTrans(std::move(trans))
+    Vertex(),Vertex(),ts, v), forwardTrans(std::move(trans))
 {
     motion = m;
     if (m.i == 0.0 && m.j == 0.0 && m.k == 0.0) has_motion = false;

@@ -15,9 +15,9 @@
 ////////////////////////////////////////////////
 
 Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_from_file, std::deque<CVertex> &vertices,PivotType pt,
-         uint32_t maxobj,  bool v, uint32_t start_index,
+         uint32_t maxobj, std::vector<Texture*> ts , bool v, uint32_t start_index,
          bool computeVNormals)
-    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),v ), bvh(pt,maxobj){
+    : Object(m,id,Vertex(-INFINITY,-INFINITY,-INFINITY),Vertex(INFINITY,INFINITY,INFINITY),ts,v ), bvh(pt,maxobj){
         if (st == "smooth")    shadingtype = ShadingType::SMOOTH;
         else if (st == "flat") shadingtype = ShadingType::FLAT;
         else                   shadingtype = ShadingType::NONE;
@@ -50,6 +50,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 triangles.push_back(Triangle(triangles.size(),
                                             vertices[start_index+f[i][0]], vertices[start_index+f[i][1]], vertices[start_index+f[i][2]],
                                             m,
+                                            ts,
                                             shadingtype,
                                             v,
                                             computeVNormals));
@@ -64,6 +65,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
                 triangles.push_back(Triangle(triangles.size(),
                                             vertices[start_index+f[i][0]], vertices[start_index+f[i][2]], vertices[start_index+f[i][3]],
                                             m,
+                                            ts,
                                             shadingtype,
                                             v,
                                             computeVNormals));
@@ -90,7 +92,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material &m, std::string s, bool read_fr
 
                 triangles.push_back(Triangle(triangles.size(),
                     vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
-                    m, shadingtype,
+                    m,ts, shadingtype,
                     v,
                     computeVNormals));
                 // std::cout << *Faces[Faces.size()-1] << std::endl;

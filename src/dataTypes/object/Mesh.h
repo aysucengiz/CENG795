@@ -20,8 +20,9 @@ public:
          bool read_from_file,
          std::deque<CVertex>& vertices,
          PivotType pt,
-         uint32_t maxobj
-         , bool v = true,
+         uint32_t maxobj,
+         std::vector<Texture*> ts,
+         bool v = true,
          uint32_t start_index = 0,
          bool computeVNormals = true);
 

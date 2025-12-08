@@ -12,6 +12,12 @@
 
 #include "../../typedefs.h"
 
+struct Texel
+{
+    real u, v;
+    Texel(real u, real v) : u(u), v(v) {}
+};
+
 struct Vec3r{
     real i, j, k;
 

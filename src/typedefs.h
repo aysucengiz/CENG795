@@ -110,4 +110,22 @@ enum class TextureType
     PERLIN,
     CHECKERBOARD
 };
+
+enum class DecalMode
+{
+    REPLACE_KD,
+    BLEND_KD,
+    REPLACE_KS,
+    REPLACE_BACKGROUND,
+    REPLACE_NORMAL,
+    BUMP_NORMAL,
+    REPLACE_ALL
+};
+
+enum class Interpolation
+{
+    NEAREST,
+    BILINEAR,
+    TRILINEAR,
+};
 #endif //CENG795_TYPEDEFS_H

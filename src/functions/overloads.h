@@ -19,6 +19,12 @@ SamplingType getSampling(const std::string &s);
 ThreadType getThread(const std::string &s);
 AccelerationType getAcceleration(const std::string &s);
 PivotType getPivot(const std::string &s);
+TextureType getTextureType(const std::string &s);
+DecalMode getDecalMode(const std::string &s);
+
+
+Texel operator -(const Texel &a, const Texel &b);
+Texel operator +(const Texel &a, const Texel &b);
 
 // overload - color
 Color operator *(const Color &a, const Color &b);
@@ -30,6 +36,7 @@ Color operator /(const Color &b, const Color& a);
 
 
 Color operator *(const Color &a, const real b);
+Color operator *(const real b,const Color &a);
 
 // overload - vector
 Vec3r operator *(const Vec3r &a, const real mult);

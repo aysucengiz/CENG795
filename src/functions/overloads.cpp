@@ -50,6 +50,39 @@ PivotType getPivot(const std::string& s) {
     throw std::invalid_argument("Invalid PivotType string: " + s);
 }
 
+TextureType getTextureType(const std::string &s)
+{
+    if (s == "image") return TextureType::IMAGE;
+    if (s == "perlin") return TextureType::PERLIN;
+    if (s == "checkerboard") return TextureType::CHECKERBOARD;
+    throw std::invalid_argument("Invalid TextureType string: " + s);
+}
+
+
+DecalMode getDecalMode(const std::string &s)
+{
+    if (s == "replace_kd") return DecalMode::REPLACE_KD;
+    if (s == "blend_kd") return DecalMode::BLEND_KD;
+    if (s == "replace_ks") return DecalMode::REPLACE_KS;
+    if (s == "replace_background") return DecalMode::REPLACE_BACKGROUND;
+    if (s == "replace_normal") return DecalMode::REPLACE_NORMAL;
+    if (s == "bump_normal") return DecalMode::BUMP_NORMAL;
+    if (s == "replace_all") return DecalMode::REPLACE_ALL;
+    throw std::invalid_argument("Invalid DecalMode string: " + s);
+}
+
+Texel operator -(const Texel &a, const Texel &b)
+{
+    return Texel(a.u - b.u,
+             a.v - b.v);
+}
+Texel operator +(const Texel &a, const Texel &b)
+{
+    return Texel(a.u + b.u,
+             a.v + b.v);
+}
+Texel operator +(const Texel &a, const Texel &b);
+
 // overload - color
 
 Color operator *(const Color& a, const Color& b)
@@ -95,6 +128,13 @@ Color operator /(const Color &b, const Color& a)
 }
 
 Color operator *(const Color& a, const real b)
+{
+    return Color(a.r * b,
+                 a.g * b,
+                 a.b * b);
+}
+
+Color operator *( const real b, const Color& a)
 {
     return Color(a.r * b,
                  a.g * b,
