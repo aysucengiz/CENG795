@@ -49,32 +49,56 @@ Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<T
     }
 }
 
-Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray) const
+Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time) const
 {
-    return diffuseTerm(I_R_2, cos_theta, shadow_ray.pos) + specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos);
+    Texel tex = getTexel(shadow_ray.pos,time);
+    return diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex) + specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex);
 }
 
-Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert) const
+Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t) const
 {
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
     {
-        if (DiffuseTexture->decalMode == DecalMode::REPLACE_KD) kd = DiffuseTexture->TextureColor(vert);
-        else if (DiffuseTexture->decalMode == DecalMode::BLEND_KD) kd = (kd + DiffuseTexture->TextureColor(vert))/2.0;
+        if (DiffuseTexture->decalMode == DecalMode::REPLACE_KD) kd = DiffuseTexture->TextureColor(vert, t);
+        else if (DiffuseTexture->decalMode == DecalMode::BLEND_KD) kd = (kd + DiffuseTexture->TextureColor(vert, t))/2.0;
     }
     return kd * cos_theta * I_R_2;
 }
 
 Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                           Ray& shadow_ray, Vertex &vert) const
+                           Ray& shadow_ray, Vertex &vert,  Texel &t) const
 {
     if (material.SpecularReflectance.isBlack()) return Color();
     Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
     real cos_alpha = dot_product(normal, h);
     if (cos_alpha < 0) return Color(0.0,0.0,0.0);
     Color ks = material.SpecularReflectance;
-    if (SpecularTexture != nullptr) ks = SpecularTexture->TextureColor(vert);
+    if (SpecularTexture != nullptr) ks = SpecularTexture->TextureColor(vert, t);
     return ks * I_R_2 * pow(cos_alpha, material.PhongExponent);
+}
+
+
+Vec3r Object::getTexturedNormal(const Vertex &v, Vec3r &n, real time) const
+{
+    Texel t = getTexel(v,time);
+    Color textureColor =  NormalTexture->TextureColor(v, t);
+    Vec3r locNormal(textureColor.r / 125.5 - 1.0 , textureColor.g / 125.5 - 1.0 , textureColor.b / 125.5 - 1.0 );
+
+    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
+    {
+        Vec3r globNormal; // TODO: transform from local to global
+        return globNormal;
+    }
+
+    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
+    {
+        // TODO: bump mapping
+        Vec3r globNormal;
+        return globNormal;
+    }
+
+    return n;
 }
 
 ////////////////////////////////////////////////
@@ -134,44 +158,49 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
 }
 
 
+void Triangle::BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const
+{
+    Vec3r b_a = b.v - a.v;
+    Vec3r c_a = c.v - a.v;
+    Vec3r v_a = v - a.v;
+
+    real d00 = dot_product(b_a, b_a);
+    real d01 = dot_product(b_a, c_a);
+    real d11 = dot_product(c_a, c_a);
+    real d20 = dot_product(v_a, b_a);
+    real d21 = dot_product(v_a, c_a);
+
+    real denom = d00 * d11 - d01 * d01;
+    beta = (d11 * d20 - d01 * d21) / denom;
+    gamma = (d00 * d21 - d01 * d20) / denom;
+    alpha = 1.0 - beta - gamma;
+}
+
 Vec3r Triangle::getNormal(const Vertex& v, uint32_t triID, real time) const
 {
-    // TODO: acaba bunu ortak fonksiyonla halletmek mümkün olur mu bana olabilir gibi geldi
     Vec3r normal;
-    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
-    {
-        Vertex locVec; // TODO: transform from world to texel
-        Vec3r locNormal = (Color) NormalTexture->TextureColor(locVec); // TODO: color to vec3r
-        Vec3r globNormal; // TODO: transform from local to global
-        return globNormal;
-    }
-    else if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
-    {
-        // TODO: bump mapping
-    }
-    else if (shadingType == ShadingType::SMOOTH)
-    {
-        Vec3r b_a = b.v - a.v;
-        Vec3r c_a = c.v - a.v;
-        Vec3r v_a = v - a.v;
 
-        real d00 = dot_product(b_a, b_a);
-        real d01 = dot_product(b_a, c_a);
-        real d11 = dot_product(c_a, c_a);
-        real d20 = dot_product(v_a, b_a);
-        real d21 = dot_product(v_a, c_a);
-
-        real denom = d00 * d11 - d01 * d01;
-        real A_b = (d11 * d20 - d01 * d21) / denom;
-        real A_c = (d00 * d21 - d01 * d20) / denom;
-        real A_a = 1.0 - A_b - A_c;
-
-        Vec3r interpolated_normal = a.n * A_a + b.n * A_b + c.n * A_c;
+    if (shadingType == ShadingType::SMOOTH)
+    {
+        real alpha, beta, gamma;
+        BaryCentric(alpha,beta,gamma,v);
+        Vec3r interpolated_normal = a.n * alpha + b.n * beta + c.n * gamma;
         interpolated_normal = interpolated_normal.normalize();
         //if (dot_product(interpolated_normal, n) < 0.0) interpolated_normal = -interpolated_normal;
         normal = interpolated_normal;
     }
     else normal = n;
+
+    normal = getTexturedNormal(v, normal, time);
+
+}
+
+Texel Triangle::getTexel(const Vertex &v, real time) const
+{
+    real alpha, beta, gamma;
+    BaryCentric(alpha,beta,gamma,v);
+
+    return alpha * a.t + beta * b.t + gamma * c.t;
 }
 
 Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,
@@ -207,6 +236,11 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture
     main_center = c.v;
 }
 
+
+Texel Sphere::getTexel(const Vertex& v, real time) const
+{
+    // TODO: sphere texel
+}
 
 ObjectType Sphere::getObjectType() const { return ObjectType::SPHERE; }
 
@@ -299,6 +333,11 @@ Plane::Plane(uint32_t id, Vertex& v, std::string normal, Material& material, std
     }
 }
 
+Texel Plane::getTexel(const Vertex& v, real time) const
+{
+    // TODO: plane texel
+}
+
 ObjectType Plane::getObjectType() const { return ObjectType::PLANE; }
 
 Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
@@ -360,6 +399,12 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
     main_center = ((*forwardTrans) * Vec4r(original->main_center)).getVertex();
     forwardTrans->getNormalTransform();
     backwardTrans->getNormalTransform();
+}
+
+Texel Instance::getTexel(const Vertex& v, real time) const
+{
+    Vertex localV = getLocal(v, time);
+    return original->getTexel(localV, 0);
 }
 
 Instance::~Instance()

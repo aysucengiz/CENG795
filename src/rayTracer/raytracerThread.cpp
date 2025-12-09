@@ -236,7 +236,7 @@ Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, con
                         //std::cout << "Draw" << std::endl;
 
                         real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray);
+                        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray, time);
                         Color ac1 = m1.AbsorptionCoefficient;
                         if (!ac1.isBlack())
                         {

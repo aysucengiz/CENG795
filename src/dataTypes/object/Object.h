@@ -38,11 +38,14 @@ public:
     virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
-    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert) const;
-    Color GetColourAt(Color I_R_2,real cos_theta,  const Vec3r &normal, const Ray& ray, Ray& shadow_ray) const;
+    virtual Texel getTexel(const Vertex& v, real time)  const = 0;
+    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t) const;
+    Color GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time) const;
     Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                       Ray& shadow_ray, Vertex& vert) const;
+                       Ray& shadow_ray, Vertex& vert, Texel& t) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
+    Vec3r getTexturedNormal(const Vertex& v, Vec3r& n, real time) const;
+
 };
 
 ///////////////////////////////////////////////
@@ -58,6 +61,8 @@ public:
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
+    Texel getTexel(const Vertex& v, real time)  const override;
+    void BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const;
 
     Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,std::vector<Texture*> ts , ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
@@ -75,6 +80,7 @@ public:
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
+    Texel getTexel(const Vertex& v, real time) const override;
 
 };
 
@@ -93,6 +99,7 @@ public:
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
+    Texel getTexel(const Vertex& v, real time) const override;
 
 };
 
@@ -123,6 +130,7 @@ public:
     Vec3r getGlobal(Vec3r& v, double time);
     Vertex getGlobal(Vertex v, real time) const;
     Vec3r getLocal(Vec3r& v, real time);
+    Texel getTexel(const Vertex& v, real time) const override;
 };
 
 

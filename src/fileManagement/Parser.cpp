@@ -741,10 +741,11 @@ void Parser::getTexCoords(json TexCoords, SceneInput& sceneInput)
     if (TexCoords["_type"] == "uv")
     {
         std::istringstream ss(TexCoords["_data"].get<std::string>());
-        int u, v;
-        while (ss >> u >> v)
+        Texel t(0,0);
+        for (int i = 0; i < sceneInput.Vertices.size(); i++)
         {
-            sceneInput.TexCoords.push_back(std::pair<int, int>(u, v));
+            ss >> t.u >> t.v;
+            sceneInput.Vertices[i].t = t;
         }
     }
 }

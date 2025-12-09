@@ -25,6 +25,7 @@ Interpolation getInterpolation(const std::string &s);
 
 Texel operator -(const Texel &a, const Texel &b);
 Texel operator +(const Texel &a, const Texel &b);
+Texel operator *(const real &a, const Texel &b);
 
 // overload - color
 Color operator *(const Color &a, const Color &b);

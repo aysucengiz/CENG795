@@ -14,6 +14,13 @@
 // hw 3
 // TODO: mesh bvh parallelization
 
+// hw4
+// TODO: Get Texeller yazılacak
+// TODO: Replace normal ve bump mapping yapılacak
+// TODO: meshe fonksiyonlar eklenecek (trivial)
+// TODO: mipmapping
+// TODO: << overloads
+
 int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     std::cout << data << std::endl;

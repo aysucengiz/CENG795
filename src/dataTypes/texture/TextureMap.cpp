@@ -11,6 +11,9 @@
 real Convert::Abs(real inp) { return std::abs(inp); }
 real Convert::Linear(real inp) { return inp; }
 
+TextureType ImageTexture::getTextureType(){ return TextureType::IMAGE;}
+TextureType PerlinTexture::getTextureType(){ return TextureType::PERLIN;}
+TextureType CheckerTexture::getTextureType(){ return TextureType::CHECKERBOARD;}
 
 /// IMAGE ////
 Image::Image(uint32_t id, std::string filename) : _id(id)
@@ -31,9 +34,9 @@ Image::Image(uint32_t id, std::string filename) : _id(id)
 
 
 /// IMAGE TEXTURE ////
-Color ImageTexture::TextureColor(Vertex vert)
+Color ImageTexture::TextureColor(Vertex &vert, Texel &tex)
 {
-    return interpolate(texel);
+    return interpolate(tex);
 }
 
 Color ImageTexture::ImageColor(real x, real y)
@@ -67,7 +70,7 @@ Color ImageTexture::trilinear(Texel texel)
 
 int operator*(int _cpp_par_, int _cpp_par_);
 
-Color PerlinTexture::TextureColor(Vertex vert)
+Color PerlinTexture::TextureColor(Vertex& vert, Texel& tex)
 {
     Color result = Color(0, 0, 0);
     vert = vert * NoiseScale;
@@ -130,7 +133,7 @@ Vec3r PerlinNoise::fade(Vertex vert)
     return result;
 }
 
-Color CheckerTexture::TextureColor(Vertex vert)
+Color CheckerTexture::TextureColor(Vertex& vert, Texel& tex)
 {
     return IsOnWhite(vert) ? whiteColor : blackColor;
 }

@@ -91,6 +91,11 @@ Texel operator +(const Texel &a, const Texel &b)
     return Texel(a.u + b.u,
              a.v + b.v);
 }
+Texel operator *(const real &a, const Texel &b)
+{
+    return Texel(a * b.u,
+             a * b.v);
+}
 Texel operator +(const Texel &a, const Texel &b);
 
 // overload - color
