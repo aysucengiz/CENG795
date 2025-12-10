@@ -4,11 +4,12 @@ TEST_FILE = src/main_for_test.cpp
 MAIN_FILE = src/main.cpp
 ACC_FILES = $(wildcard src/acceleration/*.cpp)
 RAYTRACER_FILES = $(wildcard src/rayTracer/*.cpp)
+TEXTURE_FILES    = $(wildcard src/dataTypes/texture/*.cpp)
 MATRIX_FILES    = $(wildcard src/dataTypes/matrix/*.cpp)
 BASE_FILES      = $(wildcard src/dataTypes/base/*.cpp)
 OBJECT_FILES = $(wildcard src/dataTypes/object/*.cpp)
 FUNCTION_FILES = $(wildcard src/functions/*.cpp)
-DATA_FILES = $(MATRIX_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FUNCTION_FILES)
+DATA_FILES = $(MATRIX_FILES) $(TEXTURE_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FUNCTION_FILES)
 FILE_FILES = $(wildcard src/fileManagement/*.cpp)
 PARALLEL = -fopenmp
 FLAGS = -Isrc  -O3 -std=c++20 $(PARALLEL)

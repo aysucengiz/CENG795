@@ -288,8 +288,8 @@ Material::Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
 ////////////////////////////////////////////////
 
 
-CVertex::CVertex(uint32_t i, Vertex v, Vec3r n) : v(v), n(n),  id(i){}
-CVertex::CVertex(uint32_t i, const std::string& inp) : n(Vec3r()), id(i)
+CVertex::CVertex(uint32_t i, Vertex v, Vec3r n) : v(v), n(n),  id(i), t(0.0,0.0){}
+CVertex::CVertex(uint32_t i, const std::string& inp) : n(Vec3r()), id(i), t(0.0,0.0)
 {
     std::istringstream ss(inp);
     ss >> v.x >> v.y >> v.z;

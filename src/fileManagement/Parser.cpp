@@ -77,7 +77,7 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     }
     if (inp["Scene"].contains("Textures"))
     {
-        getTextures(TODO, sceneInput);
+        getTextures(inp["Textures"], sceneInput);
     }
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
@@ -596,13 +596,17 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
 void Parser::addInstance(std::string transformations, Object* original, SceneInput& sceneInput,
                          Vec3r motion)
 {
+    std::vector<Texture*> textures;
+    textures.push_back(original->NormalTexture);
+    textures.push_back(original->DiffuseTexture);
+    textures.push_back(original->SpecularTexture);
     sceneInput.objects.push_back(new Instance(
         original->_id,
         original,
         getTransFromStr(transformations, sceneInput.transforms),
         original->material,
         motion,
-        original->textures,
+        textures,
         true
     ));
     if (PRINTINIT) std::cout << sceneInput.objects[sceneInput.objects.size() - 1] << std::endl;

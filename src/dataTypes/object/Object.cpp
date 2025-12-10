@@ -79,33 +79,95 @@ Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
 }
 
 
-Vec3r Object::getTexturedNormal(const Vertex &v, Vec3r &n, real time) const
+Vec3r Object::getTexturedNormal(const Vertex & v, Vec3r& n, real time) const
 {
-    Texel t = getTexel(v,time);
-    Color textureColor =  NormalTexture->TextureColor(v, t);
-    Vec3r locNormal(textureColor.r / 125.5 - 1.0 , textureColor.g / 125.5 - 1.0 , textureColor.b / 125.5 - 1.0 );
 
-    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
+    Vec3r NewN = n;
+    if ( NormalTexture != nullptr)
     {
-        Vec3r globNormal; // TODO: transform from local to global
-        return globNormal;
+        Texel t = getTexel(v,time);
+        Color textureColor =  NormalTexture->TextureColor(v, t);
+        Vec3r locNormal(textureColor.r / 125.5 - 1.0 , textureColor.g / 125.5 - 1.0 , textureColor.b / 125.5 - 1.0 );
+        locNormal = locNormal.normalize();
+        Vec3r onb[3];
+        getBitan(v, onb[0], onb[1]);
+        onb[2] = n;
+
+
+        if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    NewN[(Axes) i] = locNormal[(Axes) j] * onb[i][(Axes) j];
+        }
+
+        if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
+        {
+            real epsilon = 0.0001;
+            Vertex shifted_eps[3] = {
+                {v.x + epsilon, v.y, v.z},
+                {v.x, v.y + epsilon, v.z},
+                {v.x, v.y, v.z + epsilon},
+            };
+            Texel texels[3] = {
+                getTexel(shifted_eps[0], 0),
+                getTexel(shifted_eps[1], 0),
+                getTexel(shifted_eps[2], 0)
+
+            };
+            Vec3r h = {
+                NormalTexture->TextureColor(shifted_eps[0], texels[0]).r,
+                NormalTexture->TextureColor(shifted_eps[0], texels[0]).g,
+                NormalTexture->TextureColor(shifted_eps[0], texels[0]).b,
+            };
+            Vec3r g_parall  = n *dot_product(h,n);
+            Vec3r g_perp    = h - g_parall;
+            NewN = n - g_perp;
+        }
+
     }
 
-    if (NormalTexture != nullptr && NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
-    {
-        // TODO: bump mapping
-        Vec3r globNormal;
-        return globNormal;
-    }
-
-    return n;
+    return NewN;
 }
+
+void Object::ComputeBitan(CVertex &a, CVertex &b, CVertex &c, Vec3r& pT, Vec3r& pB)
+{
+    real M1[2][2] = {
+        {c.t.v - a.t.v, -c.t.u + a.t.u},
+        {-b.t.v + a.t.v, b.t.u - a.t.u}
+    };
+    real det = M1[0][0] * M1[1][1] - M1[0][1] * M1[1][0];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            M1[i][j] /= det;
+
+    Vec3r A[2] = {b.v - a.v, c.v - a.v};
+    Vec3r Bits[2];
+
+    for ( int k = 0; k < 2; k++)
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 3; j++)
+                Bits[k][(Axes) j] = M1[k][i] * A[i][(Axes) j];
+
+    pT = Bits[0];
+    pB = Bits[1];
+}
+
 
 ////////////////////////////////////////////////
 ///////////////// TRIANGLE /////////////////////
 ////////////////////////////////////////////////
 
 ObjectType Triangle::getObjectType() const { return ObjectType::TRIANGLE; }
+
+
+
+void Triangle::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB) const
+{
+    pT = T;
+    pB = B;
+}
+
 
 Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
                                                     real time) const
@@ -192,7 +254,7 @@ Vec3r Triangle::getNormal(const Vertex& v, uint32_t triID, real time) const
     else normal = n;
 
     normal = getTexturedNormal(v, normal, time);
-
+    return normal;
 }
 
 Texel Triangle::getTexel(const Vertex &v, real time) const
@@ -222,6 +284,7 @@ Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Mat
     main_center.x = (a.v + b.v + c.v).x / 3.0;
     main_center.y = (a.v + b.v + c.v).y / 3.0;
     main_center.z = (a.v + b.v + c.v).z / 3.0;
+    ComputeBitan(a,b,c,T,B);
 }
 
 ////////////////////////////////////////////////
@@ -239,8 +302,21 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture
 
 Texel Sphere::getTexel(const Vertex& v, real time) const
 {
-    // TODO: sphere texel
+    real theta = acos(v.y / radius);
+    real phi = atan2(v.z, v.x);
+    return Texel((-phi + M_PI)/(2*M_PI), theta / M_PI);
 }
+
+
+void Sphere::getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB) const
+{
+    Texel tex = getTexel(v,0);
+    real theta = acos(v.y / radius);
+    real phi = atan2( v.z, v.x);
+    pT = {static_cast<real>(2*M_PI*v.z), 0, static_cast<real>(-2*M_PI*v.x)};
+    pB = {static_cast<real>(M_PI * v.y * cos(phi)), static_cast<real>(-M_PI * radius * sin(theta)), static_cast<real>(M_PI * radius * cos(phi))};
+}
+
 
 ObjectType Sphere::getObjectType() const { return ObjectType::SPHERE; }
 
@@ -331,11 +407,30 @@ Plane::Plane(uint32_t id, Vertex& v, std::string normal, Material& material, std
         globalBbox.vMax.x = v.x + M4T_EPS;
         globalBbox.vMin.x = v.x - M4T_EPS;
     }
+
+    std::pair<Vec3r,Vec3r> onb = getONB(n);
+    T = onb.first;
+    B = onb.second;
 }
 
-Texel Plane::getTexel(const Vertex& v, real time) const
+void Plane::getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB) const
 {
-    // TODO: plane texel
+    pT = T;
+    pB = B;
+}
+
+Texel Plane::getTexel(const Vertex& vert, real time) const
+{
+    real u = dot_product(vert - Vertex(0.0,0.0,0.0), T);
+    real v = dot_product(vert - Vertex(0.0,0.0,0.0), B);
+
+    u = fmod(u, 1.0);
+    if (u < 0) u += 1.0;
+
+    v = fmod(v, 1.0);
+    if (v < 0) v += 1.0;
+
+    return Texel(u, v);
 }
 
 ObjectType Plane::getObjectType() const { return ObjectType::PLANE; }

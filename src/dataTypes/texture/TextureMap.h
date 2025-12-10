@@ -17,11 +17,6 @@ namespace Convert
     real Linear(real inp);
 }
 
-namespace Interpolate
-{
-
-}
-
 
 class Image
 {
@@ -32,6 +27,7 @@ public:
     std::vector<std::vector<Color>> colorData;
     int width;
     int height;
+    std::string filename;
     Image(uint32_t id, std::string filename);
 };
 
@@ -46,7 +42,7 @@ public:
     DecalMode decalMode;
     Texture(uint32_t i, TextureType t, DecalMode d) : _id(i), type(t), decalMode(d)
     {}
-    virtual Color TextureColor(Vertex& vert, Texel& tex) = 0;
+    virtual Color TextureColor(const Vertex& vert, Texel& tex) = 0;
     virtual TextureType getTextureType() = 0;
 };
 
@@ -56,15 +52,17 @@ public:
     Color nearest(Texel texel);
     Color bilinear(Texel texel);
     Color trilinear(Texel texel);
-    Color TextureColor(Vertex& vert, Texel& tex) override;
+    Color TextureColor(const Vertex& vert, Texel& tex) override;
     Color ImageColor(real x, real y);
     Image &image;
     // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel)> interpolate;
+    Interpolation interpolation;
     TextureType getTextureType() override;
 
     ImageTexture(uint32_t id, TextureType t, DecalMode d, Image &image, Interpolation interp): Texture(id, t, d), image(image)
     {
+        interpolation = interp;
         if (interp == Interpolation::NEAREST)
             interpolate = [this](Texel t){ return nearest(t); };
         else if (interp == Interpolation::BILINEAR)
@@ -91,7 +89,7 @@ class PerlinNoise
     static real fade(real t);
     static int perm[256];
 public:
-    static Color perlin(real x, real y, real z);
+    static real perlin(real x, real y, real z);
 };
 
 class PerlinTexture : public Texture
@@ -103,7 +101,7 @@ public:
     real NoiseScale;
     int NumOctaves;
     PerlinTexture(uint32_t id, TextureType t, DecalMode d,std::function<real(real)> c, real ns, int no) : Texture(id, t, d), NumOctaves(no), convertNoise(c), NoiseScale(ns) {}
-    Color TextureColor(Vertex& vert, Texel& tex) override;
+    Color TextureColor(const Vertex& vert, Texel& tex) override;
 
 };
 
@@ -117,7 +115,7 @@ public:
     real offset;
     CheckerTexture(uint32_t id, TextureType t, DecalMode d, Color bc, Color wc, real s, real offs) :
     Texture(id, t, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
-    Color TextureColor(Vertex& vert, Texel& tex) override;
+    Color TextureColor(const Vertex& vert, Texel& tex) override;
     bool IsOnWhite(real i);
     bool IsOnWhite(Vertex vert);
 

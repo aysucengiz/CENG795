@@ -246,6 +246,13 @@ Vec3r operator *(const Vec3r& a, real mult)
                  a.k * mult);
 }
 
+Vertex operator *(const Vertex& a, real mult)
+{
+    return Vertex(a.x * mult,
+                 a.y * mult,
+                 a.z * mult);
+}
+
 
 // overload vec4r and m4trix
 
@@ -682,5 +689,86 @@ std::ostream& operator<<(std::ostream& os, const RayTracer& rt)
 
     os << "}";
 
+    return os;
+}
+
+
+
+
+std::ostream& operator<<(std::ostream& os, Image &i)
+{
+    os << "Image " << i._id << ":"
+    << "\n\tfilename:" << i.filename
+    << "\n\twidth:" << i.width
+    << "\theight:" << i.height
+    << "\n\tchannels in file:" << i.channels_in_file;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, Texture *t)
+{
+
+    switch (t->getTextureType())
+    {
+    case TextureType::IMAGE:
+        os << "  " << *dynamic_cast<ImageTexture*>((t)) << "\n";
+        break;
+    case TextureType::PERLIN:
+        os << "  " << *dynamic_cast<PerlinTexture*>((t)) << "\n";
+        break;
+    case TextureType::CHECKERBOARD:
+        os << "  " << *dynamic_cast<CheckerTexture*>((t)) << "\n";
+        break;
+    }
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, ImageTexture &i)
+{
+    os << "ImageTexture " << i._id << ":"
+    << "\n\tinterpolation:" << i.interpolation
+    << "\n\t" << i.image;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, PerlinTexture &i)
+{
+
+    os << "PerlinTexture " << i._id << ":"
+    << "\n\tNumOctaves:" << i.NumOctaves
+    << "\n\tNoiseScale:" << i.NoiseScale;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, CheckerTexture &i)
+{
+    os << "CheckerTexture " << i._id << ":"
+    << "\n\tDecalMode:" << i.decalMode
+    << "\n\tblackColor:" << i.blackColor
+    << "\twhiteColor:" << i.whiteColor
+    << "\n\tscale:" << i.scale
+    << "\n\toffset:" << i.offset;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, DecalMode t)
+{
+    if (t == DecalMode::REPLACE_KD) os << "replace_kd";
+    else if (t == DecalMode::BLEND_KD) os << "blend_kd";
+    else if (t == DecalMode::REPLACE_KS) os << "replace_ks";
+    else if (t == DecalMode::REPLACE_BACKGROUND) os << "replace_background";
+    else if (t == DecalMode::REPLACE_NORMAL) os << "replace_normal";
+    else if (t == DecalMode::BUMP_NORMAL) os << "bump_normal";
+    else if (t == DecalMode::REPLACE_ALL) os << "replace_all";
+    else os << "unknown";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, Interpolation t)
+{
+    if (t == Interpolation::NEAREST) os << "nearest";
+    else if (t == Interpolation::BILINEAR) os << "bilinear";
+    else if (t == Interpolation::TRILINEAR) os << "trilinear";
+    else os << "unknown";
     return os;
 }

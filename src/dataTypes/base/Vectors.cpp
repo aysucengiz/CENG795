@@ -149,7 +149,7 @@ Vec4r&  Vec4r::operator/=(const real& other) {
 Vec3r Vec4r::getVec3r() const{return Vec3r(x,y,z);}
 Vertex Vec4r::getVertex() const{return Vertex(x,y,z);}
 
-real Vertex::operator[](Axes a) const
+real& Vertex::operator[](Axes a)
 {
     switch (a)
     {
@@ -160,7 +160,7 @@ real Vertex::operator[](Axes a) const
     }
 }
 
-real Vec3r::operator[](Axes a) const
+real& Vec3r::operator[](Axes a)
 {
     switch (a)
     {

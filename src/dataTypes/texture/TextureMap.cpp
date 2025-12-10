@@ -8,6 +8,8 @@
 #include "../../functions/overloads.h"
 #include "../../functions/helpers.h"
 
+int PerlinNoise::P[512];
+
 real Convert::Abs(real inp) { return std::abs(inp); }
 real Convert::Linear(real inp) { return inp; }
 
@@ -34,7 +36,7 @@ Image::Image(uint32_t id, std::string filename) : _id(id)
 
 
 /// IMAGE TEXTURE ////
-Color ImageTexture::TextureColor(Vertex &vert, Texel &tex)
+Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex)
 {
     return interpolate(tex);
 }
@@ -68,35 +70,33 @@ Color ImageTexture::trilinear(Texel texel)
 
 //// Perlin Texture ////
 
-int operator*(int _cpp_par_, int _cpp_par_);
-
-Color PerlinTexture::TextureColor(Vertex& vert, Texel& tex)
+Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
-    Color result = Color(0, 0, 0);
-    vert = vert * NoiseScale;
+    real result = 0.0;
+    Vertex vert2 = vert * NoiseScale;
     real pow_2_i;
     for (int i = 0; i < NumOctaves; i++)
     {
         pow_2_i = pow(2, i);
-        result += (real)pow(2, -i) * PerlinNoise::perlin(vert.x * pow_2_i, vert.y * pow_2_i, vert.z * pow_2_i);
+        result = result +  (real)pow(2, -i) * PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
     }
-    return result;
+    return Color(result, result, result); // TODO: bu böyle mi olmalı_
 }
 
-real clampfloor(real i) { return std::floor(i) & 255; }
+int clampfloor(real i) { return (int) std::floor(i) & 255; }
 real getFloatPart(real i) { return i - std::floor(i); }
 
 real PerlinNoise::perlin(real x, real y, real z)
 {
-    Vertex XYZ = Vertex(clampfloor(x), clampfloor(y), clampfloor(z));
+    int XYZ[3] = {clampfloor(x), clampfloor(y), clampfloor(z)};
     Vertex xyz = Vertex(getFloatPart(x), getFloatPart(y), getFloatPart(z));
     Vec3r gradient = fade(xyz);
-    int A = P[XYZ.x] + XYZ.y;
-    int B = P[XYZ.x + 1] + XYZ.y;
-    int AA = P[A] + XYZ.z;
-    int BA = P[B] + XYZ.z;
-    int AB = P[A + 1] + XYZ.z;
-    int BB = P[B + 1] + XYZ.z;
+    int A = P[XYZ[0]] + XYZ[1];
+    int B = P[XYZ[0] + 1] + XYZ[1];
+    int AA = P[A] + XYZ[2];
+    int BA = P[B] + XYZ[2];
+    int AB = P[A + 1] + XYZ[2];
+    int BB = P[B + 1] + XYZ[2];
     std::array<real, 8> all_gradients = {
         grad(P[AA], xyz),
         grad(P[BA], {xyz.x - 1, xyz.y, xyz.z}),
@@ -133,7 +133,7 @@ Vec3r PerlinNoise::fade(Vertex vert)
     return result;
 }
 
-Color CheckerTexture::TextureColor(Vertex& vert, Texel& tex)
+Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
     return IsOnWhite(vert) ? whiteColor : blackColor;
 }

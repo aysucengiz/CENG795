@@ -44,6 +44,7 @@ Vec3r operator *(const Vec3r &a, const real mult);
 Vec3r operator /(const Vec3r &a, const real denum);
 Vec3r operator /(const Vec3r &a, const Vec3r &b);
 // overload - return Vertex
+Vertex operator *(const Vertex &a, const real mult);
 Vertex operator /(const Vertex &a, real other);
 Vertex operator +(const Vertex &a, const Vertex &b);
 Vertex operator +(const Vec3r &a, const Vertex &b);
@@ -96,14 +97,20 @@ std::ostream& operator<<(std::ostream& os, BVH &bvh);
 std::ostream& operator<<(std::ostream& os, BVHNode &node);
 std::ostream& operator<<(std::ostream& os, const BBox &bbox);
 std::ostream& operator<<(std::ostream& os, const Instance& m);
+std::ostream& operator<<(std::ostream& os, Interpolation t);
 
 std::ostream& operator<<(std::ostream& os, Transformation *t);
 std::ostream& operator<<(std::ostream& os, Rotate &t);
 std::ostream& operator<<(std::ostream& os, Translate &t);
 std::ostream& operator<<(std::ostream& os, Scale &t);
 std::ostream& operator<<(std::ostream& os, Composite &t);
+std::ostream& operator<<(std::ostream& os, DecalMode t);
+std::ostream& operator<<(std::ostream& os, Image &t);
+std::ostream& operator<<(std::ostream& os, Texture *t);
+std::ostream& operator<<(std::ostream& os, ImageTexture &t);
+std::ostream& operator<<(std::ostream& os, PerlinTexture &t);
+std::ostream& operator<<(std::ostream& os, CheckerTexture &t);
 
 std::ostream& operator<<(std::ostream& os, std::array<std::array<double,4>,4> &arr);
 std::ostream& operator<<(std::ostream& os, const RayTracer& rt);
-
 #endif //CENG795_OVERLOADS_H
