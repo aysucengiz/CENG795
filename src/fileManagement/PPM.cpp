@@ -4,6 +4,7 @@
 
 #include "PPM.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 
 #include "stb_image.h"

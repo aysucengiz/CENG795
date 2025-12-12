@@ -302,8 +302,9 @@ Sphere::Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture
 
 Texel Sphere::getTexel(const Vertex& v, real time) const
 {
-    real theta = acos(v.y / radius);
-    real phi = atan2(v.z, v.x);
+    Vec3r v_c = v - center.v;
+    real theta = acos((v_c.j) / radius);
+    real phi = atan2(v_c.k, v_c.i);
     return Texel((-phi + M_PI)/(2*M_PI), theta / M_PI);
 }
 
@@ -495,6 +496,12 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
     forwardTrans->getNormalTransform();
     backwardTrans->getNormalTransform();
 }
+
+void Instance::getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB) const
+{
+    original->getBitan(v, pT, pB);
+}
+
 
 Texel Instance::getTexel(const Vertex& v, real time) const
 {

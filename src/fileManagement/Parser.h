@@ -32,8 +32,8 @@ namespace Parser {
     void getVertexData(json inp, SceneInput &sceneInput);
     void getObjects(json inp, SceneInput &sceneInput, std::string root);
     void getTexCoords(json TexCoords, SceneInput& sceneInput);
-    void getTextures(json& inp, SceneInput& sceneInput);
-    void getImages(json& inp, SceneInput& sceneInput);
+    void getTextures(json& inp, SceneInput& sceneInput, std::string root);
+    void getImages(json& inp, SceneInput& sceneInput, std::string root);
     void getTextureMaps(json Textures, SceneInput& sceneInput);
 
     void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
@@ -48,7 +48,7 @@ namespace Parser {
     void addTranslation(json Camera, SceneInput &sceneInput);
     void addScaling(json p, SceneInput &sceneInput);
     void addRotation(json p, SceneInput &sceneInput);
-    void addImage(json s, SceneInput& sceneInput);
+    void addImage(json s, SceneInput& sceneInput, std::string root);
     void addTextureMap(json s, SceneInput& sceneInput);
 
     Scale getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms);
@@ -58,7 +58,7 @@ namespace Parser {
     std::shared_ptr<Transformation> getTransFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>> &transforms);
     Object* getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object*> &objs);
     Texture *getTextureWithId(int id,SceneInput &scene);
-    Image &getImageFromId(int id, SceneInput& scene);
+    Image *getImageFromId(int id, SceneInput& scene);
     std::function<real(real)> getConversionFunc(json inp);
 };
 

@@ -22,7 +22,7 @@ int main(void) {
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
 
-    raytracer.parseScene("jsonFiles/hw4/");
+    raytracer.drawFile("jsonFiles/hw4/inputs/ellipsoids_texture.json");
 
     return 0;
 }

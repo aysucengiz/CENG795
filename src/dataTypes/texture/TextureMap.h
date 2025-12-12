@@ -54,13 +54,13 @@ public:
     Color trilinear(Texel texel);
     Color TextureColor(const Vertex& vert, Texel& tex) override;
     Color ImageColor(real x, real y);
-    Image &image;
+    Image *image;
     // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel)> interpolate;
     Interpolation interpolation;
     TextureType getTextureType() override;
 
-    ImageTexture(uint32_t id, TextureType t, DecalMode d, Image &image, Interpolation interp): Texture(id, t, d), image(image)
+    ImageTexture(uint32_t id, TextureType t, DecalMode d, Image *image, Interpolation interp): Texture(id, t, d), image(image)
     {
         interpolation = interp;
         if (interp == Interpolation::NEAREST)

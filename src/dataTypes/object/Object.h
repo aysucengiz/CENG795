@@ -183,7 +183,7 @@ struct SceneInput
     std::vector<std::shared_ptr<Transformation>> transforms;
     std::vector<Texture*> textures;
     Texture *BackgroundTexture;
-    std::vector<Image> images;
+    std::deque<Image*> images;
 
     // precomputed near plane info
     Vec3r u;

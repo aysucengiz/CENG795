@@ -1,7 +1,7 @@
 {
   "Configuration": {
     "Prints": {
-      "Initialization": false,
+      "Initialization": true,
       "AccelerationCreation": false,
       "Progress": false
     },

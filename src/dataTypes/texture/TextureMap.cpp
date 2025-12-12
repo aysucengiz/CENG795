@@ -25,9 +25,9 @@ Image::Image(uint32_t id, std::string filename) : _id(id)
     for (int y = 0; y < height; y++)
     {
         colorData.push_back(std::vector<Color>());
-        for (int x = 0; x < height; x++)
+        colorData[y].reserve(width);
+        for (int x = 0; x < width; x++)
         {
-            // TODO: channels in file nasıl etkiliyor?
             colorData[y].push_back(Color(data[curr_idx], data[curr_idx + 1], data[curr_idx + 2]));
             curr_idx += 3;
         }
@@ -43,7 +43,7 @@ Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex)
 
 Color ImageTexture::ImageColor(real x, real y)
 {
-    return image.colorData[y][x];
+    return image->colorData[y][x];
 }
 
 Color ImageTexture::nearest(Texel texel)

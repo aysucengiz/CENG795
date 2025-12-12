@@ -77,7 +77,7 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     }
     if (inp["Scene"].contains("Textures"))
     {
-        getTextures(inp["Textures"], sceneInput);
+        getTextures(inp["Scene"]["Textures"], sceneInput,root);
     }
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
@@ -92,28 +92,31 @@ void Parser::getCameras(json inp, SceneInput& sceneInput)
 }
 
 
-void Parser::getTextures(json &inp, SceneInput& sceneInput)
+void Parser::getTextures(json &inp, SceneInput& sceneInput, std::string root)
 {
-    getImages(inp, sceneInput);
+    getImages(inp, sceneInput, root);
     getTextureMaps(inp, sceneInput);
 }
 
-void Parser::getImages(json &inp, SceneInput& sceneInput)
+void Parser::getImages(json &inp, SceneInput& sceneInput, std::string root)
 {
+    for (auto it = inp.begin(); it != inp.end(); ++it) {
+        std::cout << it.key() << std::endl;
+    }
     if (inp.contains("Images"))
     {
-        json& Images = inp["Images"];
+        json& Images = inp["Images"]["Image"];
         uint32_t numImages = Images.size();
-        if (Images.is_object()) addImage(Images, sceneInput);
-        else for (int i = 0; i < numImages; i++) addImage(Images[i], sceneInput);
+        if (Images.is_object()) addImage(Images, sceneInput, root);
+        else for (int i = 0; i < numImages; i++) addImage(Images[i], sceneInput, root);
     }
 
 }
 
-void Parser::addImage(json s, SceneInput& sceneInput)
+void Parser::addImage(json s, SceneInput& sceneInput, std::string root)
 {
-    sceneInput.images.push_back(Image(s["_id"], s["_data"]));
-    // TODO: << overloads
+    std::cout << root + s["_data"].get<std::string>() << std::endl;
+    sceneInput.images.push_back(new Image(std::stoi(s["_id"].get<std::string>()), root + s["_data"].get<std::string>()));
     if (PRINTINIT) std::cout << sceneInput.images[sceneInput.images.size()-1] << std::endl;
 }
 
@@ -129,24 +132,29 @@ void Parser::getTextureMaps(json inp, SceneInput& sceneInput)
         else for (int i = 0; i < numTextureMaps; i++) addTextureMap(TextureMaps[i], sceneInput);
     }
 }
+
+int getInt(json j){ return std::stoi(j.get<std::string>());}
+real getReal(json j){ return (real) std::stod(j.get<std::string>());}
 void Parser::addTextureMap(json s, SceneInput& sceneInput)
 {
     TextureType t = getTextureType(s["_type"].get<std::string>());
     DecalMode dm = getDecalMode(s["DecalMode"]);
     Texture *temp = nullptr;
+    int id = std::stoi(s["_id"].get<std::string>());
     if (t == TextureType::IMAGE)
     {
-        temp = new ImageTexture(s["_id"], t, dm, getImageFromId(s["ImageId"],sceneInput), getInterpolation(s["Interpolation"].get<std::string>()));
+        temp = new ImageTexture(id, t, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), getInterpolation(s["Interpolation"].get<std::string>()));
     }
     else if (t == TextureType::PERLIN)
     {
-        temp = new PerlinTexture(s["_id"], t, dm, getConversionFunc(s["NoiseConversion"]), s["NoiseScale"].get<real>(),
-            s.contains("NumOctaves") ? s["NumOctaves"].get<int>() : 1);
+        temp = new PerlinTexture(id, t, dm, getConversionFunc(s["NoiseConversion"]),
+            s.contains("NoiseScale") ? getReal(s["NoiseScale"]) : 1,
+            s.contains("NumOctaves") ? getInt(s["NumOctaves"]) : 1);
     }
     else if (t==TextureType::CHECKERBOARD)
     {
-        temp = new CheckerTexture(s["_id"], t, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
-            s["Scale"].get<real>(), s["Offset"].get<real>());
+        temp = new CheckerTexture(id, t, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
+            getReal(s["Scale"]), getReal(s["Offset"]));
     }
     sceneInput.textures.push_back(temp);
     if ( temp->decalMode == DecalMode::REPLACE_BACKGROUND) sceneInput.BackgroundTexture = temp;
@@ -597,9 +605,9 @@ void Parser::addInstance(std::string transformations, Object* original, SceneInp
                          Vec3r motion)
 {
     std::vector<Texture*> textures;
-    textures.push_back(original->NormalTexture);
-    textures.push_back(original->DiffuseTexture);
-    textures.push_back(original->SpecularTexture);
+    if (original->NormalTexture) textures.push_back(original->NormalTexture);
+    if (original->DiffuseTexture) textures.push_back(original->DiffuseTexture);
+    if (original->SpecularTexture) textures.push_back(original->SpecularTexture);
     sceneInput.objects.push_back(new Instance(
         original->_id,
         original,
@@ -786,12 +794,12 @@ Texture* Parser::getTextureWithId(int id, SceneInput& scene)
     return nullptr;
 }
 
-Image &Parser::getImageFromId(int id, SceneInput& scene)
+Image *Parser::getImageFromId(int id, SceneInput& scene)
 {
-        std::vector<Image> images = scene.images;
+        std::deque<Image*> images = scene.images;
     for (int i = 0; i < images.size(); i++)
     {
-        if (images[i]._id == id) return images[i];
+        if (images[i]->_id == id) return images[i];
     }
     std::cout << "Could not find the id!!!!: " << id << std::endl;
     return images[0];
