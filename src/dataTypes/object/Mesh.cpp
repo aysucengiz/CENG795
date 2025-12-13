@@ -139,16 +139,15 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
 ObjectType Mesh::getObjectType() const { return ObjectType::MESH; }
 
 
-Texel Mesh::getTexel(const Vertex& v, real time) const
+Texel Mesh::getTexel(const Vertex& v, real time, int triID) const
 {
-    std::cout << "HOW DID YOU CALL THIS GETTEXEL" << std::endl;
-    return Texel(0.0,0.0);
+    return  Faces[triID]->getTexel(v, time, triID);
 
 }
 
-void Mesh::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB) const
+void Mesh::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const
 {
-    std::cout << "HOW DID YOU CALL THIS getBitan" << std::endl;
+    return  Faces[triID]->getBitan(v,pT,pB, triID);
 }
 
 Vec3r Mesh::getNormal(const Vertex& v, uint32_t triID, real time) const

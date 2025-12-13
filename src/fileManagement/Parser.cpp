@@ -116,8 +116,10 @@ void Parser::getImages(json &inp, SceneInput& sceneInput, std::string root)
 void Parser::addImage(json s, SceneInput& sceneInput, std::string root)
 {
     std::cout << root + s["_data"].get<std::string>() << std::endl;
-    sceneInput.images.push_back(new Image(std::stoi(s["_id"].get<std::string>()), root + s["_data"].get<std::string>()));
-    if (PRINTINIT) std::cout << sceneInput.images[sceneInput.images.size()-1] << std::endl;
+    Image *temp = new Image(std::stoi(s["_id"].get<std::string>()), root + s["_data"].get<std::string>());
+    sceneInput.images.push_back(temp);
+    if (PRINTINIT)
+        std::cout << sceneInput.images[sceneInput.images.size()-1] << std::endl;
 }
 
 
@@ -143,7 +145,8 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
     int id = std::stoi(s["_id"].get<std::string>());
     if (t == TextureType::IMAGE)
     {
-        temp = new ImageTexture(id, t, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), getInterpolation(s["Interpolation"].get<std::string>()));
+        Interpolation interp = s.contains("Interpolation") ?  getInterpolation(s["Interpolation"].get<std::string>()) : Interpolation::NEAREST;
+        temp = new ImageTexture(id, t, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), interp);
     }
     else if (t == TextureType::PERLIN)
     {
@@ -608,6 +611,7 @@ void Parser::addInstance(std::string transformations, Object* original, SceneInp
     if (original->NormalTexture) textures.push_back(original->NormalTexture);
     if (original->DiffuseTexture) textures.push_back(original->DiffuseTexture);
     if (original->SpecularTexture) textures.push_back(original->SpecularTexture);
+    if (original->AllTexture) textures.push_back(original->AllTexture);
     sceneInput.objects.push_back(new Instance(
         original->_id,
         original,
@@ -796,7 +800,7 @@ Texture* Parser::getTextureWithId(int id, SceneInput& scene)
 
 Image *Parser::getImageFromId(int id, SceneInput& scene)
 {
-        std::deque<Image*> images = scene.images;
+    std::vector<Image*> images = scene.images;
     for (int i = 0; i < images.size(); i++)
     {
         if (images[i]->_id == id) return images[i];

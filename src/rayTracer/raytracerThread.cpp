@@ -132,7 +132,7 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     for (sampleIdx=0; sampleIdx < cam.numSamples; sampleIdx++)
     {
             viewing_ray = computeViewingRay(x, y);
-            colors.push_back(computeColor(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
+            colors.push_back(followRay(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
     }
 
     Color final_color = Filter(colors,cam.samplesPixel);
@@ -194,72 +194,81 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
     return false;
 }
 
-
-Color RaytracerThread::computeColor(Ray& ray, int depth, const Material &m1, const std::array<real,2> &light_sample)
+Color RaytracerThread::computeColor(HitRecord &hit_record, Ray& ray, int depth, const Material &m1, const std::array<real,2> &light_sample)
 {
+    if (hit_record.obj->AllTexture != nullptr)
+    {
+        return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri);
+    }
     Color curr_color;
+    Material& m = hit_record.obj->material;
+    curr_color = Color(0.0,0.0,0.0);
+    if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::CONDUCTOR)
+    {
+        curr_color += reflect(ray, depth, m.materialType, hit_record, m1);
+    }
+    if (m.materialType == MaterialType::DIELECTRIC)
+    {
+        if (m1.AbsorptionCoefficient.isBlack())
+            curr_color += refract(ray, depth, m1,hit_record.obj->material, hit_record);
+        else
+            curr_color += refract(ray, depth, m1,air, hit_record);
+    }
+
+    {
+        for (int j = 0; j < scene.numLights; j++)
+        {
+            // std::array<real ,2> light_sample = {getRandom(),getRandom()};
+            Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
+            if (!isUnderShadow(shadow_ray))
+            {
+                Color irradiance = scene.PointLights[j]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray, (hit_record.intersection_point -  scene.PointLights[j]->getPos(light_sample)).mag());
+                if (!irradiance.isBlack())
+                {
+                    //std::cout << "Draw" << std::endl;
+
+                    real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
+                    curr_color += hit_record.obj->GetColourAt(scene.AmbientLight, irradiance, cos_theta, hit_record.normal, ray, shadow_ray, time, hit_record.currTri);
+                    Color ac1 = m1.AbsorptionCoefficient;
+                    if (!ac1.isBlack())
+                    {
+                        Color eCx = (-ac1 * (ray.pos - hit_record.intersection_point ).mag()).exponent();
+                        curr_color = curr_color * eCx;
+                        // std::cout << eCx << " " << ac1 << " " << air.AbsorptionCoefficient <<std::endl;
+                    }
+                } // else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
+
+                //curr_color.r = hit_record.normal.i * 255.0;
+                //curr_color.g = hit_record.normal.j * 255.0;
+                //curr_color.b = hit_record.normal.k * 255.0;
+            }
+        }
+    }
+    return curr_color;
+}
+
+
+Color RaytracerThread::followRay(Ray& ray, int depth, const Material &m1, const std::array<real,2> &light_sample)
+{
     HitRecord hit_record;
     real t_min= INFINITY;
-    // std::cout << "Computecolor" << std::endl;
 
-    if (depth > scene.MaxRecursionDepth) return curr_color;
+    if (depth > scene.MaxRecursionDepth) return Color(0.0,0.0,0.0);
     bool back_cull = m1.AbsorptionCoefficient.isBlack() ? scene.back_cull : false;
     checkObjIntersection(ray, t_min, hit_record,back_cull);
 
     if (hit_record.obj != nullptr &&
         hit_record.obj->material.materialType != MaterialType::NONE)
     {
-        Material& m = hit_record.obj->material;
-        curr_color = scene.AmbientLight * m.AmbientReflectance;
-        if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::CONDUCTOR)
-        {
-            curr_color += reflect(ray, depth, m.materialType, hit_record, m1);
-        }
-        if (m.materialType == MaterialType::DIELECTRIC)
-        {
-            if (m1.AbsorptionCoefficient.isBlack())
-                curr_color += refract(ray, depth, m1,hit_record.obj->material, hit_record);
-            else
-                curr_color += refract(ray, depth, m1,air, hit_record);
-        }
 
-        {
-            for (int j = 0; j < scene.numLights; j++)
-            {
-                // std::array<real ,2> light_sample = {getRandom(),getRandom()};
-                Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
-                if (!isUnderShadow(shadow_ray))
-                {
-                    Color irradiance = scene.PointLights[j]->getIrradianceAt(hit_record.normal, light_sample, shadow_ray, (hit_record.intersection_point -  scene.PointLights[j]->getPos(light_sample)).mag());
-                    if (!irradiance.isBlack())
-                    {
-                        //std::cout << "Draw" << std::endl;
-
-                        real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray, time);
-                        Color ac1 = m1.AbsorptionCoefficient;
-                        if (!ac1.isBlack())
-                        {
-                            Color eCx = (-ac1 * (ray.pos - hit_record.intersection_point ).mag()).exponent();
-                            curr_color = curr_color * eCx;
-                            // std::cout << eCx << " " << ac1 << " " << air.AbsorptionCoefficient <<std::endl;
-                        }
-                    } // else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
-
-                    //curr_color.r = hit_record.normal.i * 255.0;
-                    //curr_color.g = hit_record.normal.j * 255.0;
-                    //curr_color.b = hit_record.normal.k * 255.0;
-                }
-            }
-        }
+        return computeColor(hit_record, ray, depth, m1, light_sample);
     }
-    else if (depth == 0)
+
+    if (depth == 0)
     {
         return scene.BackgroundColor;
     }
-
-
-    return curr_color;
+    return Color(0.0,0.0,0.0);
 }
 
 
@@ -422,7 +431,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material &m1, const Ma
         else
         {   // leaving
             std::array<real,2> sample = {getRandom(),getRandom()};
-            refracted = computeColor(refractedRay,depth, m2,sample) * Ft;
+            refracted = followRay(refractedRay,depth, m2,sample) * Ft;
         }
     }
 
@@ -476,7 +485,7 @@ Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord
     Ray reflected_ray = reflectionRay(ray,type,hit_record);
     Color temp;
     std::array<real,2> sample = {getRandom(),getRandom()};
-    temp = computeColor(reflected_ray, depth + 1, m1, sample);
+    temp = followRay(reflected_ray, depth + 1, m1, sample);
     // std::cout << hit_record.normal << std::endl;
 
     if (type == MaterialType::CONDUCTOR)

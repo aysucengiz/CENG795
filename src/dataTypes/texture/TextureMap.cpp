@@ -7,6 +7,7 @@
 #include "../../fileManagement/PPM.h"
 #include "../../functions/overloads.h"
 #include "../../functions/helpers.h"
+#include "fileManagement/stb_image.h"
 
 int PerlinNoise::P[512];
 
@@ -20,41 +21,56 @@ TextureType CheckerTexture::getTextureType(){ return TextureType::CHECKERBOARD;}
 /// IMAGE ////
 Image::Image(uint32_t id, std::string filename) : _id(id)
 {
-    data = PPM::read_image(filename.c_str(), width, height, channels_in_file, 3);
-    uint32_t curr_idx = 0;
-    for (int y = 0; y < height; y++)
+    width = 0;
+    height = 0;
+    channels_in_file = 0;
+    unsigned char *data = PPM::read_image(filename.c_str(), width, height, channels_in_file, 3);
+    if (data)
     {
-        colorData.push_back(std::vector<Color>());
-        colorData[y].reserve(width);
-        for (int x = 0; x < width; x++)
+        uint32_t curr_idx = 0;
+        colorData.resize(height, std::vector<Color>(width));
+        for (int y = 0; y < height; y++)
         {
-            colorData[y].push_back(Color(data[curr_idx], data[curr_idx + 1], data[curr_idx + 2]));
-            curr_idx += 3;
+            for (int x = 0; x < width; x++)
+            {
+                colorData[y][x] = Color(data[curr_idx], data[curr_idx + 1], data[curr_idx + 2]);
+                curr_idx += 3;
+            }
         }
     }
+    else std::cout << "Image could not be read" << std::endl;
+}
+
+Image::~Image()
+{
 }
 
 
 /// IMAGE TEXTURE ////
 Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex)
 {
-    return interpolate(tex);
+    Color interpolated_color = interpolate(tex);
+    return  interpolated_color/ 255.0;
 }
 
-Color ImageTexture::ImageColor(real x, real y)
+Color ImageTexture::ImageColor(int x, int y)
 {
+    y = std::max(0, std::min(y , image->height-1));
+    x = std::max(0, std::min(x , image->width-1));
     return image->colorData[y][x];
 }
 
 Color ImageTexture::nearest(Texel texel)
 {
-    return ImageColor(std::round(texel.u), std::round(texel.v));
+    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
+    return ImageColor(std::round(xy.u), std::round(xy.v));
 }
 
 Color ImageTexture::bilinear(Texel texel)
 {
-    Texel pq = {std::floor(texel.u), std::floor(texel.v)};
-    Texel delta = {texel.u - pq.u, texel.v - pq.v};
+    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
+    Texel pq = {std::floor(xy.u), std::floor(xy.v)};
+    Texel delta = {xy.u - pq.u, xy.v - pq.v};
     Color result = ImageColor(pq.u, pq.v) * (1 - delta.u) * (1 - delta.v)
         + ImageColor(pq.u + 1, pq.v) * (delta.u) * (1 - delta.v)
         + ImageColor(pq.u, pq.v + 1) * (1 - delta.u) * (delta.v)

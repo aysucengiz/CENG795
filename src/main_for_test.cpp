@@ -22,7 +22,13 @@ int main(void) {
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);
 
-    raytracer.drawFile("jsonFiles/hw4/inputs/ellipsoids_texture.json");
+
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_cushion.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_wall_normal.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_waves.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_perlin.json");
 
     return 0;
+    raytracer.drawFile("jsonFiles/hw4/inputs/ellipsoids_texture.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_wall.json");
 }

@@ -4,6 +4,7 @@ From now on this will be the blog space since I do not want to have limited png.
 
 
 ## Texture Maps
+![img.png](img.png)
 
 ### Image
 

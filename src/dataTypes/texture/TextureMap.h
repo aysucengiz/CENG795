@@ -22,13 +22,13 @@ class Image
 {
 public:
     uint32_t _id;
-    unsigned char *data;
     int channels_in_file;
     std::vector<std::vector<Color>> colorData;
     int width;
     int height;
     std::string filename;
     Image(uint32_t id, std::string filename);
+    ~Image();
 };
 
 
@@ -53,7 +53,7 @@ public:
     Color bilinear(Texel texel);
     Color trilinear(Texel texel);
     Color TextureColor(const Vertex& vert, Texel& tex) override;
-    Color ImageColor(real x, real y);
+    Color ImageColor(int x, int v);
     Image *image;
     // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel)> interpolate;
