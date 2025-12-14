@@ -53,12 +53,12 @@ private:
     Color bilinear(Texel texel);
     Color trilinear(Texel texel);
     Color ImageColor(int x, int y);
-    Image *image;
     // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel)> interpolate;
-    Interpolation interpolation;
 
 public:
+    Interpolation interpolation;
+    Image *image;
     Color TextureColor(const Vertex& vert, Texel& tex) override;
     TextureType getTextureType() override;
     ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp): Texture(id, d), image(image)

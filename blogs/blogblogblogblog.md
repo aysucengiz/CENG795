@@ -2,6 +2,8 @@
 From now on this will be the blog space since I do not want to have limited png. In my previous blogs I could not write to my will so here it is.
 Behold, pictures.
 
+Also, initially I was so scared of adding textures because it seemed like just the coding part took forever. Turns out debugging wasn't as hard.
+
 
 ---
 # Texture Maps
