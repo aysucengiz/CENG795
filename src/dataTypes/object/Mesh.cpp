@@ -87,13 +87,27 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
     {
         std::istringstream verticesStream(s);
         uint32_t vert[3];
+        bool init = true;
+        bool index_from_one = true;
         while (verticesStream >> vert[0] >> vert[1] >> vert[2])
         {
-            vert[0]--;
-            vert[1]--;
-            vert[2]--;
+            if (init && (vert[0] == 0 || vert[1] == 0 || vert[2] == 0))
+            {
+                index_from_one = false;
+            }
+            init = false;
+
+            if (index_from_one)
+            {
+                vert[0]--;
+                vert[1]--;
+                vert[2]--;
+            }
             if (vert[0] != vert[1] && vert[0] != vert[2] && vert[1] != vert[2])
             {
+                // std::cout << vertices[vert[0]].v << std::endl;
+                // std::cout << vertices[vert[1]].v << std::endl;
+                // std::cout << vertices[vert[2]].v << std::endl;
                 Vertex minv = minVert3(vertices[vert[0]].v, vertices[vert[1]].v, vertices[vert[2]].v);
                 Vertex maxv = maxVert3(vertices[vert[0]].v, vertices[vert[1]].v, vertices[vert[2]].v);
                 globalBbox.vMax.x = std::max(maxv.x, globalBbox.vMax.x);

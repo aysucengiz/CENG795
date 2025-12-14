@@ -28,6 +28,7 @@ private:
     std::vector<int> sampleIdxTime;
     int sampleIdx;
     real time;
+    int x,y;
 
     // for recursive refraction
     //real n1;
@@ -71,11 +72,11 @@ public:
     Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
     Color Filter(std::vector<Color>& colors, const std::vector<std::array<real,2>> &locs);
     void writeToImage(uint32_t& curr_pixel, Color& final_color);
-    void drawPixel(uint32_t& curr_pixel, uint32_t x, uint32_t y);
+    void drawPixel(uint32_t& curr_pixel);
     void PrintProgress();
-    void drawRow(uint32_t y);
+    void drawRow(uint32_t ly);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
-    Ray computeViewingRay(int x, int y);
+    Ray computeViewingRay();
     Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);

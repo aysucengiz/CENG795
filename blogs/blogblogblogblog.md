@@ -259,6 +259,12 @@ Truly a work of art in terms of mistakes.
 
 ## Colour Mapping
 
+### Diffuse
+### Specular
+### Background
+I would initially get a black background because I forgot to multiply by 255.
+### Replace all
+
 ## Displacement Mapping
 
 We implement two types of displacement mapping, normal replacement and bump mapping. They do have common parts so let's start with that. 

@@ -24,14 +24,16 @@ void RaytracerThread::PrintProgress()
     }
 }
 
-void RaytracerThread::drawRow(uint32_t y)
+void RaytracerThread::drawRow(uint32_t ly)
 {
-    uint32_t curr_pixel = y * cam.width * 3;
+    uint32_t curr_pixel = ly * cam.width * 3;
     uint32_t width = cam.width;
     Color final_color;
-    for (uint32_t x = 0; x < width; x++)
+    y = ly;
+    for (uint32_t lx = 0; lx < width; lx++)
     {
-        drawPixel(curr_pixel, x, y);
+        x = lx;
+        drawPixel(curr_pixel);
     }
 
 }
@@ -47,12 +49,14 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
     uint32_t end_x = std::min(start_x + w, width);
     uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
     Color final_color;
-    for (uint32_t y = start_y; y < end_y; y++)
+    for (uint32_t ly = start_y; ly < end_y; ly++)
     {
-        for (uint32_t x = start_x; x < end_x; x++)
+        y = ly;
+        for (uint32_t lx = start_x; lx < end_x; lx++)
         {
+            x = lx;
             // if (x==408 && y==452)
-                drawPixel(curr_pixel, x, y);
+                drawPixel(curr_pixel);
 
         }
         curr_pixel += allw_batchw_3;
@@ -115,7 +119,7 @@ void RaytracerThread::writeToImage(uint32_t &curr_pixel, Color &final_color)
 
 
 
-void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
+void RaytracerThread::drawPixel(uint32_t &curr_pixel)
 {
     std::vector<Color> colors;
     colors.reserve(cam.numSamples);
@@ -131,7 +135,7 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
     std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
     for (sampleIdx=0; sampleIdx < cam.numSamples; sampleIdx++)
     {
-            viewing_ray = computeViewingRay(x, y);
+            viewing_ray = computeViewingRay();
             colors.push_back(followRay(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
     }
 
@@ -143,7 +147,7 @@ void RaytracerThread::drawPixel(uint32_t &curr_pixel, uint32_t x, uint32_t y)
 
 
 
-Ray RaytracerThread::computeViewingRay(int x, int y)
+Ray RaytracerThread::computeViewingRay()
 {
     Ray viewing_ray;
     real s_u = (x +cam.samplesPixel[sampleIdxPixel[sampleIdx]][0]) * (cam.r - cam.l) / cam.width;
@@ -266,6 +270,13 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material &m1, const 
 
     if (depth == 0)
     {
+        if (scene.BackgroundTexture != nullptr)
+        {
+            Texel t((real)x/(real)cam.width,(real)y/(real)cam.height);
+            Color bg = scene.BackgroundTexture->TextureColor(ray.pos,t) * 255.0;
+            // std::cout << bg << std::endl;
+            return bg;
+        }
         return scene.BackgroundColor;
     }
     return Color(0.0,0.0,0.0);
