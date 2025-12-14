@@ -38,9 +38,8 @@ class Texture
 public:
     virtual ~Texture() = default;
     uint32_t _id;
-    TextureType type;
     DecalMode decalMode;
-    Texture(uint32_t i, TextureType t, DecalMode d) : _id(i), type(t), decalMode(d)
+    Texture(uint32_t i, DecalMode d) : _id(i), decalMode(d)
     {}
     virtual Color TextureColor(const Vertex& vert, Texel& tex) = 0;
     virtual TextureType getTextureType() = 0;
@@ -48,19 +47,21 @@ public:
 
 class ImageTexture : public Texture
 {
-public:
+
+private:
     Color nearest(Texel texel);
     Color bilinear(Texel texel);
     Color trilinear(Texel texel);
-    Color TextureColor(const Vertex& vert, Texel& tex) override;
-    Color ImageColor(int x, int v);
+    Color ImageColor(int x, int y);
     Image *image;
     // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel)> interpolate;
     Interpolation interpolation;
-    TextureType getTextureType() override;
 
-    ImageTexture(uint32_t id, TextureType t, DecalMode d, Image *image, Interpolation interp): Texture(id, t, d), image(image)
+public:
+    Color TextureColor(const Vertex& vert, Texel& tex) override;
+    TextureType getTextureType() override;
+    ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp): Texture(id, d), image(image)
     {
         interpolation = interp;
         if (interp == Interpolation::NEAREST)
@@ -100,7 +101,7 @@ public:
     std::function<real(real)> convertNoise;
     real NoiseScale;
     int NumOctaves;
-    PerlinTexture(uint32_t id, TextureType t, DecalMode d,std::function<real(real)> c, real ns, int no) : Texture(id, t, d), NumOctaves(no), convertNoise(c), NoiseScale(ns) {}
+    PerlinTexture(uint32_t id,DecalMode d,std::function<real(real)> c, real ns, int no) : Texture(id, d), NumOctaves(no), convertNoise(c), NoiseScale(ns) {}
     Color TextureColor(const Vertex& vert, Texel& tex) override;
 
 };
@@ -113,8 +114,8 @@ public:
     Color whiteColor;
     real scale;
     real offset;
-    CheckerTexture(uint32_t id, TextureType t, DecalMode d, Color bc, Color wc, real s, real offs) :
-    Texture(id, t, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
+    CheckerTexture(uint32_t id,DecalMode d, Color bc, Color wc, real s, real offs) :
+    Texture(id, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
     Color TextureColor(const Vertex& vert, Texel& tex) override;
     bool IsOnWhite(real i);
     bool IsOnWhite(Vertex vert);

@@ -146,17 +146,17 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
     if (t == TextureType::IMAGE)
     {
         Interpolation interp = s.contains("Interpolation") ?  getInterpolation(s["Interpolation"].get<std::string>()) : Interpolation::NEAREST;
-        temp = new ImageTexture(id, t, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), interp);
+        temp = new ImageTexture(id, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), interp);
     }
     else if (t == TextureType::PERLIN)
     {
-        temp = new PerlinTexture(id, t, dm, getConversionFunc(s["NoiseConversion"]),
+        temp = new PerlinTexture(id, dm, getConversionFunc(s["NoiseConversion"]),
             s.contains("NoiseScale") ? getReal(s["NoiseScale"]) : 1,
             s.contains("NumOctaves") ? getInt(s["NumOctaves"]) : 1);
     }
     else if (t==TextureType::CHECKERBOARD)
     {
-        temp = new CheckerTexture(id, t, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
+        temp = new CheckerTexture(id, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
             getReal(s["Scale"]), getReal(s["Offset"]));
     }
     sceneInput.textures.push_back(temp);

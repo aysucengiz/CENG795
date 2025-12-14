@@ -19,12 +19,10 @@ TextureType PerlinTexture::getTextureType(){ return TextureType::PERLIN;}
 TextureType CheckerTexture::getTextureType(){ return TextureType::CHECKERBOARD;}
 
 /// IMAGE ////
-Image::Image(uint32_t id, std::string filename) : _id(id)
+Image::Image(uint32_t id, std::string filename) : _id(id), filename(filename)
 {
-    width = 0;
-    height = 0;
-    channels_in_file = 0;
     unsigned char *data = PPM::read_image(filename.c_str(), width, height, channels_in_file, 3);
+
     if (data)
     {
         uint32_t curr_idx = 0;
@@ -33,7 +31,7 @@ Image::Image(uint32_t id, std::string filename) : _id(id)
         {
             for (int x = 0; x < width; x++)
             {
-                colorData[y][x] = Color(data[curr_idx], data[curr_idx + 1], data[curr_idx + 2]);
+                colorData[y][x] = Color(data[curr_idx], data[curr_idx+1], data[curr_idx+2]);
                 curr_idx += 3;
             }
         }
@@ -55,6 +53,7 @@ Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex)
 
 Color ImageTexture::ImageColor(int x, int y)
 {
+
     y = std::max(0, std::min(y , image->height-1));
     x = std::max(0, std::min(x , image->width-1));
     return image->colorData[y][x];
@@ -63,7 +62,7 @@ Color ImageTexture::ImageColor(int x, int y)
 Color ImageTexture::nearest(Texel texel)
 {
     Texel xy = {texel.u * (image->width), texel.v * (image->height)};
-    return ImageColor(std::round(xy.u), std::round(xy.v));
+    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5));
 }
 
 Color ImageTexture::bilinear(Texel texel)

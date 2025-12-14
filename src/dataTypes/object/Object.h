@@ -49,7 +49,7 @@ public:
     Color getTextureColorAt(Vertex& pos, real time, int triID) const;
     virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const = 0;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
-    void ComputeBitan(CVertex& a, CVertex& b, CVertex& c, Vec3r& pT, Vec3r& pB);
+    void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
 };
 
 ///////////////////////////////////////////////
