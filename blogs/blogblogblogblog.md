@@ -240,6 +240,22 @@ Also, I forgot to call my convertNoise function
 
 Ah yes, a lot more familiar.
 
+I then changed the fade function to be in the website rather than the slides and voila
+
+<p align="center">
+  <img src="img_6.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+Now, you can see that there is no difference between absolute and linear. Let me present you the reason:
+```c++
+if (funcname == "absval)")return Convert::Abs;
+if (funcname == "linear)")return Convert::Linear;
+return Convert::Linear;
+```
+
+Truly a work of art in terms of mistakes.
+
 
 ## Colour Mapping
 

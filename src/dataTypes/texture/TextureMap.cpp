@@ -90,7 +90,7 @@ Color ImageTexture::trilinear(Texel texel)
 Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
     real result = 0.0;
-    Vertex vert2 = vert * NoiseScale;
+    Vertex vert2 = vert *(1.0* NoiseScale);
     real pow_2_i = 1;
     for (int i = 0; i < NumOctaves; i++)
     {
@@ -142,7 +142,7 @@ real PerlinNoise::fade(real t)
 {
     t = fabs(t);
     if (t >= 1) return 0;
-    return t * t * t * (t * (t * -6 + 15) - 10) + 1;
+    return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
 Vec3r PerlinNoise::fade(Vertex vert)

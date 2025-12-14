@@ -90,7 +90,7 @@ public:
     {
         if (!initialized) {
             for (int i=0; i < 256 ; i++) perm[i] = i;
-            std::shuffle(perm, perm + 256, rand());
+            std::shuffle(perm, perm + 256, std::mt19937());
             for (int i=0; i < 256 ; i++) P[256+i] = P[i] = perm[i];
             initialized = true;
         }
