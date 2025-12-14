@@ -10,9 +10,11 @@
 #include "fileManagement/stb_image.h"
 
 int PerlinNoise::P[512];
+bool PerlinNoise::initialized = false;
+int PerlinNoise::perm[256];
 
-real Convert::Abs(real inp) { return std::abs(inp); }
-real Convert::Linear(real inp) { return inp; }
+real Convert::Abs(real inp) { return std::min((real)1.0,std::abs(inp)); }
+real Convert::Linear(real inp) { return std::min(1.0, std::max(inp * 0.5 + 0.5,0.0)); }
 
 TextureType ImageTexture::getTextureType(){ return TextureType::IMAGE;}
 TextureType PerlinTexture::getTextureType(){ return TextureType::PERLIN;}
@@ -89,13 +91,14 @@ Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
     real result = 0.0;
     Vertex vert2 = vert * NoiseScale;
-    real pow_2_i;
+    real pow_2_i = 1;
     for (int i = 0; i < NumOctaves; i++)
     {
-        pow_2_i = pow(2, i);
+        pow_2_i = 1 << i;
         result = result +  (real)pow(2, -i) * PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
     }
-    return Color(result, result, result); // TODO: bu böyle mi olmalı_
+    result = convertNoise(result);
+    return Color(result, result, result);
 }
 
 int clampfloor(real i) { return (int) std::floor(i) & 255; }
@@ -105,14 +108,14 @@ real PerlinNoise::perlin(real x, real y, real z)
 {
     int XYZ[3] = {clampfloor(x), clampfloor(y), clampfloor(z)};
     Vertex xyz = Vertex(getFloatPart(x), getFloatPart(y), getFloatPart(z));
-    Vec3r gradient = fade(xyz);
+    Vec3r uvw = fade(xyz);
     int A = P[XYZ[0]] + XYZ[1];
     int B = P[XYZ[0] + 1] + XYZ[1];
     int AA = P[A] + XYZ[2];
     int BA = P[B] + XYZ[2];
     int AB = P[A + 1] + XYZ[2];
     int BB = P[B + 1] + XYZ[2];
-    std::array<real, 8> all_gradients = {
+    std::array<real, 8> gradients = {
         grad(P[AA], xyz),
         grad(P[BA], {xyz.x - 1, xyz.y, xyz.z}),
         grad(P[AB], {xyz.x, xyz.y - 1, xyz.z}),
@@ -123,7 +126,7 @@ real PerlinNoise::perlin(real x, real y, real z)
         grad(P[BB + 1], {xyz.x - 1, xyz.y - 1, xyz.z - 1}),
 
     };
-    return lerp3D(gradient, all_gradients);
+    return lerp3D(uvw, gradients);
 }
 
 real PerlinNoise::grad(int hash, Vertex vert)

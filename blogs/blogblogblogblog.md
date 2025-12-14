@@ -229,6 +229,18 @@ Now this, this requires attention. I don't know if you can tell.
 Probably if you squint. Anyways let's fix it. I already implemented perlin noise on OpenGL and saw a similar issue. Not that I remember how to fix it.
 Good thing is we know that our checkerboard class works flawlessly. So the problem is simply with perlinNoise. 
 
+Turns out I forgot to initialize the perlin noise function which randomizes the P array.
+ 
+Also, I forgot to call my convertNoise function
+
+<p align="center">
+  <img src="img_5.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+Ah yes, a lot more familiar.
+
+
 ## Colour Mapping
 
 ## Displacement Mapping

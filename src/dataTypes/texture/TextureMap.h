@@ -75,13 +75,7 @@ public:
 
 class PerlinNoise
 {
-    static void init()
-    {
-        // TODO: pnin ilk 256 elemanını initlemedik?
-        for (int i=0; i < 256 ; i++) perm[i] = i;
-        std::shuffle(perm, perm + 256, std::mt19937(std::random_device()()));
-        for (int i=0; i < 256 ; i++) P[256+i] = P[i] = perm[i];
-    }
+public:
     static int P[512];
 
     static real lerp(real t, real a, real b);
@@ -89,8 +83,18 @@ class PerlinNoise
     static Vec3r fade(Vertex vert);
     static real fade(real t);
     static int perm[256];
-public:
     static real perlin(real x, real y, real z);
+    static bool initialized;
+
+    static void init()
+    {
+        if (!initialized) {
+            for (int i=0; i < 256 ; i++) perm[i] = i;
+            std::shuffle(perm, perm + 256, rand());
+            for (int i=0; i < 256 ; i++) P[256+i] = P[i] = perm[i];
+            initialized = true;
+        }
+        }
 };
 
 class PerlinTexture : public Texture
@@ -101,7 +105,11 @@ public:
     std::function<real(real)> convertNoise;
     real NoiseScale;
     int NumOctaves;
-    PerlinTexture(uint32_t id,DecalMode d,std::function<real(real)> c, real ns, int no) : Texture(id, d), NumOctaves(no), convertNoise(c), NoiseScale(ns) {}
+    PerlinTexture(uint32_t id,DecalMode d,std::function<real(real)> c, real ns, int no)
+    : Texture(id, d), NumOctaves(no), convertNoise(c), NoiseScale(ns)
+    {
+        PerlinNoise::init();
+    }
     Color TextureColor(const Vertex& vert, Texel& tex) override;
 
 };
