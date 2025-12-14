@@ -263,6 +263,26 @@ Truly a work of art in terms of mistakes.
 ### Specular
 ### Background
 I would initially get a black background because I forgot to multiply by 255.
+
+Below is a version with perlin noise that I tried just to see
+
+<p align="center">
+  <img src="img_10.png" width="400">
+  <figcaption></figcaption>
+</p>
+<p align="center">
+  <img src="img_8.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+Then I tried checkerboard, which looked like this. 
+It was because I was using ``viewing_ray.pos + viewing_ray.dir``. I then changed it to use the texel coordinates with `z=0`.
+
+<p align="center">
+  <img src="img_9.png" width="400">
+  <figcaption></figcaption>
+</p>
+
 ### Replace all
 
 ## Displacement Mapping
@@ -312,7 +332,12 @@ I do have slight differences yet to be solved TODO ÇÖZDÜN MÜ
 </p>
 
 That will not do.
+<p align="center">
+  <img src="img_11.png" width="400">
+  <figcaption></figcaption>
+</p>
 
+No, this will not as well.
 
 # Final
 

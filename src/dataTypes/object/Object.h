@@ -48,6 +48,8 @@ public:
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
     Color getTextureColorAt(Vertex& pos, real time, int triID) const;
     virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const = 0;
+    real h(Texel t) const;
+    real h(Vertex v) const;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
     void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
 };

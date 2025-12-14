@@ -273,7 +273,8 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material &m1, const 
         if (scene.BackgroundTexture != nullptr)
         {
             Texel t((real)x/(real)cam.width,(real)y/(real)cam.height);
-            Color bg = scene.BackgroundTexture->TextureColor(ray.pos,t) * 255.0;
+            Vertex v(t.u,t.v,0.0);
+            Color bg = scene.BackgroundTexture->TextureColor(v,t) * 255.0;
             // std::cout << bg << std::endl;
             return bg;
         }

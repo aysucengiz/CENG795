@@ -101,21 +101,41 @@ Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
 }
 
 
+real chenge_interval(real value)
+{
+    return value * 2 - 1.0;
+}
+
+real Object::h(Texel t) const
+{
+    Vertex v(0.0,0.0,0.0);
+    Color c = NormalTexture->TextureColor(v, t);
+    return (c.r + c.g + c.b)/3.0;
+}
+
+real Object::h(Vertex v) const
+{
+    Texel t(0.0,0.0);
+    Color c = NormalTexture->TextureColor(v, t);
+    return (c.r + c.g + c.b)/3.0;
+}
+
+
 Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int triID) const
 {
 
     Vec3r NewN = n;
     if ( NormalTexture != nullptr)
     {
+        Texel t = getTexel(v,time, triID);
+        Color textureColor =  NormalTexture->TextureColor(v, t);
+        Vec3r locNormal(textureColor.r * 2- 1.0 , textureColor.g * 2 - 1.0 , textureColor.b *2 - 1.0 );
+        locNormal = locNormal.normalize();
+        Vec3r onb[3];
+        getBitan(v, onb[0], onb[1], triID);
+        onb[2] = n;
         if (NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
         {
-            Texel t = getTexel(v,time, triID);
-            Color textureColor =  NormalTexture->TextureColor(v, t);
-            Vec3r locNormal(textureColor.r * 2- 1.0 , textureColor.g * 2 - 1.0 , textureColor.b *2 - 1.0 );
-            locNormal = locNormal.normalize();
-            Vec3r onb[3];
-            getBitan(v, onb[0], onb[1], triID);
-            onb[2] = n;
             NewN = Vec3r(0.0, 0.0, 0.0);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
@@ -124,26 +144,47 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
 
         if (NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
         {
-            real epsilon = 0.0001;
-            Vertex shifted_eps[3] = {
-                {v.x + epsilon, v.y, v.z},
-                {v.x, v.y + epsilon, v.z},
-                {v.x, v.y, v.z + epsilon},
-            };
-            Texel texels[3] = {
-                getTexel(shifted_eps[0], 0, triID),
-                getTexel(shifted_eps[1], 0, triID),
-                getTexel(shifted_eps[2], 0, triID)
+            Texel d(0.0,0.0);
+            if (NormalTexture->getTextureType() == TextureType::IMAGE)
+            {
+                d.u = 1.0 / dynamic_cast<ImageTexture*>(NormalTexture)->image->width;
+                d.v = 1.0 / dynamic_cast<ImageTexture*>(NormalTexture)->image->height;
 
-            };
-            Vec3r h = {
-                NormalTexture->TextureColor(shifted_eps[0], texels[0]).r,
-                NormalTexture->TextureColor(shifted_eps[0], texels[0]).g,
-                NormalTexture->TextureColor(shifted_eps[0], texels[0]).b,
-            };
-            Vec3r g_parall  = n *dot_product(h,n);
-            Vec3r g_perp    = h - g_parall;
-            NewN = n - g_perp;
+                real h_t = h(t);
+
+                Texel dh = {
+                    (h(Texel(t.u + d.u, t.v)) - h_t) / d.u,
+                    (h(Texel(t.u, t.v + d.v)) - h_t) / d.v
+                };
+                Vec3r q_u = onb[0] +n * dh.u;
+                Vec3r q_v = onb[1]+ n * dh.v ;
+                NewN = x_product(q_v,q_u);
+
+
+            }
+            else
+            {
+                real epsilon = 0.0001;
+                Vertex shifted_eps[3] = {
+                    v + onb[0]*epsilon,
+                    v + onb[1]*epsilon,
+                    v + onb[2]*epsilon
+                };
+                Texel t(0.0,0.0);
+                real h_v = h(v);
+                Vec3r dh = {
+                    (h(shifted_eps[0]) - h_v)/epsilon,
+                    (h(shifted_eps[1]) - h_v)/epsilon,
+                    (h(shifted_eps[2]) - h_v)/epsilon
+                };
+                Vec3r g_parall  = n *dot_product(dh,n);
+                Vec3r g_perp    = dh - g_parall;
+                NewN = n - g_perp;
+            }
+
+
+
+
         }
         NewN = NewN.normalize();
     }
