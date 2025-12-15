@@ -159,6 +159,8 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
         temp = new CheckerTexture(id, dm, Color(s["BlackColor"]), Color(s["WhiteColor"]),
             getReal(s["Scale"]), getReal(s["Offset"]));
     }
+
+    if (s.contains("BumpFactor")) temp->bumpFactor = getReal(s["BumpFactor"]);
     sceneInput.textures.push_back(temp);
     if ( temp->decalMode == DecalMode::REPLACE_BACKGROUND) sceneInput.BackgroundTexture = temp;
     if (PRINTINIT) std::cout << temp << std::endl;
@@ -812,7 +814,7 @@ Image *Parser::getImageFromId(int id, SceneInput& scene)
 std::function<real(real)> Parser::getConversionFunc(json inp)
 {
     std::string funcname = inp.get<std::string>();
-    if (funcname == "absval)")return Convert::Abs;
-    if (funcname == "linear)")return Convert::Linear;
+    if (funcname == "absval")return Convert::Abs;
+    if (funcname == "linear")return Convert::Linear;
     return Convert::Linear;
 }

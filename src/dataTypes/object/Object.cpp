@@ -117,7 +117,8 @@ real Object::h(Vertex v) const
 {
     Texel t(0.0,0.0);
     Color c = NormalTexture->TextureColor(v, t);
-    return (c.r + c.g + c.b)/3.0;
+    real result = (c.r + c.g + c.b)/3.0;
+    return result;
 }
 
 
@@ -133,7 +134,12 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
         locNormal = locNormal.normalize();
         Vec3r onb[3];
         getBitan(v, onb[0], onb[1], triID);
-        onb[2] = n;
+        onb[2] = x_product(onb[1], onb[0]);
+
+        Vec3r p_u = onb[0];
+        Vec3r p_v = onb[1];
+        Vec3r norm = x_product(p_v,p_u);
+        // std::cout << onb[0] << " " << onb[1] << " " << onb[2] << std::endl;
         if (NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
         {
             NewN = Vec3r(0.0, 0.0, 0.0);
@@ -141,8 +147,7 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
                 for (int j = 0; j < 3; j++)
                     NewN[(Axes) i] += locNormal[(Axes) j] * onb[j][(Axes) i];
         }
-
-        if (NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
+        else if (NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
         {
             Texel d(0.0,0.0);
             if (NormalTexture->getTextureType() == TextureType::IMAGE)
@@ -150,36 +155,34 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
                 d.u = 1.0 / dynamic_cast<ImageTexture*>(NormalTexture)->image->width;
                 d.v = 1.0 / dynamic_cast<ImageTexture*>(NormalTexture)->image->height;
 
+                Texel t_u(t.u + d.u, t.v);
+                Texel t_u_(t.u - d.u, t.v);
+                Texel t_v(t.u, t.v + d.v);
+                Texel t_v_(t.u, t.v - d.v);
                 real h_t = h(t);
+                Texel h_t_p(h(t_u),h(t_v));
+                Texel h_t_n(h(t_u_),h(t_v_));
 
                 Texel dh = {
-                    (h(Texel(t.u + d.u, t.v)) - h_t) / d.u,
-                    (h(Texel(t.u, t.v + d.v)) - h_t) / d.v
+                    (h_t_p.u - h_t_n.u) / (2*d.u),
+                    (h_t_p.v - h_t_n.v) / (2*d.v)
                 };
-                Vec3r q_u = onb[0] +n * dh.u;
-                Vec3r q_v = onb[1]+ n * dh.v ;
-                NewN = x_product(q_v,q_u);
-
-
+                Vec3r q_u = p_u +n * dh.u* NormalTexture->bumpFactor;
+                Vec3r q_v = p_v+ n * dh.v* NormalTexture->bumpFactor;
+                NewN =  x_product(q_v,q_u);
             }
             else
             {
                 real epsilon = 0.0001;
-                Vertex shifted_eps[3] = {
-                    v + onb[0]*epsilon,
-                    v + onb[1]*epsilon,
-                    v + onb[2]*epsilon
-                };
-                Texel t(0.0,0.0);
-                real h_v = h(v);
-                Vec3r dh = {
-                    (h(shifted_eps[0]) - h_v)/epsilon,
-                    (h(shifted_eps[1]) - h_v)/epsilon,
-                    (h(shifted_eps[2]) - h_v)/epsilon
-                };
+                Vertex vp[3], vn[3];
+                Vec3r dh;
+                for (int i = 0; i < 3; i++) vp[i] = v + onb[i]*epsilon;
+                for (int i = 0; i < 3; i++) vn[i] = v - onb[i]*epsilon;
+                for (int i = 0; i < 3; i++) dh[(Axes) i] = (h(vp[i]) - h(vn[i]))/(2*epsilon);
+
                 Vec3r g_parall  = n *dot_product(dh,n);
                 Vec3r g_perp    = dh - g_parall;
-                NewN = n - g_perp;
+                NewN = n - g_perp* NormalTexture->bumpFactor;
             }
 
 
@@ -383,14 +386,15 @@ Texel Sphere::getTexel(const Vertex& v, real time, int triID) const
 
 void Sphere::getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB, int triID) const
 {
-    Texel tex = getTexel(v,0, triID);
     real x = v.x - center.v.x;
     real y = v.y - center.v.y;
     real z = v.z - center.v.z;
     real theta = acos(y / radius);
     real phi = atan2( z, x);
     pT = {static_cast<real>(2*M_PI*z), 0, static_cast<real>(-2*M_PI*x)};
-    pB = {static_cast<real>(M_PI * y * cos(phi)), static_cast<real>(-M_PI * radius * sin(theta)), static_cast<real>(M_PI * y * cos(phi))};
+    pB = {static_cast<real>(M_PI * y * cos(phi)),
+             static_cast<real>(-M_PI * radius * sin(theta)),
+             static_cast<real>(M_PI * y * sin(phi))};
     pT = pT.normalize();
     pB = pB.normalize();
 }

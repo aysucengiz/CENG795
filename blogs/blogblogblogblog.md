@@ -327,18 +327,52 @@ I do have slight differences yet to be solved TODO ÇÖZDÜN MÜ
 ### Bump Mapping
 
 <p align="center">
+  <img src="img_18.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+<p align="center">
   <img src="img_1.png" width="400">
   <figcaption></figcaption>
 </p>
 
-That will not do.
+That will not do. I was trying to do image bump mapping according to the vertices, not texels so I rewrote the image part.
 <p align="center">
-  <img src="img_11.png" width="400">
+  <img src="img_12.png" width="400">
   <figcaption></figcaption>
 </p>
 
 No, this will not as well.
+I put a bump scale and it is looking much better now.
 
+That will not do.
+<p align="center">
+  <img src="img_13.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+
+Now to the noise ones:
+
+<p align="center">
+  <img src="img_16.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+The upper picture was the result of me forgetting to multiply with the bump factor.
+
+<p align="center">
+  <img src="img_17.png" width="400">
+  <figcaption></figcaption>
+</p>
+
+The main mistake I was making was normalizing `g_perp`:
+```c++
+Vec3r g_parall  = n *dot_product(dh,n);
+Vec3r g_perp    = dh - g_parall;
+NewN = n - g_perp* NormalTexture->bumpFactor;
+```
+Because normalizing is a reflex at this point. 
 # Final
 
 

@@ -58,7 +58,8 @@ Color ImageTexture::ImageColor(int x, int y)
 
     y = std::max(0, std::min(y , image->height-1));
     x = std::max(0, std::min(x , image->width-1));
-    return image->colorData[y][x];
+    Color c = image->colorData[y][x];
+    return c;
 }
 
 Color ImageTexture::nearest(Texel texel)
@@ -94,7 +95,7 @@ Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex)
     real pow_2_i = 1;
     for (int i = 0; i < NumOctaves; i++)
     {
-        pow_2_i = 1 << i;
+        pow_2_i = pow(2, i);
         result = result +  (real)pow(2, -i) * PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
     }
     result = convertNoise(result);

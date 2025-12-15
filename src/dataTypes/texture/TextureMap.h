@@ -39,6 +39,7 @@ public:
     virtual ~Texture() = default;
     uint32_t _id;
     DecalMode decalMode;
+    real bumpFactor = 1.0;
     Texture(uint32_t i, DecalMode d) : _id(i), decalMode(d)
     {}
     virtual Color TextureColor(const Vertex& vert, Texel& tex) = 0;
