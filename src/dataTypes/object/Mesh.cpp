@@ -16,7 +16,7 @@
 
 Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,
            PivotType pt,
-           uint32_t maxobj, std::vector<Texture*> ts, bool v, uint32_t start_index,
+           uint32_t maxobj, std::vector<Texture*> ts, bool v, int start_index,
            bool computeVNormals)
     : Object(m, id, Vertex(-INFINITY, -INFINITY, -INFINITY), Vertex(INFINITY,INFINITY,INFINITY), ts, v), bvh(pt, maxobj)
 {
@@ -31,12 +31,32 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
     if (read_from_file)
     {
         happly::PLYData plyIn(s);
-        std::vector<std::vector<int>> f;
-        if (plyIn.getElement("face").hasProperty("vertex_indices")) f = plyIn.getElement("face").getListProperty<int>(
-            "vertex_indices");
-        else f = plyIn.getElement("face").getListProperty<int>("vertex_index");
+        std::string vertices_str = "vertex_index";
+        if (plyIn.getElement("face").hasProperty("vertex_indices")) vertices_str = "vertex_indices";
+
+        auto& property = plyIn.getElement("face").getProperty(vertices_str);
+
+        switch (property.listType)
+        {
+        case happly::PropertyType::INT
+        case happly::PropertyType::UINT
+        }
+        std::vector<std::vector<unsigned int>> f;
+
+        if (property.listType == PLYProperty::Type::INT) {
+            f = face.getListProperty<int>(propName);
+        }
+        else if (prop.listType == PLYProperty::Type::UINT) {
+            auto fu = face.getListProperty<unsigned int>(propName);
+
+            f.resize(fu.size());
+            for (size_t i = 0; i < fu.size(); ++i)
+                f[i].assign(fu[i].begin(), fu[i].end());
+        }
+
+        else f = plyIn.getElement("face").getListProperty<unsigned int>("vertex_index");
         //std::cout << "First face indices: " << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;
-        start_index -= f[0][0];
+        start_index -= std::min(f[0][0],std::min(f[0][1],f[0][2]));
         for (int i = 0; i < f.size(); i++)
         {
             if (vertices.size() <= start_index + f[i][0])std::cout << vertices.size() << " : " << start_index - 1 + f[i]

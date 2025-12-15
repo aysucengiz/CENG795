@@ -331,12 +331,14 @@ I do have slight differences yet to be solved TODO ÇÖZDÜN MÜ
   <figcaption></figcaption>
 </p>
 
+**Debugging Image Textures**
 <p align="center">
   <img src="img_1.png" width="400">
   <figcaption></figcaption>
 </p>
 
-That will not do. I was trying to do image bump mapping according to the vertices, not texels so I rewrote the image part.
+That will not do. 
+I was trying to do image bump mapping according to the vertices, not texels so I rewrote the image part.
 <p align="center">
   <img src="img_12.png" width="400">
   <figcaption></figcaption>
@@ -345,14 +347,16 @@ That will not do. I was trying to do image bump mapping according to the vertice
 No, this will not as well.
 I put a bump scale and it is looking much better now.
 
-That will not do.
 <p align="center">
   <img src="img_13.png" width="400">
   <figcaption></figcaption>
 </p>
 
+![img_19.png](img_19.png)
 
-Now to the noise ones:
+Truly an artistic rendition.
+
+**Debugging Noise Textures**
 
 <p align="center">
   <img src="img_16.png" width="400">

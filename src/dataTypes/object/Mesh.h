@@ -23,7 +23,7 @@ public:
          uint32_t maxobj,
          std::vector<Texture*> ts,
          bool v = true,
-         uint32_t start_index = 0,
+         int start_index = 0,
          bool computeVNormals = true);
 
     ObjectType getObjectType() const override;

@@ -272,6 +272,7 @@ void Parser::getTransformations(json inp, SceneInput& sceneInput)
 
 void Parser::getVertexData(json inp, SceneInput& sceneInput)
 {
+    if (!inp.contains("VertexData")) return;
     std::istringstream verticesStream(inp["VertexData"]["_data"].get<std::string>());
     std::string ori = "xyz";
     if (inp["VertexData"].contains("_type")) ori = inp["VertexData"]["_type"].get<std::string>();
@@ -539,7 +540,7 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
     {
         std::string dataLine;
         bool read_from_file;
-        uint32_t numVerticesUntilNow = sceneInput.Vertices.size();
+        int numVerticesUntilNow = sceneInput.Vertices.size();
         if (mes["Faces"].contains("_plyFile"))
         {
             read_from_file = true;
