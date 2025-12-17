@@ -252,6 +252,9 @@ Now, you can see that there is no difference between absolute and linear. Let me
 if (funcname == "absval)")return Convert::Abs;
 if (funcname == "linear)")return Convert::Linear;
 return Convert::Linear;
+
+Bonus: During debugging of VeachAjar scene I tried to localize global instance vertices which lead to this:
+![img_20.png](img_20.png)
 ```
 
 Truly a work of art in terms of mistakes.

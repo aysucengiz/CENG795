@@ -40,11 +40,11 @@ public:
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
     virtual Texel getTexel(const Vertex& v, real time, int triID)  const = 0;
-    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t) const;
-    Color GetColourAt(Color ambientLight, Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int
+    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time) const;
+    Color GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int
                       triID) const;
     Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                       Ray& shadow_ray, Vertex& vert, Texel& t) const;
+                       Ray& shadow_ray, Vertex& vert, Texel& t, real time) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
     Color getTextureColorAt(Vertex& pos, real time, int triID) const;
     virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const = 0;
@@ -52,6 +52,7 @@ public:
     real h(Vertex v) const;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
     void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
+    virtual Vertex getLocal(const Vertex& v, real time) const { return v;}
 };
 
 ///////////////////////////////////////////////
@@ -136,7 +137,7 @@ public:
     void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const override;
     void computeGlobal();
     Ray getLocal(Ray& r);
-    Vertex getLocal(const Vertex& v, real time) const;
+    Vertex getLocal(const Vertex& v, real time) const override;
     Ray getLocal(const Ray& r, real time) const;
     Vec3r getGlobal(Vec3r& v, double time);
     Vertex getGlobal(Vertex v, real time) const;

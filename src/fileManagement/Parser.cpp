@@ -17,6 +17,7 @@ namespace Parser
     uint32_t trans1_transStartID;
     uint32_t trans2_scaleStartID;
     uint32_t trans3_rotStartID;
+    uint32_t trans4_compStartID;
 }
 
 json Parser::getJsonDataFromFile(std::string inpFile)
@@ -266,6 +267,14 @@ void Parser::getTransformations(json inp, SceneInput& sceneInput)
         int numRotations = Rotations.size();
         if (Rotations.is_object()) addRotation(Rotations, sceneInput);
         else for (int i = 0; i < numRotations; i++) addRotation(Rotations[i], sceneInput);
+    }
+    trans4_compStartID = sceneInput.transforms.size();
+    if (inp.contains("Composite"))
+    {
+        json& Composites = inp["Composite"];
+        int numComposites = Composites.size();
+        if (Composites.is_object()) addComposite(Composites, sceneInput);
+        else for (int i = 0; i < numComposites; i++) addComposite(Composites[i], sceneInput);
     }
 }
 
@@ -582,6 +591,15 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
             dataLine = mes["Faces"]["_data"].get<std::string>();
         }
 
+        if (mes.contains("Textures"))
+        {
+            std::cout << mes["_id"].get<std::string>() << " has textures" << std::endl;
+        }
+        else
+        {
+            std::cout << mes["_id"].get<std::string>() << " does not have textures" << std::endl;
+
+        }
 
         Mesh* tempm = new Mesh(std::stoi(mes["_id"].get<std::string>()),
                                sm,
@@ -708,6 +726,24 @@ void Parser::addRotation(json t, SceneInput& sceneInput)
     if (PRINTINIT) std::cout << sceneInput.transforms[sceneInput.transforms.size() - 1] << std::endl;
 }
 
+
+void Parser::addComposite(json t, SceneInput& sceneInput)
+{
+    std::istringstream ss(t["_data"].get<std::string>());
+    M4trix mat;
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            ss >> mat[i][j];
+
+    if (ss.fail())
+    {
+        throw std::invalid_argument("Invalid Vertex string: " + t["_data"].get<std::string>());
+    }
+    sceneInput.transforms.push_back(std::make_shared<Composite>(mat));
+    if (PRINTINIT) std::cout << sceneInput.transforms[sceneInput.transforms.size() - 1] << std::endl;
+}
+
+
 std::shared_ptr<Transformation> Parser::getTransFromStr(std::string transStr,
                                                         std::vector<std::shared_ptr<Transformation>>& transforms)
 {
@@ -729,6 +765,7 @@ std::shared_ptr<Transformation> Parser::getTransFromStr(std::string transStr,
             if (transChar == 't') startID = trans1_transStartID;
             else if (transChar == 's') startID = trans2_scaleStartID;
             else if (transChar == 'r') startID = trans3_rotStartID;
+            else if (transChar == 'c') startID = trans4_compStartID;
             else startID = 0;
             // std::cout << transChar << " " << startID << std::endl;
 

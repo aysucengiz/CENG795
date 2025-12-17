@@ -48,6 +48,7 @@ namespace Parser {
     void addTranslation(json Camera, SceneInput &sceneInput);
     void addScaling(json p, SceneInput &sceneInput);
     void addRotation(json p, SceneInput &sceneInput);
+    void addComposite(json t, SceneInput& sceneInput);
     void addImage(json s, SceneInput& sceneInput, std::string root);
     void addTextureMap(json s, SceneInput& sceneInput);
 

@@ -13,6 +13,57 @@
 ////////////////////////////////////////////////
 //////////////////// MESH //////////////////////
 ////////////////////////////////////////////////
+template <typename T>
+void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>& vertices, std::vector<Texture*> ts, int start_index,
+           bool computeVNormals)
+{
+    start_index -= std::min(f[0][0],std::min(f[0][1],f[0][2]));
+        for (int i = 0; i < f.size(); i++)
+        {
+            if (vertices.size() <= start_index + f[i][0])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+                [0] << std::endl;
+            if (vertices.size() <= start_index + f[i][1])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+                [1] << std::endl;
+            if (vertices.size() <= start_index + f[i][2])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+                [2] << std::endl;
+
+            if (f[i].size() >= 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2])
+            {
+                Vertex minv = minVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][1]].v,
+                                       vertices[start_index + f[i][2]].v);
+                Vertex maxv = maxVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][1]].v,
+                                       vertices[start_index + f[i][2]].v);
+                globalBbox.vMax = maxVert2(maxv, globalBbox.vMax);
+                globalBbox.vMin = minVert2(minv, globalBbox.vMin);
+                triangles.push_back(Triangle(triangles.size(),
+                                             vertices[start_index + f[i][0]], vertices[start_index + f[i][1]],
+                                             vertices[start_index + f[i][2]],
+                                             material,
+                                             ts,
+                                             shadingtype,
+                                             visible,
+                                             computeVNormals));
+            }
+
+            if (f[i].size() == 4 && f[i][3] != f[i][0] && f[i][3] != f[i][2])
+            {
+                Vertex minv = minVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][2]].v,
+                                       vertices[start_index + f[i][3]].v);
+                Vertex maxv = maxVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][2]].v,
+                                       vertices[start_index + f[i][3]].v);
+                globalBbox.vMax = maxVert2(maxv, globalBbox.vMax);
+                globalBbox.vMin = minVert2(minv, globalBbox.vMin);
+                triangles.push_back(Triangle(triangles.size(),
+                                             vertices[start_index + f[i][0]], vertices[start_index + f[i][2]],
+                                             vertices[start_index + f[i][3]],
+                                             material,
+                                             ts,
+                                             shadingtype,
+                                             visible,
+                                             computeVNormals));
+            }
+        }
+}
 
 Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,
            PivotType pt,
@@ -34,74 +85,22 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
         std::string vertices_str = "vertex_index";
         if (plyIn.getElement("face").hasProperty("vertex_indices")) vertices_str = "vertex_indices";
 
-        auto& property = plyIn.getElement("face").getProperty(vertices_str);
+        auto& face = plyIn.getElement("face");
 
-        switch (property.listType)
+
+        try
         {
-        case happly::PropertyType::INT
-        case happly::PropertyType::UINT
+            std::vector<std::vector<int>> f = face.getListProperty<int>(vertices_str);
+            LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
+            std::cout << "Vertices are ints" << std::endl;
         }
-        std::vector<std::vector<unsigned int>> f;
-
-        if (property.listType == PLYProperty::Type::INT) {
-            f = face.getListProperty<int>(propName);
-        }
-        else if (prop.listType == PLYProperty::Type::UINT) {
-            auto fu = face.getListProperty<unsigned int>(propName);
-
-            f.resize(fu.size());
-            for (size_t i = 0; i < fu.size(); ++i)
-                f[i].assign(fu[i].begin(), fu[i].end());
-        }
-
-        else f = plyIn.getElement("face").getListProperty<unsigned int>("vertex_index");
-        //std::cout << "First face indices: " << f[0][0] << " " << f[0][1] << " " << f[0][2] << std::endl;
-        start_index -= std::min(f[0][0],std::min(f[0][1],f[0][2]));
-        for (int i = 0; i < f.size(); i++)
+        catch (const std::exception&)
         {
-            if (vertices.size() <= start_index + f[i][0])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [0] << std::endl;
-            if (vertices.size() <= start_index + f[i][1])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [1] << std::endl;
-            if (vertices.size() <= start_index + f[i][2])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [2] << std::endl;
-
-            if (f[i].size() >= 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2])
-            {
-                Vertex minv = minVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][1]].v,
-                                       vertices[start_index + f[i][2]].v);
-                Vertex maxv = maxVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][1]].v,
-                                       vertices[start_index + f[i][2]].v);
-                globalBbox.vMax = maxVert2(maxv, globalBbox.vMax);
-                globalBbox.vMin = minVert2(minv, globalBbox.vMin);
-                triangles.push_back(Triangle(triangles.size(),
-                                             vertices[start_index + f[i][0]], vertices[start_index + f[i][1]],
-                                             vertices[start_index + f[i][2]],
-                                             m,
-                                             ts,
-                                             shadingtype,
-                                             v,
-                                             computeVNormals));
-            }
-
-            if (f[i].size() == 4 && f[i][3] != f[i][0] && f[i][3] != f[i][2])
-            {
-                Vertex minv = minVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][2]].v,
-                                       vertices[start_index + f[i][3]].v);
-                Vertex maxv = maxVert3(vertices[start_index + f[i][0]].v, vertices[start_index + f[i][2]].v,
-                                       vertices[start_index + f[i][3]].v);
-                globalBbox.vMax = maxVert2(maxv, globalBbox.vMax);
-                globalBbox.vMin = minVert2(minv, globalBbox.vMin);
-                triangles.push_back(Triangle(triangles.size(),
-                                             vertices[start_index + f[i][0]], vertices[start_index + f[i][2]],
-                                             vertices[start_index + f[i][3]],
-                                             m,
-                                             ts,
-                                             shadingtype,
-                                             v,
-                                             computeVNormals));
-            }
+            std::cout << "Vertices are uints" << std::endl;
+            std::vector<std::vector<unsigned int>> f = face.getListProperty<unsigned int>(vertices_str);
+            LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
         }
+
     }
     else
     {

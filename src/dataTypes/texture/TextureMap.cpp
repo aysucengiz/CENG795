@@ -155,11 +155,12 @@ Vec3r PerlinNoise::fade(Vertex vert)
 Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
     return IsOnWhite(vert) ? whiteColor : blackColor;
-}
+ }
 
 bool CheckerTexture::IsOnWhite(real i)
 {
-    return ((int) std::floor((i + offset) * scale)) % 2 == 1;
+    int place = (i + offset) * scale;
+    return ((int) std::floor(place) % 2) == 1;
 }
 bool CheckerTexture::IsOnWhite(Vertex vert)
 {

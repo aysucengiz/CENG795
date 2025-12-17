@@ -3,7 +3,7 @@
     "Prints": {
       "Initialization": false,
       "AccelerationCreation": false,
-      "Progress": false
+      "Progress": true
     },
     "Raytracer": {
       "OutputDir": "outputs/",
@@ -11,7 +11,7 @@
         "Thread": "batch",
         "batchWidth": 16,
         "batchHeight": 16,
-        "ThreadGroupSize": 100,
+        "ThreadGroupSize": 25,
         "ThreadEndlAfter": 80000
       },
       "Logger": {

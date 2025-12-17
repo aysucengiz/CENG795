@@ -16,6 +16,9 @@ public:
     uint32_t currTri;
     BVH bvh;
 
+    template <class T>
+    void LoadFacesFromPly(std::vector<std::vector<T>>& f, std::deque<CVertex>& vertices, std::vector<Texture*> ts,
+                          int start_index, bool computeVNormals);
     Mesh(uint32_t id, std::string st, Material& m, std::string s,
          bool read_from_file,
          std::deque<CVertex>& vertices,
@@ -25,6 +28,7 @@ public:
          bool v = true,
          int start_index = 0,
          bool computeVNormals = true);
+
 
     ObjectType getObjectType() const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const override;

@@ -59,16 +59,15 @@ Color Object::getTextureColorAt(Vertex &pos, real time, int triID) const
 }
 
 
-Color Object::GetColourAt(Color ambientLight, Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID) const
+Color Object::GetColourAt( Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID) const
 {
     Texel tex = getTexel(shadow_ray.pos,time, triID);
-    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex);
-    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex);
-    Color ambient = ambientLight * material.AmbientReflectance;
-    return  diffuse + specular + ambient;
+    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time);
+    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time);
+    return  diffuse + specular ;
 }
 
-Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t) const
+Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, real time) const
 {
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
@@ -88,7 +87,7 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t) c
 }
 
 Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                           Ray& shadow_ray, Vertex &vert,  Texel &t) const
+                           Ray& shadow_ray, Vertex &vert,  Texel &t, real time) const
 {
     Color ks = material.SpecularReflectance;
     if (SpecularTexture != nullptr) ks = SpecularTexture->TextureColor(vert, t);
@@ -593,6 +592,37 @@ void Instance::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const
 Texel Instance::getTexel(const Vertex& v, real time, int triID) const
 {
     Vertex localV = getLocal(v, time);
+    if (forwardTrans->Determinant() < 0)
+    {
+        Texel t(0.0,0.0);
+        real alpha, beta, gamma;
+        switch (original->getObjectType())
+        {
+            case ObjectType::PLANE:
+            break;
+        case ObjectType::TRIANGLE:
+            {
+                Triangle* tri = dynamic_cast<Triangle*>(original);
+                tri->BaryCentric(alpha,beta,gamma,localV);
+                std::swap(beta, gamma);
+
+                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                return t;
+                break;
+            }
+            case ObjectType::MESH:
+            {
+                Triangle* tri = dynamic_cast<Mesh*>(original)->Faces[triID];
+                tri->BaryCentric(alpha,beta,gamma,localV);
+                std::swap(beta, gamma);
+
+                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                return t;
+            }
+            break;
+        }
+    }
+
     return original->getTexel(localV, 0, triID);
 }
 
@@ -639,7 +669,8 @@ Vec3r Instance::getNormal(const Vertex& v, uint32_t triID, real time) const
 {
     Vertex localV = getLocal(v, time);
     Vec3r res = original->getNormal(localV, triID, 0);
-    return getGlobalNormal(res, time);
+    res = getGlobalNormal(res, time);
+    return res;
 }
 
 

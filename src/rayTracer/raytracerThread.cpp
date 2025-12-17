@@ -200,13 +200,16 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
 
 Color RaytracerThread::computeColor(HitRecord &hit_record, Ray& ray, int depth, const Material &m1, const std::array<real,2> &light_sample)
 {
+    // if ((hit_record.obj->AllTexture && hit_record.obj->AllTexture->getTextureType() == TextureType::CHECKERBOARD) ||
+    //     (hit_record.obj->DiffuseTexture && hit_record.obj->DiffuseTexture->getTextureType() == TextureType::CHECKERBOARD))
+    //     std::cout << hit_record.obj->_id << std::endl;
     if (hit_record.obj->AllTexture != nullptr)
     {
         return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri);
     }
     Color curr_color;
     Material& m = hit_record.obj->material;
-    curr_color = Color(0.0,0.0,0.0);
+    curr_color =  scene.AmbientLight * m.AmbientReflectance;
     if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::CONDUCTOR)
     {
         curr_color += reflect(ray, depth, m.materialType, hit_record, m1);
@@ -232,7 +235,7 @@ Color RaytracerThread::computeColor(HitRecord &hit_record, Ray& ray, int depth, 
                     //std::cout << "Draw" << std::endl;
 
                     real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-                    curr_color += hit_record.obj->GetColourAt(scene.AmbientLight, irradiance, cos_theta, hit_record.normal, ray, shadow_ray, time, hit_record.currTri);
+                    curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray, time, hit_record.currTri);
                     Color ac1 = m1.AbsorptionCoefficient;
                     if (!ac1.isBlack())
                     {
