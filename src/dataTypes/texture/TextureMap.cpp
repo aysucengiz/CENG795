@@ -159,11 +159,14 @@ Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
 
 bool CheckerTexture::IsOnWhite(real i)
 {
-    int place = (i + offset) * scale;
-    return ((int) std::floor(place) % 2) == 1;
+    real place = (i + offset) * scale;
+    return ((int) std::floor(place) & 1) == 1;
 }
 bool CheckerTexture::IsOnWhite(Vertex vert)
 {
-    bool xorXY = IsOnWhite(vert.x) != IsOnWhite(vert.y);
-    return xorXY == IsOnWhite(vert.z);
+    bool X = IsOnWhite(vert.x);
+    bool Y = IsOnWhite(vert.y);
+    bool Z = IsOnWhite(vert.z);
+    bool xorXY = X ^ Y;
+    return xorXY == Z;
 }

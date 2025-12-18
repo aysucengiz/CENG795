@@ -367,7 +367,7 @@ void Parser::getObjects(json inp, SceneInput& sceneInput, std::string root)
 }
 
 
-void Parser::getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double, 4>& nearPlane)
+void Parser::getNearFromFovY(real FovY, double nearDistance, double aspect, std::array<double, 4>& nearPlane)
 {
     real t = tan(FovY * 0.5 / 180 * M_PI) * nearDistance;
     nearPlane[0] = -t * aspect;
@@ -389,7 +389,7 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
     if (Cameras.contains("_type") && Cameras["_type"].get<std::string>() == "lookAt")
     {
         // compute near plane here
-        int FovY = std::stoi(Cameras["FovY"].get<std::string>());
+        real FovY = std::stod(Cameras["FovY"].get<std::string>());
         getNearFromFovY(FovY, nearDistance, aspect, nearPlane);
         Gaze = Vertex(Cameras["GazePoint"]) - Vertex(Cameras["Position"]);
     }
@@ -558,11 +558,13 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
             happly::PLYData plyIn(dataLine);
             auto& vertexElem = plyIn.getElement("vertex");
             bool hasNormals = vertexElem.hasProperty("nx") && vertexElem.hasProperty("ny") && vertexElem.
-                hasProperty("nz");
+            hasProperty("nz");
 
             std::vector<float> xs = vertexElem.getProperty<float>("x");
             std::vector<float> ys = vertexElem.getProperty<float>("y");
             std::vector<float> zs = vertexElem.getProperty<float>("z");
+
+
             if (hasNormals)
             {
                 sm = "smooth";
@@ -582,6 +584,18 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
                 {
                     sceneInput.Vertices.push_back(
                         CVertex(numVerticesUntilNow + j, Vertex(xs[j], ys[j], zs[j]), Vec3r()));
+                }
+            }
+            bool hasTexCoords = vertexElem.hasProperty("u") && vertexElem.hasProperty("v");
+            if (hasTexCoords)
+            {
+                std::vector<float> us = vertexElem.getProperty<float>("u");
+                std::vector<float> vs = vertexElem.getProperty<float>("v");
+                for (int j = numVerticesUntilNow ; j < sceneInput.Vertices.size(); j++)
+                {
+                    std::cout << us[j-numVerticesUntilNow] << " " << vs[j-numVerticesUntilNow] << std::endl;
+                    sceneInput.Vertices[j].t = Texel(us[j-numVerticesUntilNow], vs[j-numVerticesUntilNow]);
+                    std::cout << sceneInput.Vertices[j].t.u << " " << sceneInput.Vertices[j].t.v << std::endl;
                 }
             }
         }

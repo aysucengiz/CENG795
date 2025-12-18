@@ -72,6 +72,8 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
     {
+        // if (DiffuseTexture->getTextureType() == TextureType::CHECKERBOARD)
+        //     std::cout << "Checkerboard" << std::endl;
         Color tex_col = DiffuseTexture->TextureColor(vert, t);
         switch (DiffuseTexture->decalMode)
         {
@@ -335,7 +337,8 @@ Texel Triangle::getTexel(const Vertex &v, real time, int triID) const
 {
     real alpha, beta, gamma;
     BaryCentric(alpha,beta,gamma,v);
-
+    // if (AllTexture)
+    // std::cout << a.t.u << " " << a.t.v << " " << b.t.u << std::endl;
     return alpha * a.t + beta * b.t + gamma * c.t;
 }
 

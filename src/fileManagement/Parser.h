@@ -54,7 +54,7 @@ namespace Parser {
 
     Scale getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms);
     std::vector<Texture*> getTexturesFromStr(std::string inp,SceneInput &scene);
-    void getNearFromFovY(int FovY, double nearDistance, double aspect, std::array<double,4> &nearPlane);
+    void getNearFromFovY(real FovY, double nearDistance, double aspect, std::array<double, 4>& nearPlane);
 
     std::shared_ptr<Transformation> getTransFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>> &transforms);
     Object* getOriginalObjPtr(ObjectType ot, int ot_id, std::deque<Object*> &objs);

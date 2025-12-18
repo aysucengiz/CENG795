@@ -193,7 +193,8 @@ That is why all I get the very first pixel. This issue mainly is about the inter
 
 ## Checkerboard
 This is quite cute compared to the image texture. Holds a black colour, a white colour, scale and offset. Has a `IsOnWhite` function that is called by texture colour function. 
-Look at the beauty, the simplicity. Even I did not make any mistakes here. Though the algortihm was given in the homework pdf so maybe that is why :)
+Look at the beauty, the simplicity. I of course managed to make a mistake.
+
 ```c++
 Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
 {
@@ -202,7 +203,8 @@ Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
 
 bool CheckerTexture::IsOnWhite(real i)
 {
-    return ((int) std::floor((i + offset) * scale)) % 2 == 1;
+    real place = (i + offset) * scale;
+    return ((int) std::floor(place) & 1) == 1;
 }
 
 bool CheckerTexture::IsOnWhite(Vertex vert)
@@ -211,6 +213,17 @@ bool CheckerTexture::IsOnWhite(Vertex vert)
     return xorXY == IsOnWhite(vert.z);
 }
 ```
+
+Initially the isOnWhite(real i) would perform the following:
+```c++
+    real place = (i + offset) * scale;
+    return ((int) std::floor(place) % 2) == 1;
+```
+
+Which resulted in this in VeachAjar:
+![img_21.png](img_21.png)
+
+To be honest I fixed it by trial and error and didn't really get what was wrong in the initial one at first. Apparently it is about the negative values. When I take the modulo, the result stays negative if the initial value is negative. This of course leads to more "false"s when I check for `== 1`.
 
 Also I would like to note that I am using the global vertex here instead of localizing it or using the texel.
 

@@ -11,7 +11,7 @@
         "Thread": "batch",
         "batchWidth": 16,
         "batchHeight": 16,
-        "ThreadGroupSize": 25,
+        "ThreadGroupSize": 100,
         "ThreadEndlAfter": 80000
       },
       "Logger": {
@@ -24,7 +24,7 @@
       "AccelerationStruct": "bvh",
       "MaxObjInNode": 16,
       "PivotType": "sah",
-      "BackCulling": true
+      "BackCulling": false
     },
     "Sampling": {
       "SamplingType": "stratified",

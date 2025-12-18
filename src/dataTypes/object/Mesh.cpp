@@ -175,7 +175,6 @@ ObjectType Mesh::getObjectType() const { return ObjectType::MESH; }
 Texel Mesh::getTexel(const Vertex& v, real time, int triID) const
 {
     return  Faces[triID]->getTexel(v, time, triID);
-
 }
 
 void Mesh::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const
