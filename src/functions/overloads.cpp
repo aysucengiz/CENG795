@@ -699,8 +699,8 @@ std::ostream& operator<<(std::ostream& os, Image &i)
 {
     os << "Image " << i._id << ":"
     << "\n\tfilename:" << i.filename
-    << "\n\twidth:" << i.width
-    << "\theight:" << i.height
+    << "\n\twidth:" << i.mipmaps[0].width
+    << "\theight:" << i.mipmaps[0].height
     << "\n\tchannels in file:" << i.channels_in_file;
     return os;
 }

@@ -76,7 +76,7 @@ public:
     void PrintProgress();
     void drawRow(uint32_t ly);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
-    Ray computeViewingRay();
+    Ray computeViewingRay(int x_loc, int y_loc);
     Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray &shadow_ray);

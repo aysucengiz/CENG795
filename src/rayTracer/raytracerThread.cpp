@@ -198,7 +198,7 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
     //     std::cout << hit_record.obj->_id << std::endl;
     if (hit_record.obj->AllTexture != nullptr)
     {
-        return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri);
+        return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri, hit_record.rate_of_change);
     }
     Color curr_color;
     Material& m = hit_record.obj->material;
@@ -348,15 +348,14 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
 
         if ((hit_record.obj->DiffuseTexture != nullptr && hit_record.obj->DiffuseTexture->IsMipMapped())
             || (hit_record.obj->SpecularTexture != nullptr && hit_record.obj->SpecularTexture->IsMipMapped())
-            || (hit_record.obj->NormalTexture != nullptr && hit_record.obj->NormalTexture->IsMipMapped()))
+            || (hit_record.obj->NormalTexture != nullptr && hit_record.obj->NormalTexture->IsMipMapped())
+            || (hit_record.obj->AllTexture != nullptr && hit_record.obj->AllTexture->IsMipMapped()))
         {
+
             const Vertex& a = hit_record.intersection_point;
             const Vec3r& n = hit_record.normal;
             Vec3r T, B;
-            hit_record.obj->getBitan(hit_record.intersection_point,T,B,hit_record.currTri,time);
-
-
-
+            hit_record.obj->getBitan(hit_record.intersection_point,T,B,hit_record.currTri,false);
             Texel dUV_i(0.0,0.0);
             Texel dUV_j(0.0,0.0);
 
@@ -372,54 +371,47 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
             Vec3r dP_di = ax - a;
             Vec3r dP_dj = ay - a;
 
-            real a00 = dot_product(T, T);
-            real a01 = dot_product(T, B);
-            real a10 = a01;
-            real a11 = dot_product(B, B);
-            real bx0 = dot_product(T, dP_di);
-            real bx1 = dot_product(B, dP_di);
+            // buralara kadar sorun yok
 
-            real by0 = dot_product(T, dP_dj);
-            real by1 = dot_product(B, dP_dj);
 
-            real det = a00*a11 - a01*a10;
-            // if (abs(det) < 1e-8) return;
+            real max_axis = std::max(abs(n.i), std::max(abs(n.j), abs(n.k)));
+            Axes discarded = Axes::z;
+            if (abs(n.i) > abs(n.j) && abs(n.i) > abs(n.k))
+                discarded = Axes::x;
+            else if (abs(n.j) > abs(n.k))
+                discarded = Axes::y;
 
-            dUV_i.u = ( bx0*a11 - bx1*a01) / det;
-            dUV_i.v = (-bx0*a10 + bx1*a00) / det;
+            std::array<std::array<real, 2>, 2> A{}, invA{};
+            std::array<real, 2> dP_di_2;
+            std::array<real, 2> dP_dj_2;
+            std::array<Axes,2> use;
 
-            dUV_j.u = ( by0*a11 - by1*a01) / det;
-            dUV_j.v = (-by0*a10 + by1*a00) / det;
+            use[0] = discarded != Axes::x ? Axes::x : Axes::y;
+            use[1] = discarded != Axes::y ? Axes::y : Axes::z;
 
-            // real max_axis = std::max(abs(n.i), std::max(abs(n.j), abs(n.k)));
-            // Axes discarded = (max_axis == abs(n.i)) ? Axes::x : (max_axis == abs(n.j)) ? Axes::y : Axes::z;
-            //
-            // std::array<std::array<real, 2>, 2> A{}, invA{};
-            // std::array<real, 2> dP_di_2;
-            // std::array<real, 2> dP_dj_2;
-            //
-            // dP_di_2[0] = discarded != Axes::x ? dP_di[Axes::x] : dP_di[Axes::y];
-            // dP_di_2[1] = discarded != Axes::y ? dP_di[Axes::y] : dP_di[Axes::z];
-            //
-            // dP_dj_2[0] = discarded != Axes::x ? dP_dj[Axes::x] : dP_dj[Axes::y];
-            // dP_dj_2[1] = discarded != Axes::y ? dP_dj[Axes::y] : dP_dj[Axes::z];
-            //
-            // A = {
-            //
-            // };
-            //
-            // real detA = 1 / (A[0][0] * A[1][1] - A[0][1] * A[1][0]);
-            //
-            // invA ={
-            //     detA * A[1][1], -detA*A[1][0],
-            //     -detA*A[0][1],  detA*A[0][0],
-            // };
-            //
-            // dUV_i.u = invA[0][0]*dP_di_2[0] + invA[0][1]*dP_di_2[1];
-            // dUV_i.v = invA[1][0]*dP_di_2[0] + invA[1][1]*dP_di_2[1];
-            //
-            // dUV_j.u = invA[0][0]*dP_dj_2[0] + invA[0][1]*dP_dj_2[1];
-            // dUV_j.v = invA[1][0]*dP_dj_2[0] + invA[1][1]*dP_dj_2[1];
+            dP_di_2[0] = dP_di[use[0]];
+            dP_di_2[1] = dP_di[use[1]];
+
+            dP_dj_2[0] =  dP_dj[use[0]];
+            dP_dj_2[1] =  dP_dj[use[1]];
+
+            A = {
+                T[use[0]], B[use[0]],
+                T[use[1]], B[use[1]]
+            };
+
+            real detA = 1 / (A[0][0] * A[1][1] - A[0][1] * A[1][0]);
+
+            invA ={
+                detA * A[1][1], -detA*A[1][0],
+                -detA*A[0][1],  detA*A[0][0],
+            };
+
+            dUV_i.u = invA[0][0]*dP_di_2[0] + invA[0][1]*dP_di_2[1];
+            dUV_i.v = invA[1][0]*dP_di_2[0] + invA[1][1]*dP_di_2[1];
+
+            dUV_j.u = invA[0][0]*dP_dj_2[0] + invA[0][1]*dP_dj_2[1];
+            dUV_j.v = invA[1][0]*dP_dj_2[0] + invA[1][1]*dP_dj_2[1];
 
             real mag_i = dUV_i.v*dUV_i.v + dUV_i.u*dUV_i.u;
             real mag_j = dUV_j.v*dUV_j.v + dUV_j.u*dUV_j.u;

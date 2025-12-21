@@ -396,8 +396,7 @@ I tried so long to make bump images look good. But I managed in the end. The mai
 Truly an artistic rendition. You can't deny. After fixing bump mapping in other scenes this scene also mostly got fixed. But somehow I ruined the background?
 
 ![img_30.png](img_30.png)
-Mine is on the left. I know that this time, it shows that the left one is mine.
-
+Mine is on the left.
 
 **Debugging Noise Textures**
 
@@ -445,6 +444,14 @@ This fixed it :)
 
 ![img_32.png](img_32.png)
 
+
+# Mipmapping
+Welcome to my debugging gallery. Below you can find my paintings.
+![img_33.png](img_33.png)
+Highway to hell.
+
+![img_34.png](img_34.png)
+mipmapping fractals
 
 # Speedup
 My textures were coded non-optimal and I am sick of waiting. Let's fix it because I will not be waiting for killeroo.

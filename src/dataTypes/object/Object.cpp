@@ -48,12 +48,18 @@ Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<T
     }
 }
 
-Color Object::getTextureColorAt(Vertex &pos, real time, int triID) const
+Color Object::getTextureColorAt(Vertex &pos, real time, int triID, Texel rate_of_change) const
 {
     if (AllTexture != nullptr)
     {
+
+        MipMap mip0 = dynamic_cast<ImageTexture*>(AllTexture)->image->mipmaps[0];
+        real a = rate_of_change.u * mip0.width;
+        real b = rate_of_change.v * mip0.height;
+        real level = 0.5 * log2(a*a + b*b);
         Texel tex = getTexel(pos,time, triID);
-        return AllTexture->TextureColor(pos, tex, 0);
+        // std::cout << level << std::endl;
+        return AllTexture->TextureColor(pos, tex, level);
     }
     return Color(0, 0, 0);
 }
@@ -74,7 +80,7 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
     if (DiffuseTexture != nullptr)
     {
         real level = 0;
-        if (DiffuseTexture->getTextureType() == TextureType::IMAGE)
+        if (DiffuseTexture->IsMipMapped())
         {
             MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
             real a = rate_of_change.u * mip0.width;

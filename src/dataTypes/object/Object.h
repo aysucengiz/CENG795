@@ -46,7 +46,7 @@ public:
     Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
                        Ray& shadow_ray, Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
-    Color getTextureColorAt(Vertex& pos, real time, int triID) const;
+    Color getTextureColorAt(Vertex& pos, real time, int triID, Texel rate_of_change) const;
     virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const = 0;
     real GrayScale(Color c) const;
     real h(Vertex v) const;

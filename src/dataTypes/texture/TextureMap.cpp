@@ -120,6 +120,7 @@ Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex, real level)
 
 Color ImageTexture::ImageColor(int x, int y, int level, bool wrap)
 {
+    level = std::max(std::min((int) image->mipmaps.size()-1,level),0);
     MipMap& currMipMap = image->mipmaps[level];
     if (wrap)
     {
@@ -134,41 +135,46 @@ Color ImageTexture::ImageColor(int x, int y, int level, bool wrap)
         x = std::max(0, std::min(x , currMipMap.width-1));
     }
 
-    Color c = image->mipmaps[level].colorData[y][x];
+
+    Color c = currMipMap.colorData[y][x];
     return c;
 }
 
 Color ImageTexture::nearest(Texel tex, real level)
 {
-    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[0].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[0].height)};
-    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5), 0);
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[level].height)};
+    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5), level);
 }
 
 Color ImageTexture::bilinear(Texel tex, real level)
 {
-    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[0].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[0].height)};
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[level].height)};
 
     Texel pq = {std::floor(xy.u), std::floor(xy.v)};
     Texel delta = {xy.u - pq.u, xy.v - pq.v};
-    Color result = ImageColor(pq.u, pq.v, 0) * (1 - delta.u) * (1 - delta.v)
-        + ImageColor(pq.u + 1, pq.v, 0) * (delta.u) * (1 - delta.v)
-        + ImageColor(pq.u, pq.v + 1, 0) * (1 - delta.u) * (delta.v)
-        + ImageColor(pq.u + 1, pq.v + 1, 0) * (delta.u) * (delta.v);
+    Color result = ImageColor(pq.u, pq.v, level) * (1 - delta.u) * (1 - delta.v)
+        + ImageColor(pq.u + 1, pq.v, level) * (delta.u) * (1 - delta.v)
+        + ImageColor(pq.u, pq.v + 1, level) * (1 - delta.u) * (delta.v)
+        + ImageColor(pq.u + 1, pq.v + 1, level) * (delta.u) * (delta.v);
     return result;
 }
 
 Color ImageTexture::trilinear(Texel tex, real level)
 {
-    // TODO: mipmapping
-    real level0 = std::floor(level);
-    real level1 = std::floor(level) + 1;
+    // level *=5.0;
+    int level0 = std::max(0,(int) std::floor(level));
+    int level1 = std::min((int) image->mipmaps.size()-1,(int) std::floor(level) + 1);
+    real t = level - level0;
+    Color c0, c1;
+
+    // level 0 block
     const MipMap& floorMip = image->mipmaps[level0];
+    c0 = bilinear(tex, level0);
+
+    // level 1 block
     const MipMap& ceilMip  = image->mipmaps[level1];
-    Texel level0_tex = {(real) fmod(tex.u,1.0) * (floorMip.width), (real) fmod(tex.v,1.0)  * (floorMip.height)};
-    Texel level1_tex = {(real) fmod(tex.u,1.0) * (ceilMip.width), (real) fmod(tex.v,1.0)  * (ceilMip.height)};
-    Color c0 = ImageColor(level0_tex.u, level0_tex.v, level0);
-    Color c1 = ImageColor(level1_tex.u, level1_tex.v, level1);
-    Color fin = c0 * (level1 - level) + c1 * (level - level0);
+    c1 = bilinear(tex, level1);
+    Color fin = c0 * (1 - t) + c1 * (t);
     return fin;
 }
 
