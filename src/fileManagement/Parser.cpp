@@ -101,9 +101,7 @@ void Parser::getTextures(json &inp, SceneInput& sceneInput, std::string root)
 
 void Parser::getImages(json &inp, SceneInput& sceneInput, std::string root)
 {
-    for (auto it = inp.begin(); it != inp.end(); ++it) {
-        std::cout << it.key() << std::endl;
-    }
+
     if (inp.contains("Images"))
     {
         json& Images = inp["Images"]["Image"];
@@ -116,7 +114,6 @@ void Parser::getImages(json &inp, SceneInput& sceneInput, std::string root)
 
 void Parser::addImage(json s, SceneInput& sceneInput, std::string root)
 {
-    std::cout << root + s["_data"].get<std::string>() << std::endl;
     Image *temp = new Image(std::stoi(s["_id"].get<std::string>()), root + s["_data"].get<std::string>());
     sceneInput.images.push_back(temp);
     if (PRINTINIT)
@@ -606,16 +603,6 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
         {
             read_from_file = false;
             dataLine = mes["Faces"]["_data"].get<std::string>();
-        }
-
-        if (mes.contains("Textures"))
-        {
-            std::cout << mes["_id"].get<std::string>() << " has textures" << std::endl;
-        }
-        else
-        {
-            std::cout << mes["_id"].get<std::string>() << " does not have textures" << std::endl;
-
         }
 
         Mesh* tempm = new Mesh(std::stoi(mes["_id"].get<std::string>()),
