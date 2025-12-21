@@ -153,7 +153,7 @@ Color ImageTexture::nearest(Texel texel)
     return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5));
 }
 ```
-As you might realize, I subtract 0.5 from both x and y. That is because we need to round it to the nearest pixel's **center**, not its top left vertex.
+As you might realize, I subtract 0.5 from both x and y. That is because we need to round it to the nearest pixel's **center**, not its corner vertex.
 Now please don't think that I thought of it from the get-go. No. No I sadly did not.
 
 
@@ -227,6 +227,24 @@ To be honest I fixed it by trial and error and didn't really get what was wrong 
 
 Also I would like to note that I am using the global vertex here instead of localizing it or using the texel.
 
+I had issue with VeachAjar scene, where my `replace_kd` textures where not bright enough. I did not have this issue anywhere else and when I multiplied kd by 8.50 I got the intended results. 
+
+I just realized there is a "normalizer" aspect. My bad.
+
+![img_22.png](img_22.png)
+
+Well that didn't fix anything. I swear my checkerboard works it is just too dark.
+Oh I am dividing by an extra 255 and multiplying with normalizer instead of dividing. It is fixed now but instead of showing the final picture I will brag about my sampling from previous homework which I was not able to show on the previous blog. Mine are the ones on the left.
+
+
+Side note: I still did not fix my dielectrics.
+
+![img_26.png](img_26.png)
+![img_27.png](img_27.png)
+
+
+
+
 ## Perlin Noise
 Here we go. I implemented the perlin noise class from !!!!!TODO!!!!!!!!!!.
 
@@ -265,14 +283,22 @@ Now, you can see that there is no difference between absolute and linear. Let me
 if (funcname == "absval)")return Convert::Abs;
 if (funcname == "linear)")return Convert::Linear;
 return Convert::Linear;
-
-Bonus: During debugging of VeachAjar scene I tried to localize global instance vertices which lead to this:
-![img_20.png](img_20.png)
 ```
-
 Truly a work of art in terms of mistakes.
 
+Bonus: During debugging of VeachAjar scene I tried to localize global instance vertices which lead to this 
+(The perlin noise looks "flat"):
+![img_20.png](img_20.png)
 
+
+
+I also wanted to try something and changed my absolute value function to return the negative of its result. I am mentioning this because I believe the result looked really cool.
+![img_28.png](img_28.png)
+
+I was debugging because my dragon's colours were way too vibrant than the reference.
+![img_29.png](img_29.png)
+
+I sadly could not find the reason to this.
 ## Colour Mapping
 
 ### Diffuse
@@ -361,16 +387,17 @@ I was trying to do image bump mapping according to the vertices, not texels so I
 </p>
 
 No, this will not as well.
-I put a bump scale and it is looking much better now.
 
-<p align="center">
-  <img src="img_13.png" width="400">
-  <figcaption></figcaption>
-</p>
+
+I tried so long to make bump images look good. But I managed in the end. The main problem was that I was normalizing B and T vectors. It got fixed when I stopped normalizing them specifically in image bump maps.
 
 ![img_19.png](img_19.png)
 
-Truly an artistic rendition.
+Truly an artistic rendition. You can't deny. After fixing bump mapping in other scenes this scene also mostly got fixed. But somehow I ruined the background?
+
+![img_30.png](img_30.png)
+Mine is on the left. I know that this time, it shows that the left one is mine.
+
 
 **Debugging Noise Textures**
 
@@ -386,13 +413,44 @@ The upper picture was the result of me forgetting to multiply with the bump fact
   <figcaption></figcaption>
 </p>
 
-The main mistake I was making was normalizing `g_perp`:
+The main mistake I was making was normalizing `g_perp`. Below is the final correct version:
 ```c++
 Vec3r g_parall  = n *dot_product(dh,n);
 Vec3r g_perp    = dh - g_parall;
 NewN = n - g_perp* NormalTexture->bumpFactor;
 ```
 Because normalizing is a reflex at this point. 
+
+![img_31.png](img_31.png)
+Oh god I thought I had fixed it.
+
+So the problem was the following:
+1. It was a plane, not a triangle
+2. This meant the T and B computed were from ONB computations (normalized) and were really big
+3. This resulted in `g_perp = { 0.3, 0.0, 0.98}` when `n={0,1,0}`
+4. This meant that my g would basically punch my normal to the side.
+
+How to fix this then? I also realized my computation was really open to such flaws so I rewrote that part (for the 3289th time).
+
+I was computing delta x by moving the point along t in every direction, delta y with B and delta z with the normal. What was I thinking, I do not know.
+I then computed delta h with T and B separately and combined it as such:
+
+```c++
+g_perp = onb[0] * dhT + onb[1]*dhB;
+```
+
+Which mimics texel coordinates I believe.
+
+This fixed it :)
+
+![img_32.png](img_32.png)
+
+
+# Speedup
+My textures were coded non-optimal and I am sick of waiting. Let's fix it because I will not be waiting for killeroo.
+
+
+
 # Final
 
 

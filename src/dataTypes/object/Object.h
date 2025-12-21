@@ -40,15 +40,15 @@ public:
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
     virtual Texel getTexel(const Vertex& v, real time, int triID)  const = 0;
-    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time) const;
+    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
     Color GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int
-                      triID) const;
+                      triID, Texel& rate_of_change) const;
     Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                       Ray& shadow_ray, Vertex& vert, Texel& t, real time) const;
+                       Ray& shadow_ray, Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
     Color getTextureColorAt(Vertex& pos, real time, int triID) const;
-    virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const = 0;
-    real h(Texel t) const;
+    virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const = 0;
+    real GrayScale(Color c) const;
     real h(Vertex v) const;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
     void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
@@ -64,8 +64,8 @@ public:
     Vec3r n;
     Vec3r a_b, a_c;
     ShadingType shadingType;
-    Vec3r T;
-    Vec3r B;
+    Vec3r T, T_norm;
+    Vec3r B, B_norm;
 
 
     ObjectType getObjectType() const override;
@@ -73,7 +73,7 @@ public:
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Texel getTexel(const Vertex& v, real time, int triID)  const override;
     void BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const;
-    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const override;
+    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const override;
     Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,std::vector<Texture*> ts , ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
 
@@ -88,7 +88,7 @@ public:
     Vec3r B;
 
     Plane(uint32_t id, Vertex& v, std::string normal, Material& material,std::vector<Texture*> ts , bool vis = true);
-    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const override;
+    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const override;
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
@@ -107,7 +107,7 @@ public:
     real radius2;
 
     Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture*> ts ,bool v = true);
-    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const override;
+    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const override;
     ObjectType getObjectType() const override;
     intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
@@ -134,7 +134,7 @@ public:
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Vec3r getGlobalNormal(const Vec3r& res, double time) const;
 
-    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID) const override;
+    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const override;
     void computeGlobal();
     Ray getLocal(Ray& r);
     Vertex getLocal(const Vertex& v, real time) const override;
@@ -205,6 +205,7 @@ struct HitRecord
     Vec3r normal;
     Object const * obj;
     uint32_t currTri;
+    Texel rate_of_change = Texel(0.0,0.0);
 };
 
 

@@ -13,7 +13,7 @@ int PerlinNoise::P[512];
 bool PerlinNoise::initialized = false;
 int PerlinNoise::perm[256];
 
-real Convert::Abs(real inp) { return std::min((real)1.0,std::abs(inp)); }
+real Convert::Abs(real inp) {return std::min((real)1.0,std::abs(inp)); }
 real Convert::Linear(real inp) { return std::min(1.0, std::max(inp * 0.5 + 0.5,0.0)); }
 
 TextureType ImageTexture::getTextureType(){ return TextureType::IMAGE;}
@@ -23,20 +23,23 @@ TextureType CheckerTexture::getTextureType(){ return TextureType::CHECKERBOARD;}
 /// IMAGE ////
 Image::Image(uint32_t id, std::string filename) : _id(id), filename(filename)
 {
-    unsigned char *data = PPM::read_image(filename.c_str(), width, height, channels_in_file, 3);
+
+    MipMap m0;
+    unsigned char *data = PPM::read_image(filename.c_str(), m0.width, m0.height, channels_in_file, 3);
 
     if (data)
     {
         uint32_t curr_idx = 0;
-        colorData.resize(height, std::vector<Color>(width));
-        for (int y = 0; y < height; y++)
+        m0.colorData.resize(m0.height, std::vector<Color>(m0.width));
+        for (int y = 0; y < m0.height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < m0.width; x++)
             {
-                colorData[y][x] = Color(data[curr_idx], data[curr_idx+1], data[curr_idx+2]);
+                m0.colorData[y][x] = Color(data[curr_idx], data[curr_idx+1], data[curr_idx+2]);
                 curr_idx += 3;
             }
         }
+        mipmaps.push_back(m0);
     }
     else std::cout << "Image could not be read" << std::endl;
 }
@@ -45,60 +48,148 @@ Image::~Image()
 {
 }
 
-
-/// IMAGE TEXTURE ////
-Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex)
+void Image::CreateMipMap()
 {
-    Color interpolated_color = interpolate(tex);
-    return  interpolated_color/ 255.0;
+    int curr_level = 0;
+    std::array<int,2> xs, ys;
+    while (mipmaps[curr_level].width > 1 || mipmaps[curr_level].height > 1)
+    {
+        curr_level++;
+        const MipMap& prev = mipmaps[curr_level-1];
+        MipMap curr;
+
+        curr.width  = std::max(1, prev.width  / 2);
+        curr.height = std::max(1, prev.height / 2);
+
+        curr.colorData.resize(curr.height, std::vector<Color>(curr.width));
+
+        for (int y = 0; y < curr.height; y++)
+        {
+            for (int x = 0; x < curr.width; x++)
+            {
+                Color fin(0.0,0.0,0.0);
+
+                xs = {
+                    std::min(prev.width  - 1, 2 * x),
+                    std::min(prev.width  - 1, 2 * x + 1)
+                };
+
+                ys = {
+                    std::min(prev.height  - 1, 2 * y),
+                    std::min(prev.height  - 1, 2 * y + 1)
+                };
+
+                for (int i = 0; i < 2; i++)
+                    for (int j = 0; j < 2; j++)
+                        fin += prev.colorData[ys[i]][xs[j]];
+
+                curr.colorData[y][x] = fin * 0.25;
+            }
+        }
+        mipmaps.push_back(curr);
+    }
 }
 
-Color ImageTexture::ImageColor(int x, int y)
-{
 
-    y = std::max(0, std::min(y , image->height-1));
-    x = std::max(0, std::min(x , image->width-1));
-    Color c = image->colorData[y][x];
+/// IMAGE TEXTURE ////
+ImageTexture::ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp, real normalizer): Texture(id, d), image(image), normalizer(normalizer)
+{
+    interpolation = interp;
+    if (interp == Interpolation::NEAREST)
+    {
+        interpolate = [this](Texel t, real l){ return nearest(t,l); };
+    }
+    else if (interp == Interpolation::BILINEAR)
+    {
+        interpolate = [this](Texel t, real l){ return bilinear(t,l); };
+    }
+    else if (interp == Interpolation::TRILINEAR)
+    {
+        interpolate = [this](Texel t, real l){ return trilinear(t,l); };
+        if (image->mipmaps.size() <= 1) image->CreateMipMap();
+    }
+};
+
+
+Color ImageTexture::TextureColor(const Vertex &vert, Texel &tex, real level)
+{
+    Texel tiled = {(real) fmod(tex.u,1.0), (real) fmod(tex.v,1.0)};
+    Color interpolated_color = interpolate(tiled, level);
+    return  interpolated_color / normalizer;
+}
+
+Color ImageTexture::ImageColor(int x, int y, int level, bool wrap)
+{
+    MipMap& currMipMap = image->mipmaps[level];
+    if (wrap)
+    {
+        while (x < 0) x += currMipMap.width;
+        while (y < 0) y += currMipMap.height;
+        while (x >= currMipMap.width) x -= currMipMap.width;
+        while (y >= currMipMap.height) y -= currMipMap.height;
+    }
+    else
+    {
+        y = std::max(0, std::min(y , currMipMap.height-1));
+        x = std::max(0, std::min(x , currMipMap.width-1));
+    }
+
+    Color c = image->mipmaps[level].colorData[y][x];
     return c;
 }
 
-Color ImageTexture::nearest(Texel texel)
+Color ImageTexture::nearest(Texel tex, real level)
 {
-    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
-    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5));
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[0].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[0].height)};
+    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5), 0);
 }
 
-Color ImageTexture::bilinear(Texel texel)
+Color ImageTexture::bilinear(Texel tex, real level)
 {
-    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[0].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[0].height)};
+
     Texel pq = {std::floor(xy.u), std::floor(xy.v)};
     Texel delta = {xy.u - pq.u, xy.v - pq.v};
-    Color result = ImageColor(pq.u, pq.v) * (1 - delta.u) * (1 - delta.v)
-        + ImageColor(pq.u + 1, pq.v) * (delta.u) * (1 - delta.v)
-        + ImageColor(pq.u, pq.v + 1) * (1 - delta.u) * (delta.v)
-        + ImageColor(pq.u + 1, pq.v + 1) * (delta.u) * (delta.v);
+    Color result = ImageColor(pq.u, pq.v, 0) * (1 - delta.u) * (1 - delta.v)
+        + ImageColor(pq.u + 1, pq.v, 0) * (delta.u) * (1 - delta.v)
+        + ImageColor(pq.u, pq.v + 1, 0) * (1 - delta.u) * (delta.v)
+        + ImageColor(pq.u + 1, pq.v + 1, 0) * (delta.u) * (delta.v);
     return result;
 }
 
-Color ImageTexture::trilinear(Texel texel)
+Color ImageTexture::trilinear(Texel tex, real level)
 {
     // TODO: mipmapping
-    return bilinear(texel);
+    real level0 = std::floor(level);
+    real level1 = std::floor(level) + 1;
+    const MipMap& floorMip = image->mipmaps[level0];
+    const MipMap& ceilMip  = image->mipmaps[level1];
+    Texel level0_tex = {(real) fmod(tex.u,1.0) * (floorMip.width), (real) fmod(tex.v,1.0)  * (floorMip.height)};
+    Texel level1_tex = {(real) fmod(tex.u,1.0) * (ceilMip.width), (real) fmod(tex.v,1.0)  * (ceilMip.height)};
+    Color c0 = ImageColor(level0_tex.u, level0_tex.v, level0);
+    Color c1 = ImageColor(level1_tex.u, level1_tex.v, level1);
+    Color fin = c0 * (level1 - level) + c1 * (level - level0);
+    return fin;
 }
 
 //// Perlin Texture ////
 
-Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex)
+Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex, real level)
 {
     real result = 0.0;
-    Vertex vert2 = vert *(1.0* NoiseScale);
-    real pow_2_i = 1;
+    Vertex vert2 = vert * NoiseScale;
+    int pow_2_i = 1;
+    real pow_2__i = 1.0;
+    real amplitude = 0.0;
     for (int i = 0; i < NumOctaves; i++)
     {
-        pow_2_i = pow(2, i);
-        result = result +  (real)pow(2, -i) * PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
+        real perlin_res = PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
+        result = result +  pow_2__i * perlin_res;
+        amplitude += pow_2__i;
+        pow_2_i = pow_2_i << 1;
+        pow_2__i *= 0.5;
     }
-    result = convertNoise(result);
+    result = convertNoise(result) / amplitude;
     return Color(result, result, result);
 }
 
@@ -152,8 +243,13 @@ Vec3r PerlinNoise::fade(Vertex vert)
     return result;
 }
 
-Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex)
+
+CheckerTexture::CheckerTexture(uint32_t id,DecalMode d, Color bc, Color wc, real s, real offs) :
+Texture(id, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
+
+Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex, real level)
 {
+
     return IsOnWhite(vert) ? whiteColor : blackColor;
  }
 

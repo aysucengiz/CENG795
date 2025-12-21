@@ -17,18 +17,23 @@ namespace Convert
     real Linear(real inp);
 }
 
+struct MipMap
+{
+    int width, height;
+    std::vector<std::vector<Color>> colorData;
+};
 
 class Image
 {
 public:
     uint32_t _id;
     int channels_in_file;
-    std::vector<std::vector<Color>> colorData;
-    int width;
-    int height;
+    std::vector<MipMap> mipmaps;
     std::string filename;
     Image(uint32_t id, std::string filename);
     ~Image();
+
+    void CreateMipMap();
 };
 
 
@@ -42,36 +47,31 @@ public:
     real bumpFactor = 1.0;
     Texture(uint32_t i, DecalMode d) : _id(i), decalMode(d)
     {}
-    virtual Color TextureColor(const Vertex& vert, Texel& tex) = 0;
+    virtual Color TextureColor(const Vertex& vert, Texel& tex, real level) = 0;
     virtual TextureType getTextureType() = 0;
+    virtual bool IsMipMapped() { return false; }
 };
 
 class ImageTexture : public Texture
 {
 
 private:
-    Color nearest(Texel texel);
-    Color bilinear(Texel texel);
-    Color trilinear(Texel texel);
-    Color ImageColor(int x, int y);
+    Color bilinear(Texel texel, real level);
+    Color trilinear(Texel texel, real level);
+    Color nearest(Texel texel, real level);
     // TODO: galiba mipmapping optionalmış sona bırakalım
-    std::function<Color(Texel)> interpolate;
+    std::function<Color(Texel,real)> interpolate;
 
 public:
+    Color ImageColor(int x, int y, int level, bool wrap = false);
     Interpolation interpolation;
     Image *image;
-    Color TextureColor(const Vertex& vert, Texel& tex) override;
+    real normalizer;
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
     TextureType getTextureType() override;
-    ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp): Texture(id, d), image(image)
-    {
-        interpolation = interp;
-        if (interp == Interpolation::NEAREST)
-            interpolate = [this](Texel t){ return nearest(t); };
-        else if (interp == Interpolation::BILINEAR)
-            interpolate = [this](Texel t){ return bilinear(t); };
-        else if (interp == Interpolation::TRILINEAR)
-            interpolate = [this](Texel t){ return trilinear(t); };
-    };
+    ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp, real normalizer);
+
+    bool IsMipMapped() override { return image->mipmaps.size() > 1; }
 };
 
 class PerlinNoise
@@ -111,7 +111,7 @@ public:
     {
         PerlinNoise::init();
     }
-    Color TextureColor(const Vertex& vert, Texel& tex) override;
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
 
 };
 
@@ -123,9 +123,8 @@ public:
     Color whiteColor;
     real scale;
     real offset;
-    CheckerTexture(uint32_t id,DecalMode d, Color bc, Color wc, real s, real offs) :
-    Texture(id, d), blackColor(bc), whiteColor(wc), scale(s), offset(offs) {}
-    Color TextureColor(const Vertex& vert, Texel& tex) override;
+    CheckerTexture(uint32_t id,DecalMode d, Color bc, Color wc, real s, real offs);
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
     bool IsOnWhite(real i);
     bool IsOnWhite(Vertex vert);
 

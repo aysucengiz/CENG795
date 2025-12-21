@@ -142,12 +142,13 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
 {
     TextureType t = getTextureType(s["_type"].get<std::string>());
     DecalMode dm = getDecalMode(s["DecalMode"]);
+    real normalizer = s.contains("Normalizer") ? getReal(s["Normalizer"]) : 255.0;
     Texture *temp = nullptr;
     int id = std::stoi(s["_id"].get<std::string>());
     if (t == TextureType::IMAGE)
     {
         Interpolation interp = s.contains("Interpolation") ?  getInterpolation(s["Interpolation"].get<std::string>()) : Interpolation::NEAREST;
-        temp = new ImageTexture(id, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), interp);
+        temp = new ImageTexture(id, dm, getImageFromId(getInt(s["ImageId"]),sceneInput), interp,normalizer);
     }
     else if (t == TextureType::PERLIN)
     {
@@ -545,6 +546,7 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
     // std::cout << "will add a new mesh" << std::endl;
     std::string sm = mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat";
     std::string typeString = "";
+    int vertex_offset = mes["Faces"].contains("_vertexOffset") ? getInt(mes["Faces"]["_vertexOffset"]) : 0;
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
     {
         std::string dataLine;
@@ -626,7 +628,7 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
                                    ? getTexturesFromStr(mes["Textures"], sceneInput)
                                    : std::vector<Texture*>(),
                                true,
-                               numVerticesUntilNow);
+                               numVerticesUntilNow, true, vertex_offset);
         if (mes.contains("Transformations"))
             addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput,
                         mes.contains("MotionBlur") ? Vec3r(mes["MotionBlur"]) : Vec3r(0.0, 0.0, 0.0));
