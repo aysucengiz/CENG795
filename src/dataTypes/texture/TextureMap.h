@@ -59,7 +59,6 @@ private:
     Color bilinear(Texel texel, real level);
     Color trilinear(Texel texel, real level);
     Color nearest(Texel texel, real level);
-    // TODO: galiba mipmapping optionalmış sona bırakalım
     std::function<Color(Texel,real)> interpolate;
 
 public:

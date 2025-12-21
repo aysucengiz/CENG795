@@ -135,7 +135,6 @@ Color ImageTexture::ImageColor(int x, int y, int level, bool wrap)
         x = std::max(0, std::min(x , currMipMap.width-1));
     }
 
-
     Color c = currMipMap.colorData[y][x];
     return c;
 }
@@ -162,17 +161,12 @@ Color ImageTexture::bilinear(Texel tex, real level)
 Color ImageTexture::trilinear(Texel tex, real level)
 {
     // level *=5.0;
+
     int level0 = std::max(0,(int) std::floor(level));
-    int level1 = std::min((int) image->mipmaps.size()-1,(int) std::floor(level) + 1);
+    int level1 = std::min((int) image->mipmaps.size()-1,level0+1);
     real t = level - level0;
     Color c0, c1;
-
-    // level 0 block
-    const MipMap& floorMip = image->mipmaps[level0];
     c0 = bilinear(tex, level0);
-
-    // level 1 block
-    const MipMap& ceilMip  = image->mipmaps[level1];
     c1 = bilinear(tex, level1);
     Color fin = c0 * (1 - t) + c1 * (t);
     return fin;
@@ -186,16 +180,14 @@ Color PerlinTexture::TextureColor(const Vertex& vert, Texel& tex, real level)
     Vertex vert2 = vert * NoiseScale;
     int pow_2_i = 1;
     real pow_2__i = 1.0;
-    real amplitude = 0.0;
     for (int i = 0; i < NumOctaves; i++)
     {
         real perlin_res = PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
         result = result +  pow_2__i * perlin_res;
-        amplitude += pow_2__i;
         pow_2_i = pow_2_i << 1;
         pow_2__i *= 0.5;
     }
-    result = convertNoise(result) / amplitude;
+    result = convertNoise(result) ;
     return Color(result, result, result);
 }
 

@@ -28,7 +28,7 @@ public:
          bool v,
          int start_index,
          bool computeVNormals,
-         int vertex_offset);
+         int vertex_offset, int texture_offset);
 
 
     ObjectType getObjectType() const override;
@@ -37,7 +37,7 @@ public:
     ~Mesh();
 
     Texel getTexel(const Vertex& v, real time, int triID)  const override;
-    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const override;
+    void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const override;
 };
 
 #endif //CENG795_MESH_H

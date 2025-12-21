@@ -274,7 +274,7 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
         {
             Texel t((real)x / (real)cam.width, (real)y / (real)cam.height);
             Vertex v(t.u, t.v, 0.0);
-            Color bg = scene.BackgroundTexture->TextureColor(v, t, 0);
+            Color bg = scene.BackgroundTexture->TextureColor(v, t, 0) * 255.0;
             // std::cout << bg << std::endl;
             return bg;
         }
@@ -355,7 +355,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
             const Vertex& a = hit_record.intersection_point;
             const Vec3r& n = hit_record.normal;
             Vec3r T, B;
-            hit_record.obj->getBitan(hit_record.intersection_point,T,B,hit_record.currTri,false);
+            hit_record.obj->getBitan(hit_record.intersection_point,T,B,hit_record.currTri,false, time);
             Texel dUV_i(0.0,0.0);
             Texel dUV_j(0.0,0.0);
 

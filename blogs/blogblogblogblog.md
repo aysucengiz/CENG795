@@ -1,8 +1,9 @@
-`
-From now on this will be the blog space since I do not want to have limited png. In my previous blogs I could not write to my will so here it is.
-Behold, pictures.
+# HW4: Fancy Wrapping Paper
 
-Also, initially I was so scared of adding textures because it seemed like just the coding part took forever. Turns out debugging wasn't as hard.
+From now on this will be the blog space since I do not want to have limited png like I did in metu blog. So hello from a new website!
+In my previous blogs I could not write to my will because of upload limitations so here it is. This blog will contain a lot more details about my implementation and debugging process.
+
+Behold, pictures.
 
 
 ---
@@ -18,35 +19,41 @@ public:
     virtual ~Texture() = default;
     uint32_t _id;
     DecalMode decalMode;
+    real bumpFactor = 1.0;
     Texture(uint32_t i, DecalMode d) : _id(i), decalMode(d){}
-    virtual Color TextureColor(const Vertex& vert, Texel& tex) = 0;
+    virtual Color TextureColor(const Vertex& vert, Texel& tex, real level) = 0;
     virtual TextureType getTextureType() = 0;
+    virtual bool IsMipMapped() { return false; }
 };
 ```
 
-TextureColor gets the color of the texture at a certain point. Since I use texel for images and vertex for others I pass both. 
+TextureColor gets the color of the texture at a certain point.
+Since I use texel for images and vertex for others I pass both. 
 Which is not efficient if texel is not being used because it is computed either way.
+Level is passed specifically for mipmapping.
 
 ## Using Texture
 To be able to use the textures, I added four texture pointers to my abstract object class.
 One for each: 
+
 - diffuse: replace_kd
 - specular: replace_ks
 - normal: replace_normal and bump_normal
 - all: replace_all
+
 This also means I am not accumulating textures in the case of an object having several texture of the same type. 
 It is possible to implement that, but not needed as I believe this makes more sense.
 
 I also added several functions to the object class:
-- GetColourAt: The colour computation is now completely handled at the object class. This function is called after shadow testing is done. If there is a `replace_all` texture, then not even shadow testing is being done and directly texturecolor is called.
+- GetColourAt: The colour computation is now completely handled at the object class. 
+This function is called after shadow testing is done. If there is a `replace_all` texture, then even shadow testing and ambient lighting is skipped.
 ```c++
-Color Object::GetColourAt(Color ambientLight, Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID) const
+Color Object::GetColourAt( Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID, Texel& rate_of_change) const
 {
     Texel tex = getTexel(shadow_ray.pos,time, triID);
-    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex);
-    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex);
-    Color ambient = ambientLight * material.AmbientReflectance;
-    return  diffuse + specular + ambient;
+    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time, rate_of_change);
+    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time, rate_of_change);
+    return  diffuse + specular;
 }
 ```
 - (virtual) getTexel: Returns texel coordinates of a vertex according to the time (if there is motion blur).
@@ -59,30 +66,47 @@ Color Object::GetColourAt(Color ambientLight, Color I_R_2, real cos_theta, const
 
 Coding the image has several layers:
 
-### Image class
+### 1. Image class
 ```c++
+struct MipMap
+{
+    int width, height;
+    std::vector<std::vector<Color>> colorData;
+};
+
 class Image
 {
 public:
     uint32_t _id;
-    int channels_in_file, width, height;
-    std::vector<std::vector<Color>> colorData;
+    int channels_in_file;
+    std::vector<MipMap> mipmaps;
+    std::string filename;
     Image(uint32_t id, std::string filename);
     ~Image();
+    void CreateMipMap();
 };
 ```
+Image class is quite straightforward. 
+I hold the filename for printing purposes. 
+The main part is the mipmap vector. 
+I will only talk about the non-mipmap cases in this section. 
+For those, I put a single MipMap within the vector.
 
-Now you might realize that I am holding colordata as a color vector instead of a char array. That is because while loading the texture I simply fill that array for the ease of coding.
+Now you might realize that I am holding colordata as a color vector instead of a char array. 
+That is because while loading the texture I simply fill that array for the ease of coding.
 
 ```c++
 uint32_t curr_idx = 0;
-colorData.resize(height, std::vector<Color>(width));
-for (int y = 0; y < height; y++){
-    for (int x = 0; x < width; x++){
-        colorData[y][x] = Color(data[curr_idx], data[curr_idx+1], data[curr_idx+2]);
+m0.colorData.resize(m0.height, std::vector<Color>(m0.width));
+for (int y = 0; y < m0.height; y++)
+{
+    for (int x = 0; x < m0.width; x++)
+    {
+        m0.colorData[y][x] = Color(data[curr_idx], data[curr_idx+1], data[curr_idx+2]);
         curr_idx += 3;
     }
 }
+mipmaps.push_back(m0);
 ```
 
 This is open to improvement since currently I only store the RGB and if the channel numbers are different and I need that  the program won't work as accepted. But no issue for now, let's continue with loading the image.
@@ -106,42 +130,46 @@ I assume I need to deep copy it for it to work. Which is kind of what I already 
 Finally, the class itself with all its glory.
 
 ```c++
-
 class ImageTexture : public Texture
 {
-public:
-    ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp);
-    Color TextureColor(const Vertex& vert, Texel& tex) override;
-    TextureType getTextureType() override;
 
 private:
-    Color ImageColor(int x, int y);
+    Interpolation interpolation;
+    real normalizer;
     Image *image;
+    ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp, real normalizer);
+    Color nearest(Texel texel, real level);
+    Color bilinear(Texel texel, real level);
+    Color trilinear(Texel texel, real level);
+    std::function<Color(Texel,real)> interpolate;
+
+public:
+    Color ImageColor(int x, int y, int level, bool wrap = false);
     
-    // interpolation
-    std::function<Color(Texel)> interpolate;
-    Color nearest(Texel texel);
-    Color bilinear(Texel texel);
-    Color trilinear(Texel texel);
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
+    TextureType getTextureType() override;
+    bool IsMipMapped() override { return image->mipmaps.size() > 1; }
 };
 ```
 There are a few things to unpack here. So let's go step by step.
 
 **TextureColor:**
-This is the virtual function from the Texture class. It is very straightforward for image textures since the actual work is being done by the interpolation functions. 
+This is the virtual function from the Texture class. 
+The actual work is being done by the interpolation functions.
+This is where I apply tiling and normalizer. The normalizer is 255 by default.
 ```c++
-interpolate(tex)/ 255.0;
+Texel tiled = {fmod(tex.u,1.0), fmod(tex.v,1.0)};
+Color interpolated_color = interpolate(tiled, level);
+return  interpolated_color / normalizer;
 ```
-It simply does and returns this. I divide it by 255 because for most cases, we need the result to be in range 0 and 1. 
-The ranges do change for normals and replace all decal types so do multiply/divide once more in them.
-Could be more efficient. Not for now.
 
 **ImageColor:**
-This function gets an x and y coordinate on the image and returns the colour of it. X and y are clamped to prevent out of bounds access.
+This function gets an x and y coordinate on the image and returns the colour of it. 
+X and y are clamped to prevent out of bounds access.
 
-**Interpolation:** 
+
+**Interpolation (nearest and bilinear):** 
 This is the big part.
-
 I hold the interpolation as an std::function which is set to be one of the three interpolation functions within the class.
 I then call the interpolation function whenever I want and skip the if-elses or switches. Looks cleaner.
 
@@ -149,8 +177,9 @@ To be honest, I did have a hard time getting the interpolations exact. Mine woul
 ```c++
 Color ImageTexture::nearest(Texel texel)
 {
-    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
-    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5));
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), 
+                (real) fmod(tex.v,1.0) * (image->mipmaps[level].height)};
+    return ImageColor(std::round(xy.u - 0.5), std::round(xy.v - 0.5), level);
 }
 ```
 As you might realize, I subtract 0.5 from both x and y. That is because we need to round it to the nearest pixel's **center**, not its corner vertex.
@@ -158,23 +187,21 @@ Now please don't think that I thought of it from the get-go. No. No I sadly did 
 
 
 ```c++
-Color ImageTexture::bilinear(Texel texel)
+Color ImageTexture::bilinear(Texel tex, real level)
 {
-    Texel xy = {texel.u * (image->width), texel.v * (image->height)};
+    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), 
+                (real) fmod(tex.v,1.0) * (image->mipmaps[level].height)};
+
     Texel pq = {std::floor(xy.u), std::floor(xy.v)};
     Texel delta = {xy.u - pq.u, xy.v - pq.v};
-    Color result = ImageColor(pq.u, pq.v) * (1 - delta.u) * (1 - delta.v)
-        + ImageColor(pq.u + 1, pq.v) * (delta.u) * (1 - delta.v)
-        + ImageColor(pq.u, pq.v + 1) * (1 - delta.u) * (delta.v)
-        + ImageColor(pq.u + 1, pq.v + 1) * (delta.u) * (delta.v);
+    Color result = ImageColor(pq.u,     pq.v,     level) * (1 - delta.u) * (1 - delta.v)
+                 + ImageColor(pq.u + 1, pq.v,     level) * (delta.u)     * (1 - delta.v)
+                 + ImageColor(pq.u,     pq.v + 1, level) * (1 - delta.u) * (delta.v)
+                 + ImageColor(pq.u + 1, pq.v + 1, level) * (delta.u)     * (delta.v);
     return result;
 }
-
 ```
 Funnily enough, bilinear interpolation was more straightforward for me. Of course, that does not mean I had no issues. More will be talked about in the debugging section.
-
-// TODO mipmapping?
-
 
 
 ### Debugging
@@ -184,12 +211,16 @@ Funnily enough, bilinear interpolation was more straightforward for me. Of cours
 </p>
 
 Marvelous. But we cannot have that. So let's fix it. The problem is how I convert the texels to the image texels. Spoiler: I don't. 
-That is why all I get the very first pixel. This issue mainly is about the interpolation functions. Let's check them.
+That is why all I get the very first pixel. This issue was mainly is about the interpolation functions. And this line I forgot the add initially:
+```c++
+Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), 
+            (real) fmod(tex.v,1.0) * (image->mipmaps[level].height)};
+```
+Multiplying with the width and height is what makes it span across the whole texture. 
+In addition, thinking exact width or height would be out-of-bounds, I tried to multiply with `width-1` yet this resulted in a slightly zoomed affect. 
+So I settled with clamping.
 
-**nearest:**
-
-**bilinear:**
-
+The image textures were mostly done after this. I only did not mention mipmapping which has its own section.
 
 ## Checkerboard
 This is quite cute compared to the image texture. Holds a black colour, a white colour, scale and offset. Has a `IsOnWhite` function that is called by texture colour function. 
@@ -227,17 +258,18 @@ To be honest I fixed it by trial and error and didn't really get what was wrong 
 
 Also I would like to note that I am using the global vertex here instead of localizing it or using the texel.
 
-I had issue with VeachAjar scene, where my `replace_kd` textures where not bright enough. I did not have this issue anywhere else and when I multiplied kd by 8.50 I got the intended results. 
+With VeachAjar I realized the existence of normalizer aspect. Before that, I was dividing by 255 regardless of any input.
 
-I just realized there is a "normalizer" aspect. My bad.
+<p align="center">
+  <img src="img_22.png" width="400">
+  <figcaption></figcaption>
+</p>
 
-![img_22.png](img_22.png)
-
-Well that didn't fix anything. I swear my checkerboard works it is just too dark.
-Oh I am dividing by an extra 255 and multiplying with normalizer instead of dividing. It is fixed now but instead of showing the final picture I will brag about my sampling from previous homework which I was not able to show on the previous blog. Mine are the ones on the left.
+After dividing by the normalizer the scene was fixed. 
+Instead of showing the final picture I will brag about my sampling from previous homework which I was not able to show on the previous blog. Mine are the ones on the left.
 
 
-Side note: I still did not fix my dielectrics.
+Side note: I still have not perfected my dielectrics.
 
 ![img_26.png](img_26.png)
 ![img_27.png](img_27.png)
@@ -246,23 +278,41 @@ Side note: I still did not fix my dielectrics.
 
 
 ## Perlin Noise
-Here we go. I implemented the perlin noise class from !!!!!TODO!!!!!!!!!!.
+I implemented the perlin noise class from https://mrl.cs.nyu.edu/~perlin/noise/.
+Did not add much myself, simply adapted it to my code by creating a static PerlinNoise class.
 
-Let's see what is the initial result I got.
+My Perlin Texture class holds the scale and the octaves of the noise. 
+And a converter function which either takes the absolute of the resulting noise or linearly squishes it to [0,1].
+```c++
+real pow_2__i = 1.0, result = 0.0;
+Vertex vert2 = vert * NoiseScale;
+int pow_2_i = 1;
+for (int i = 0; i < NumOctaves; i++)
+{
+    real perlin_res = PerlinNoise::perlin(vert2.x * pow_2_i, vert2.y * pow_2_i, vert2.z * pow_2_i);
+    result = result +  pow_2__i * perlin_res;
+    pow_2_i = pow_2_i << 1;
+    pow_2__i *= 0.5;
+}
+result = convertNoise(result) / amplitude;
+return Color(result, result, result);
+```
 
-Now this, this requires attention. I don't know if you can tell.
+Let's see what is the initial result I got after coding.
+
+Now this, this is not correct. I don't know if you can tell.
 
 <p align="center">
   <img src="img_2.png" width="400">
   <figcaption></figcaption>
 </p>
 
-Probably if you squint. Anyways let's fix it. I already implemented perlin noise on OpenGL and saw a similar issue. Not that I remember how to fix it.
-Good thing is we know that our checkerboard class works flawlessly. So the problem is simply with perlinNoise. 
+Probably if you squint. Anyways let's fix it.
+Good thing is we know that our checkerboard class works flawlessly. 
+So the problem is not with using world coordinates but simply with perlinNoise. 
 
 Turns out I forgot to initialize the perlin noise function which randomizes the P array.
- 
-Also, I forgot to call my convertNoise function
+Also, I forgot to call my convertNoise function.
 
 <p align="center">
   <img src="img_5.png" width="400">
@@ -271,7 +321,7 @@ Also, I forgot to call my convertNoise function
 
 Ah yes, a lot more familiar.
 
-I then changed the fade function to be in the website rather than the slides and voila
+I then changed the fade function to be in the website rather than the slides and voila!
 
 <p align="center">
   <img src="img_6.png" width="400">
@@ -284,29 +334,39 @@ if (funcname == "absval)")return Convert::Abs;
 if (funcname == "linear)")return Convert::Linear;
 return Convert::Linear;
 ```
-Truly a work of art in terms of mistakes.
+Truly a work of art in terms of mistakes. After this the result was flawless.
+
 
 Bonus: During debugging of VeachAjar scene I tried to localize global instance vertices which lead to this 
 (The perlin noise looks "flat"):
-![img_20.png](img_20.png)
 
-
+<p align="center">
+  <img src="img_20.png" width="400">
+  <figcaption></figcaption>
+</p>
 
 I also wanted to try something and changed my absolute value function to return the negative of its result. I am mentioning this because I believe the result looked really cool.
-![img_28.png](img_28.png)
+<p align="center">
+  <img src="img_28.png" width="400">
+  <figcaption></figcaption>
+</p>
+I was debugging because my dragon's colours more vibrant than the reference.
+<p align="center">
+  <img src="img_29.png" width="400">
+  <figcaption></figcaption>
+</p>
+I sadly could not find the reason to this. Probably due to this scene having more than one octaves.
 
-I was debugging because my dragon's colours were way too vibrant than the reference.
-![img_29.png](img_29.png)
-
-I sadly could not find the reason to this.
 ## Colour Mapping
+You already saw the results of this but let me quickly mention the implementation.
 
-### Diffuse
-### Specular
-### Background
-I would initially get a black background because I forgot to multiply by 255.
+The normalization assumes that the result is in expected kd or ks interval.
 
-Below is a version with perlin noise that I tried just to see
+- **Diffuse:** Either replace kd with the fetched texture colour or `kd = (kd + tex_col)/2.0`.
+- **Specular:** Replace ks.
+- **Background:** Multiply the result with 255.
+- 
+Below is a version with perlin noise background that I tried just to see.
 
 <p align="center">
   <img src="img_10.png" width="400">
@@ -329,8 +389,8 @@ It was because I was using ``viewing_ray.pos + viewing_ray.dir``. I then changed
 
 ## Displacement Mapping
 
-We implement two types of displacement mapping, normal replacement and bump mapping. They do have common parts so let's start with that. 
-Mainly, we will be talking about the getTexturedNormal function.
+We implement two types of displacement mapping, normal replacement and bump mapping.
+Mainly, we will be talking about the getTexturedNormal function here.
 
 ### Normal Replacement
 
@@ -350,69 +410,81 @@ for (int i = 0; i < 3; i++)
         NewN[(Axes) i] += locNormal[(Axes) j] * onb[j][(Axes) i];
 ```
 
-I overloaded the [] operator so 0 -> x, 1 -> y, 2 -> z. This enables me to use loops (and use `=` instead of `+=` to add to the difficulty).
+I overloaded the [] operator so 0 -> x, 1 -> y, 2 -> z. This enables me to use loops (and use `=` instead of `+=` to add to the difficulty of debugging).
 
 **Debugging:**
-**getBitan:** (in Sphere) Instead of using the local x y and z vertices, I directly used the global vertex coordinates. Which, of course, did not work.
-I now do the following `Vertex v_local = v_global - center`.
 
-**ComputeBitan:** Oh boy. This was a long one. Turns out I was multiplying my matrices in the wrong row-column order.
+- **getBitan:** (in Sphere) Instead of using the local x y and z vertices, I directly used the global vertex coordinates. Which, of course, did not work.
+I now do the following `Vertex v_local = v_global - center`.
+- **ComputeBitan:** Oh boy. This was a long one. Turns out I was multiplying my matrices in the wrong row-column order.
 Moreover, I had this consistent mistake where I would use `=` instead of `+=` which got rid of all the accumulation in my loops. Also I did not normalize T and B at first.
 
 If there is a mistake to be made, you can be sure that I am making it.
 
 I also would like to note that I had **less** issues in this homework than in the previous ones. I just did not have time to write them to my blog previously. But now that I am quite content with the code I already have. It is way easier to debug and make additions.
 
+There are some slight differences in the normal mapping. But it is soo small you wouldn't be able to tell if I put a side by side comparison. 
+This difference is not there in grayscale ones but it is slightly there with brick ones.
 
-I do have slight differences yet to be solved TODO ÇÖZDÜN MÜ
 
 ### Bump Mapping
 
+- **Image:** For images,
+  1. Get T and B
+  2. Get the floored texel of the vertex.
+  3. Get the grayscale results for the texel we are on, +1 in x-axis and +1 in y-axis.
+  4. `dv = (n_up - n_curr)* NormalTexture->bumpFactor`. Same for dv with n_right.
+  5. `q_u = T +n * du`. Same for `q_v` and `B`.
+  6. New normal = q_v x q_u
+  7. If the new normal is flipped, multiply it with -1.
+  ```c++
+  NewN = (dot_product(NewN, n) < 0) ? -NewN : NewN;
+  ```
+- **Noise:** For Perlin Noise,
+  1. Get T and B and choose an epsilon (I chose 0.0001)
+  2. Compute the gradient (onb[0] = T and onb[1] = B). Computing the difference one way or two ways didn't make much difference to me. But I thought two ways was more true so kept it this way.
+  ```c++
+    real dhT = (h(v + onb[0]*epsilon) - h(v - onb[0]*epsilon)) / (2*epsilon);
+    real dhB = (h(v + onb[1]*epsilon) - h(v - onb[1]*epsilon)) / (2*epsilon);
+  ```
+  3. Compute `g_perp`
+  ```c++
+  Vec3r g_perp = onb[0] * dhT + onb[1]*dhB;
+  ```
+  4. Compute the new normal by subtracting `g_perp` multiplied with bump factor from the initial normal.
+  
 <p align="center">
   <img src="img_18.png" width="400">
   <figcaption></figcaption>
 </p>
 
-**Debugging Image Textures**
+- **Debugging Image Textures**
 <p align="center">
-  <img src="img_1.png" width="400">
-  <figcaption></figcaption>
+  <img src="img_19.png" width="300">
+  <img src="img_12.png" width="300">
 </p>
+Truly an artistic rendition. You can't deny. 
 
-That will not do. 
-I was trying to do image bump mapping according to the vertices, not texels so I rewrote the image part.
-<p align="center">
-  <img src="img_12.png" width="400">
-  <figcaption></figcaption>
-</p>
+Initially I was trying to do image bump mapping according to the vertices, not texels so I rewrote the image part.
 
-No, this will not as well.
+After long trial and error sessions I managed to find my issue. The main problem was that I was normalizing B and T vectors. It got fixed when I stopped normalizing them specifically in image bump maps.
 
 
-I tried so long to make bump images look good. But I managed in the end. The main problem was that I was normalizing B and T vectors. It got fixed when I stopped normalizing them specifically in image bump maps.
-
-![img_19.png](img_19.png)
-
-Truly an artistic rendition. You can't deny. After fixing bump mapping in other scenes this scene also mostly got fixed. But somehow I ruined the background?
+After fixing bump mapping in other scenes this scene also mostly got fixed. But somehow I ruined the background?
+I did fix it but don't remember what was the issue.
 
 ![img_30.png](img_30.png)
 Mine is on the left.
 
-**Debugging Noise Textures**
-
+- **Debugging Noise Textures**
 <p align="center">
-  <img src="img_16.png" width="400">
-  <figcaption></figcaption>
+  <img src="img_16.png" width="300">
+  <img src="img_17.png" width="300">
 </p>
 
-The upper picture was the result of me forgetting to multiply with the bump factor.
+The left picture was the result of me forgetting to multiply with the bump factor.
 
-<p align="center">
-  <img src="img_17.png" width="400">
-  <figcaption></figcaption>
-</p>
-
-The main mistake I was making was normalizing `g_perp`. Below is the final correct version:
+The main mistake I was making on the right was normalizing `g_perp`. Below is the final correct version:
 ```c++
 Vec3r g_parall  = n *dot_product(dh,n);
 Vec3r g_perp    = dh - g_parall;
@@ -420,7 +492,11 @@ NewN = n - g_perp* NormalTexture->bumpFactor;
 ```
 Because normalizing is a reflex at this point. 
 
-![img_31.png](img_31.png)
+Let's see what the tunnel of doom looks like-
+<p align="center">
+  <img src="img_31.png" width="400">
+</p>
+
 Oh god I thought I had fixed it.
 
 So the problem was the following:
@@ -441,24 +517,54 @@ g_perp = onb[0] * dhT + onb[1]*dhB;
 Which mimics texel coordinates I believe.
 
 This fixed it :)
-
-![img_32.png](img_32.png)
+<p align="center">
+  <img src="img_32.png" width="400">
+</p>
 
 
 # Mipmapping
+
+Mipmapping is handled at three different sections.
+1. **Computation of Rate of Change:** I compute this directly below the hit record normal computation (only if the object has a texture with trilinear interpolation). I store the rate of change in hit record.
+   1. Compute viewing ray for (x+1,y) and (x,y+1)
+   2. Intersect them with the plane that is defined by intersection point and normal.
+   3. Compute the differences of the intersections to the original intersection at hand.
+        ```c++
+      Vec3r dP_di = ax - a;
+      Vec3r dP_dj = ay - a;
+      ```
+   5. `A = [ T B ]`
+   4. From A, dP_di and dP_dj; discard the axis that the normal is most prominent in.
+   6. Take inverse of A. W now have a 2x2 matrix A_inv and two 1x2 matrices dP_di and dP_dj.
+   7. Multiply A with both 1x2 matrices separately.
+   8. Compare the magnitudes of both results. Choose the result with the bigger magnitude as the rate of change.
+ 2. **Computation of Level:** This is computed at the object class right before calling the TextureColor function.
+    ```c++
+        MipMap &mip0 = AllTexture->image->mipmaps[0];
+        real a = rate_of_change.u * mip0.width;
+        real b = rate_of_change.v * mip0.height;
+        real level = 0.5 * log2(a*a + b*b);
+    ```
+3. **Trilinear Interpolation:** This is computed at the texture level where the interpolation function of the ImageTexture is called.
+   1. Get the floor and floor+1 of the level
+   2. Get fetch bilinear texture color for both
+   3. Interpolate them according to the level.
+
 Welcome to my debugging gallery. Below you can find my paintings.
-![img_33.png](img_33.png)
+<p align="center">
+  <img src="img_33.png" width="400">
+</p>
 Highway to hell.
 
-![img_34.png](img_34.png)
+<p align="center">
+  <img src="img_34.png" width="400">
+</p>
 mipmapping fractals
 
-# Speedup
-My textures were coded non-optimal and I am sick of waiting. Let's fix it because I will not be waiting for killeroo.
 
-
+I needed to get the Colour information from the ``bilinear`` function and not directly from the vector. 
+After doing that it worked flawlessly. Yes, no big errors no frustrating debugging, no rewrites. I can't believe this, you can't believe this. None of us can.
 
 # Final
-
-
-I had time this time, does it show?`
+In the end, most things are perfect except octaved perlin noise, replace_normal and of course my dielectrics. 
+And I did not tried to optimize much so my code did get really slow. 

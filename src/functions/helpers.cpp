@@ -176,7 +176,6 @@ std::pair<Vec3r, Vec3r> getONB(Vec3r n)
     return std::pair<Vec3r, Vec3r>(u, v);
 }
 
-// TODO: sıralama önemli burada onu ayarla
 real lerp(real t, real a, real b)
 {
     return a + t * (b - a);

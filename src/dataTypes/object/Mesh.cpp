@@ -68,7 +68,7 @@ void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>&
 Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,
            PivotType pt,
            uint32_t maxobj, std::vector<Texture*> ts, bool v, int start_index,
-           bool computeVNormals, int vertex_offset)
+           bool computeVNormals, int vertex_offset, int texture_offset)
     : Object(m, id, Vertex(-INFINITY, -INFINITY, -INFINITY), Vertex(INFINITY,INFINITY,INFINITY), ts, v), bvh(pt, maxobj)
 {
     if (st == "smooth") shadingtype = ShadingType::SMOOTH;
@@ -181,9 +181,9 @@ Texel Mesh::getTexel(const Vertex& v, real time, int triID) const
     return  Faces[triID]->getTexel(v, time, triID);
 }
 
-void Mesh::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const
+void Mesh::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
-    return  Faces[triID]->getBitan(v,pT,pB, triID, normalize);
+    return  Faces[triID]->getBitan(v,pT,pB, triID, normalize, time);
 }
 
 Vec3r Mesh::getNormal(const Vertex& v, uint32_t triID, real time) const

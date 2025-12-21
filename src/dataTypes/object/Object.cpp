@@ -53,7 +53,7 @@ Color Object::getTextureColorAt(Vertex &pos, real time, int triID, Texel rate_of
     if (AllTexture != nullptr)
     {
 
-        MipMap mip0 = dynamic_cast<ImageTexture*>(AllTexture)->image->mipmaps[0];
+        MipMap &mip0 = dynamic_cast<ImageTexture*>(AllTexture)->image->mipmaps[0];
         real a = rate_of_change.u * mip0.width;
         real b = rate_of_change.v * mip0.height;
         real level = 0.5 * log2(a*a + b*b);
@@ -87,17 +87,14 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
             real b = rate_of_change.u * mip0.height;
             level = 0.5 * log2(a*a + b*b);
         }
-        // if (DiffuseTexture->getTextureType() == TextureType::CHECKERBOARD)
-        //     std::cout << "Checkerboard" << std::endl;
+
         Color tex_col = DiffuseTexture->TextureColor(v, t, level);
         switch (DiffuseTexture->decalMode)
         {
-            case DecalMode::REPLACE_KD:
-                kd = tex_col;
-                break;
+        case DecalMode::REPLACE_KD:
+            kd = tex_col;
+            break;
         case DecalMode::BLEND_KD:
-            // std::cout << kd << std::endl;
-            // std::cout << tex_col << std::endl;
                 kd = (kd + tex_col)/2.0;
             break;
         }
@@ -161,7 +158,7 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
         // std::cout << onb[0] << " " << onb[1] << " " << onb[2] << std::endl;
         if (NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
         {
-            getBitan(v, onb[0], onb[1], triID, true);
+            getBitan(v, onb[0], onb[1], triID, true, time);
             NewN = Vec3r(0.0, 0.0, 0.0);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
@@ -169,10 +166,9 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
         }
         else if (NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
         {
-            Texel d(0.0,0.0);
             if (NormalTexture->getTextureType() == TextureType::IMAGE)
             {
-                getBitan(v, onb[0], onb[1], triID, false);
+                getBitan(v, onb[0], onb[1], triID, false, time);
                 onb[2] = x_product(onb[1],onb[0]) ;//n;
 
                 Vec3r p_u = onb[0];
@@ -197,7 +193,7 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
             }
             else
             {
-                getBitan(v, onb[0], onb[1], triID, true);
+                getBitan(v, onb[0], onb[1], triID, true, time);
                 real epsilon = 0.0001;
 
                 real dhT = (h(v + onb[0]*epsilon) - h(v - onb[0]*epsilon)) / (2*epsilon);
@@ -260,7 +256,7 @@ ObjectType Triangle::getObjectType() const { return ObjectType::TRIANGLE; }
 
 
 
-void Triangle::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const
+void Triangle::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
     if (normalize)
     {
@@ -418,7 +414,7 @@ Texel Sphere::getTexel(const Vertex& v, real time, int triID) const
 }
 
 
-void Sphere::getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB, int triID, bool normalize) const
+void Sphere::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
     real x = v.x - center.v.x;
     real y = v.y - center.v.y;
@@ -534,7 +530,7 @@ Plane::Plane(uint32_t id, Vertex& v, std::string normal, Material& material, std
     B = onb.second;
 }
 
-void Plane::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const
+void Plane::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
 
     pT = T;
@@ -622,9 +618,12 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
     backwardTrans->getNormalTransform();
 }
 
-void Instance::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize) const
+void Instance::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
-    original->getBitan(v, pT, pB, triID, normalize);
+
+    original->getBitan(getLocal(v,time), pT, pB, triID, normalize, time);
+    pT = getGlobalNormal(pT,time);
+    pB = getGlobalNormal(pB,time);
 }
 
 
