@@ -618,6 +618,7 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
     backwardTrans->getNormalTransform();
 }
 
+
 void Instance::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
 
