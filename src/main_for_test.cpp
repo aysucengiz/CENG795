@@ -25,7 +25,7 @@ int main(void) {
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nearest_bilinear.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nea""rest_trilinear.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/plane_trilinear.json");
-   // raytracer.drawFile("jsonFiles/hw4/inputs/killeroo_bump_walls.json");
+   raytracer.drawFile("jsonFiles/hw4/inputs/killeroo_bump_walls.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/dragon/dragon_new_ply.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/brickwall_with_normalmap.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_normal.json");

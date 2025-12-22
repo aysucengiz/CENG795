@@ -543,8 +543,8 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
     // std::cout << "will add a new mesh" << std::endl;
     std::string sm = mes.contains("_shadingMode") ? mes["_shadingMode"].get<std::string>() : "flat";
     std::string typeString = "";
-    int vertex_offset = mes["Faces"].contains("_vertexOffset") ? getInt(mes["Faces"]["_vertexOffset"])-1 : 0;
-    int texture_offset = mes["Faces"].contains("_textureOffset") ? getInt(mes["Faces"]["_textureOffset"])-1  : 0;
+    int vertex_offset = mes["Faces"].contains("_vertexOffset") ? getInt(mes["Faces"]["_vertexOffset"]) : 0;
+    int texture_offset = mes["Faces"].contains("_textureOffset") ? getInt(mes["Faces"]["_textureOffset"])  : 0;
     if (sceneInput.Materials[std::stoi(mes["Material"].get<std::string>()) - 1].materialType != MaterialType::NONE)
     {
         std::string dataLine;
