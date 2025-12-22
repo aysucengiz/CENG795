@@ -54,8 +54,8 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         for (uint32_t lx = start_x; lx < end_x; lx++)
         {
             x = lx;
-            // if (x==408 && y==452)
-            drawPixel(curr_pixel);
+            // if (x==466 && y==457)
+                drawPixel(curr_pixel);
         }
         curr_pixel += allw_batchw_3;
     }

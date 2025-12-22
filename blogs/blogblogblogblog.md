@@ -1,6 +1,12 @@
-# HW4: Fancy Wrapping Paper
+<h1>
+  <img src="img_38.png" width="30" style="vertical-align: middle; margin-right: 8px;">
+  CENG795 HW4: Fancy Wrapping Paper
+</h1>
 
-From now on this will be the blog space since I do not want to have limited png like I did in metu blog. So hello from a new website!
+From now on this will be the blog space since I do not want to have limited png like I did in metu blog. So hello from a new link!
+
+This homework is focused on textures and how to implement them. It includes perlin noise, checkerboard, mipmapping, normal replacement, bump mapping and interpolation.
+
 In my previous blogs I could not write to my will because of upload limitations so here it is. This blog will contain a lot more details about my implementation and debugging process.
 
 Behold, pictures.
@@ -47,17 +53,8 @@ It is possible to implement that, but not needed as I believe this makes more se
 I also added several functions to the object class:
 - GetColourAt: The colour computation is now completely handled at the object class. 
 This function is called after shadow testing is done. If there is a `replace_all` texture, then even shadow testing and ambient lighting is skipped.
-```c++
-Color Object::GetColourAt( Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID, Texel& rate_of_change) const
-{
-    Texel tex = getTexel(shadow_ray.pos,time, triID);
-    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time, rate_of_change);
-    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time, rate_of_change);
-    return  diffuse + specular;
-}
-```
 - (virtual) getTexel: Returns texel coordinates of a vertex according to the time (if there is motion blur).
-- (virtual) getBitan: this function computes the T and B vectors. I struggled quite a bit to make this correct for the triangles (see debugging).
+- (virtual) getBitan: this function computes the T and B vectors. I struggled quite a bit to make this correct for the triangles.
 - computeBitan: For triangles and planes I initially compute their tangents since theirs' don't change. For this purpose I have this function to pre-compute.
 - getTexturedNormal: this is called in every getNormal function right before returning. Only manipulates the normal if there is a normal texture. Will be talked more about in displacement mapping section.
 
@@ -109,9 +106,11 @@ for (int y = 0; y < m0.height; y++)
 mipmaps.push_back(m0);
 ```
 
-This is open to improvement since currently I only store the RGB and if the channel numbers are different and I need that  the program won't work as accepted. But no issue for now, let's continue with loading the image.
+This is open to improvement since currently I only store the RGB. 
+If the channel number is different and I need that information then I will not be able to use it. 
+But no issue for now, let's continue with loading the image.
 
-### Loading the texture image
+### 2. Loading the texture image
 For this purpose I used the stb library and the function `stbi_load`. It is important to add the header to the folder and include it as follows:
 ```c++
 #define STB_IMAGE_IMPLEMENTATION
@@ -126,7 +125,7 @@ I assume I need to deep copy it for it to work. Which is kind of what I already 
 
 
 
-### ImageTexture class
+### 3. ImageTexture class
 Finally, the class itself with all its glory.
 
 ```c++
@@ -148,7 +147,7 @@ public:
     
     Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
     TextureType getTextureType() override;
-    bool IsMipMapped() override { return image->mipmaps.size() > 1; }
+    bool IsMipMapped() override { return interpolation == Interpolation::TRILINEAR; }
 };
 ```
 There are a few things to unpack here. So let's go step by step.
@@ -201,8 +200,9 @@ Color ImageTexture::bilinear(Texel tex, real level)
     return result;
 }
 ```
-Funnily enough, bilinear interpolation was more straightforward for me. Of course, that does not mean I had no issues. More will be talked about in the debugging section.
+Funnily enough, bilinear interpolation was more straightforward for me. 
 
+I will talk about trilinear interpolation function separately.
 
 ### Debugging
 <p align="center">
@@ -210,17 +210,19 @@ Funnily enough, bilinear interpolation was more straightforward for me. Of cours
   <figcaption></figcaption>
 </p>
 
-Marvelous. But we cannot have that. So let's fix it. The problem is how I convert the texels to the image texels. Spoiler: I don't. 
-That is why all I get the very first pixel. This issue was mainly is about the interpolation functions. And this line I forgot the add initially:
+Not a great start.
+
+The problem was how I was converting the texels to the image texels. Spoiler: I wasn't. 
+That is why all I got the very first pixel. This issue was mainly is about the interpolation functions. And this line I forgot the add initially:
 ```c++
 Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), 
             (real) fmod(tex.v,1.0) * (image->mipmaps[level].height)};
 ```
 Multiplying with the width and height is what makes it span across the whole texture. 
-In addition, thinking exact width or height would be out-of-bounds, I tried to multiply with `width-1` yet this resulted in a slightly zoomed affect. 
+In addition, thinking exact width or height would be out-of-bounds, I tried to multiply with `width-1` yet this resulted in a slightly zoomed effect. 
 So I settled with clamping.
 
-The image textures were mostly done after this. I only did not mention mipmapping which has its own section.
+The image textures were mostly complete after this. Mipmapping has its own section.
 
 ## Checkerboard
 This is quite cute compared to the image texture. Holds a black colour, a white colour, scale and offset. Has a `IsOnWhite` function that is called by texture colour function. 
@@ -256,6 +258,8 @@ Which resulted in this in VeachAjar:
 
 To be honest I fixed it by trial and error and didn't really get what was wrong in the initial one at first. Apparently it is about the negative values. When I take the modulo, the result stays negative if the initial value is negative. This of course leads to more "false"s when I check for `== 1`.
 
+(It is very cruel to  put checkerboard as an image texture in simpler scenes and fooling me into thinking the noise version worked on the first try.)
+
 Also I would like to note that I am using the global vertex here instead of localizing it or using the texel.
 
 With VeachAjar I realized the existence of normalizer aspect. Before that, I was dividing by 255 regardless of any input.
@@ -266,10 +270,11 @@ With VeachAjar I realized the existence of normalizer aspect. Before that, I was
 </p>
 
 After dividing by the normalizer the scene was fixed. 
-Instead of showing the final picture I will brag about my sampling from previous homework which I was not able to show on the previous blog. Mine are the ones on the left.
+Instead of showing the final picture 
+I will show my sampling which is actually from previous homework. 
+Mine are the ones on the left.
 
-
-Side note: I still have not perfected my dielectrics.
+Side note: I still have not perfected my dielectrics but did not have time to check that this homework.
 
 ![img_26.png](img_26.png)
 ![img_27.png](img_27.png)
@@ -307,11 +312,7 @@ Now this, this is not correct. I don't know if you can tell.
   <figcaption></figcaption>
 </p>
 
-Probably if you squint. Anyways let's fix it.
-Good thing is we know that our checkerboard class works flawlessly. 
-So the problem is not with using world coordinates but simply with perlinNoise. 
-
-Turns out I forgot to initialize the perlin noise function which randomizes the P array.
+Probably if you squint. Anyways turns out I forgot to initialize the perlin noise function which randomizes the P array.
 Also, I forgot to call my convertNoise function.
 
 <p align="center">
@@ -334,7 +335,8 @@ if (funcname == "absval)")return Convert::Abs;
 if (funcname == "linear)")return Convert::Linear;
 return Convert::Linear;
 ```
-Truly a work of art in terms of mistakes. After this the result was flawless.
+Truly a work of art in terms of mistakes. After this the result had no issue.
+
 
 
 Bonus: During debugging of VeachAjar scene I tried to localize global instance vertices which lead to this 
@@ -355,17 +357,18 @@ I was debugging because my dragon's colours more vibrant than the reference.
   <img src="img_29.png" width="400">
   <figcaption></figcaption>
 </p>
-I sadly could not find the reason to this. Probably due to this scene having more than one octaves.
+I sadly could not find the reason to this. Maybe due to this scene having more than one octaves.
 
-## Colour Mapping
+## Colours
 You already saw the results of this but let me quickly mention the implementation.
 
 The normalization assumes that the result is in expected kd or ks interval.
 
 - **Diffuse:** Either replace kd with the fetched texture colour or `kd = (kd + tex_col)/2.0`.
 - **Specular:** Replace ks.
-- **Background:** Multiply the result with 255.
-- 
+- **Background:** Multiply the result with 255. Compute the texels according to the pixel x and y values.
+- **Replace all:** Multiply the result with 255. No shading no ambient.
+
 Below is a version with perlin noise background that I tried just to see.
 
 <p align="center">
@@ -384,8 +387,6 @@ It was because I was using ``viewing_ray.pos + viewing_ray.dir``. I then changed
   <img src="img_9.png" width="400">
   <figcaption></figcaption>
 </p>
-
-### Replace all
 
 ## Displacement Mapping
 
@@ -417,15 +418,22 @@ I overloaded the [] operator so 0 -> x, 1 -> y, 2 -> z. This enables me to use l
 - **getBitan:** (in Sphere) Instead of using the local x y and z vertices, I directly used the global vertex coordinates. Which, of course, did not work.
 I now do the following `Vertex v_local = v_global - center`.
 - **ComputeBitan:** Oh boy. This was a long one. Turns out I was multiplying my matrices in the wrong row-column order.
-Moreover, I had this consistent mistake where I would use `=` instead of `+=` which got rid of all the accumulation in my loops. Also I did not normalize T and B at first.
+Moreover, I had this consistent mistake where I would use `=` instead of `+=` which got rid of all the accumulation in my loops.
 
 If there is a mistake to be made, you can be sure that I am making it.
 
-I also would like to note that I had **less** issues in this homework than in the previous ones. I just did not have time to write them to my blog previously. But now that I am quite content with the code I already have. It is way easier to debug and make additions.
+I also would like to note that I had **less** issues in this homework than in the previous ones. I just did not have time to write them to my blog previously because debugging took so long. But now that I am quite content with the code I already have. It is way easier to debug and make additions.
 
-There are some slight differences in the normal mapping. But it is soo small you wouldn't be able to tell if I put a side by side comparison. 
-This difference is not there in grayscale ones but it is slightly there with brick ones.
+There are some slight differences in the normal mapping. 
+There is no difference I saw in grayscale ones though, which is really interesting to me. 
 
+![img_37.png](img_37.png)
+I guess my normal mapping looks flatter. I am not sure but since it does not show up on grayscale I'm choosing my eyesight.
+Which is already in terrible situation.
+
+(I lied I fixed it, I was again normalizing my tangents.)
+
+There is this ever so slight difference but let it be.
 
 ### Bump Mapping
 
@@ -521,6 +529,11 @@ This fixed it :)
   <img src="img_32.png" width="400">
 </p>
 
+
+After this, I came across black patches on my dynamic galactica scene.
+![img_35.png](img_35.png)
+Turns out I was not handling the case of zero determinant while computing my tangents and they were returned as nan as a result.
+I discarded the zero determinant cases and just returned the original normal for such cases.
 
 # Mipmapping
 

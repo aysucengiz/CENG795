@@ -48,16 +48,15 @@ Object::Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<T
     }
 }
 
-Color Object::getTextureColorAt(Vertex &pos, real time, int triID, Texel rate_of_change) const
+Color Object::getTextureColorAt(Vertex& pos, real time, int triID, Texel rate_of_change) const
 {
     if (AllTexture != nullptr)
     {
-
-        MipMap &mip0 = dynamic_cast<ImageTexture*>(AllTexture)->image->mipmaps[0];
+        MipMap& mip0 = dynamic_cast<ImageTexture*>(AllTexture)->image->mipmaps[0];
         real a = rate_of_change.u * mip0.width;
         real b = rate_of_change.v * mip0.height;
-        real level = 0.5 * log2(a*a + b*b);
-        Texel tex = getTexel(pos,time, triID);
+        real level = 0.5 * log2(a * a + b * b);
+        Texel tex = getTexel(pos, time, triID);
         // std::cout << level << std::endl;
         return AllTexture->TextureColor(pos, tex, level);
     }
@@ -65,17 +64,18 @@ Color Object::getTextureColorAt(Vertex &pos, real time, int triID, Texel rate_of
 }
 
 
-Color Object::GetColourAt( Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int triID, Texel& rate_of_change) const
+Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time,
+                          int triID, Texel& rate_of_change) const
 {
-    Texel tex = getTexel(shadow_ray.pos,time, triID);
+    Texel tex = getTexel(shadow_ray.pos, time, triID);
     Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time, rate_of_change);
     Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time, rate_of_change);
-    return  diffuse + specular ;
+    return diffuse + specular;
 }
 
-Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, real time, Texel rate_of_change) const
+Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time, Texel rate_of_change) const
 {
-    Vertex v = getLocal(vert,time);
+    Vertex v = getLocal(vert, time);
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
     {
@@ -84,8 +84,8 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
         {
             MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
             real a = rate_of_change.u * mip0.width;
-            real b = rate_of_change.u * mip0.height;
-            level = 0.5 * log2(a*a + b*b);
+            real b = rate_of_change.v * mip0.height;
+            level = 0.5 * log2(a * a + b * b);
         }
 
         Color tex_col = DiffuseTexture->TextureColor(v, t, level);
@@ -95,7 +95,7 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
             kd = tex_col;
             break;
         case DecalMode::BLEND_KD:
-                kd = (kd + tex_col)/2.0;
+            kd = (kd + tex_col) / 2.0;
             break;
         }
     }
@@ -103,7 +103,7 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex &vert, Texel &t, r
 }
 
 Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                           Ray& shadow_ray, Vertex &vert,  Texel &t, real time, Texel rate_of_change) const
+                           Ray& shadow_ray, Vertex& vert, Texel& t, real time, Texel rate_of_change) const
 {
     Color ks = material.SpecularReflectance;
 
@@ -111,14 +111,14 @@ Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
     {
         MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
         real a = rate_of_change.u * mip0.width;
-        real b = rate_of_change.u * mip0.height;
-        real level = 0.5 * log2(a*a + b*b);
+        real b = rate_of_change.v * mip0.height;
+        real level = 0.5 * log2(a * a + b * b);
         ks = SpecularTexture->TextureColor(vert, t, level) / 255.0;
     }
     if (ks.isBlack()) return ks;
     Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
     real cos_alpha = dot_product(normal, h);
-    if (cos_alpha < 0) return Color(0.0,0.0,0.0);
+    if (cos_alpha < 0) return Color(0.0, 0.0, 0.0);
 
     return ks * I_R_2 * pow(cos_alpha, material.PhongExponent);
 }
@@ -131,82 +131,89 @@ real chenge_interval(real value)
 
 real Object::GrayScale(Color c) const
 {
-    return (c.r + c.g + c.b)/(3.0);
+    return (c.r + c.g + c.b) / (3.0);
 }
 
 real Object::h(Vertex v) const
 {
-    Texel t(0.0,0.0);
-    Color c = NormalTexture->TextureColor(v, t, 0) ;
-    real result = (c.r + c.g + c.b)/3.0;
+    Texel t(0.0, 0.0);
+    Color c = NormalTexture->TextureColor(v, t, 0);
+    real result = (c.r + c.g + c.b) / 3.0;
     return result;
 }
 
 
-Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int triID) const
+Vec3r Object::getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const
 {
-
     Vec3r NewN = n;
-    if ( NormalTexture != nullptr)
+    if (NormalTexture != nullptr)
     {
-        Texel t = getTexel(v,time, triID);
-        Color textureColor =  NormalTexture->TextureColor(v, t, 0);
-        Vec3r locNormal(textureColor.r *2- 1.0 , textureColor.g *2- 1.0 , textureColor.b *2 - 1.0 );
+        Texel t = getTexel(v, time, triID);
+        Color textureColor = NormalTexture->TextureColor(v, t, 0);
+        Vec3r locNormal(textureColor.r * 2 - 1.0, textureColor.g * 2 - 1.0, textureColor.b * 2 - 1.0);
         locNormal = locNormal.normalize();
         Vec3r onb[3];
         onb[2] = n;
         // std::cout << onb[0] << " " << onb[1] << " " << onb[2] << std::endl;
         if (NormalTexture->decalMode == DecalMode::REPLACE_NORMAL)
         {
-            getBitan(v, onb[0], onb[1], triID, true, time);
+            getBitan(v, onb[0], onb[1], triID, false, time);
+            if (onb[0].mag() < 1e-8 || onb[1].mag() < 1e-8)
+            {
+                return NewN;
+            }
             NewN = Vec3r(0.0, 0.0, 0.0);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    NewN[(Axes) i] += locNormal[(Axes) j] * onb[j][(Axes) i];
+                    NewN[(Axes)i] += locNormal[(Axes)j] * onb[j][(Axes)i];
         }
         else if (NormalTexture->decalMode == DecalMode::BUMP_NORMAL)
         {
             if (NormalTexture->getTextureType() == TextureType::IMAGE)
             {
                 getBitan(v, onb[0], onb[1], triID, false, time);
-                onb[2] = x_product(onb[1],onb[0]) ;//n;
+                if (onb[0].mag() < 1e-8 || onb[1].mag() < 1e-8)
+                {
+                    return NewN;
+                }
+                onb[2] = x_product(onb[1], onb[0]); //n;
 
                 Vec3r p_u = onb[0];
                 Vec3r p_v = onb[1];
-                ImageTexture* imtex =dynamic_cast<ImageTexture*>(NormalTexture);
+                ImageTexture* imtex = dynamic_cast<ImageTexture*>(NormalTexture);
                 real w = imtex->image->mipmaps[0].width;
                 real h = imtex->image->mipmaps[0].height;
 
-                Texel xy = {(real) fmod(t.u,1.0) * w, (real) fmod(t.v,1.0)  * h};
+                Texel xy = {(real)fmod(t.u, 1.0) * w, (real)fmod(t.v, 1.0) * h};
                 Texel pq = {std::floor(xy.u), std::floor(xy.v)};
 
                 real n_curr = GrayScale(imtex->ImageColor(pq.u, pq.v, 0));
-                real n_up   =  GrayScale(imtex->ImageColor(pq.u, pq.v + 1, 0));
-                real n_right =  GrayScale(imtex->ImageColor(pq.u + 1, pq.v, 0));
-                real dv = (n_up - n_curr)* NormalTexture->bumpFactor ;
-                real du = (n_right - n_curr)* NormalTexture->bumpFactor;
+                real n_up = GrayScale(imtex->ImageColor(pq.u, pq.v + 1, 0));
+                real n_right = GrayScale(imtex->ImageColor(pq.u + 1, pq.v, 0));
+                real dv = (n_up - n_curr) * NormalTexture->bumpFactor;
+                real du = (n_right - n_curr) * NormalTexture->bumpFactor;
 
-                Vec3r q_u = p_u +n * du ;
-                Vec3r q_v = p_v+ n * dv;
-                NewN =  x_product(q_v,q_u);
+                Vec3r q_u = p_u + n * du;
+                Vec3r q_v = p_v + n * dv;
+                NewN = x_product(q_v, q_u);
                 NewN = (dot_product(NewN, n) < 0) ? -NewN : NewN;
             }
             else
             {
                 getBitan(v, onb[0], onb[1], triID, true, time);
+                if (onb[0].mag() < 1e-8 || onb[1].mag() < 1e-8)
+                {
+                    return NewN;
+                }
                 real epsilon = 0.0001;
 
-                real dhT = (h(v + onb[0]*epsilon) - h(v - onb[0]*epsilon)) / (2*epsilon);
-                real dhB = (h(v + onb[1]*epsilon) - h(v - onb[1]*epsilon)) / (2*epsilon);
+                real dhT = (h(v + onb[0] * epsilon) - h(v - onb[0] * epsilon)) / (2 * epsilon);
+                real dhB = (h(v + onb[1] * epsilon) - h(v - onb[1] * epsilon)) / (2 * epsilon);
 
-                Vec3r g_perp = onb[0] * dhT + onb[1]*dhB;
+                Vec3r g_perp = onb[0] * dhT + onb[1] * dhB;
                 Vec3r g_perp_factored = g_perp * NormalTexture->bumpFactor;
                 NewN = n - g_perp_factored;
             }
-
-
-
-
         }
         NewN = NewN.normalize();
     }
@@ -214,37 +221,42 @@ Vec3r Object::getTexturedNormal(const Vertex & v, const Vec3r& n, real time, int
     return NewN;
 }
 
-void Object::ComputeBitan(CVertex &b, CVertex &a, CVertex &c, Vec3r& pT, Vec3r& pB, Vec3r& n)
+void Object::ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n)
 {
     real cv_av = c.t.v - a.t.v;
     real cu_au = c.t.u - a.t.u;
     real bv_av = b.t.v - a.t.v;
     real bu_au = b.t.u - a.t.u;
-    real det =bu_au * cv_av - cu_au * bv_av;
+    real det = bu_au * cv_av - cu_au * bv_av;
+    std::array<std::array<real,2>,2> M1{};
+    if (std::abs(det) < 0.000001)
+    {
+        pT = Vec3r(0,0,0);
+        pB = Vec3r(0,0,0);
+        return;
+    }
 
-    real M1[2][2] = {
-        {cv_av / det, -bv_av / det},
-        {-cu_au /det, bu_au / det}
+
+    M1 = {
+        cv_av / det, -bv_av / det,
+        -cu_au /det, bu_au / det
     };
 
     Vec3r A[2] = {b.v - a.v, c.v - a.v};
     Vec3r Bits[2] = {};
 
-    for ( int k = 0; k < 2; k++)
+    for (int k = 0; k < 2; k++)
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 3; j++)
-                Bits[k][(Axes) j] += M1[k][i] * A[i][(Axes) j];
+                Bits[k][(Axes)j] += M1[k][i] * A[i][(Axes)j];
 
 
     pT = Bits[0];
     pB = Bits[1];
-    // std::cout << "a: v: " << a.v << " | t: " << a.t.u << " " <<  a.t.v  << std::endl;
-    // std::cout << "b: v: " << b.v << " | t: " << b.t.u << " " <<  b.t.v  << std::endl;
-    // std::cout << "c: v: " << c.v << " | t: " << c.t.u << " " <<  c.t.v  << std::endl;
-    // std::cout << "B: " << pB << std::endl;
-    // std::cout << "T: " << pT << std::endl;
-    // pT = Bits[0].normalize();
-    // pB = Bits[1].normalize();
+    if (std::isnan(pT.i) || std::isnan(pT.j) || std::isnan(pT.k))
+        std::cout << "T: " << pT << std::endl;
+    if (std::isnan(pB.i) || std::isnan(pB.j) || std::isnan(pB.k))
+        std::cout << "B: " << pB << std::endl;
 }
 
 
@@ -253,7 +265,6 @@ void Object::ComputeBitan(CVertex &b, CVertex &a, CVertex &c, Vec3r& pT, Vec3r& 
 ////////////////////////////////////////////////
 
 ObjectType Triangle::getObjectType() const { return ObjectType::TRIANGLE; }
-
 
 
 void Triangle::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
@@ -322,7 +333,7 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
 }
 
 
-void Triangle::BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const
+void Triangle::BaryCentric(real& alpha, real& beta, real& gamma, const Vertex& v) const
 {
     Vec3r b_a = b.v - a.v;
     Vec3r c_a = c.v - a.v;
@@ -347,7 +358,7 @@ Vec3r Triangle::getNormal(const Vertex& v, uint32_t triID, real time) const
     if (shadingType == ShadingType::SMOOTH)
     {
         real alpha, beta, gamma;
-        BaryCentric(alpha,beta,gamma,v);
+        BaryCentric(alpha, beta, gamma, v);
         Vec3r interpolated_normal = a.n * alpha + b.n * beta + c.n * gamma;
         interpolated_normal = interpolated_normal.normalize();
         //if (dot_product(interpolated_normal, n) < 0.0) interpolated_normal = -interpolated_normal;
@@ -359,10 +370,10 @@ Vec3r Triangle::getNormal(const Vertex& v, uint32_t triID, real time) const
     return normal;
 }
 
-Texel Triangle::getTexel(const Vertex &v, real time, int triID) const
+Texel Triangle::getTexel(const Vertex& v, real time, int triID) const
 {
     real alpha, beta, gamma;
-    BaryCentric(alpha,beta,gamma,v);
+    BaryCentric(alpha, beta, gamma, v);
     // if (AllTexture)
     // std::cout << a.t.u << " " << a.t.v << " " << b.t.u << std::endl;
     return alpha * a.t + beta * b.t + gamma * c.t;
@@ -387,7 +398,7 @@ Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Mat
     main_center.x = (a.v + b.v + c.v).x / 3.0;
     main_center.y = (a.v + b.v + c.v).y / 3.0;
     main_center.z = (a.v + b.v + c.v).z / 3.0;
-    ComputeBitan(b,a,c,T,B, n);
+    ComputeBitan(b, a, c, T, B, n);
     T_norm = T.normalize();
     B_norm = B.normalize();
 }
@@ -410,7 +421,7 @@ Texel Sphere::getTexel(const Vertex& v, real time, int triID) const
     Vec3r v_c = v - center.v;
     real theta = acos((v_c.j) / radius);
     real phi = atan2(v_c.k, v_c.i);
-    return Texel((-phi + M_PI)/(2*M_PI), theta / M_PI);
+    return Texel((-phi + M_PI) / (2 * M_PI), theta / M_PI);
 }
 
 
@@ -420,11 +431,13 @@ void Sphere::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool nor
     real y = v.y - center.v.y;
     real z = v.z - center.v.z;
     real theta = acos(y / radius);
-    real phi = atan2( z, x);
-    pT = {static_cast<real>(2*M_PI*z), 0, static_cast<real>(-2*M_PI*x)};
-    pB = {static_cast<real>(M_PI * y * cos(phi)),
-             static_cast<real>(-M_PI * radius * sin(theta)),
-             static_cast<real>(M_PI * y * sin(phi))};
+    real phi = atan2(z, x);
+    pT = {static_cast<real>(2 * M_PI * z), 0, static_cast<real>(-2 * M_PI * x)};
+    pB = {
+        static_cast<real>(M_PI * y * cos(phi)),
+        static_cast<real>(-M_PI * radius * sin(theta)),
+        static_cast<real>(M_PI * y * sin(phi))
+    };
     if (normalize)
     {
         pT = pT.normalize();
@@ -525,22 +538,21 @@ Plane::Plane(uint32_t id, Vertex& v, std::string normal, Material& material, std
         globalBbox.vMin.x = v.x - M4T_EPS;
     }
 
-    std::pair<Vec3r,Vec3r> onb = getONB(n);
+    std::pair<Vec3r, Vec3r> onb = getONB(n);
     T = onb.first;
     B = onb.second;
 }
 
 void Plane::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
-
     pT = T;
     pB = B;
 }
 
 Texel Plane::getTexel(const Vertex& vert, real time, int triID) const
 {
-    real u = dot_product(vert - Vertex(0.0,0.0,0.0), T);
-    real v = dot_product(vert - Vertex(0.0,0.0,0.0), B);
+    real u = dot_product(vert - Vertex(0.0, 0.0, 0.0), T);
+    real v = dot_product(vert - Vertex(0.0, 0.0, 0.0), B);
 
     u = fmod(u, 1.0);
     if (u < 0) u += 1.0;
@@ -583,7 +595,6 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
 
 Vec3r Plane::getNormal(const Vertex& v, uint32_t currTri, real time) const
 {
-
     return getTexturedNormal(v, n, time, currTri);
 }
 
@@ -621,10 +632,9 @@ Instance::Instance(uint32_t id, Object* o, std::shared_ptr<Transformation> trans
 
 void Instance::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const
 {
-
-    original->getBitan(getLocal(v,time), pT, pB, triID, normalize, time);
-    pT = getGlobalNormal(pT,time);
-    pB = getGlobalNormal(pB,time);
+    original->getBitan(getLocal(v, time), pT, pB, triID, normalize, time);
+    pT = getGlobalNormal(pT, time);
+    pB = getGlobalNormal(pB, time);
 }
 
 
@@ -633,32 +643,32 @@ Texel Instance::getTexel(const Vertex& v, real time, int triID) const
     Vertex localV = getLocal(v, time);
     if (forwardTrans->Determinant() < 0)
     {
-        Texel t(0.0,0.0);
+        Texel t(0.0, 0.0);
         real alpha, beta, gamma;
         switch (original->getObjectType())
         {
-            case ObjectType::PLANE:
+        case ObjectType::PLANE:
             break;
         case ObjectType::TRIANGLE:
-        {
-            Triangle* tri = dynamic_cast<Triangle*>(original);
-            tri->BaryCentric(alpha,beta,gamma,localV);
-            std::swap(beta, gamma);
+            {
+                Triangle* tri = dynamic_cast<Triangle*>(original);
+                tri->BaryCentric(alpha, beta, gamma, localV);
+                std::swap(beta, gamma);
 
-            t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
-            return t;
-            break;
-        }
+                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                return t;
+                break;
+            }
         case ObjectType::MESH:
-        {
-            Triangle* tri = dynamic_cast<Mesh*>(original)->Faces[triID];
-            tri->BaryCentric(alpha,beta,gamma,localV);
-            // std::swap(beta, gamma);
+            {
+                Triangle* tri = dynamic_cast<Mesh*>(original)->Faces[triID];
+                tri->BaryCentric(alpha, beta, gamma, localV);
+                // std::swap(beta, gamma);
 
-            t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
-            return t;
-        }
-        break;
+                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                return t;
+            }
+            break;
         }
     }
 

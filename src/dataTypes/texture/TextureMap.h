@@ -70,7 +70,7 @@ public:
     TextureType getTextureType() override;
     ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp, real normalizer);
 
-    bool IsMipMapped() override { return image->mipmaps.size() > 1; }
+    bool IsMipMapped() override { return interpolation == Interpolation::TRILINEAR; }
 };
 
 class PerlinNoise

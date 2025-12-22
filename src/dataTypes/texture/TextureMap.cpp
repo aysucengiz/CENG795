@@ -147,7 +147,7 @@ Color ImageTexture::nearest(Texel tex, real level)
 
 Color ImageTexture::bilinear(Texel tex, real level)
 {
-    Texel xy = {(real) fmod(tex.u,1.0) * (image->mipmaps[level].width), (real) fmod(tex.v,1.0)  * (image->mipmaps[level].height)};
+    Texel xy = {tex.u * (image->mipmaps[level].width), tex.v  * (image->mipmaps[level].height)};
 
     Texel pq = {std::floor(xy.u), std::floor(xy.v)};
     Texel delta = {xy.u - pq.u, xy.v - pq.v};

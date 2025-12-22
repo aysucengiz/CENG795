@@ -23,16 +23,16 @@ int main(void) {
     RayTracer raytracer(data["Configuration"]);;
 
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nearest_bilinear.json");
-    // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nearest_trilinear.json");
+    // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nea""rest_trilinear.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/plane_trilinear.json");
    // raytracer.drawFile("jsonFiles/hw4/inputs/killeroo_bump_walls.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/dragon/dragon_new_ply.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/brickwall_with_normalmap.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_normal.json");
-    // raytracer.drawFile("jsonFiles/hw4/inputs/cube_wall_normal.json");
-    // raytracer.drawFile("jsonFiles/hw4/inputs/cube_waves.json");
-    raytracer.drawFile("jsonFiles/hw4/inputs/galactica_static.json");
-    raytracer.drawFile("jsonFiles/hw4/inputs/galactica_dynamic.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_wall_normal.json");
+    raytracer.drawFile("jsonFiles/hw4/inputs/cube_waves.json");
+    // raytracer.drawFile("jsonFiles/hw4/inputs/galactica_static.json");
+    // raytracer.drawFile("jsonFiles/hw4/inputs/galactica_dynamic.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/wood_box_all.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/bump_mapping_transformed.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/wood_box_no_specular.json");
