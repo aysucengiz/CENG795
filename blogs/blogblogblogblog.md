@@ -580,4 +580,6 @@ After doing that it worked flawlessly. Yes, no big errors no frustrating debuggi
 
 # Final
 In the end, most things are perfect except octaved perlin noise, replace_normal and of course my dielectrics. 
-And I did not tried to optimize much so my code did get really slow. 
+And I did not try to optimize much so my code did get really slow at certain aspects.
+
+Turns out implementing textures includes endless minor problems. In the previous homeworks the problems were big and global. This time, they were small and scene-specific.
