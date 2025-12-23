@@ -36,8 +36,6 @@ public:
     void CreateMipMap();
 };
 
-
-
 class Texture
 {
 public:

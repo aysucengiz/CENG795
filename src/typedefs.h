@@ -127,4 +127,16 @@ enum class Interpolation
     BILINEAR,
     TRILINEAR,
 };
+enum class OutputType
+{
+    CLAMP,
+    TONEMAP,
+    HDR,
+};
+enum class TMOType
+{
+    PHOTOGRAPHIC
+};
+
+
 #endif //CENG795_TYPEDEFS_H
