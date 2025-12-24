@@ -10,6 +10,10 @@
 #include "../dataTypes/object/Object.h"
 #include "../dataTypes/object/Mesh.h"
 
+bool contains(const std::string& s, const std::string& sub)
+{
+    return s.find(sub) != std::string::npos;
+}
 
 real max3(real a, real b, real c)
 {
@@ -117,16 +121,16 @@ real InvStdDev(Color& mean, std::vector<Color>& colors)
 }
 
 
-std::mt19937 gRandomGenerator(333);
-std::uniform_real_distribution<> gNURandomDistribution(0, 0.99999f);
+thread_local std::mt19937 gRandomGenerator(333);
+thread_local std::uniform_real_distribution<> gNURandomDistribution(0, 0.99999f);
 
 real getRandom()
 {
     return gNURandomDistribution(gRandomGenerator);
 }
 
-std::mt19937 gRandomGeneratorTime;
-std::uniform_real_distribution<> gNURandomDistributionTime(0, 1);
+thread_local std::mt19937 gRandomGeneratorTime;
+thread_local std::uniform_real_distribution<> gNURandomDistributionTime(0, 1);
 
 real getRandomTime()
 {

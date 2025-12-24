@@ -27,12 +27,21 @@ void PPM::write_ppm(const char* filename, unsigned char* data, int width, int he
 }
 
 
-void PPM::write_stb(const char* filename, unsigned char* data, int width, int height)
+void PPM::write_ldr(const char* filename, unsigned char* data, int width, int height)
 {
     if (stbi_write_png(filename, width, height, 3, data, width * 3)) return;
 
     std::runtime_error("Failed to save image!");
 }
+
+
+void PPM::write_hdr(const char* filename, real* data, int width, int height)
+{
+    if (stbi_write_png(filename, width, height, 3, data, width * 3)) return;
+
+    std::runtime_error("Failed to save image!");
+}
+
 
 
 unsigned char* PPM::read_image(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)

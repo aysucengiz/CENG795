@@ -4,6 +4,7 @@
 
 #include "Parser.h"
 #include "../functions/overloads.h"
+#include <cmath>
 
 namespace Parser
 {
@@ -166,12 +167,12 @@ void Parser::addTextureMap(json s, SceneInput& sceneInput)
 }
 
 
-void Parser::addLight(json pointLights, SceneInput& sceneInput)
+void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
 {
     std::shared_ptr<Transformation> t;
-    if (pointLights.contains("Transformations"))
+    if (light.contains("Transformations"))
     {
-        t = getTransFromStr(pointLights["Transformations"].get<std::string>(), sceneInput.transforms)->clone();
+        t = getTransFromStr(light["Transformations"].get<std::string>(), sceneInput.transforms)->clone();
     }
     else
     {
@@ -179,24 +180,46 @@ void Parser::addLight(json pointLights, SceneInput& sceneInput)
     }
     t->getNormalTransform();
 
-    PointLight* pl;
+    Light* pl;
 
-    if (pointLights.contains("Normal"))
+    if (type == "Area")
     {
         pl = new AreaLight(
-            std::stoi(pointLights["_id"].get<std::string>()) - 1,
-            (*t * Vec4r(Vertex(pointLights["Position"]))).getVertex(),
-            Color(pointLights["Radiance"]),
-            (t->normalTransform * Vec4r(Vec3r(pointLights["Normal"]))).getVec3r(),
-            std::stod(pointLights["Size"].get<std::string>())
+            std::stoi(light["_id"].get<std::string>()) - 1,
+            (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
+            Color(light["Radiance"]),
+            (t->normalTransform * Vec4r(Vec3r(light["Normal"]))).getVec3r(),
+            std::stod(light["Size"].get<std::string>())
+        );
+    }
+    else if (type == "Spot")
+    {
+        pl = new SpotLight(
+            std::stoi(light["_id"].get<std::string>()) - 1,
+            (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
+            Color(light["Intensity"]),
+            (*t * Vec4r(Vec3r(light["Direction"]))).getVec3r(), // TODO: normal transform mu ??
+            getReal(light["CoverageAngle"]),
+            getReal(light["FallOffAngle"])
+        );
+    }
+    else if (type == "Directional")
+    {
+        pl = new SpotLight(
+            std::stoi(light["_id"].get<std::string>()) - 1,
+            (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
+            Color(light["Intensity"]),
+            (*t * Vec4r(Vec3r(light["Normal"]))).getVec3r(), // TODO: normal transform mu ??
+            getReal(light["CoverageAngle"]),
+            getReal(light["FallOffAngle"])
         );
     }
     else
     {
-        pl = new PointLight(
-            std::stoi(pointLights["_id"].get<std::string>()) - 1,
-            (*t * Vec4r(Vertex(pointLights["Position"]))).getVertex(),
-            Color(pointLights["Intensity"])
+        pl = new Light(
+            std::stoi(light["_id"].get<std::string>()) - 1,
+            (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
+            Color(light["Intensity"])
         );
     }
 
@@ -215,15 +238,22 @@ void Parser::getLights(json inp, SceneInput& sceneInput)
     {
         json& pointLights = inp["PointLight"];
         int numPointLights = pointLights.size();
-        if (pointLights.is_object()) addLight(pointLights, sceneInput);
-        else for (int i = 0; i < numPointLights; i++) addLight(pointLights[i], sceneInput);
+        if (pointLights.is_object()) addLight(pointLights, sceneInput, "Point");
+        else for (int i = 0; i < numPointLights; i++) addLight(pointLights[i], sceneInput, "Point");
     }
     if (inp.contains("AreaLight"))
     {
         json& pointLights = inp["AreaLight"];
         int numPointLights = pointLights.size();
-        if (pointLights.is_object()) addLight(pointLights, sceneInput);
-        else for (int i = 0; i < numPointLights; i++) addLight(pointLights[i], sceneInput);
+        if (pointLights.is_object()) addLight(pointLights, sceneInput, "Area");
+        else for (int i = 0; i < numPointLights; i++) addLight(pointLights[i], sceneInput, "Area");
+    }
+    if (inp.contains("SpotLight"))
+    {
+        json& spotLights = inp["SpotLight"];
+        int numSpotLights = spotLights.size();
+        if (spotLights.is_object()) addLight(spotLights, sceneInput, "Spot");
+        else for (int i = 0; i < numSpotLights; i++) addLight(spotLights[i], sceneInput, "Spot");
     }
 }
 
@@ -428,6 +458,12 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         up = Vec3r(Cameras["Up"]);
     }
 
+    std::vector<ToneMap> tonemaps;
+    if (Cameras.contains("Tonemap"))
+    {
+        getToneMaps(Cameras, tonemaps);
+    }
+
     Camera c(
         std::stoi(Cameras["_id"].get<std::string>()) - 1,
         pos, Gaze, up,
@@ -438,10 +474,36 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         Cameras.contains("NumSamples") ? std::stoi(Cameras["NumSamples"].get<std::string>()) : 1,
         Cameras.contains("FocusDistance") ? std::stod(Cameras["FocusDistance"].get<std::string>()) : 0.0,
         Cameras.contains("ApertureSize") ? std::stod(Cameras["ApertureSize"].get<std::string>()) : 0.0,
-        sceneInput.sampling_type
+        sceneInput.sampling_type,
+        tonemaps
     );
     sceneInput.Cameras.push_back(c);
     if (PRINTINIT) std::cout << c << std::endl;
+}
+
+
+void Parser::getToneMaps(json inp, std::vector<ToneMap>& tonemaps)
+{
+    json& Tonemaps = inp["Tonemap"];
+    uint32_t numTonemaps = Tonemaps.size();
+    if (Tonemaps.is_object()) addTonemap(Tonemaps, tonemaps);
+    else for (int i = 0; i < numTonemaps; i++) addTonemap(Tonemaps[i], tonemaps);
+}
+
+void Parser::addTonemap(json ton, std::vector<ToneMap>& tonemaps)
+{
+    TMOType tmo = getTMOType(ton["TMO"].get<std::string>());
+
+    std::istringstream ss(ton["TMO"].get<std::string>());
+    std::array<real, 2> options;
+    ss >> options[0] >> options[1];
+
+    tonemaps.push_back(ToneMap(ton["ImageName"].get<std::string>(),
+                               ton["Extension"].get<std::string>(),
+                               tmo,
+                               options,
+                               getReal(ton["Gamma"]),
+                               getReal(ton["Saturation"])));
 }
 
 Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms)

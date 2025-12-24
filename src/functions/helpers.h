@@ -8,6 +8,7 @@
 #include "../dataTypes/base/Vectors.h"
 #include "../dataTypes/base/SceneData.h"
 
+bool contains(const std::string& s, const std::string& sub);
 int clamp(real c, int from, int to);
 real max3(real a, real b, real c);
 real min3(real a, real b, real c);

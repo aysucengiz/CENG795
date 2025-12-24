@@ -13,6 +13,8 @@
 #include "../matrix/transformation.h"
 #include "../object/BBox.h"
 #include "dataTypes/texture/TextureMap.h"
+#include "../base/Camera.h"
+#include "../base/Light.h"
 
 inline bool ACCELERATE = false;
 
@@ -174,7 +176,7 @@ struct SceneInput
 
     // light info
     Color AmbientLight;
-    std::vector<PointLight*> PointLights;
+    std::vector<Light*> PointLights;
 
     // object info
     std::deque<Object*> objects;

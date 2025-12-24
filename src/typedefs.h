@@ -5,10 +5,12 @@
 #ifndef CENG795_TYPEDEFS_H
 #define CENG795_TYPEDEFS_H
 #include <cstdint>
+#include <numbers>
 
 typedef float real;
 
-enum class MaterialType{
+enum class MaterialType
+{
     NONE,
     NORMAL,
     MIRROR,
@@ -16,7 +18,8 @@ enum class MaterialType{
     DIELECTRIC
 };
 
-enum class ObjectType{
+enum class ObjectType
+{
     NONE,
     TRIANGLE,
     SPHERE,
@@ -25,7 +28,8 @@ enum class ObjectType{
     INSTANCE
 };
 
-enum class ShadingType{
+enum class ShadingType
+{
     NONE,
     SMOOTH,
     FLAT
@@ -54,7 +58,6 @@ enum class BVHNodeType : uint8_t
     INT_W_RIGHT,
     INT_W_BOTH
 };
-
 
 
 enum class PivotType
@@ -101,7 +104,10 @@ enum class FilterType
 enum class LightType
 {
     POINT,
-    AREA
+    AREA,
+    DIRECTIONAL,
+    TEXTURE,
+    SPOT
 };
 
 enum class TextureType
@@ -121,10 +127,35 @@ enum class DecalMode
     BUMP_NORMAL,
     REPLACE_ALL
 };
+
 enum class Interpolation
 {
     NEAREST,
     BILINEAR,
     TRILINEAR,
 };
+
+enum class OutputType
+{
+    LDR,
+    HDR,
+};
+
+enum class TMOType
+{
+    PHOTOGRAPHIC,
+    ACES,
+    FILMIC
+};
+
+enum class TextureLightType
+{
+    SPHERICAL
+};
+
+enum class Sampler
+{
+    NONE
+};
+
 #endif //CENG795_TYPEDEFS_H
