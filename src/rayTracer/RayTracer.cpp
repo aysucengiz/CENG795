@@ -183,8 +183,6 @@ void RayTracer::drawScene(uint32_t c){
     uint32_t width = cam.width;
     uint32_t height = cam.height;
 
-    scene.image = new unsigned char[width * height * 3];
-
     if (thread_type == ThreadType::ROW)
     {
         std::vector<RaytracerThread> raytracers;
@@ -212,10 +210,7 @@ void RayTracer::drawScene(uint32_t c){
         }
     }
     // std::cout << std::endl;
-
-
-    PPM::write_stb((output_path  + cam.ImageName).c_str(), scene.image, width, height);
-    delete[] scene.image;
+    cam.writeToImage(output_path);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration_all = duration_cast<std::chrono::milliseconds>(stop - start_time).count();
 

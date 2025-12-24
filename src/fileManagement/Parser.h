@@ -13,6 +13,8 @@
 #include "../dataTypes/object/Object.h"
 #include "../dataTypes/object/Mesh.h"
 #include "../functions/helpers.h"
+#include "../dataTypes/base/Light.h"
+#include "../dataTypes/base/Camera.h"
 
 #include "json.hpp"
 
@@ -35,12 +37,13 @@ namespace Parser {
     void getTextures(json& inp, SceneInput& sceneInput, std::string root);
     void getImages(json& inp, SceneInput& sceneInput, std::string root);
     void getTextureMaps(json Textures, SceneInput& sceneInput);
+    void getToneMaps(json inp, std::vector<ToneMap>& tonemaps);
 
     void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
     void addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id);
     void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root);
     void addMaterial(json inp, SceneInput &sceneInput);
-    void addLight(json pointLights, SceneInput &sceneInput);
+    void addLight(json pointLights, SceneInput &sceneInput, std::string type);
     void addCamera(json Camera, SceneInput &sceneInput);
     void addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id);
     void addInstance(std::string transformations, Object* original, SceneInput& sceneInput, Vec3r motion);
@@ -51,6 +54,8 @@ namespace Parser {
     void addComposite(json t, SceneInput& sceneInput);
     void addImage(json s, SceneInput& sceneInput, std::string root);
     void addTextureMap(json s, SceneInput& sceneInput);
+    void addTonemap(json ton, std::vector<ToneMap>& tonemaps);
+
 
     Scale getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms);
     std::vector<Texture*> getTexturesFromStr(std::string inp,SceneInput &scene);

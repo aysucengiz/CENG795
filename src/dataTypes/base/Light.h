@@ -1,18 +1,22 @@
+#ifndef CENG795_LIGHT_H
+#define CENG795_LIGHT_H
 
-class PointLight{
+#include "../texture/TextureMap.h"
+
+class Light{
 public:
-    virtual ~PointLight() = default;
+    virtual ~Light() = default;
     uint32_t _id;
     Vertex Position;
     Color Intensity;
 
-    PointLight(uint32_t id, Vertex pos, Color intens);
+    Light(uint32_t id, Vertex pos, Color intens);
     virtual LightType getLightType();
     virtual Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist);
     virtual Vertex getPos(std::array<real, 2> sample);
 };
 
-class AreaLight : public PointLight
+class AreaLight : public Light
 {
 public:
     Vec3r  n;
@@ -29,7 +33,7 @@ public:
     Vertex getPos(std::array<real, 2> sample) override;
 };
 
-class DirectionalLight : public PointLight // TODO: pointlight-> light
+class DirectionalLight : public Light
 {
 public:
     Vec3r  dir;
@@ -39,14 +43,14 @@ public:
     Vertex getPos(std::array<real, 2> sample) override;
 };
 
-class SpotLight : public PointLight // TODO: pointlight-> light
+class SpotLight : public Light
 {
 public:
     Vec3r  dir;
     real coverageAngle;
     real fallOffAngle;
 
-    DirectionalLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
+    SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist) override;
     LightType getLightType() override;
     Vertex getPos(std::array<real, 2> sample) override;
@@ -54,7 +58,7 @@ public:
 
 
 
-class TextureLight : public PointLight 
+class TextureLight : public Light
 {
 public:
     uint32_t _id;
@@ -62,8 +66,10 @@ public:
     ImageTexture image;
     Sampler sampler;
 
-    DirectionalLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
+    TextureLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist) override;
     LightType getLightType() override;
     Vertex getPos(std::array<real, 2> sample) override;
 };
+
+#endif // CENG795_LIGHT_H

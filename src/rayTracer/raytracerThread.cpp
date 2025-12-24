@@ -105,12 +105,7 @@ Color RaytracerThread::Filter(std::vector<Color>& colors, const std::vector<std:
     return result;
 }
 
-void RaytracerThread::writeToImage(uint32_t& curr_pixel, Color& final_color)
-{
-    scene.image[curr_pixel++] = clamp(final_color.r, 0, 255);
-    scene.image[curr_pixel++] = clamp(final_color.g, 0, 255);
-    scene.image[curr_pixel++] = clamp(final_color.b, 0, 255);
-}
+
 
 
 void RaytracerThread::drawPixel(uint32_t& curr_pixel)
@@ -134,7 +129,7 @@ void RaytracerThread::drawPixel(uint32_t& curr_pixel)
     }
 
     Color final_color = Filter(colors, cam.samplesPixel);
-    writeToImage(curr_pixel, final_color);
+    cam.writeColour(curr_pixel, final_color);
 }
 
 

@@ -1,11 +1,14 @@
 // TODO: makefilea ekle
 ////////////////////////////////////////////////
-/////////////// PointLight /////////////////////
+/////////////// Light /////////////////////
 ////////////////////////////////////////////////
 
-PointLight::PointLight(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
+#include "Light.h"
+#include "../../functions/helpers.h"
+#include "../../functions/overloads.h"
+Light::Light(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
 
-Color PointLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray& shadow_ray, real dist)
+Color Light::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray& shadow_ray, real dist)
 {
     Vec3r wi = shadow_ray.dir.normalize();
     real cos_theta = dot_product(wi, n_surf.normalize());
@@ -13,23 +16,26 @@ Color PointLight::getIrradianceAt(Vec3r n_surf,  std::array<real, 2> sample, Ray
     return Intensity / (dist*dist);
 }
 
-Vertex PointLight::getPos(std::array<real, 2> sample)
+Vertex Light::getPos(std::array<real, 2> sample)
 {
     return Position;
 }
 
-LightType PointLight::getLightType() {return LightType::POINT;}
-LightType AreaLight::getLightType() {return LightType::AREA;}
+LightType Light::getLightType() {return LightType::POINT;}
 
+
+////////////////////////////////////////////////
+/////////////// AreaLight /////////////////////
+////////////////////////////////////////////////
+
+LightType AreaLight::getLightType() {return LightType::AREA;}
 
 Vertex AreaLight::getPos(std::array<real,2> sample)
 {
     return Position + (v*(sample[0]-0.5) + u*(sample[1]-0.5)) * size;
 }
 
-
-
-AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : PointLight(id, pos, intens), n(n.normalize()), size(s),A(s*s)
+AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : Light(id, pos, intens), n(n.normalize()), size(s),A(s*s)
 {
     std::pair<Vec3r,Vec3r> u_v = getONB(n);
     u = u_v.first.normalize();
@@ -47,3 +53,15 @@ Color AreaLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& 
 }
 
 
+////////////////////////////////////////////////
+///////////// DirectionalLight /////////////////
+////////////////////////////////////////////////
+
+LightType DirectionalLight::getLightType() {return LightType::DIRECTIONAL;}
+
+////////////////////////////////////////////////
+///////////////// SpotLight ////////////////////
+////////////////////////////////////////////////
+
+
+LightType SpotLight::getLightType() {return LightType::SPOT;}

@@ -9,6 +9,18 @@
 #include "rayTracer/RayTracer.h"
 
 // overload- get type from string
+
+
+TMOType getTMOType(const std::string &s)
+{
+    if (s == "Photographic") return TMOType::PHOTOGRAPHIC;
+    if (s == "ACES") return TMOType::ACES;
+    if (s == "Filmic") return TMOType::FILMIC;
+    throw std::invalid_argument("Invalid TMOType string: " + s);
+}
+
+
+
 FilterType getFilter(const std::string& s) {
     if (s == "box") return FilterType::BOX;
     if (s == "gaussian") return FilterType::GAUSSIAN;
@@ -343,7 +355,7 @@ std::ostream& operator<<(std::ostream& os, const CVertex& cv)
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const PointLight& pl)
+std::ostream& operator<<(std::ostream& os, const Light& pl)
 {
     os << "Point light " << pl._id << ":"
         << "\n\tPosition:" << pl.Position

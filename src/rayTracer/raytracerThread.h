@@ -71,7 +71,6 @@ public:
     }
     Ray reflectionRay(Ray& ray,MaterialType type, HitRecord& hit_record);
     Color Filter(std::vector<Color>& colors, const std::vector<std::array<real,2>> &locs);
-    void writeToImage(uint32_t& curr_pixel, Color& final_color);
     void drawPixel(uint32_t& curr_pixel);
     void PrintProgress();
     void drawRow(uint32_t ly);

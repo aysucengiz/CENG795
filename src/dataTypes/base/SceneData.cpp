@@ -12,7 +12,6 @@
 
 #include <random>
 
-
 #include "../../functions/helpers.h"
 #include "../../functions/overloads.h"
 #include "../matrix/Matrix.h"
@@ -61,7 +60,6 @@ Color Color::exponent()
 {
     return {std::exp(r), std::exp(g), std::exp(b)};
 }
-
 
 ////////////////////////////////////////////////
 ///////////////// MATERIAL /////////////////////

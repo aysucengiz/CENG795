@@ -22,7 +22,9 @@ PivotType getPivot(const std::string &s);
 TextureType getTextureType(const std::string &s);
 DecalMode getDecalMode(const std::string &s);
 Interpolation getInterpolation(const std::string &s);
+TMOType getTMOType(const std::string &s);
 
+// overload - texel
 Texel operator -(const Texel &a, const Texel &b);
 Texel operator +(const Texel &a, const Texel &b);
 Texel operator *(const real &a, const Texel &b);
@@ -77,7 +79,7 @@ std::ostream& operator<<(std::ostream& os, const Color& c);
 std::ostream& operator<<(std::ostream& os, const Vec3r& v);
 std::ostream& operator<<(std::ostream& os, const Vertex& v);
 std::ostream& operator<<(std::ostream& os, const CVertex& v);
-std::ostream& operator<<(std::ostream& os, const PointLight & pl);
+std::ostream& operator<<(std::ostream& os, const Light & pl);
 std::ostream& operator<<(std::ostream& os, const SceneInput& s);
 std::ostream& operator<<(std::ostream& os, const Camera& c);
 std::ostream& operator<<(std::ostream& os, const Material& m);
