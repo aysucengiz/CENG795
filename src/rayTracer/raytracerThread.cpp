@@ -19,15 +19,15 @@ void RaytracerThread::PrintProgress()
         if (done_threads % scene.thread_group_size == 0)
             std::cout << done_threads / scene.thread_group_size << "\t";
         fflush(stdout);
-        if (done_threads % scene.thread_add_endl_after == 0 || done_threads == cam.height)
+        if (done_threads % scene.thread_add_endl_after == 0 || done_threads == cam.imageData->height)
             std::cout << std::endl;
     }
 }
 
 void RaytracerThread::drawRow(uint32_t ly)
 {
-    uint32_t curr_pixel = ly * cam.width * 3;
-    uint32_t width = cam.width;
+    uint32_t curr_pixel = ly * cam.imageData->width;
+    uint32_t width = cam.imageData->width;
     Color final_color;
     y = ly;
     for (uint32_t lx = 0; lx < width; lx++)
@@ -39,14 +39,14 @@ void RaytracerThread::drawRow(uint32_t ly)
 
 void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
 {
-    uint32_t width = cam.width;
-    uint32_t height = cam.height;
+    uint32_t width = cam.imageData->width;
+    uint32_t height = cam.imageData->height;
     uint32_t start_y = start_idx / width;
     uint32_t start_x = start_idx % width;
-    uint32_t curr_pixel = start_idx * 3;
+    uint32_t curr_pixel = start_idx;
     uint32_t end_y = std::min(start_y + h, height);
     uint32_t end_x = std::min(start_x + w, width);
-    uint32_t allw_batchw_3 = (width - (end_x - start_x)) * 3;
+    uint32_t allw_batch = (width - (end_x - start_x));
     Color final_color;
     for (uint32_t ly = start_y; ly < end_y; ly++)
     {
@@ -57,7 +57,7 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
             // if (x==466 && y==457)
                 drawPixel(curr_pixel);
         }
-        curr_pixel += allw_batchw_3;
+        curr_pixel += allw_batch;
     }
     if (scene.print_progress) PrintProgress();
 }
@@ -111,7 +111,7 @@ Color RaytracerThread::Filter(std::vector<Color>& colors, const std::vector<std:
 void RaytracerThread::drawPixel(uint32_t& curr_pixel)
 {
     std::vector<Color> colors;
-    colors.reserve(cam.numSamples);
+    colors.reserve(cam.sampleData->numSamples);
     Ray viewing_ray;
 
     std::mt19937 gRandomGeneratorP(919 + x + y);
@@ -122,14 +122,14 @@ void RaytracerThread::drawPixel(uint32_t& curr_pixel)
     std::shuffle(sampleIdxTime.begin(), sampleIdxTime.end(), gRandomGeneratorT);
     std::mt19937 gRandomGeneratorG(237 + x + y);
     std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
-    for (sampleIdx = 0; sampleIdx < cam.numSamples; sampleIdx++)
+    for (sampleIdx = 0; sampleIdx < cam.sampleData->numSamples; sampleIdx++)
     {
         viewing_ray = computeViewingRay(x, y);
-        colors.push_back(followRay(viewing_ray, 0, air, cam.samplesLight[sampleIdxLight[sampleIdx]]));
+        colors.push_back(followRay(viewing_ray, 0, air, cam.sampleData->samplesLight[sampleIdxLight[sampleIdx]]));
     }
 
-    Color final_color = Filter(colors, cam.samplesPixel);
-    cam.writeColour(curr_pixel, final_color);
+    Color final_color = Filter(colors, cam.sampleData->samplesPixel);
+    cam.imageData->writeColour(curr_pixel, final_color);
 }
 
 
@@ -137,8 +137,8 @@ Ray RaytracerThread::computeViewingRay(int x_loc, int y_loc)
 {
     Ray viewing_ray;
     real s_u, s_v;
-    s_u = (x_loc + cam.samplesPixel[sampleIdxPixel[sampleIdx]][0]) * (cam.r - cam.l) / cam.width;
-    s_v = (y_loc + cam.samplesPixel[sampleIdxPixel[sampleIdx]][1]) * (cam.t - cam.b) / cam.height;
+    s_u = (x_loc + cam.sampleData->samplesPixel[sampleIdxPixel[sampleIdx]][0]) * (cam.r - cam.l) / cam.imageData->width;
+    s_v = (y_loc + cam.sampleData->samplesPixel[sampleIdxPixel[sampleIdx]][1]) * (cam.t - cam.b) / cam.imageData->height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
 
     viewing_ray.pos = cam.getPos(sampleIdx);
@@ -155,31 +155,32 @@ Ray RaytracerThread::computeViewingRay(int x_loc, int y_loc)
     }
 
     viewing_ray.dir = viewing_ray.dir.normalize();
-    time = cam.samplesTime[sampleIdxTime[sampleIdx]];
+    time = cam.sampleData->samplesTime[sampleIdxTime[sampleIdx]];
     return viewing_ray;
 }
 
-bool RaytracerThread::isUnderShadow(Ray& shadow_ray)
+bool RaytracerThread::isUnderShadow(Ray& shadow_ray, bool dist_inf)
 {
     real t_min = INFINITY;
+    real dist = dist_inf ? INFINITY : 1.0;
 
     if (ACCELERATE)
     {
-        if (bvh.traverse(shadow_ray, t_min, scene.objects, true, false, time).obj != nullptr)
+        if (bvh.traverse(shadow_ray, t_min, scene.objects, true, false, time,dist).obj != nullptr)
             return true;
     }
     else
     {
         for (int j = 0; j < scene.numObjects; j++)
         {
-            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time).obj != nullptr)
+            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time,dist).obj != nullptr)
                 return true;
         }
     }
 
     for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
-        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time).obj != nullptr)
+        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time,dist).obj != nullptr)
             return true;
     }
     return false;
@@ -215,7 +216,8 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
         {
             // std::array<real ,2> light_sample = {getRandom(),getRandom()};
             Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
-            if (!isUnderShadow(shadow_ray))
+            bool dist_inf = (scene.PointLights[j]->getLightType() == LightType::DIRECTIONAL);
+            if (!isUnderShadow(shadow_ray,dist_inf))
             {
                 Color irradiance = scene.PointLights[j]->getIrradianceAt(
                     hit_record.normal, light_sample, shadow_ray,
@@ -267,7 +269,7 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
     {
         if (scene.BackgroundTexture != nullptr)
         {
-            Texel t((real)x / (real)cam.width, (real)y / (real)cam.height);
+            Texel t((real)x / (real)cam.imageData->width, (real)y / (real)cam.imageData->height);
             Vertex v(t.u, t.v, 0.0);
             Color bg = scene.BackgroundTexture->TextureColor(v, t, 0) * 255.0;
             // std::cout << bg << std::endl;
@@ -284,8 +286,15 @@ Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t li
 {
     Ray shadow_ray;
     shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    Vertex pospos = scene.PointLights[lightIdx]->getPos(sample);
-    shadow_ray.dir = pospos - shadow_ray.pos;
+    if (scene.PointLights[lightIdx]->getLightType() != LightType::DIRECTIONAL)
+    {
+        Vertex pospos = scene.PointLights[lightIdx]->getPos(sample);
+        shadow_ray.dir = pospos - shadow_ray.pos;
+    }
+    else
+    {
+        shadow_ray.dir = -dynamic_cast<DirectionalLight*>(scene.PointLights[lightIdx])->dir;
+    }
     return shadow_ray;
 }
 

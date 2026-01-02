@@ -19,7 +19,7 @@ class RaytracerThread
 {
 private:
     const SceneInput &scene;
-    const Camera &cam;
+    Camera &cam;
     const BVH &bvh;
     const Material air;
     std::vector<int> sampleIdxPixel;
@@ -41,11 +41,11 @@ public:
     scene(_scene), cam(camID), bvh(_bvh), air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0)
     {
 
-        sampleIdxPixel.reserve(cam.numSamples);
-        sampleIdxLight.reserve(cam.numSamples);
-        sampleIdxTime.reserve(cam.numSamples);
-        sampleIdxGlossy.reserve(cam.numSamples);
-        for (int i = 0; i < cam.numSamples; i++)
+        sampleIdxPixel.reserve(cam.sampleData->numSamples);
+        sampleIdxLight.reserve(cam.sampleData->numSamples);
+        sampleIdxTime.reserve(cam.sampleData->numSamples);
+        sampleIdxGlossy.reserve(cam.sampleData->numSamples);
+        for (int i = 0; i < cam.sampleData->numSamples; i++)
         {
             sampleIdxPixel.push_back(i);
             sampleIdxLight.push_back(i);
@@ -57,11 +57,11 @@ public:
     RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0)
     {
 
-        sampleIdxPixel.reserve(cam.numSamples);
-        sampleIdxLight.reserve(cam.numSamples);
-        sampleIdxTime.reserve(cam.numSamples);
-        sampleIdxGlossy.reserve(cam.numSamples);
-        for (int i = 0; i < cam.numSamples; i++)
+        sampleIdxPixel.reserve(cam.sampleData->numSamples);
+        sampleIdxLight.reserve(cam.sampleData->numSamples);
+        sampleIdxTime.reserve(cam.sampleData->numSamples);
+        sampleIdxGlossy.reserve(cam.sampleData->numSamples);
+        for (int i = 0; i < cam.sampleData->numSamples; i++)
         {
             sampleIdxPixel.push_back(i);
             sampleIdxLight.push_back(i);
@@ -78,7 +78,7 @@ public:
     Ray computeViewingRay(int x_loc, int y_loc);
     Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
-    bool isUnderShadow(Ray &shadow_ray);
+    bool isUnderShadow(Ray& shadow_ray, bool dist_inf);
     Color computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     Ray compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx, std::array<real, 2> sample) const;
     static Color diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta);

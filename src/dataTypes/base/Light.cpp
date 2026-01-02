@@ -59,9 +59,45 @@ Color AreaLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& 
 
 LightType DirectionalLight::getLightType() {return LightType::DIRECTIONAL;}
 
+DirectionalLight::DirectionalLight(uint32_t id, Color intens, Vec3r d): Light(id,Vertex(0.0,0.0,0.0),intens), dir(d.normalize())
+{
+    Position = -Vertex(dir.i, dir.j, dir.k);
+}
+
+Color DirectionalLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist)
+{
+    return Intensity ;//* dot_product(shadow_ray.dir.normalize(),n_surf.normalize());
+}
+
+Vertex DirectionalLight::getPos(std::array<real, 2> sample)
+{
+    return Position;
+}
+
 ////////////////////////////////////////////////
 ///////////////// SpotLight ////////////////////
 ////////////////////////////////////////////////
 
+SpotLight::SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa) : Light(id,pos,intens), dir(d), coverageAngle(ca * M_PI/360.0), fallOffAngle(foa * M_PI / 360.0)
+{}
 
 LightType SpotLight::getLightType() {return LightType::SPOT;}
+
+Color SpotLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, real dist)
+{
+    real angle = abs(dot_product(-shadow_ray.dir.normalize(),n_surf.normalize()));
+    if (angle < coverageAngle) // L1
+    {
+        real f = 1.0;
+        if (angle < coverageAngle) // L2
+        {
+            real cos_alpha = cos(coverageAngle);
+            f = (cos(angle) - cos_alpha) / (cos(fallOffAngle) - cos_alpha);
+        }
+        return Intensity/(dist*dist)*f;
+    }
+    else // L3
+    {
+        return Color(0.0,0.0,0.0);
+    }
+}

@@ -38,7 +38,7 @@ public:
     Texture *AllTexture;
     bool visible;
     virtual ObjectType getObjectType() const = 0;
-    virtual intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const = 0;
+    virtual intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
     virtual Texel getTexel(const Vertex& v, real time, int triID)  const = 0;
@@ -71,7 +71,7 @@ public:
 
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min,bool shadow_test, bool back_cull, real time) const override;
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Texel getTexel(const Vertex& v, real time, int triID)  const override;
     void BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const;
@@ -92,7 +92,7 @@ public:
     Plane(uint32_t id, Vertex& v, std::string normal, Material& material,std::vector<Texture*> ts , bool vis = true);
     void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const override;
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Texel getTexel(const Vertex& v, real time, int triID) const override;
 
@@ -111,7 +111,7 @@ public:
     Sphere(uint32_t id, CVertex& c, real r, Material& m, std::vector<Texture*> ts ,bool v = true);
     void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const override;
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Texel getTexel(const Vertex& v, real time, int triID) const override;
 
@@ -132,7 +132,7 @@ public:
     ~Instance();
 
     ObjectType getObjectType() const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri , real time) const override;
     Vec3r getGlobalNormal(const Vec3r& res, double time) const;
 

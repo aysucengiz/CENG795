@@ -244,7 +244,7 @@ void  BVH::getScene(std::vector<Triangle*> &triangles)
 }
 
 template<typename Container>
-Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const Container &objects, bool shadow_test , bool back_cull, real time) const
+Object::intersectResult BVH::traverse(const Ray &ray, const  real &t_min, const Container &objects, bool shadow_test, bool back_cull, real time, real dist) const
 {
     //std::cout << "BVH::traverse" << std::endl;
     Object::intersectResult result;
@@ -271,7 +271,7 @@ Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const C
                 int finID = node.firstObjID + node.objCount;
                 for (int i=node.firstObjID; i< finID; i++)
                 {
-                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull, time);
+                    temp = objects[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull, time,dist);
                     if (shadow_test && temp.obj != nullptr) return temp;
                     if (temp.obj != nullptr)
                     {
@@ -300,7 +300,7 @@ Object::intersectResult BVH::traverse(const Ray &ray,const  real &t_min, const C
 }
 
 template Object::intersectResult BVH::traverse<std::vector<Triangle*>>(
-    const Ray&, const real&, const std::vector<Triangle*>&, bool, bool, real) const;
+    const Ray&, const real&, const std::vector<Triangle*>&, bool, bool, real, real dist = 1.0) const;
 
 template Object::intersectResult BVH::traverse<std::deque<Object*>>(
-    const Ray&, const real&, const std::deque<Object*>&, bool, bool, real) const;
+    const Ray&, const real&, const std::deque<Object*>&, bool, bool, real, real dist = 1.0) const;

@@ -192,7 +192,7 @@ Vec3r Mesh::getNormal(const Vertex& v, uint32_t triID, real time) const
 }
 
 Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test, bool back_cull,
-                                                real time) const
+                                                real time, real dist) const
 {
     intersectResult result;
     result.currTri = 0;
@@ -203,7 +203,7 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
     {
         if (ACCELERATE)
         {
-            return bvh.traverse(ray, t_min, Faces, shadow_test, back_cull, time);
+            return bvh.traverse(ray, t_min, Faces, shadow_test, back_cull, time, dist);
         }
         else
         {
@@ -213,7 +213,7 @@ Object::intersectResult Mesh::checkIntersection(const Ray& ray, const real& t_mi
             temp.t_min = result.t_min;
             for (int i = 0; i < numFaces; i++)
             {
-                temp = Faces[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull, 0);
+                temp = Faces[i]->checkIntersection(ray, temp.t_min, shadow_test, back_cull, 0, dist);
                 result.t_min = temp.t_min;
                 if (temp.obj != nullptr)
                 {

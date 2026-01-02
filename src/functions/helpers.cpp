@@ -55,6 +55,22 @@ Vertex minVert2(Vertex a, Vertex b)
     return Vertex(std::min(a.x, b.x), std::min(a.y, b.y), std::min(a.z, b.z));
 }
 
+real clamp(const real c, const real from, const real to)
+{
+    if (c > to) return to;
+    if (c < from) return from;
+    return c;
+}
+
+Color clampColor(const Color c, const int from, const int to)
+{
+    Color temp = Color(
+        clamp(c.r, from, to),
+        clamp(c.g, from, to),
+        clamp(c.b, from, to)
+    );
+    return temp;
+}
 int clamp(const real c, const int from, const int to)
 {
     int temp = static_cast<int>(std::round(c));
@@ -201,3 +217,19 @@ real lerp3D(Vec3r t, std::array<real, 8> a)
     return lerp(t.k, l1, l2);
 }
 
+
+real luminance(Color &c)
+{
+    return 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+}
+
+
+Color inverseLuminance(Color inp, real Yi, real Yo, real saturation)
+{
+    if (Yi == 0) return Color(0.0,0.0,0.0);
+    Color output;
+    output.r = Yo * pow(inp.r / Yi, saturation);
+    output.g = Yo * pow(inp.g / Yi, saturation);
+    output.b = Yo * pow(inp.b / Yi, saturation);
+    return output;
+}

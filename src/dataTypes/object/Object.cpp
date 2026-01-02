@@ -283,7 +283,7 @@ void Triangle::getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool n
 
 
 Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
-                                                    real time) const
+                                                    real time, real dist) const
 {
     intersectResult result;
     result.currTri = 0;
@@ -320,7 +320,7 @@ Object::intersectResult Triangle::checkIntersection(const Ray& r, const real& t_
                 return result;
             }
 
-            if (shadow_test && t_temp < 1 && t_temp >= 0)
+            if (shadow_test && t_temp < dist && t_temp >= 0)
             {
                 result.t_min = t_temp;
                 result.obj = this;
@@ -450,7 +450,7 @@ ObjectType Sphere::getObjectType() const { return ObjectType::SPHERE; }
 
 
 Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
-                                                  real time) const
+                                                  real time, real dist) const
 {
     intersectResult result;
     result.currTri = 0;
@@ -490,7 +490,7 @@ Object::intersectResult Sphere::checkIntersection(const Ray& r, const real& t_mi
             result.obj = this;
             return result;
         }
-        else if (shadow_test && t_temp < 1 && t_temp >= 0)
+        else if (shadow_test && t_temp < dist && t_temp >= 0)
         {
             result.t_min = t_temp;
             result.obj = this;
@@ -566,7 +566,7 @@ Texel Plane::getTexel(const Vertex& vert, real time, int triID) const
 ObjectType Plane::getObjectType() const { return ObjectType::PLANE; }
 
 Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull,
-                                                 real time) const
+                                                 real time, real dist) const
 {
     real dot_r_n = dot_product(r.dir, n);
     intersectResult result;
@@ -584,7 +584,7 @@ Object::intersectResult Plane::checkIntersection(const Ray& r, const real& t_min
         return result;
     }
 
-    if (shadow_test && t_temp < 1 && t_temp >= 0)
+    if (shadow_test && t_temp < dist && t_temp >= 0)
     {
         result.obj = this;
         return result;
@@ -682,7 +682,7 @@ Instance::~Instance()
 ObjectType Instance::getObjectType() const { return ObjectType::INSTANCE; }
 
 Instance::intersectResult Instance::checkIntersection(const Ray& ray, const real& t_min, bool shadow_test,
-                                                      bool back_cull, real time) const
+                                                      bool back_cull, real time, real dist) const
 {
     // std::cout << "Check Intersection of Instance" << std::endl;
     intersectResult result;
@@ -693,14 +693,14 @@ Instance::intersectResult Instance::checkIntersection(const Ray& ray, const real
     if (!shadow_test)
     {
         Ray localRay = getLocal(ray, time);
-        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0);
+        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0, dist);
         result.obj = result.obj ? this : nullptr;
         return result;
     }
     else
     {
         Ray localRay = getLocal(ray, time); // get the local light point
-        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0);
+        result = original->checkIntersection(localRay, t_min, shadow_test, back_cull, 0, dist);
         if (result.obj)
         {
             Vertex intersect = localRay.pos + localRay.dir * t_min;

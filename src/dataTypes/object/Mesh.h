@@ -33,7 +33,7 @@ public:
 
     ObjectType getObjectType() const override;
     Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const override;
-    intersectResult checkIntersection(const Ray& r,const real& t_min, bool shadow_test, bool back_cull, real time) const override;
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     ~Mesh();
 
     Texel getTexel(const Vertex& v, real time, int triID)  const override;

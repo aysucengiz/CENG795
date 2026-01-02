@@ -37,7 +37,7 @@ namespace Parser {
     void getTextures(json& inp, SceneInput& sceneInput, std::string root);
     void getImages(json& inp, SceneInput& sceneInput, std::string root);
     void getTextureMaps(json Textures, SceneInput& sceneInput);
-    void getToneMaps(json inp, std::vector<ToneMap>& tonemaps);
+    void getToneMaps(json inp, std::vector<ToneMap>& tonemaps, std::string& imname);
 
     void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
     void addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id);
@@ -54,7 +54,7 @@ namespace Parser {
     void addComposite(json t, SceneInput& sceneInput);
     void addImage(json s, SceneInput& sceneInput, std::string root);
     void addTextureMap(json s, SceneInput& sceneInput);
-    void addTonemap(json ton, std::vector<ToneMap>& tonemaps);
+    void addTonemap(json ton, std::vector<ToneMap>& tonemaps, std::string& imname);
 
 
     Scale getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<Transformation>>& transforms);

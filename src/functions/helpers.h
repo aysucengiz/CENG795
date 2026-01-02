@@ -10,6 +10,8 @@
 
 bool contains(const std::string& s, const std::string& sub);
 int clamp(real c, int from, int to);
+Color clampColor(const Color c, const int from, const int to);
+real clamp(const real c, const real from, const real to);
 real max3(real a, real b, real c);
 real min3(real a, real b, real c);
 Vertex maxVert3(Vertex a, Vertex b, Vertex c);
@@ -29,4 +31,6 @@ std::pair<Vec3r,Vec3r> getONB(Vec3r n);
 real lerp(real t, real a, real b);
 real lerp2D(Texel t, std::array<real, 4> a);
 real lerp3D(Vec3r t, std::array<real, 8> a);
+real luminance(Color &c);
+Color inverseLuminance(Color inp, real Yi, real Yo, real saturation);
 #endif //CENG795_HELPERS_H

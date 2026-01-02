@@ -175,13 +175,13 @@ void RayTracer::drawScene(uint32_t c){
     auto start = std::chrono::high_resolution_clock::now();
     scene.u = x_product(cam.Up, -cam.Gaze);
     scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t;
-    scene.s_u_0 = (cam.r - cam.l) / cam.width;
-    scene.s_v_0 = (cam.t - cam.b) / cam.height;
+    scene.s_u_0 = (cam.r - cam.l) / cam.imageData->width;
+    scene.s_v_0 = (cam.t - cam.b) / cam.imageData->height;
     // scene.s_v = s_v_0 * 0.5;
     // scene.viewing_ray.pos = cam.Position;
 
-    uint32_t width = cam.width;
-    uint32_t height = cam.height;
+    uint32_t width = cam.imageData->width;
+    uint32_t height = cam.imageData->height;
 
     if (thread_type == ThreadType::ROW)
     {

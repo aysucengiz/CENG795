@@ -205,14 +205,10 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
     }
     else if (type == "Directional")
     {
-        pl = new SpotLight(
+        pl = new DirectionalLight(
             std::stoi(light["_id"].get<std::string>()) - 1,
-            (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
-            Color(light["Intensity"]),
-            (*t * Vec4r(Vec3r(light["Normal"]))).getVec3r(), // TODO: normal transform mu ??
-            getReal(light["CoverageAngle"]),
-            getReal(light["FallOffAngle"])
-        );
+            Color(light["Radiance"]),
+            Vec3r(light["Direction"]));
     }
     else
     {
@@ -254,6 +250,13 @@ void Parser::getLights(json inp, SceneInput& sceneInput)
         int numSpotLights = spotLights.size();
         if (spotLights.is_object()) addLight(spotLights, sceneInput, "Spot");
         else for (int i = 0; i < numSpotLights; i++) addLight(spotLights[i], sceneInput, "Spot");
+    }
+    if (inp.contains("DirectionalLight"))
+    {
+        json& directionalLights = inp["DirectionalLight"];
+        int numdirectionalLights = directionalLights.size();
+        if (directionalLights.is_object()) addLight(directionalLights, sceneInput, "Directional");
+        else for (int i = 0; i < numdirectionalLights; i++) addLight(directionalLights[i], sceneInput, "Directional");
     }
 }
 
@@ -461,10 +464,11 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
     std::vector<ToneMap> tonemaps;
     if (Cameras.contains("Tonemap"))
     {
-        getToneMaps(Cameras, tonemaps);
+        std::string imname = Cameras["ImageName"].get<std::string>();
+        getToneMaps(Cameras, tonemaps, imname);
     }
 
-    Camera c(
+    sceneInput.Cameras.push_back(Camera(
         std::stoi(Cameras["_id"].get<std::string>()) - 1,
         pos, Gaze, up,
         nearPlane,
@@ -476,21 +480,20 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         Cameras.contains("ApertureSize") ? std::stod(Cameras["ApertureSize"].get<std::string>()) : 0.0,
         sceneInput.sampling_type,
         tonemaps
-    );
-    sceneInput.Cameras.push_back(c);
-    if (PRINTINIT) std::cout << c << std::endl;
+    ));
+    if (PRINTINIT) std::cout << sceneInput.Cameras[sceneInput.Cameras.size()] << std::endl;
 }
 
 
-void Parser::getToneMaps(json inp, std::vector<ToneMap>& tonemaps)
+void Parser::getToneMaps(json inp, std::vector<ToneMap>& tonemaps, std::string &imname)
 {
     json& Tonemaps = inp["Tonemap"];
     uint32_t numTonemaps = Tonemaps.size();
-    if (Tonemaps.is_object()) addTonemap(Tonemaps, tonemaps);
-    else for (int i = 0; i < numTonemaps; i++) addTonemap(Tonemaps[i], tonemaps);
+    if (Tonemaps.is_object()) addTonemap(Tonemaps, tonemaps, imname);
+    else for (int i = 0; i < numTonemaps; i++) addTonemap(Tonemaps[i], tonemaps, imname);
 }
 
-void Parser::addTonemap(json ton, std::vector<ToneMap>& tonemaps)
+void Parser::addTonemap(json ton, std::vector<ToneMap>& tonemaps, std::string &imname)
 {
     TMOType tmo = getTMOType(ton["TMO"].get<std::string>());
 
@@ -498,7 +501,7 @@ void Parser::addTonemap(json ton, std::vector<ToneMap>& tonemaps)
     std::array<real, 2> options;
     ss >> options[0] >> options[1];
 
-    tonemaps.push_back(ToneMap(ton["ImageName"].get<std::string>(),
+    tonemaps.push_back(ToneMap(imname,
                                ton["Extension"].get<std::string>(),
                                tmo,
                                options,

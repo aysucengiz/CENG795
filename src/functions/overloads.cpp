@@ -463,9 +463,9 @@ std::ostream& operator<<(std::ostream& os, const Camera& c)
         << "\n\tGaze:" << c.Gaze
         << "\n\tUp:" << c.Up
         << "\n\tplane:" << c.l << " " << c.r << " " << c.b << " " << c.t << " " << c.nearDistance
-        << "\n\tImageResolution:" << c.width << " " << c.height
-        << "\n\tImageName:" << c.ImageName
-        << "\n\tnumSamples:" << c.numSamples
+        << "\n\tImageResolution:" << c.imageData->width << " " << c.imageData->height
+        << "\n\tImageName:" << c.imageData->ImageName
+        << "\n\tnumSamples:" << c.sampleData->numSamples
         << "\n\tFocusDistance:" << c.FocusDistance
         << "\n\tApertureSize:" << c.ApertureSize
     ;
