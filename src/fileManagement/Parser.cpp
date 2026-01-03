@@ -66,7 +66,6 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     }
 
     getCameras(inp["Scene"]["Cameras"], sceneInput);
-    getLights(inp["Scene"]["Lights"], sceneInput);
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
 
 
@@ -81,6 +80,7 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     {
         getTextures(inp["Scene"]["Textures"], sceneInput,root);
     }
+    getLights(inp["Scene"]["Lights"], sceneInput);
     getObjects(inp["Scene"]["Objects"], sceneInput, root);
 }
 
@@ -200,7 +200,7 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
             Color(light["Intensity"]),
             (*t * Vec4r(Vec3r(light["Direction"]))).getVec3r(), // TODO: normal transform mu ??
             getReal(light["CoverageAngle"]),
-            getReal(light["FallOffAngle"])
+            light.contains("FalloffAngle") ?getReal(light["FalloffAngle"]): getReal(light["FallOffAngle"])
         );
     }
     else if (type == "Directional")
@@ -209,6 +209,21 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
             std::stoi(light["_id"].get<std::string>()) - 1,
             Color(light["Radiance"]),
             Vec3r(light["Direction"]));
+    }
+    else if (type == "Spherical")
+    {
+        std::string tstr = light.contains("_type") ? light["_type"] : "latlong";
+        TextureLightType tip = tstr == "latlong" ? TextureLightType::LATLONG : TextureLightType::PROBE;
+
+        std::string sstr = light.contains("sampler") ? light["sample"] : "uniform";
+        Sampler samp = sstr == "uniform" ? Sampler::UNIFORM : Sampler::COSINE;
+
+        pl = new TextureLight(
+            std::stoi(light["_id"].get<std::string>()) - 1,
+            getImageFromId(getInt(light["ImageId"]),sceneInput),
+            samp, tip);
+
+        sceneInput.BackgroundLight = dynamic_cast<TextureLight*>(pl);
     }
     else
     {
@@ -221,7 +236,7 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
 
     sceneInput.PointLights.push_back(pl);
 
-    if (PRINTINIT) std::cout << *pl << std::endl;
+    // if (PRINTINIT) std::cout << *pl << std::endl;
 }
 
 
@@ -257,6 +272,13 @@ void Parser::getLights(json inp, SceneInput& sceneInput)
         int numdirectionalLights = directionalLights.size();
         if (directionalLights.is_object()) addLight(directionalLights, sceneInput, "Directional");
         else for (int i = 0; i < numdirectionalLights; i++) addLight(directionalLights[i], sceneInput, "Directional");
+    }
+    if (inp.contains("SphericalDirectionalLight"))
+    {
+        json& directionalLights = inp["SphericalDirectionalLight"];
+        int numdirectionalLights = directionalLights.size();
+        if (directionalLights.is_object()) addLight(directionalLights, sceneInput, "Spherical");
+        else for (int i = 0; i < numdirectionalLights; i++) addLight(directionalLights[i], sceneInput, "Spherical");
     }
 }
 
@@ -497,7 +519,7 @@ void Parser::addTonemap(json ton, std::vector<ToneMap>& tonemaps, std::string &i
 {
     TMOType tmo = getTMOType(ton["TMO"].get<std::string>());
 
-    std::istringstream ss(ton["TMO"].get<std::string>());
+    std::istringstream ss(ton["TMOOptions"].get<std::string>());
     std::array<real, 2> options;
     ss >> options[0] >> options[1];
 
@@ -658,9 +680,9 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
                 std::vector<float> vs = vertexElem.getProperty<float>("v");
                 for (int j = numVerticesUntilNow ; j < sceneInput.Vertices.size(); j++)
                 {
-                    std::cout << us[j-numVerticesUntilNow] << " " << vs[j-numVerticesUntilNow] << std::endl;
+                    // std::cout << us[j-numVerticesUntilNow] << " " << vs[j-numVerticesUntilNow] << std::endl;
                     sceneInput.Vertices[j].t = Texel(us[j-numVerticesUntilNow], vs[j-numVerticesUntilNow]);
-                    std::cout << sceneInput.Vertices[j].t.u << " " << sceneInput.Vertices[j].t.v << std::endl;
+                    // std::cout << sceneInput.Vertices[j].t.u << " " << sceneInput.Vertices[j].t.v << std::endl;
                 }
             }
         }

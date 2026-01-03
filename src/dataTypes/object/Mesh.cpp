@@ -20,12 +20,12 @@ void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>&
     start_index -= std::min(f[0][0],std::min(f[0][1],f[0][2]));
         for (int i = 0; i < f.size(); i++)
         {
-            if (vertices.size() <= start_index + f[i][0])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [0] << std::endl;
-            if (vertices.size() <= start_index + f[i][1])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [1] << std::endl;
-            if (vertices.size() <= start_index + f[i][2])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
-                [2] << std::endl;
+            // if (vertices.size() <= start_index + f[i][0])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+            //     [0] << std::endl;
+            // if (vertices.size() <= start_index + f[i][1])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+            //     [1] << std::endl;
+            // if (vertices.size() <= start_index + f[i][2])std::cout << vertices.size() << " : " << start_index - 1 + f[i]
+            //     [2] << std::endl;
 
             if (f[i].size() >= 3 && f[i][0] != f[i][1] && f[i][0] != f[i][2] && f[i][1] != f[i][2])
             {
@@ -92,11 +92,11 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
         {
             std::vector<std::vector<int>> f = face.getListProperty<int>(vertices_str);
             LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
-            std::cout << "Vertices are ints" << std::endl;
+            // std::cout << "Vertices are ints" << std::endl;
         }
         catch (const std::exception&)
         {
-            std::cout << "Vertices are uints" << std::endl;
+            // std::cout << "Vertices are uints" << std::endl;
             std::vector<std::vector<unsigned int>> f = face.getListProperty<unsigned int>(vertices_str);
             LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
         }

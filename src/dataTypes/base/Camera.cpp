@@ -14,30 +14,40 @@ ToneMap::ToneMap(const std::string& cam_imname, const std::string& extension, TM
     imname = baseName + extension;
 
     bir_gamma = 1.0 / gamma;
-    if(tmoType == TMOType::PHOTOGRAPHIC)
-        tmofunc = std::bind(&ToneMap::TMOPhotographic, this, std::placeholders::_1);
-    else if(tmoType == TMOType::ACES)
-        tmofunc = std::bind(&ToneMap::TMOACES, this, std::placeholders::_1);
-    else if(tmoType == TMOType::FILMIC)
-        tmofunc = std::bind(&ToneMap::TMOFilmic, this, std::placeholders::_1);
 }
 
 real ToneMap::TMO(real L) const
 {
-    if(tmoType == TMOType::PHOTOGRAPHIC)
-        return TMOPhotographic(L);
-    else if(tmoType == TMOType::ACES)
-        return TMOACES(L);
-    else if(tmoType == TMOType::FILMIC)
-        return TMOFilmic(L);
-    else
-        return TMOPhotographic(L);
+    switch (tmoType)
+    {
+        case TMOType::PHOTOGRAPHIC:
+            L = TMOPhotographic(L);
+        break;
+        case TMOType::ACES:
+            L = TMOACES(L);
+        break;
+        case TMOType::FILMIC:
+            L = TMOFilmic(L);
+        break;
+    default:
+        std::cout << "Unrecognized tmoType" << std::endl;
+        return 0;
+    }
+    return L;
 }
 
 real ToneMap::TMOPhotographic(real L) const
 {
-    real L_scaled = (key / camera_image->middle_gray) * L;
-    return L_scaled / (L_scaled + 1.0);
+
+    if (burnout == 0)
+    {
+        return L / (L + 1.0) ;
+    }
+    else
+    {
+        return L * (1 + L/(white_point*white_point))/(1+L);
+    }
+
 }
 
 real ToneMap::MapFilmic(real L)
@@ -62,59 +72,56 @@ real ToneMap::MapACES(real L)
 
 real CameraImage::ComputeMiddleGray()
 {
-    static real eps = 0.00001;
+    static real eps = 1e-6;
     real total = 0.0;
     int len = size / 3;
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < luminances.size(); i++)
     {
-        real Lw = luminance(HDRimage[i]);
-        total += log2(eps + Lw);
+        total += log(eps + luminances[i]);
     }
     return exp(total / len);
 }
 
-void CameraImage::MinMaxLuminance()
+void CameraImage::compute_luminances()
 {
-    real maxLuminance = -1.0;
-    real minLuminance = INFINITY;
-    int len = size/3;
+    luminances.clear();
+    int len = width*height;
     for (int curr_pixel = 0; curr_pixel < len; curr_pixel++)
     {
-        real lum = luminance(HDRimage[curr_pixel]);
-        maxLuminance = std::max(lum,maxLuminance);
-        minLuminance = std::max(lum,minLuminance);
+        luminances.push_back(luminance(HDRimage[curr_pixel]));
     }
-    white_point = maxLuminance;
-    black_point = minLuminance;
+    std::sort(luminances.begin(), luminances.end());
+    std::cout << len<< std::endl;
 }
 
 
 real ToneMap::TMOFilmic(real L) const
 {
-    return MapFilmic(L)/MapFilmic(camera_image->white_point);
+    return MapFilmic(L)/MapFilmic(white_point);
 }
 
 real ToneMap::TMOACES(real L) const
 {
-    return MapACES(L)/MapACES(camera_image->white_point);
+    return MapACES(L)/MapACES(white_point);
 }
 
 Color ToneMap::gamma_correct(Color inp) const
 {
     Color clamped_color = clampColor(inp, 0.0, 1.0);
+    real r = pow(clamped_color.r, bir_gamma);
+    real g = pow(clamped_color.g, bir_gamma);
+    real b = pow(clamped_color.b, bir_gamma);
+    Color c = Color(r, g, b);
+    Color c_255 = c*255.0;
 
-    return Color(
-        pow(clamped_color.r, bir_gamma) * 255.0,
-        pow(clamped_color.g, bir_gamma) * 255.0,
-        pow(clamped_color.b, bir_gamma) * 255.0
-    );
+    return c_255;
 }
 
-
-Color ToneMap::tonemap(Color inp) const
+Color ToneMap::tonemap(Color inp, int x, int y) const
 {
     real Yi = luminance(inp);
-    real Yo = TMO(Yi);
+    real Yi_keyed = (key / camera_image->middle_gray) * Yi;
+    real Yo = TMO(Yi_keyed);
     Color non_gamma_corrected = inverseLuminance(inp, Yi, Yo, saturation);
     Color gamma_corrected = gamma_correct(non_gamma_corrected);
     Color final = Color(std::round(gamma_corrected.r), std::round(gamma_corrected.g), std::round(gamma_corrected.b));
@@ -122,21 +129,25 @@ Color ToneMap::tonemap(Color inp) const
 
 }
 
-void ToneMap::writeColour(uint32_t curr_color, Color final_color) const
+void ToneMap::writeColour(uint32_t curr_color, Color final_color,int x, int y) const
 {
-    Color tonemapped = tonemap(final_color);
+
+    Color tonemapped = tonemap(final_color,x,y);
     image[curr_color  ] = tonemapped.r;
     image[curr_color+1] = tonemapped.g;
     image[curr_color+2] = tonemapped.b;
 }
 
-void ToneMap::writeToImage(std::string output_path) const
+void ToneMap::writeToImage(std::string output_path)
 {
+    percentile_index = (100.0-burnout)/100.0 * (camera_image->size/3);
+    white_point = camera_image->luminances[percentile_index];
+    black_point = camera_image->luminances[camera_image->luminances.size()-percentile_index];
     uint32_t  curr_pixel= 0;
     for(int y=0; y<camera_image->height; y++)
         for(int x=0; x<camera_image->width; x++)
         {
-            writeColour(curr_pixel, camera_image->HDRimage[curr_pixel/3]);
+            writeColour(curr_pixel, camera_image->HDRimage[curr_pixel/3],x,y);
             curr_pixel +=3;
         }
     PPM::write_ldr((output_path + imname).c_str(), image, camera_image->width,camera_image->height);
@@ -374,7 +385,7 @@ void CameraImage::writeColour(uint32_t& curr_pixel, Color& final_color)
 
 void CameraImage::writeToImage(std::string output_path)
 {
-    MinMaxLuminance();
+    compute_luminances();
     middle_gray = ComputeMiddleGray();
 
     if (outputType == OutputType::LDR)
@@ -382,9 +393,9 @@ void CameraImage::writeToImage(std::string output_path)
         for(int curr_pixel=0; curr_pixel<size; curr_pixel+=3)
         {
             Color &curr_color = HDRimage[curr_pixel/3];
-            LDRimage[curr_pixel  ]  = clamp(curr_color.r, 0, 255);
-            LDRimage[curr_pixel+1]  = clamp(curr_color.g, 0, 255);
-            LDRimage[curr_pixel+2]  = clamp(curr_color.b, 0, 255);
+            LDRimage[curr_pixel  ]  = clamp_int(curr_color.r, 0, 255);
+            LDRimage[curr_pixel+1]  = clamp_int(curr_color.g, 0, 255);
+            LDRimage[curr_pixel+2]  = clamp_int(curr_color.b, 0, 255);
         }
     }
     if (outputType == OutputType::LDR)

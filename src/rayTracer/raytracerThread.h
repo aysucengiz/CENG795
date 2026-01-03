@@ -5,8 +5,7 @@
 #ifndef CENG795_RAYTRACERTHREAD_H
 #define CENG795_RAYTRACERTHREAD_H
 
-#include "../dataTypes/object/Object.h"
-#include "../dataTypes/object/Mesh.h"
+#include "../dataTypes/object/SceneInput.h"
 #include "../dataTypes/base/SceneData.h"
 #include "../functions/helpers.h"
 #include <iostream>
@@ -80,7 +79,7 @@ public:
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray& shadow_ray, bool dist_inf);
     Color computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
-    Ray compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx, std::array<real, 2> sample) const;
+    Color getBackground(Ray& ray);
     static Color diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta);
     static Color specularTerm(const HitRecord &hit_record, const Ray &ray,Color I_R_2, Ray &shadow_ray);
 

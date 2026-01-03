@@ -9,9 +9,9 @@
 #include "../dataTypes/base/SceneData.h"
 
 bool contains(const std::string& s, const std::string& sub);
-int clamp(real c, int from, int to);
-Color clampColor(const Color c, const int from, const int to);
-real clamp(const real c, const real from, const real to);
+real clamp_real(real c, real from, real to);
+int clamp_int(real c, real from, real to);
+Color clampColor(const Color c, const real from, const real to);
 real max3(real a, real b, real c);
 real min3(real a, real b, real c);
 Vertex maxVert3(Vertex a, Vertex b, Vertex c);

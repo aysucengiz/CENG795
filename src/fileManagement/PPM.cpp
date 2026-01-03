@@ -9,6 +9,9 @@
 
 #include "stb_image.h"
 #include "stb_image_write.h"
+#define TINYEXR_IMPLEMENTATION
+#include "tinyexr.h"
+
 
 void PPM::write_ppm(const char* filename, unsigned char* data, int width, int height)
 {
@@ -44,7 +47,7 @@ void PPM::write_hdr(const char* filename, real* data, int width, int height)
 
 
 
-unsigned char* PPM::read_image(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)
+unsigned char* PPM::read_image_ldr(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)
 {
     unsigned char* data = stbi_load(filename, &width, &height, &channels_in_file, desired_channels);
 
@@ -54,4 +57,37 @@ unsigned char* PPM::read_image(const char* filename, int &width, int &height, in
     }
     return data;
 }
+
+
+float* PPM::read_image_hdr(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)
+{
+    float* data = stbi_loadf(filename, &width, &height, &channels_in_file, desired_channels);
+
+    if(!data)
+    {
+        std::cerr << "Adresin yanlış adresin. Bir kere de düzgün hallet şu adres işini seni file özürlüsü.\n";
+        std::cerr << "stbi_loadf failed: "
+                  << stbi_failure_reason() << std::endl;
+    }
+    return data;
+}
+
+float* PPM::read_image_exr(const char* filename, int &width, int &height, int &channels_in_file, int desired_channels)
+{
+    float* data;
+    const char* err = nullptr;
+
+    int ret = LoadEXR(&data, &width, &height, filename, &err);
+
+    if (ret != TINYEXR_SUCCESS) {
+        std::cerr << "EXR load failed: " << (err ? err : "unknown") << std::endl;
+        FreeEXRErrorMessage(err);
+        return nullptr;
+    }
+
+    channels_in_file = 4; // LoadEXR always returns RGBA
+    return data;
+}
+
+
 

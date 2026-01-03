@@ -7,14 +7,11 @@
 #include <memory>
 #include <deque>
 
-#include "../base/SceneData.h"
 #include "../matrix/Matrix.h"
 #include "../../fileManagement/happly.h"
 #include "../matrix/transformation.h"
 #include "../object/BBox.h"
 #include "dataTypes/texture/TextureMap.h"
-#include "../base/Camera.h"
-#include "../base/Light.h"
 
 inline bool ACCELERATE = false;
 
@@ -147,60 +144,6 @@ public:
     Texel getTexel(const Vertex& v, real time, int triID) const override;
 };
 
-
-struct SceneInput
-{
-    bool print_progress;
-    bool back_cull;
-    PivotType pt;
-    uint32_t MaxObjCount;
-    // info about image
-    unsigned char* image;
-    uint32_t MaxRecursionDepth;
-    Color BackgroundColor;
-    double ShadowRayEpsilon;
-    double IntersectionTestEpsilon;
-    SamplingType sampling_type;
-    FilterType filter_type;
-
-    uint32_t thread_group_size;
-    uint32_t thread_add_endl_after;
-
-    // materials and cam  info
-    std::vector<Material> Materials;
-    std::vector<Camera> Cameras;
-
-    // vertex info
-    std::deque<CVertex> Vertices;
-    std::deque<std::pair<int,int>> TexCoords;
-
-    // light info
-    Color AmbientLight;
-    std::vector<Light*> PointLights;
-
-    // object info
-    std::deque<Object*> objects;
-
-    // num info
-    uint32_t numCameras;
-    uint32_t numObjects;
-    uint32_t numPlanes;
-    uint32_t numLights;
-
-    // transformations
-    std::vector<std::shared_ptr<Transformation>> transforms;
-    std::vector<Texture*> textures;
-    Texture *BackgroundTexture;
-    std::vector<Image*> images;
-
-    // precomputed near plane info
-    Vec3r u;
-    Vertex q;
-    real s_u_0;
-    real s_v_0;
-};
-
-
 struct HitRecord
 {
     Vertex intersection_point;
@@ -209,6 +152,8 @@ struct HitRecord
     uint32_t currTri;
     Texel rate_of_change = Texel(0.0,0.0);
 };
+
+
 
 
 #endif //OBJECT_H

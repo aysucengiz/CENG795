@@ -10,6 +10,8 @@
 #include "../functions/helpers.h"
 #include <stack>
 
+#include "fileManagement/json.hpp"
+
 void RaytracerThread::PrintProgress()
 {
 #pragma omp atomic
@@ -215,13 +217,14 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
         for (int j = 0; j < scene.numLights; j++)
         {
             // std::array<real ,2> light_sample = {getRandom(),getRandom()};
-            Ray shadow_ray = compute_shadow_ray(hit_record, j, light_sample);
+            Ray shadow_ray = scene.PointLights[j]->compute_shadow_ray(hit_record, light_sample,scene.ShadowRayEpsilon);
             bool dist_inf = (scene.PointLights[j]->getLightType() == LightType::DIRECTIONAL);
+            dist_inf = dist_inf || (scene.PointLights[j]->getLightType() == LightType::TEXTURE);
             if (!isUnderShadow(shadow_ray,dist_inf))
             {
                 Color irradiance = scene.PointLights[j]->getIrradianceAt(
                     hit_record.normal, light_sample, shadow_ray,
-                    (hit_record.intersection_point - scene.PointLights[j]->getPos(light_sample)).mag());
+                    hit_record.intersection_point);
                 if (!irradiance.isBlack())
                 {
                     //std::cout << "Draw" << std::endl;
@@ -249,13 +252,34 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
     return curr_color;
 }
 
+Color RaytracerThread::getBackground(Ray &ray)
+{
+    if (scene.BackgroundTexture != nullptr)
+    {
+        Texel t((real)x / (real)cam.imageData->width, (real)y / (real)cam.imageData->height);
+        Vertex v(t.u, t.v, 0.0);
+        Color bg = scene.BackgroundTexture->TextureColor(v, t, 0) * 255.0;
+        // std::cout << bg << std::endl;
+        return bg;
+    }
+    else if (scene.BackgroundLight != nullptr)
+    {
+        Vertex v(0.0,0.0, 0.0);
+        Texel tex = scene.BackgroundLight->getTexel(ray.dir);
+        Color c = scene.BackgroundLight->texture.TextureColor(v,tex,0);
+        return c;
+    }
+
+    return scene.BackgroundColor;
+}
+
 
 Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample)
 {
     HitRecord hit_record;
     real t_min = INFINITY;
 
-    if (depth > scene.MaxRecursionDepth) return Color(0.0, 0.0, 0.0);
+    if (depth > scene.MaxRecursionDepth) return getBackground(ray);
     bool back_cull = m1.AbsorptionCoefficient.isBlack() ? scene.back_cull : false;
     checkObjIntersection(ray, t_min, hit_record, back_cull);
 
@@ -265,38 +289,11 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
         return computeColor(hit_record, ray, depth, m1, light_sample);
     }
 
-    if (depth == 0)
-    {
-        if (scene.BackgroundTexture != nullptr)
-        {
-            Texel t((real)x / (real)cam.imageData->width, (real)y / (real)cam.imageData->height);
-            Vertex v(t.u, t.v, 0.0);
-            Color bg = scene.BackgroundTexture->TextureColor(v, t, 0) * 255.0;
-            // std::cout << bg << std::endl;
-            return bg;
-        }
-        return scene.BackgroundColor;
-    }
-    return Color(0.0, 0.0, 0.0);
+    return getBackground(ray);
 }
 
 
-Ray RaytracerThread::compute_shadow_ray(const HitRecord& hit_record, uint32_t lightIdx,
-                                        std::array<real, 2> sample) const
-{
-    Ray shadow_ray;
-    shadow_ray.pos = hit_record.intersection_point + hit_record.normal * scene.ShadowRayEpsilon;
-    if (scene.PointLights[lightIdx]->getLightType() != LightType::DIRECTIONAL)
-    {
-        Vertex pospos = scene.PointLights[lightIdx]->getPos(sample);
-        shadow_ray.dir = pospos - shadow_ray.pos;
-    }
-    else
-    {
-        shadow_ray.dir = -dynamic_cast<DirectionalLight*>(scene.PointLights[lightIdx])->dir;
-    }
-    return shadow_ray;
-}
+
 
 
 void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit_record, bool back_cull)
@@ -477,11 +474,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Ma
 {
     if (depth > scene.MaxRecursionDepth)
     {
-        Color ac1 = m1.AbsorptionCoefficient;
-        Color eCx = Color(1.0, 1.0, 1.0);
-        if (!ac1.isBlack())
-            eCx = (-ac1 * (ray.pos - hit_record.intersection_point).mag()).exponent();
-        return eCx;
+        return getBackground(ray);
     }
     Color reflected, refracted;
     real Fr = 0.0, Ft = 1.0;
@@ -569,7 +562,7 @@ Ray RaytracerThread::reflectionRay(Ray& ray, MaterialType type, HitRecord& hit_r
 
 Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord& hit_record, const Material& m1)
 {
-    if (depth > scene.MaxRecursionDepth) return Color();
+    if (depth > scene.MaxRecursionDepth) return getBackground(ray);
     //std::cout << "Reflecting" << std::endl;
 
 

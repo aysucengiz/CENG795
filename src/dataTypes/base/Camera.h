@@ -15,15 +15,14 @@ struct CameraImage
     uint32_t height;
     std::string ImageName;
     real middle_gray;
-    real white_point;
-    real black_point;
     unsigned char *LDRimage = nullptr;
     std::vector<Color> HDRimage;
+    std::vector<real> luminances;
 
     ~CameraImage();
 
     real ComputeMiddleGray();
-    void MinMaxLuminance();
+    void compute_luminances();
     CameraImage(uint32_t width, uint32_t height, std::string imname);
 
     void writeColour(uint32_t& curr_pixel, Color& final_color);
@@ -47,12 +46,14 @@ struct CameraSamples
 
 struct ToneMap{
     unsigned char *image = nullptr;
-    CameraImage *camera_image;
+    CameraImage *camera_image = nullptr;
     std::string imname;
     TMOType tmoType;
     real gamma, bir_gamma;
     real saturation, key, burnout;
-    std::function<real(real)> tmofunc;
+    int percentile_index = 0;
+    real white_point;
+    real black_point;
     ToneMap(const std::string& cam_imname, const std::string& extension, TMOType tmo, std::array<real,2> options, real g, real s);
 
     Color gamma_correct(Color inp) const;
@@ -64,7 +65,7 @@ struct ToneMap{
 
     static real MapFilmic(real L);
     static real MapACES(real L);
-    Color tonemap(Color inp) const;
+    Color tonemap(Color inp, int x, int y) const;
     ToneMap(const ToneMap &other)
     {
         camera_image = other.camera_image;
@@ -75,10 +76,12 @@ struct ToneMap{
         saturation = other.saturation;
         key = other.key;
         burnout = other.burnout;
-        tmofunc = other.tmofunc;
+        white_point = other.white_point;
+        black_point = other.black_point;
+        percentile_index = other.percentile_index;
 
     }
-    ToneMap operator=(const ToneMap &other)
+    ToneMap& operator=(const ToneMap &other)
     {
         if (this == &other) return *this;
         camera_image = other.camera_image;
@@ -89,13 +92,15 @@ struct ToneMap{
         saturation = other.saturation;
         key = other.key;
         burnout = other.burnout;
-        tmofunc = other.tmofunc;
+        white_point = other.white_point;
+        black_point = other.black_point;
+        percentile_index = other.percentile_index;
         return *this;
 
     }
 
-    void writeColour(uint32_t curr_color, Color final_color) const;
-    void writeToImage(std::string output_path) const;
+    void writeColour(uint32_t curr_color, Color final_color, int x, int y) const;
+    void writeToImage(std::string output_path);
 };
 
 class Camera{

@@ -55,23 +55,23 @@ Vertex minVert2(Vertex a, Vertex b)
     return Vertex(std::min(a.x, b.x), std::min(a.y, b.y), std::min(a.z, b.z));
 }
 
-real clamp(const real c, const real from, const real to)
+real clamp_real(const real c, const real from, const real to)
 {
     if (c > to) return to;
     if (c < from) return from;
     return c;
 }
 
-Color clampColor(const Color c, const int from, const int to)
+Color clampColor(const Color c, const real from, const real to)
 {
     Color temp = Color(
-        clamp(c.r, from, to),
-        clamp(c.g, from, to),
-        clamp(c.b, from, to)
+        clamp_real(c.r, from, to),
+        clamp_real(c.g, from, to),
+        clamp_real(c.b, from, to)
     );
     return temp;
 }
-int clamp(const real c, const int from, const int to)
+int clamp_int(const real c, const real from, const real to)
 {
     int temp = static_cast<int>(std::round(c));
     if (temp > to) return to;

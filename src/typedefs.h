@@ -126,7 +126,8 @@ enum class DecalMode
     REPLACE_BACKGROUND,
     REPLACE_NORMAL,
     BUMP_NORMAL,
-    REPLACE_ALL
+    REPLACE_ALL,
+    LIGHT
 };
 
 enum class Interpolation
@@ -151,12 +152,14 @@ enum class TMOType
 
 enum class TextureLightType
 {
-    SPHERICAL
+    PROBE,
+    LATLONG
 };
 
 enum class Sampler
 {
-    NONE
+    COSINE,
+    UNIFORM
 };
 
 #endif //CENG795_TYPEDEFS_H

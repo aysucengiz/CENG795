@@ -45,7 +45,7 @@ public:
     real bumpFactor = 1.0;
     Texture(uint32_t i, DecalMode d) : _id(i), decalMode(d)
     {}
-    virtual Color TextureColor(const Vertex& vert, Texel& tex, real level) = 0;
+    virtual Color TextureColor(const Vertex& vert, Texel& tex, real level) const = 0;
     virtual TextureType getTextureType() = 0;
     virtual bool IsMipMapped() { return false; }
 };
@@ -64,7 +64,7 @@ public:
     Interpolation interpolation;
     Image *image;
     real normalizer;
-    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) const override;
     TextureType getTextureType() override;
     ImageTexture(uint32_t id, DecalMode d, Image *image, Interpolation interp, real normalizer);
 
@@ -108,7 +108,7 @@ public:
     {
         PerlinNoise::init();
     }
-    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) const override;
 
 };
 
@@ -121,9 +121,9 @@ public:
     real scale;
     real offset;
     CheckerTexture(uint32_t id,DecalMode d, Color bc, Color wc, real s, real offs);
-    Color TextureColor(const Vertex& vert, Texel& tex, real level) override;
-    bool IsOnWhite(real i);
-    bool IsOnWhite(Vertex vert);
+    Color TextureColor(const Vertex& vert, Texel& tex, real level) const override;
+    bool IsOnWhite(real i) const;
+    bool IsOnWhite(Vertex vert) const;
 
 };
 

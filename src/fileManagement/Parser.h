@@ -13,8 +13,7 @@
 #include "../dataTypes/object/Object.h"
 #include "../dataTypes/object/Mesh.h"
 #include "../functions/helpers.h"
-#include "../dataTypes/base/Light.h"
-#include "../dataTypes/base/Camera.h"
+#include "../dataTypes/object/SceneInput.h"
 
 #include "json.hpp"
 

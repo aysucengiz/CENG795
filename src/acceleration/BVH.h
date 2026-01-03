@@ -10,7 +10,7 @@
 
 #include "../dataTypes/object/BBox.h"
 #include "../typedefs.h"
-#include "../dataTypes/object/Object.h"
+#include "../dataTypes/object/SceneInput.h"
 
 struct alignas(32) BVHNode
 {
