@@ -51,7 +51,8 @@ public:
     Vec3r  dir;
     real coverageAngle;
     real fallOffAngle;
-    real f;
+    real cos_alpha;
+    real cos_beta;
 
     SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;

@@ -1,5 +1,5 @@
 <h1>
-  <img src="img_38.png" width="30" style="vertical-align: middle; margin-right: 8px;">
+  <img src="blog4_images/img_38.png" width="30" style="vertical-align: middle; margin-right: 8px;">
   CENG795 HW4: Fancy Wrapping Paper
 </h1>
 
@@ -206,7 +206,7 @@ I will talk about trilinear interpolation function separately.
 
 ### Debugging
 <p align="center">
-  <img src="img.png" width="400">
+  <img src="blog4_images/img.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -265,7 +265,7 @@ Also I would like to note that I am using the global vertex here instead of loca
 With VeachAjar I realized the existence of normalizer aspect. Before that, I was dividing by 255 regardless of any input.
 
 <p align="center">
-  <img src="img_22.png" width="400">
+  <img src="blog4_images/img_22.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -308,7 +308,7 @@ Let's see what is the initial result I got after coding.
 Now this, this is not correct. I don't know if you can tell.
 
 <p align="center">
-  <img src="img_2.png" width="400">
+  <img src="blog4_images/img_2.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -316,7 +316,7 @@ Probably if you squint. Anyways turns out I forgot to initialize the perlin nois
 Also, I forgot to call my convertNoise function.
 
 <p align="center">
-  <img src="img_5.png" width="400">
+  <img src="blog4_images/img_5.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -325,7 +325,7 @@ Ah yes, a lot more familiar.
 I then changed the fade function to be in the website rather than the slides and voila!
 
 <p align="center">
-  <img src="img_6.png" width="400">
+  <img src="blog4_images/img_6.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -343,18 +343,18 @@ Bonus: During debugging of VeachAjar scene I tried to localize global instance v
 (The perlin noise looks "flat"):
 
 <p align="center">
-  <img src="img_20.png" width="400">
+  <img src="blog4_images/img_20.png" width="400">
   <figcaption></figcaption>
 </p>
 
 I also wanted to try something and changed my absolute value function to return the negative of its result. I am mentioning this because I believe the result looked really cool.
 <p align="center">
-  <img src="img_28.png" width="400">
+  <img src="blog4_images/img_28.png" width="400">
   <figcaption></figcaption>
 </p>
 I was debugging because my dragon's colours more vibrant than the reference.
 <p align="center">
-  <img src="img_29.png" width="400">
+  <img src="blog4_images/img_29.png" width="400">
   <figcaption></figcaption>
 </p>
 I sadly could not find the reason to this. Maybe due to this scene having more than one octaves.
@@ -372,11 +372,11 @@ The normalization assumes that the result is in expected kd or ks interval.
 Below is a version with perlin noise background that I tried just to see.
 
 <p align="center">
-  <img src="img_10.png" width="400">
+  <img src="blog4_images/img_10.png" width="400">
   <figcaption></figcaption>
 </p>
 <p align="center">
-  <img src="img_8.png" width="400">
+  <img src="blog4_images/img_8.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -384,7 +384,7 @@ Then I tried checkerboard, which looked like this.
 It was because I was using ``viewing_ray.pos + viewing_ray.dir``. I then changed it to use the texel coordinates with `z=0`.
 
 <p align="center">
-  <img src="img_9.png" width="400">
+  <img src="blog4_images/img_9.png" width="400">
   <figcaption></figcaption>
 </p>
 
@@ -462,14 +462,14 @@ There is this ever so slight difference but let it be.
   4. Compute the new normal by subtracting `g_perp` multiplied with bump factor from the initial normal.
   
 <p align="center">
-  <img src="img_18.png" width="400">
+  <img src="blog4_images/img_18.png" width="400">
   <figcaption></figcaption>
 </p>
 
 - **Debugging Image Textures**
 <p align="center">
-  <img src="img_19.png" width="300">
-  <img src="img_12.png" width="300">
+  <img src="blog4_images/img_19.png" width="300">
+  <img src="blog4_images/img_12.png" width="300">
 </p>
 Truly an artistic rendition. You can't deny. 
 
@@ -486,8 +486,8 @@ Mine is on the left.
 
 - **Debugging Noise Textures**
 <p align="center">
-  <img src="img_16.png" width="300">
-  <img src="img_17.png" width="300">
+  <img src="blog4_images/img_16.png" width="300">
+  <img src="blog4_images/img_17.png" width="300">
 </p>
 
 The left picture was the result of me forgetting to multiply with the bump factor.
@@ -502,7 +502,7 @@ Because normalizing is a reflex at this point.
 
 Let's see what the tunnel of doom looks like-
 <p align="center">
-  <img src="img_31.png" width="400">
+  <img src="blog4_images/img_31.png" width="400">
 </p>
 
 Oh god I thought I had fixed it.
@@ -526,7 +526,7 @@ Which mimics texel coordinates I believe.
 
 This fixed it :)
 <p align="center">
-  <img src="img_32.png" width="400">
+  <img src="blog4_images/img_32.png" width="400">
 </p>
 
 
@@ -565,12 +565,12 @@ Mipmapping is handled at three different sections.
 
 Welcome to my debugging gallery. Below you can find my paintings.
 <p align="center">
-  <img src="img_33.png" width="400">
+  <img src="blog4_images/img_33.png" width="400">
 </p>
 Highway to hell.
 
 <p align="center">
-  <img src="img_34.png" width="400">
+  <img src="blog4_images/img_34.png" width="400">
 </p>
 mipmapping fractals
 

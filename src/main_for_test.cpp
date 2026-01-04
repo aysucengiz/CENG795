@@ -25,12 +25,13 @@ int main(void) {
 
     // raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_glacier.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_pisa.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/akin_aydemir/teapot_roughness/teapot_roughness.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/akin_aydemir/teapot_roughness/teapot_roughness.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point.json");
     raytracer.drawFile("jsonFiles/hw5/inputs/dragon/dragon_new_ply_with_spot.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/veach_ajar/scene.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/veach_ajar/scene.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/mirror_sphere_env.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/sphere_point_hdr_texture.json");
-    // raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
+    raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_latlong.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_light_probe.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point_hdr.json");

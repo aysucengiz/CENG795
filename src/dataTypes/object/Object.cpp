@@ -66,7 +66,7 @@ Color Object::getTextureColorAt(Vertex& pos, real time, int triID, Texel rate_of
 
 Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time,
                           int triID, Texel& rate_of_change) const
-{
+{   if (I_R_2.isBlack()) return Color(0, 0, 0);
     Texel tex = getTexel(shadow_ray.pos, time, triID);
     Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time, rate_of_change);
     Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time, rate_of_change);

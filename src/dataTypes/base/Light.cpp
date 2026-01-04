@@ -87,24 +87,32 @@ Vec3r DirectionalLight::compute_shadow_ray_dir(const Vertex& pos, const Vec3r& n
 ///////////////// SpotLight ////////////////////
 ////////////////////////////////////////////////
 
-SpotLight::SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa) : Light(id,pos,intens), dir(d), coverageAngle(ca * M_PI/360.0), fallOffAngle(foa * M_PI / 360.0)
-{}
+SpotLight::SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa) : Light(id,pos,intens), dir(d.normalize()), coverageAngle(ca * M_PI/180.0), fallOffAngle(foa * M_PI / 180.0)
+{
+    cos_alpha = cos(coverageAngle*0.5);
+    cos_beta = cos(fallOffAngle*0.5);
+}
 
 LightType SpotLight::getLightType() {return LightType::SPOT;}
 
 Color SpotLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection)
 {
-    real angle = abs(dot_product(-shadow_ray.dir.normalize(),n_surf.normalize()));
-    real dist = (Position - intersection).mag();
-    if (angle < coverageAngle) // L1
+    Vec3r normalized_shadow = shadow_ray.dir.normalize();
+    real cos_theta = dot_product(-normalized_shadow, dir);
+    Vec3r temp = (Position - intersection);
+    real dist = dot_product(temp, temp);
+    if (cos_theta > cos_alpha)
     {
-        real f = 1.0;
-        if (angle < coverageAngle) // L2
+        real f;
+        if (cos_theta > cos_beta) // L1
         {
-            real cos_alpha = cos(coverageAngle);
-            f = (cos(angle) - cos_alpha) / (cos(fallOffAngle) - cos_alpha);
+            f = 1.0;
         }
-        return Intensity/(dist*dist)*f;
+        else // L2
+        {
+            f = pow((cos_theta - cos_alpha) / (cos_beta- cos_alpha),4);
+        }
+        return Intensity*f/dist;
     }
     else // L3
     {
