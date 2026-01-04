@@ -141,6 +141,8 @@ ImageTexture::ImageTexture(uint32_t id, DecalMode d, Image* image, Interpolation
 Color ImageTexture::TextureColor(const Vertex& vert, Texel& tex, real level) const
 {
     Texel tiled = {(real)fmod(tex.u, 1.0), (real)fmod(tex.v, 1.0)};
+    while (tiled.u < 0.0) tiled.u += 1.0;
+    while (tiled.v < 0.0) tiled.v += 1.0;
     Color interpolated_color = interpolate(tiled, level);
     return interpolated_color / normalizer;
 }

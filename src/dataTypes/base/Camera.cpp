@@ -40,11 +40,16 @@ real ToneMap::TMO(real L) const
 
 real ToneMap::MapFilmic(real L)
 {
-    static real a = 0.22, b = 0.30, c = 0.10, d = 0.20, e = 0.01, f = 0.30;
-    static real e_f = e / f;
-    static real cb = c * b;
-    static real de = d * e;
-    static real df = d * f;
+    constexpr  real a = 0.22;
+    constexpr  real b = 0.30;
+    constexpr  real c = 0.10;
+    constexpr  real d = 0.20;
+    constexpr  real e = 0.01;
+    constexpr  real f = 0.30;
+    constexpr  real e_f = e / f;
+    constexpr  real cb = c * b;
+    constexpr  real de = d * e;
+    constexpr  real df = d * f;
     real num = (L * (L * a + cb)) + de;
     real den = L * (L * a + b) + df;
     return num / den - e_f;
@@ -52,7 +57,11 @@ real ToneMap::MapFilmic(real L)
 
 real ToneMap::MapACES(real L)
 {
-    static real a = 2.51, b = 0.03, c = 2.43, d = 0.59, e = 0.14;
+    constexpr  real a = 2.51;
+    constexpr  real b = 0.03;
+    constexpr  real c = 2.43;
+    constexpr  real d = 0.59;
+    constexpr  real e = 0.14;
     real num = L * (L * a + b);
     real den = L * (L * c + d) + e;
     return num / den;
@@ -60,10 +69,10 @@ real ToneMap::MapACES(real L)
 
 real CameraImage::ComputeMiddleGray()
 {
-    static real eps = 1e-6;
+    constexpr real eps = 1e-6;
     real total = 0.0;
-    int len = size / 3;
-    for (int i = 0; i < luminances.size(); i++)
+    int len = luminances.size();
+    for (int i = 0; i < len; i++)
     {
         total += log(eps + luminances[i]);
     }
@@ -85,12 +94,14 @@ void CameraImage::compute_luminances()
 
 real ToneMap::TMOFilmic(real L) const
 {
-    return MapFilmic(L) / MapFilmic(white_point);
+    if (burnout > 0) return MapFilmic(L) / MapFilmic(white_point);
+    else             return MapFilmic(L);
 }
 
 real ToneMap::TMOACES(real L) const
 {
-    return MapACES(L) / MapACES(white_point);
+    real temp_white_point = (key / camera_image->middle_gray) * white_point;
+    return MapACES(L) / MapACES(temp_white_point);
 }
 
 real ToneMap::TMOPhotographic(real L) const
@@ -113,14 +124,7 @@ Color ToneMap::gamma_correct(Color inp) const
     Color c = Color(r, g, b);
     return c;
 }
-Color ToneMap::degamma_correct(Color inp) const
-{
-    real r = pow(inp.r, gamma);
-    real g = pow(inp.g, gamma);
-    real b = pow(inp.b, gamma);
-    Color c = Color(r, g, b);
-    return c;
-}
+
 
 Color ToneMap::tonemap(Color inp, bool degam, int x, int y) const
 {
@@ -148,10 +152,10 @@ void ToneMap::writeColour(uint32_t curr_color, Color final_color, bool degam, in
 
 void ToneMap::writeToImage(std::string output_path)
 {
-    percentile_index = (100.0 - burnout) / 100.0 * (camera_image->size / 3);
+    percentile_index = (100.0 - burnout) / 100.0 * (camera_image->luminances.size()-1);
     white_point = camera_image->luminances[percentile_index];
-    white_point = (key / camera_image->middle_gray) * white_point;
-    black_point = camera_image->luminances[camera_image->luminances.size() - percentile_index];
+    std::cout << percentile_index << std::endl;
+    black_point = camera_image->luminances[camera_image->luminances.size()-1 - percentile_index];
     uint32_t curr_pixel = 0;
     for (int y = 0; y < camera_image->height; y++)
         for (int x = 0; x < camera_image->width; x++)
