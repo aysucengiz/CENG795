@@ -7,6 +7,8 @@
 #include <vector>
 #include <functional>
 
+
+
 struct CameraImage
 {
     OutputType outputType;
@@ -17,6 +19,7 @@ struct CameraImage
     real middle_gray;
     unsigned char *LDRimage = nullptr;
     std::vector<Color> HDRimage;
+    std::vector<bool> degamma;
     std::vector<real> luminances;
 
     ~CameraImage();
@@ -25,7 +28,7 @@ struct CameraImage
     void compute_luminances();
     CameraImage(uint32_t width, uint32_t height, std::string imname);
 
-    void writeColour(uint32_t& curr_pixel, Color& final_color);
+    void writeColour(uint32_t& curr_pixel, Color& final_color, bool degamma);
     void writeToImage(std::string output_path);
 };
 
@@ -57,6 +60,7 @@ struct ToneMap{
     ToneMap(const std::string& cam_imname, const std::string& extension, TMOType tmo, std::array<real,2> options, real g, real s);
 
     Color gamma_correct(Color inp) const;
+    Color degamma_correct(Color inp) const;
 
     real TMO(real L) const;
     real TMOPhotographic(real L) const;
@@ -65,7 +69,7 @@ struct ToneMap{
 
     static real MapFilmic(real L);
     static real MapACES(real L);
-    Color tonemap(Color inp, int x, int y) const;
+    Color tonemap(Color inp, bool degam, int x, int y) const;
     ToneMap(const ToneMap &other)
     {
         camera_image = other.camera_image;
@@ -99,9 +103,11 @@ struct ToneMap{
 
     }
 
-    void writeColour(uint32_t curr_color, Color final_color, int x, int y) const;
+    void writeColour(uint32_t curr_color, Color final_color, bool degam, int x, int y) const;
     void writeToImage(std::string output_path);
 };
+
+
 
 class Camera{
 public:
@@ -116,8 +122,7 @@ public:
     CameraImage *imageData;
 
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
-        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms);
-
+        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness);
     Camera(const Camera& other);
     Camera& operator=(const Camera& other);
     ~Camera(){};

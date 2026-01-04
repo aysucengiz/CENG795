@@ -13,7 +13,7 @@ DATA_FILES = $(MATRIX_FILES) $(TEXTURE_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FU
 FILE_FILES = $(wildcard src/fileManagement/*.cpp)
 PARALLEL = -fopenmp
 FLAGS = -Isrc  -O3 -std=c++20 $(PARALLEL)
-DEBUG_FLAGS = -Isrc -std=c++20  -g -O0
+DEBUG_FLAGS = -Isrc -std=c++20  -g -Og
 
 SRC_FILES = $(DATA_FILES) $(FILE_FILES) $(RAYTRACER_FILES) $(ACC_FILES)
 TEST_FILES = $(TEST_FILE) $(SRC_FILES)

@@ -142,7 +142,7 @@ void RayTracer::drawFile(std::string input_path){
 
 void RayTracer::drawAllFiles(std::string path_to_dir){
     std::string orig_out = output_path;
-    for (const auto& file: std::filesystem::directory_iterator(path_to_dir))
+    for (const auto& file: std::filesystem::recursive_directory_iterator(path_to_dir))
     {
         if (file.is_regular_file() && file.path().extension() == ".json") {
             // std::cout << output_path << "\n";
@@ -174,7 +174,7 @@ void RayTracer::drawScene(uint32_t c){
     Camera cam = scene.Cameras[camID];
     // log("Drawing " + cam.ImageName);
     auto start = std::chrono::high_resolution_clock::now();
-    scene.u = x_product(cam.Up, -cam.Gaze);
+    scene.u = cam.V;
     scene.q = cam.Position + (cam.Gaze * cam.nearDistance) + scene.u*cam.l + cam.Up*cam.t;
     scene.s_u_0 = (cam.r - cam.l) / cam.imageData->width;
     scene.s_v_0 = (cam.t - cam.b) / cam.imageData->height;

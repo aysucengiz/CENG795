@@ -21,23 +21,23 @@ int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);;
-
-
-    // raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_glacier.json");
+    raytracer.drawAllFiles("jsonFiles/hw4/inputs/veach_ajar/");
+    raytracer.drawFile("jsonFiles/hw5/inputs/head_env_light.json");
+    raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_glacier.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point_hdr.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_pisa.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/akin_aydemir/teapot_roughness/teapot_roughness.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/dragon/dragon_new_ply_with_spot.json");
-    // raytracer.drawFile("jsonFiles/hw5/inputs/veach_ajar/scene.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/dragon/dragon_new_ply_with_spot.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/mirror_sphere_env.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/veach_ajar/scene.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/sphere_point_hdr_texture.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_latlong.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_light_probe.json");
-    // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point_hdr.json");
     return 0;
     // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nearest_bilinear.json");
-    // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nea""rest_trilinear.json");
+    // raytracer.drawFile("jsonFiles/hw4/inputs/sphere_nearest_trilinear.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/plane_trilinear.json");
    // raytracer.drawFile("jsonFiles/hw4/inputs/killeroo_bump_walls.json");
     // raytracer.drawFile("jsonFiles/hw4/inputs/dragon/dragon_new_ply.json");

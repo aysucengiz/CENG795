@@ -41,6 +41,7 @@ struct Material{
     real RefractionIndex;
     real AbsorptionIndex;
     real Roughness;
+    bool degamma;
 
     Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
         std::string type = "",
@@ -48,7 +49,8 @@ struct Material{
         Color ac = Color(1.0,1.0,1.0),
         real refrIndex = 1.0,
         real ai = 0,
-        real r = 0.0);
+        real r = 0.0,
+        std::string degam = "false");
 };
 
 

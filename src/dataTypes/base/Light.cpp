@@ -147,8 +147,8 @@ Color TextureLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ra
         break;
     case Sampler::COSINE:
         {
-            real theta = dot_product(n_surf.normalize(),shadow_ray.dir.normalize());
-            p_d  = cos(theta)/M_PI;
+            real cos_theta = dot_product(n_surf.normalize(),shadow_ray.dir.normalize());
+            p_d  = cos_theta/M_PI;
         }
         break;
     }
@@ -159,15 +159,51 @@ Color TextureLight::getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ra
 
 Vec3r TextureLight::getRandomVec(const Vec3r &norm) const
 {
-    Vec3r vec = Vec3r(1.0,1.0,1.0);
-    while (vec.mag() > 1.0 || dot_product(norm,vec) < 0.0)
+    Vec3r l = Vec3r(1.0,1.0,1.0);
+    switch (sampler)
     {
-        real e1 = getRandom()*2-1.0;
-        real e2 = getRandom()*2-1.0;
-        real e3 = getRandom()*2-1.0;
-        vec = Vec3r(e1,e2,e3);
+    case Sampler::UNIFORM:
+        {
+            std::pair<Vec3r,Vec3r> res = getONB(norm); // first: T, second: B
+            Vec3r u = res.first;
+            Vec3r v = res.second;
+            real ksi1 = getRandom();
+            real ksi2 = getRandom();
+            real sqrt_one_ksi1 = sqrt(1-ksi1*ksi1);
+            real angle_ksi2 = ksi2 * 2 * M_PI;
+            Vec3r u_element = u * sqrt_one_ksi1 *cos(angle_ksi2);
+            Vec3r v_element = v * sqrt_one_ksi1 *sin(angle_ksi2);
+            Vec3r n_element = norm * ksi1;
+            l = u_element + v_element + n_element;
+        }
+        break;
+    case Sampler::COSINE:
+        {
+            std::pair<Vec3r,Vec3r> res = getONB(norm); // first: T, second: B
+            Vec3r u = res.first;
+            Vec3r v = res.second;
+            real ksi1 = getRandom();
+            real ksi2 = getRandom();
+            real sqrt_ksi1 = sqrt(ksi1);
+            real angle_ksi2 = ksi2 * 2 * M_PI;
+            Vec3r u_element = u * sqrt_ksi1 *cos(angle_ksi2);
+            Vec3r v_element = v * sqrt_ksi1 *sin(angle_ksi2);
+            Vec3r n_element = norm * sqrt(1-ksi1);
+            l = u_element + v_element + n_element;
+        }
+        break;
+    default: // random
+        while (l.mag() > 1.0 || dot_product(norm,l) < 0.0)
+        {
+            real e1 = getRandom()*2-1.0;
+            real e2 = getRandom()*2-1.0;
+            real e3 = getRandom()*2-1.0;
+            l = Vec3r(e1,e2,e3);
+        }
+        break;
     }
-    return vec;
+
+    return l;
 }
 Texel TextureLight::getTexel(const Vec3r &vec) const
 {

@@ -124,6 +124,7 @@ void RaytracerThread::drawPixel(uint32_t& curr_pixel)
     std::shuffle(sampleIdxTime.begin(), sampleIdxTime.end(), gRandomGeneratorT);
     std::mt19937 gRandomGeneratorG(237 + x + y);
     std::shuffle(sampleIdxGlossy.begin(), sampleIdxGlossy.end(), gRandomGeneratorG);
+    degamma = false;
     for (sampleIdx = 0; sampleIdx < cam.sampleData->numSamples; sampleIdx++)
     {
         viewing_ray = computeViewingRay(x, y);
@@ -131,7 +132,7 @@ void RaytracerThread::drawPixel(uint32_t& curr_pixel)
     }
 
     Color final_color = Filter(colors, cam.sampleData->samplesPixel);
-    cam.imageData->writeColour(curr_pixel, final_color);
+    cam.imageData->writeColour(curr_pixel, final_color, degamma);
 }
 
 
@@ -234,6 +235,7 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
 
                     curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray,
                                                               time, hit_record.currTri, hit_record.rate_of_change);
+                    degamma = degamma || hit_record.obj->material.degamma;
                     Color ac1 = m1.AbsorptionCoefficient;
                     if (!ac1.isBlack())
                     {

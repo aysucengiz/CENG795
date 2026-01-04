@@ -141,6 +141,7 @@ enum class OutputType
 {
     LDR,
     HDR,
+    EXR
 };
 
 enum class TMOType
@@ -158,6 +159,7 @@ enum class TextureLightType
 
 enum class Sampler
 {
+    RANDOM,
     COSINE,
     UNIFORM
 };

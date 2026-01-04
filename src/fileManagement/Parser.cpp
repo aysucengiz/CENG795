@@ -36,7 +36,7 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     json inp = getJsonDataFromFile(inpFile);
     std::string root = inpFile.substr(0, inpFile.find_last_of('/')) + "/";
     if (root.starts_with(inpFile)) root = "";
-    std::cout << "root: " << root << std::endl;
+    // std::cout << "root: " << root << std::endl;
 
     if (PRINTINIT) std::cout << "Scene Input: " << std::endl;
 
@@ -215,7 +215,7 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
         std::string tstr = light.contains("_type") ? light["_type"] : "latlong";
         TextureLightType tip = tstr == "latlong" ? TextureLightType::LATLONG : TextureLightType::PROBE;
 
-        std::string sstr = light.contains("sampler") ? light["sample"] : "uniform";
+        std::string sstr = light.contains("Sampler") ? light["Sampler"] : "cosine";
         Sampler samp = sstr == "uniform" ? Sampler::UNIFORM : Sampler::COSINE;
 
         pl = new TextureLight(
@@ -501,7 +501,8 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         Cameras.contains("FocusDistance") ? std::stod(Cameras["FocusDistance"].get<std::string>()) : 0.0,
         Cameras.contains("ApertureSize") ? std::stod(Cameras["ApertureSize"].get<std::string>()) : 0.0,
         sceneInput.sampling_type,
-        tonemaps
+        tonemaps,
+        Cameras.contains("_handedness") ? Cameras["_handedness"].get<std::string>() : "right"
     ));
     if (PRINTINIT) std::cout << sceneInput.Cameras[sceneInput.Cameras.size()] << std::endl;
 }
@@ -568,7 +569,8 @@ void Parser::addMaterial(json inp, SceneInput& sceneInput)
         inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
         inp.contains("RefractionIndex") ? std::stod(inp["RefractionIndex"].get<std::string>()) : 0.0,
         inp.contains("AbsorptionIndex") ? std::stod(inp["AbsorptionIndex"].get<std::string>()) : 0.0,
-        inp.contains("Roughness") ? std::stod(inp["Roughness"].get<std::string>()) : 0.0
+        inp.contains("Roughness") ? std::stod(inp["Roughness"].get<std::string>()) : 0.0,
+        inp.contains("_degamma") ? inp["_degamma"].get<std::string>() : "false"
     );
     sceneInput.Materials.push_back(m);
 

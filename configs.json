@@ -15,7 +15,7 @@
         "ThreadEndlAfter": 8000
       },
       "Logger": {
-        "LogToFile": false,
+        "LogToFile": true,
         "LogToConsole": true,
         "LogDir": "logs/"
       }
