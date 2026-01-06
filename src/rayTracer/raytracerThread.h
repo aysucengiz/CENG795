@@ -28,7 +28,6 @@ private:
     int sampleIdx;
     real time;
     int x,y;
-    bool degamma = false;
 
     // for recursive refraction
     //real n1;

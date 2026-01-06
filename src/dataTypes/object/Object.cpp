@@ -99,6 +99,12 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, r
             break;
         }
     }
+    if (material.degamma)
+    {
+        kd.r = pow(kd.r,2.2);
+        kd.g = pow(kd.g,2.2);
+        kd.b = pow(kd.b,2.2);
+    }
     return kd * cos_theta * I_R_2;
 }
 
@@ -119,7 +125,12 @@ Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
     Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
     real cos_alpha = dot_product(normal, h);
     if (cos_alpha < 0) return Color(0.0, 0.0, 0.0);
-
+    if (material.degamma)
+    {
+        ks.r = pow(ks.r,2.2);
+        ks.g = pow(ks.g,2.2);
+        ks.b = pow(ks.b,2.2);
+    }
     return ks * I_R_2 * pow(cos_alpha, material.PhongExponent);
 }
 

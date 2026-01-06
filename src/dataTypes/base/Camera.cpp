@@ -94,14 +94,12 @@ void CameraImage::compute_luminances()
 
 real ToneMap::TMOFilmic(real L) const
 {
-    if (burnout > 0) return MapFilmic(L) / MapFilmic(white_point);
-    else             return MapFilmic(L);
+    return MapFilmic(L) / MapFilmic(white_point);
 }
 
 real ToneMap::TMOACES(real L) const
 {
-    real temp_white_point = (key / camera_image->middle_gray) * white_point;
-    return MapACES(L) / MapACES(temp_white_point);
+    return MapACES(L) / MapACES(white_point);
 }
 
 real ToneMap::TMOPhotographic(real L) const
@@ -126,25 +124,22 @@ Color ToneMap::gamma_correct(Color inp) const
 }
 
 
-Color ToneMap::tonemap(Color inp, bool degam, int x, int y) const
+Color ToneMap::tonemap(Color inp, int x, int y) const
 {
     real Yi = luminance(inp);
     real Yi_keyed = (key / camera_image->middle_gray) * Yi;
     real Yo = TMO(Yi_keyed);
     Color final_color = inverseLuminance(inp, Yi, Yo, saturation);
     final_color = clampColor(final_color, 0.0, 1.0);
-    if (!degam)
-    {
     final_color = gamma_correct(final_color);
-    }
     final_color = final_color * 255.0;
     Color final = Color(std::round(final_color.r), std::round(final_color.g), std::round(final_color.b));
     return final;
 }
 
-void ToneMap::writeColour(uint32_t curr_color, Color final_color, bool degam, int x, int y) const
+void ToneMap::writeColour(uint32_t curr_color, Color final_color, int x, int y) const
 {
-    Color tonemapped = tonemap(final_color, degam, x, y);
+    Color tonemapped = tonemap(final_color, x, y);
     image[curr_color] = tonemapped.r;
     image[curr_color + 1] = tonemapped.g;
     image[curr_color + 2] = tonemapped.b;
@@ -154,13 +149,14 @@ void ToneMap::writeToImage(std::string output_path)
 {
     percentile_index = (100.0 - burnout) / 100.0 * (camera_image->luminances.size()-1);
     white_point = camera_image->luminances[percentile_index];
+    white_point = (key / camera_image->middle_gray) * white_point;
     std::cout << percentile_index << std::endl;
     black_point = camera_image->luminances[camera_image->luminances.size()-1 - percentile_index];
     uint32_t curr_pixel = 0;
     for (int y = 0; y < camera_image->height; y++)
         for (int x = 0; x < camera_image->width; x++)
         {
-            writeColour(curr_pixel, camera_image->HDRimage[curr_pixel / 3], camera_image->degamma[curr_pixel / 3], x,
+            writeColour(curr_pixel, camera_image->HDRimage[curr_pixel / 3], x,
                         y);
             curr_pixel += 3;
         }
@@ -173,7 +169,6 @@ CameraImage::CameraImage(uint32_t width, uint32_t height, std::string imname) : 
 {
     size = width * height * 3;
     HDRimage.resize(size / 3);
-    degamma.resize(size / 3, false);
     if (contains(imname, ".hdr")) outputType = OutputType::HDR;
     else if (contains(imname, ".exr")) outputType = OutputType::EXR;
     else
@@ -393,10 +388,9 @@ Vertex Camera::getPos(int i) const
 }
 
 
-void CameraImage::writeColour(uint32_t& curr_pixel, Color& final_color, bool degam)
+void CameraImage::writeColour(uint32_t& curr_pixel, Color& final_color)
 {
     HDRimage[curr_pixel] = final_color;
-    degamma[curr_pixel] = degam;
     curr_pixel++;
 }
 
