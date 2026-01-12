@@ -9,6 +9,12 @@
 
 typedef float real;
 
+enum class TraceType
+{
+    RAY,
+    PATH
+};
+
 enum class MaterialType
 {
     NONE,

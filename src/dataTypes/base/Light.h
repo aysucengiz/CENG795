@@ -15,6 +15,7 @@ public:
     virtual LightType getLightType();
     virtual Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection);
     virtual Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const;
+    virtual bool checkIntersection(Ray &ray);
     Ray compute_shadow_ray(const HitRecord& hit_record,  std::array<real, 2> sample, real shadowRayEpsilon) const;
 };
 
@@ -32,6 +33,7 @@ public:
     AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real Size);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
+    bool checkIntersection(Ray &ray) override;
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
 };
 
@@ -42,6 +44,7 @@ public:
     DirectionalLight(uint32_t id, Color intens, Vec3r d);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
+    bool checkIntersection(Ray &ray) override;
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
 };
 
@@ -57,6 +60,7 @@ public:
     SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
     Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
+    bool checkIntersection(Ray &ray) override;
 };
 
 
@@ -74,6 +78,14 @@ public:
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
     Vec3r getRandomVec(const Vec3r& norm) const;
     Texel getTexel(const Vec3r& vec) const;
+    bool checkIntersection(Ray &ray) override {return true;}
+};
+
+class ObjectLight : public Light
+{
+    ObjectLight(uint32_t i, Color r, Object* o);
+    bool checkIntersection(Ray &ray) override { return object->checkIntersection(r,t_min,true,back_cull,time,INFINITY);}
+    Object *object;
 };
 
 #endif // CENG795_LIGHT_H

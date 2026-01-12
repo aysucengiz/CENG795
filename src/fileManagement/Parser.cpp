@@ -558,14 +558,15 @@ Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<
 
 void Parser::addMaterial(json inp, SceneInput& sceneInput)
 {
+    std::string type = inp.contains("_type") ? inp["_type"].get<std::string>() : "";
     Material m(
         std::stoi(inp["_id"].get<std::string>()) - 1,
         Color(inp["AmbientReflectance"]),
         Color(inp["DiffuseReflectance"]),
         Color(inp["SpecularReflectance"]),
         inp.contains("PhongExponent") ? std::stoi(inp["PhongExponent"].get<std::string>()) : 1.0,
-        inp.contains("_type") ? inp["_type"].get<std::string>() : "",
-        inp.contains("MirrorReflectance") ? Color(inp["MirrorReflectance"]) : Color(),
+        type,
+        (type == "mirror" && inp.contains("MirrorReflectance")) ? Color(inp["MirrorReflectance"]) : Color(),
         inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
         inp.contains("RefractionIndex") ? std::stod(inp["RefractionIndex"].get<std::string>()) : 0.0,
         inp.contains("AbsorptionIndex") ? std::stod(inp["AbsorptionIndex"].get<std::string>()) : 0.0,

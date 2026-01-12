@@ -11,6 +11,7 @@
 
 struct SceneInput
 {
+    ThreadType thread_type;
     bool print_progress;
     bool back_cull;
     PivotType pt;

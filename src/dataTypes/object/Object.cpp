@@ -75,7 +75,6 @@ Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, cons
 
 Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time, Texel rate_of_change) const
 {
-    Vertex v = getLocal(vert, time);
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
     {
@@ -88,7 +87,7 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, r
             level = 0.5 * log2(a * a + b * b);
         }
 
-        Color tex_col = DiffuseTexture->TextureColor(v, t, level);
+        Color tex_col = DiffuseTexture->TextureColor(vert, t, level);
         switch (DiffuseTexture->decalMode)
         {
         case DecalMode::REPLACE_KD:

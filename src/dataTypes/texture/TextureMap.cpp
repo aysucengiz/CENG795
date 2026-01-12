@@ -286,7 +286,7 @@ Color CheckerTexture::TextureColor(const Vertex& vert, Texel& tex, real level) c
 bool CheckerTexture::IsOnWhite(real i) const
 {
     real place = (i + offset) * scale;
-    return ((int)std::floor(place) & 1) == 1;
+    return ((int)std::floor(place) & 1);
 }
 
 bool CheckerTexture::IsOnWhite(Vertex vert) const
@@ -294,6 +294,6 @@ bool CheckerTexture::IsOnWhite(Vertex vert) const
     bool X = IsOnWhite(vert.x);
     bool Y = IsOnWhite(vert.y);
     bool Z = IsOnWhite(vert.z);
-    bool xorXY = X ^ Y;
+    bool xorXY = (X != Y);
     return xorXY == Z;
 }

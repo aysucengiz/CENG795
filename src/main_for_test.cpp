@@ -21,7 +21,8 @@ int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);;
-    raytracer.drawAllFiles("jsonFiles/hw5/inputs/");
+    raytracer.drawAllFiles("jsonFiles/hw4/inputs/veach_ajar/");
+    raytracer.drawAllFiles("jsonFiles/hw5/inputs/veach_ajar/");
     // raytracer.drawFile("jsonFiles/hw5/inputs/head_env_light.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/tt/scene_glacier.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/cube_point_hdr.json");
@@ -32,7 +33,7 @@ int main(void) {
     // raytracer.drawFile("jsonFiles/hw5/inputs/mirror_sphere_env.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/veach_ajar/scene.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/sphere_point_hdr_texture.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
+    // raytracer.drawFile("jsonFiles/hw5/inputs/dragon_spot_light_msaa.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_latlong.json");
     // raytracer.drawFile("jsonFiles/hw5/inputs/empty_environment_light_probe.json");
     return 0;
