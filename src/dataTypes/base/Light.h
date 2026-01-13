@@ -13,9 +13,8 @@ public:
 
     Light(uint32_t id, Vertex pos, Color intens);
     virtual LightType getLightType();
-    virtual Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection);
+    virtual Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection);
     virtual Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const;
-    virtual bool checkIntersection(Ray &ray);
     Ray compute_shadow_ray(const HitRecord& hit_record,  std::array<real, 2> sample, real shadowRayEpsilon) const;
 };
 
@@ -31,20 +30,17 @@ public:
 
 
     AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real Size);
-    Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
+    Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
-    bool checkIntersection(Ray &ray) override;
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
 };
-
 class DirectionalLight : public Light
 {
 public:
     Vec3r  dir;
     DirectionalLight(uint32_t id, Color intens, Vec3r d);
-    Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
+    Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
-    bool checkIntersection(Ray &ray) override;
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
 };
 
@@ -58,7 +54,7 @@ public:
     real cos_beta;
 
     SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
-    Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
+    Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
     bool checkIntersection(Ray &ray) override;
 };
@@ -73,7 +69,7 @@ public:
     Sampler sampler;
 
     TextureLight(uint32_t id, Image* im, Sampler s, TextureLightType type);
-    Color getIrradianceAt(Vec3r n_surf, std::array<real, 2> sample, Ray& shadow_ray, const Vertex& intersection) override;
+    Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
     Vec3r getRandomVec(const Vec3r& norm) const;
@@ -81,11 +77,22 @@ public:
     bool checkIntersection(Ray &ray) override {return true;}
 };
 
-class ObjectLight : public Light
+
+
+class AreaLightObject : public AreaLight, public Object
+{
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
+
+    bool isLuminous() const override {return true;}
+};
+
+
+class ObjectLight : public Light, public Instance
 {
     ObjectLight(uint32_t i, Color r, Object* o);
-    bool checkIntersection(Ray &ray) override { return object->checkIntersection(r,t_min,true,back_cull,time,INFINITY);}
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Object *object;
+    bool isLuminous() const override {return true;}
 };
 
 #endif // CENG795_LIGHT_H

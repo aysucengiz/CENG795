@@ -57,7 +57,7 @@ void RaytracerThread::drawBatch(uint32_t start_idx, uint32_t w, uint32_t h)
         {
             x = lx;
             // if (x==466 && y==457)
-                drawPixel(curr_pixel);
+            drawPixel(curr_pixel);
         }
         curr_pixel += allw_batch;
     }
@@ -108,8 +108,6 @@ Color RaytracerThread::Filter(std::vector<Color>& colors, const std::vector<std:
 }
 
 
-
-
 void RaytracerThread::drawPixel(uint32_t& curr_pixel)
 {
     std::vector<Color> colors;
@@ -140,7 +138,8 @@ Ray RaytracerThread::computeViewingRay(int x_loc, int y_loc)
     Ray viewing_ray;
     real s_u, s_v;
     s_u = (x_loc + cam.sampleData->samplesPixel[sampleIdxPixel[sampleIdx]][0]) * (cam.r - cam.l) / cam.imageData->width;
-    s_v = (y_loc + cam.sampleData->samplesPixel[sampleIdxPixel[sampleIdx]][1]) * (cam.t - cam.b) / cam.imageData->height;
+    s_v = (y_loc + cam.sampleData->samplesPixel[sampleIdxPixel[sampleIdx]][1]) * (cam.t - cam.b) / cam.imageData->
+        height;
     Vertex s = scene.q + scene.u * s_u - cam.Up * s_v;
 
     viewing_ray.pos = cam.getPos(sampleIdx);
@@ -168,25 +167,57 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray, bool dist_inf)
 
     if (ACCELERATE)
     {
-        if (bvh.traverse(shadow_ray, t_min, scene.objects, true, false, time,dist).obj != nullptr)
+        if (bvh.traverse(shadow_ray, t_min, scene.objects, true, false, time, dist).obj != nullptr)
             return true;
     }
     else
     {
         for (int j = 0; j < scene.numObjects; j++)
         {
-            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time,dist).obj != nullptr)
+            if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time, dist).obj != nullptr)
                 return true;
         }
     }
 
     for (int j = scene.numObjects; j < scene.numPlanes; j++)
     {
-        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time,dist).obj != nullptr)
+        if (scene.objects[j]->checkIntersection(shadow_ray, t_min, true, false, time, dist).obj != nullptr)
             return true;
     }
     return false;
 }
+
+Color RaytracerThread::getColourFromLight(Light *light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const
+                                          Material& m1)
+{
+    Color curr_color = Color(0, 0, 0);
+    Color irradiance = light->getIrradianceAt(
+        hit_record.normal, shadow_ray, hit_record.intersection_point);
+    if (!irradiance.isBlack())
+    {
+        //std::cout << "Draw" << std::endl;
+
+        real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
+
+
+        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray,
+                                                  time, hit_record.currTri, hit_record.rate_of_change);
+
+        Color ac1 = m1.AbsorptionCoefficient;
+        if (!ac1.isBlack())
+        {
+            Color eCx = (-ac1 * (ray.pos - hit_record.intersection_point).mag()).exponent();
+            curr_color = curr_color * eCx;
+            // std::cout << eCx << " " << ac1 << " " << air.AbsorptionCoefficient <<std::endl;
+        }
+    } // else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
+
+    // curr_color.r = hit_record.normal.i * 255.0;
+    // curr_color.g = hit_record.normal.j * 255.0;
+    // curr_color.b = hit_record.normal.k * 255.0;
+    return curr_color;
+}
+
 
 Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1,
                                     const std::array<real, 2>& light_sample)
@@ -196,11 +227,11 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
     //     std::cout << hit_record.obj->_id << std::endl;
     if (hit_record.obj->AllTexture != nullptr)
     {
-        return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri, hit_record.rate_of_change);
+        return hit_record.obj->getTextureColorAt(hit_record.intersection_point, time, hit_record.currTri,
+                                                 hit_record.rate_of_change);
     }
-    Color curr_color;
+    Color curr_color = Color(0.0,0.0,0.0);
     Material& m = hit_record.obj->material;
-    curr_color = scene.AmbientLight * m.AmbientReflectance;
     if (m.materialType == MaterialType::MIRROR || m.materialType == MaterialType::CONDUCTOR)
     {
         curr_color += reflect(ray, depth, m.materialType, hit_record, m1);
@@ -212,48 +243,44 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
         else
             curr_color += refract(ray, depth, m1, air, hit_record);
     }
-
+    // if (scene.trace_type == TraceType::RAY) // TODO: point lightları nasıl samplelıyoruz?
     {
+        curr_color += scene.AmbientLight * m.AmbientReflectance;
         for (int j = 0; j < scene.numLights; j++)
         {
             // std::array<real ,2> light_sample = {getRandom(),getRandom()};
-            Ray shadow_ray = scene.PointLights[j]->compute_shadow_ray(hit_record, light_sample,scene.ShadowRayEpsilon);
+            Ray shadow_ray = scene.PointLights[j]->compute_shadow_ray(hit_record, light_sample, scene.ShadowRayEpsilon);
             bool dist_inf = (scene.PointLights[j]->getLightType() == LightType::DIRECTIONAL);
             dist_inf = dist_inf || (scene.PointLights[j]->getLightType() == LightType::TEXTURE);
-            if (!isUnderShadow(shadow_ray,dist_inf))
+            if (!isUnderShadow(shadow_ray, dist_inf))
             {
-                Color irradiance = scene.PointLights[j]->getIrradianceAt(
-                    hit_record.normal, light_sample, shadow_ray,
-                    hit_record.intersection_point);
-                if (!irradiance.isBlack())
-                {
-                    //std::cout << "Draw" << std::endl;
-
-                    real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-
-
-                    curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray,
-                                                              time, hit_record.currTri, hit_record.rate_of_change);
-
-                    Color ac1 = m1.AbsorptionCoefficient;
-                    if (!ac1.isBlack())
-                    {
-                        Color eCx = (-ac1 * (ray.pos - hit_record.intersection_point).mag()).exponent();
-                        curr_color = curr_color * eCx;
-                        // std::cout << eCx << " " << ac1 << " " << air.AbsorptionCoefficient <<std::endl;
-                    }
-                } // else std::cout << cos_theta << " " <<hit_record.normal  << std::endl;
-
-                // curr_color.r = hit_record.normal.i * 255.0;
-                // curr_color.g = hit_record.normal.j * 255.0;
-                // curr_color.b = hit_record.normal.k * 255.0;
+                curr_color += getColourFromLight(scene.PointLights[j],hit_record,shadow_ray,ray,m1);
             }
         }
+    }
+    if (scene.trace_type == TraceType::PATH)
+    {
+        if (hit_record.obj->isLuminous())
+        {
+            Ray shadow_ray;
+            shadow_ray.pos = ray.pos;
+            shadow_ray.dir = hit_record.intersection_point - ray.pos;
+            Light *obj_light = dynamic_cast<Light*>(hit_record.obj);
+            curr_color += getColourFromLight(obj_light,hit_record,shadow_ray,ray,m1);
+        }
+        else
+        {
+            Ray bounced_ray;
+            bounced_ray.pos = hit_record.intersection_point;
+            bounced_ray.dir = getBouncedRayDir();
+            return followRay(bounced_ray, depth+1,m1, light_sample); // TODO: samplea gerek yok di mi
+        }
+
     }
     return curr_color;
 }
 
-Color RaytracerThread::getBackground(Ray &ray)
+Color RaytracerThread::getBackground(Ray& ray)
 {
     if (scene.BackgroundTexture != nullptr)
     {
@@ -265,9 +292,9 @@ Color RaytracerThread::getBackground(Ray &ray)
     }
     else if (scene.BackgroundLight != nullptr)
     {
-        Vertex v(0.0,0.0, 0.0);
+        Vertex v(0.0, 0.0, 0.0);
         Texel tex = scene.BackgroundLight->getTexel(ray.dir);
-        Color c = scene.BackgroundLight->texture.TextureColor(v,tex,0);
+        Color c = scene.BackgroundLight->texture.TextureColor(v, tex, 0);
         return c;
     }
 
@@ -280,7 +307,7 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
     HitRecord hit_record;
     real t_min = INFINITY;
 
-    if (depth > scene.MaxRecursionDepth) return getBackground(ray);
+    if (depth > cam.MaxRecursionDepth) return getBackground(ray);
     bool back_cull = m1.AbsorptionCoefficient.isBlack() ? scene.back_cull : false;
     checkObjIntersection(ray, t_min, hit_record, back_cull);
 
@@ -292,9 +319,6 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
 
     return getBackground(ray);
 }
-
-
-
 
 
 void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit_record, bool back_cull)
@@ -353,19 +377,18 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
             || (hit_record.obj->NormalTexture != nullptr && hit_record.obj->NormalTexture->IsMipMapped())
             || (hit_record.obj->AllTexture != nullptr && hit_record.obj->AllTexture->IsMipMapped()))
         {
-
             const Vertex& a = hit_record.intersection_point;
             const Vec3r& n = hit_record.normal;
             Vec3r T, B;
-            hit_record.obj->getBitan(hit_record.intersection_point,T,B,hit_record.currTri,false, time);
-            Texel dUV_i(0.0,0.0);
-            Texel dUV_j(0.0,0.0);
+            hit_record.obj->getBitan(hit_record.intersection_point, T, B, hit_record.currTri, false, time);
+            Texel dUV_i(0.0, 0.0);
+            Texel dUV_j(0.0, 0.0);
 
             Ray dx = computeViewingRay(x + 1, y);
             Ray dy = computeViewingRay(x, y + 1);
 
-            real tx = dot_product(n, a - dx.pos)/dot_product(n,dx.dir);
-            real ty = dot_product(n, a - dy.pos)/dot_product(n,dy.dir);
+            real tx = dot_product(n, a - dx.pos) / dot_product(n, dx.dir);
+            real ty = dot_product(n, a - dy.pos) / dot_product(n, dy.dir);
 
             Vertex ax = dx.pos + dx.dir * tx;
             Vertex ay = dy.pos + dy.dir * ty;
@@ -386,7 +409,7 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
             std::array<std::array<real, 2>, 2> A{}, invA{};
             std::array<real, 2> dP_di_2;
             std::array<real, 2> dP_dj_2;
-            std::array<Axes,2> use;
+            std::array<Axes, 2> use;
 
             use[0] = discarded != Axes::x ? Axes::x : Axes::y;
             use[1] = discarded != Axes::y ? Axes::y : Axes::z;
@@ -394,8 +417,8 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
             dP_di_2[0] = dP_di[use[0]];
             dP_di_2[1] = dP_di[use[1]];
 
-            dP_dj_2[0] =  dP_dj[use[0]];
-            dP_dj_2[1] =  dP_dj[use[1]];
+            dP_dj_2[0] = dP_dj[use[0]];
+            dP_dj_2[1] = dP_dj[use[1]];
 
             A = {
                 T[use[0]], B[use[0]],
@@ -404,19 +427,19 @@ void RaytracerThread::checkObjIntersection(Ray& ray, real& t_min, HitRecord& hit
 
             real detA = 1 / (A[0][0] * A[1][1] - A[0][1] * A[1][0]);
 
-            invA ={
-                detA * A[1][1], -detA*A[1][0],
-                -detA*A[0][1],  detA*A[0][0],
+            invA = {
+                detA * A[1][1], -detA * A[1][0],
+                -detA * A[0][1], detA * A[0][0],
             };
 
-            dUV_i.u = invA[0][0]*dP_di_2[0] + invA[0][1]*dP_di_2[1];
-            dUV_i.v = invA[1][0]*dP_di_2[0] + invA[1][1]*dP_di_2[1];
+            dUV_i.u = invA[0][0] * dP_di_2[0] + invA[0][1] * dP_di_2[1];
+            dUV_i.v = invA[1][0] * dP_di_2[0] + invA[1][1] * dP_di_2[1];
 
-            dUV_j.u = invA[0][0]*dP_dj_2[0] + invA[0][1]*dP_dj_2[1];
-            dUV_j.v = invA[1][0]*dP_dj_2[0] + invA[1][1]*dP_dj_2[1];
+            dUV_j.u = invA[0][0] * dP_dj_2[0] + invA[0][1] * dP_dj_2[1];
+            dUV_j.v = invA[1][0] * dP_dj_2[0] + invA[1][1] * dP_dj_2[1];
 
-            real mag_i = dUV_i.v*dUV_i.v + dUV_i.u*dUV_i.u;
-            real mag_j = dUV_j.v*dUV_j.v + dUV_j.u*dUV_j.u;
+            real mag_i = dUV_i.v * dUV_i.v + dUV_i.u * dUV_i.u;
+            real mag_j = dUV_j.v * dUV_j.v + dUV_j.u * dUV_j.u;
 
             hit_record.rate_of_change = dUV_j;
 
@@ -473,7 +496,7 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
 
 Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Material& m2, HitRecord& hit_record)
 {
-    if (depth > scene.MaxRecursionDepth)
+    if (depth > cam.MaxRecursionDepth)
     {
         return getBackground(ray);
     }
@@ -563,7 +586,7 @@ Ray RaytracerThread::reflectionRay(Ray& ray, MaterialType type, HitRecord& hit_r
 
 Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord& hit_record, const Material& m1)
 {
-    if (depth > scene.MaxRecursionDepth) return getBackground(ray);
+    if (depth > cam.MaxRecursionDepth) return getBackground(ray);
     //std::cout << "Reflecting" << std::endl;
 
 

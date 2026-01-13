@@ -34,6 +34,7 @@ public:
     Texture *NormalTexture;
     Texture *AllTexture;
     bool visible;
+    virtual bool isLuminous() const {return false;}
     virtual ObjectType getObjectType() const = 0;
     virtual intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;

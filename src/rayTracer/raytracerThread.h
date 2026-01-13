@@ -78,6 +78,7 @@ public:
     Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray& shadow_ray, bool dist_inf);
+    Color getColourFromLight(Light* light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const Material& m1);
     Color computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     Color getBackground(Ray& ray);
     static Color diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta);

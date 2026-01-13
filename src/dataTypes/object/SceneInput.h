@@ -11,13 +11,17 @@
 
 struct SceneInput
 {
-    ThreadType thread_type;
+    TraceType trace_type;
+    bool NEE = false;
+    bool importance_sampling = false;
+    bool MIS_BALANCE = false;
+    bool russian_roulette = false;
+
     bool print_progress;
     bool back_cull;
     PivotType pt;
     uint32_t MaxObjCount;
     // info about image
-    uint32_t MaxRecursionDepth;
     Color BackgroundColor;
     double ShadowRayEpsilon;
     double IntersectionTestEpsilon;

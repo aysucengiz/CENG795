@@ -120,6 +120,10 @@ public:
     CameraSamples *sampleData;
     CameraImage *imageData;
 
+    uint32_t MaxRecursionDepth;
+    uint32_t MinRecursionDepth = 0;
+
+
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
         uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness);
     Camera(const Camera& other);
