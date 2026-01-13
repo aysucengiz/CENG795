@@ -243,7 +243,7 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
         else
             curr_color += refract(ray, depth, m1, air, hit_record);
     }
-    // if (scene.trace_type == TraceType::RAY) // TODO: point lightları nasıl samplelıyoruz?
+
     {
         curr_color += scene.AmbientLight * m.AmbientReflectance;
         for (int j = 0; j < scene.numLights; j++)
@@ -262,6 +262,7 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
     {
         if (hit_record.obj->isLuminous())
         {
+            // TODO: pdf cart curt goes here
             Ray shadow_ray;
             shadow_ray.pos = ray.pos;
             shadow_ray.dir = hit_record.intersection_point - ray.pos;
@@ -272,12 +273,17 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
         {
             Ray bounced_ray;
             bounced_ray.pos = hit_record.intersection_point;
-            bounced_ray.dir = getBouncedRayDir();
+            bounced_ray.dir = getBouncedRayDir(hit_record);
             return followRay(bounced_ray, depth+1,m1, light_sample); // TODO: samplea gerek yok di mi
         }
 
     }
     return curr_color;
+}
+
+Vec3r RaytracerThread::getBouncedRayDir(HitRecord &hit_record)
+{
+    // TODO: sampling functions go here
 }
 
 Color RaytracerThread::getBackground(Ray& ray)
