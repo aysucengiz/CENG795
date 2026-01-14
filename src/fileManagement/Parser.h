@@ -65,6 +65,8 @@ namespace Parser {
     Texture *getTextureWithId(int id,SceneInput &scene);
     Image *getImageFromId(int id, SceneInput& scene);
     std::function<real(real)> getConversionFunc(json inp);
+    void getRendererParams(std::string params, PathTracer* path);
+
 };
 
 

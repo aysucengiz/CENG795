@@ -6,6 +6,8 @@
 #include "../functions/overloads.h"
 #include <cmath>
 
+int getInt(json j){ return std::stoi(j.get<std::string>());}
+real getReal(json j){ return (real) std::stod(j.get<std::string>());}
 namespace Parser
 {
     bool PRINTINIT = false;
@@ -40,10 +42,10 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
 
     if (PRINTINIT) std::cout << "Scene Input: " << std::endl;
 
-    sceneInput.MaxRecursionDepth = inp["Scene"].contains("MaxRecursionDepth")
+    uint32_t MaxRecursionDepth = inp["Scene"].contains("MaxRecursionDepth")
                                        ? std::stoi(inp["Scene"]["MaxRecursionDepth"].get<std::string>())
                                        : maxDepth;
-    if (PRINTINIT) std::cout << "MaxRecursionDepth: " << sceneInput.MaxRecursionDepth << std::endl;
+    if (PRINTINIT) std::cout << "MaxRecursionDepth: " << MaxRecursionDepth << std::endl;
 
     sceneInput.BackgroundColor = inp["Scene"].contains("BackgroundColor")
                                      ? Color(inp["Scene"]["BackgroundColor"].get<std::string>())
@@ -65,7 +67,7 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
         getTransformations(inp["Scene"]["Transformations"], sceneInput);
     }
 
-    getCameras(inp["Scene"]["Cameras"], sceneInput);
+    getCameras(inp["Scene"]["Cameras"], sceneInput); // TOOD: max ve min recursion depth
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
 
 
@@ -134,8 +136,6 @@ void Parser::getTextureMaps(json inp, SceneInput& sceneInput)
     }
 }
 
-int getInt(json j){ return std::stoi(j.get<std::string>());}
-real getReal(json j){ return (real) std::stod(j.get<std::string>());}
 void Parser::addTextureMap(json s, SceneInput& sceneInput)
 {
     TextureType t = getTextureType(s["_type"].get<std::string>());
@@ -438,6 +438,17 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
     real width, height;
     ss >> width >> height;
     real aspect = width / height;
+    TraceType ttype = TraceType::RAY;
+    PathTracer* path = nullptr;
+
+        if (Cameras.contains("Renderer") && Cameras["Renderer"].get<std::string>() == "PathTracing")
+    {
+        ttype = TraceType::PATH;
+        path = new PathTracer();
+        if(Cameras.contains("SplittingFactor")) path->splitting_factor = getInt(Cameras["SplittingFactor"]);
+        if(Cameras.contains("RendererParams")) getRendererParams(Cameras["RendererParams"], path);
+
+    }
 
     if (Cameras.contains("_type") && Cameras["_type"].get<std::string>() == "lookAt")
     {
@@ -502,7 +513,8 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         Cameras.contains("ApertureSize") ? std::stod(Cameras["ApertureSize"].get<std::string>()) : 0.0,
         sceneInput.sampling_type,
         tonemaps,
-        Cameras.contains("_handedness") ? Cameras["_handedness"].get<std::string>() : "right"
+        Cameras.contains("_handedness") ? Cameras["_handedness"].get<std::string>() : "right",
+        path
     ));
     if (PRINTINIT) std::cout << sceneInput.Cameras[sceneInput.Cameras.size()] << std::endl;
 }
@@ -949,4 +961,21 @@ std::function<real(real)> Parser::getConversionFunc(json inp)
     if (funcname == "absval")return Convert::Abs;
     if (funcname == "linear")return Convert::Linear;
     return Convert::Linear;
+}
+
+void Parser::getRendererParams(std::string params, PathTracer *path)
+{
+    if (params.empty()) return;
+
+    if (params.find("ImportanceSampling") != std::string::npos)
+        path->importance_sampling = true;
+
+    if (params.find("NextEventEstimation") != std::string::npos)
+        path->NEE = true;
+
+    if (params.find("MIS_BALANCE") != std::string::npos)
+        path->MIS_BALANCE = true;
+
+    if (params.find("RussianRoulette") != std::string::npos)
+        path->RussianRoulette = true;
 }

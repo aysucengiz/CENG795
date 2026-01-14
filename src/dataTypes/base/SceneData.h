@@ -13,7 +13,6 @@
 
 #include "../../typedefs.h"
 #include "Vectors.h"
-
 struct Color{
     real r;
     real g;
@@ -27,30 +26,6 @@ struct Color{
     bool isBlack() const;
     Color operator-();
     Color exponent();
-};
-
-struct Material{
-    uint32_t _id;
-    Color AmbientReflectance;
-    Color DiffuseReflectance;
-    Color SpecularReflectance;
-    uint32_t PhongExponent;
-    MaterialType materialType;
-    Color MirrorReflectance;
-    Color AbsorptionCoefficient;
-    real RefractionIndex;
-    real AbsorptionIndex;
-    real Roughness;
-    bool degamma;
-
-    Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
-        std::string type = "",
-        Color mr = Color(),
-        Color ac = Color(1.0,1.0,1.0),
-        real refrIndex = 1.0,
-        real ai = 0,
-        real r = 0.0,
-        std::string degam = "false");
 };
 
 

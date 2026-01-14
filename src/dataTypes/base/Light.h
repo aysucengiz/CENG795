@@ -56,7 +56,6 @@ public:
     SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, real foa);
     Color getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) override;
     LightType getLightType() override;
-    bool checkIntersection(Ray &ray) override;
 };
 
 
@@ -74,25 +73,24 @@ public:
     Vec3r compute_shadow_ray_dir(const Vertex& pos, const Vec3r& normal, std::array<real, 2> sample) const override;
     Vec3r getRandomVec(const Vec3r& norm) const;
     Texel getTexel(const Vec3r& vec) const;
-    bool checkIntersection(Ray &ray) override {return true;}
 };
 
 
 
 class AreaLightObject : public AreaLight, public Object
 {
-    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
-
     bool isLuminous() const override {return true;}
+    intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
 };
 
 
 class ObjectLight : public Light, public Instance
 {
     ObjectLight(uint32_t i, Color r, Object* o);
+
+    bool isLuminous() const override {return true;}
     intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const override;
     Object *object;
-    bool isLuminous() const override {return true;}
 };
 
 #endif // CENG795_LIGHT_H

@@ -187,7 +187,7 @@ bool RaytracerThread::isUnderShadow(Ray& shadow_ray, bool dist_inf)
     return false;
 }
 
-Color RaytracerThread::getColourFromLight(Light *light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const
+Color RaytracerThread::getColourFromLight(const Light *light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const
                                           Material& m1)
 {
     Color curr_color = Color(0, 0, 0);
@@ -197,10 +197,7 @@ Color RaytracerThread::getColourFromLight(Light *light, HitRecord& hit_record, R
     {
         //std::cout << "Draw" << std::endl;
 
-        real cos_theta = dot_product(shadow_ray.dir.normalize(), hit_record.normal.normalize());
-
-
-        curr_color += hit_record.obj->GetColourAt(irradiance, cos_theta, hit_record.normal, ray, shadow_ray,
+        curr_color += hit_record.obj->GetColourAt(irradiance, hit_record.normal, ray, shadow_ray,
                                                   time, hit_record.currTri, hit_record.rate_of_change);
 
         Color ac1 = m1.AbsorptionCoefficient;
@@ -216,6 +213,20 @@ Color RaytracerThread::getColourFromLight(Light *light, HitRecord& hit_record, R
     // curr_color.g = hit_record.normal.j * 255.0;
     // curr_color.b = hit_record.normal.k * 255.0;
     return curr_color;
+}
+
+
+Color RaytracerThread::ShadowTestLight(Light *light, HitRecord& hit_record, Ray& ray, const Material& m1, const std::array<real, 2>& light_sample)
+{
+    Ray shadow_ray = light->compute_shadow_ray(hit_record, light_sample, scene.ShadowRayEpsilon);
+    bool dist_inf = (light->getLightType() == LightType::DIRECTIONAL);
+    dist_inf = dist_inf || (light->getLightType() == LightType::TEXTURE);
+    if (!isUnderShadow(shadow_ray, dist_inf))
+    {
+        Color light_color = getColourFromLight(light,hit_record,shadow_ray,ray,m1);
+        return light_color;
+    }
+    return Color(0.0,0.0,0.0);
 }
 
 
@@ -244,47 +255,68 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
             curr_color += refract(ray, depth, m1, air, hit_record);
     }
 
+    // TODO: NEE varken luminous objeleri hem lighta hem objeye ekle
+    if (scene.trace_type == TraceType::RAY)
     {
         curr_color += scene.AmbientLight * m.AmbientReflectance;
         for (int j = 0; j < scene.numLights; j++)
         {
-            // std::array<real ,2> light_sample = {getRandom(),getRandom()};
-            Ray shadow_ray = scene.PointLights[j]->compute_shadow_ray(hit_record, light_sample, scene.ShadowRayEpsilon);
-            bool dist_inf = (scene.PointLights[j]->getLightType() == LightType::DIRECTIONAL);
-            dist_inf = dist_inf || (scene.PointLights[j]->getLightType() == LightType::TEXTURE);
-            if (!isUnderShadow(shadow_ray, dist_inf))
-            {
-                curr_color += getColourFromLight(scene.PointLights[j],hit_record,shadow_ray,ray,m1);
-            }
+            curr_color += ShadowTestLight(scene.PointLights[j], hit_record, ray, m1, light_sample);
         }
     }
-    if (scene.trace_type == TraceType::PATH)
+    else if (scene.trace_type == TraceType::PATH)
     {
-        if (hit_record.obj->isLuminous())
+        Color path_result;
+        if (cam.pathData && cam.pathData->NEE && getRandom() < scene.NEE_prob)
         {
-            // TODO: pdf cart curt goes here
-            Ray shadow_ray;
-            shadow_ray.pos = ray.pos;
-            shadow_ray.dir = hit_record.intersection_point - ray.pos;
-            Light *obj_light = dynamic_cast<Light*>(hit_record.obj);
-            curr_color += getColourFromLight(obj_light,hit_record,shadow_ray,ray,m1);
+            Light *light = getRandomLight();
+            Color light_color = ShadowTestLight(light, hit_record, ray, m1, light_sample);
+            real p_x = scene.numLights  * light->area;
+            real pdf = p_x / dot_product(ray.dir, -light->getNormal(hit_record.intersection_point, 0, time));
+            curr_color += light_color / scene.NEE_prob / p_x;
         }
         else
         {
-            Ray bounced_ray;
-            bounced_ray.pos = hit_record.intersection_point;
-            bounced_ray.dir = getBouncedRayDir(hit_record);
-            return followRay(bounced_ray, depth+1,m1, light_sample); // TODO: samplea gerek yok di mi
+            if (hit_record.obj->isLuminous())
+            {
+                path_result = PathTraceLuminous(dynamic_cast<const Light*>(hit_record.obj),
+                                                hit_record.intersection_point,hit_record,
+                                                ray,
+                                                m1);
+            }
+            else
+            {
+                path_result = PathTraceNonLuminous(hit_record, ray, m1, depth, light_sample);
+            }
         }
 
+        if(cam.pathData->NEE) path_result = path_result * 2.0; // domain selection prob
+        curr_color += path_result;
     }
     return curr_color;
 }
 
-Vec3r RaytracerThread::getBouncedRayDir(HitRecord &hit_record)
+Color RaytracerThread::PathTraceLuminous(const Light *light, Vertex& light_point, HitRecord &hit_record, Ray &ray, const Material &m1)
 {
-    // TODO: sampling functions go here
+    // TODO: buraya pdf eklenmeyecek mi aysu? I guess not? çünkü recursionla geldiyse zaten çağırdığımızda hallediyoruz, gelmediyse de zaten probability söz konusu değil?
+    Ray shadow_ray;
+    shadow_ray.pos = hit_record.intersection_point;
+    shadow_ray.dir = hit_record.intersection_point - light_point;
+    return getColourFromLight(light,hit_record,shadow_ray,ray,m1);
 }
+
+Color RaytracerThread::PathTraceNonLuminous(HitRecord &hit_record, Ray &ray, const Material &m1, int depth, const std::array<real, 2>& light_sample)
+{
+    // TODO: şu an aşırı random değil mi planein aşağısına da gidebilir?? kontrol et, olmadı parameter olarak normali passla
+    Ray bounced_ray;
+    bounced_ray.pos = hit_record.intersection_point;
+    real a = getRandom(), b = getRandom();
+    bounced_ray.dir = cam.pathData->getBouncedRayDir(a,b);
+    Color res = followRay(bounced_ray, depth+1,m1, light_sample) * cam.pathData->PDF(a);
+    if(cam.pathData && cam.pathData->NEE) res = res * 2.0; // domain selection prob
+    return res;
+}
+
 
 Color RaytracerThread::getBackground(Ray& ray)
 {
@@ -312,15 +344,25 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
 {
     HitRecord hit_record;
     real t_min = INFINITY;
+    Color throughput = Color(0.0,0.0,0.0);
 
-    if (depth > cam.MaxRecursionDepth) return getBackground(ray);
+    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
+    {
+        real randprob = getRandom();
+        throughput = getThroughput(); // TODO
+        real q = std::min(max3(throughput.r, throughput.g, throughput.b), (real) 0.99);
+        if (randprob < q)  return Color(0.0,0.0,0.0); // TODO: ya da background?
+    }
+    else if (depth > cam.MaxRecursionDepth) return getBackground(ray);
     bool back_cull = m1.AbsorptionCoefficient.isBlack() ? scene.back_cull : false;
     checkObjIntersection(ray, t_min, hit_record, back_cull);
 
     if (hit_record.obj != nullptr &&
         hit_record.obj->material.materialType != MaterialType::NONE)
     {
-        return computeColor(hit_record, ray, depth, m1, light_sample);
+        Color res = computeColor(hit_record, ray, depth, m1, light_sample);
+        if(cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
+        return res;
     }
 
     return getBackground(ray);
@@ -499,13 +541,23 @@ Ray RaytracerThread::refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec
     return refracted_ray;
 }
 
+Color RaytracerThread::getThroughput()
+{
+    // TODO
+}
 
 Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Material& m2, HitRecord& hit_record)
 {
-    if (depth > cam.MaxRecursionDepth)
+    Color throughput = Color(0.0,0.0,0.0);
+    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
     {
-        return getBackground(ray);
+        real randprob = getRandom();
+        throughput = getThroughput();
+        real q = std::min(max3(throughput.r, throughput.g, throughput.b), (real)0.99);
+        if (randprob < q)  return Color(0.0,0.0,0.0); // TODO: ya da background?
     }
+    else if (depth > cam.MaxRecursionDepth) return getBackground(ray);
+
     Color reflected, refracted;
     real Fr = 0.0, Ft = 1.0;
 
@@ -562,7 +614,10 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Ma
     Color eCx = Color(1.0, 1.0, 1.0);
     if (!ac1.isBlack()) eCx = (-ac1 * (ray.pos - hit_record.intersection_point).mag()).exponent();
     if ((reflected + refracted - eCx).isBlack()) return eCx;
-    return (reflected + refracted) * eCx;
+
+    Color res = (reflected + refracted) * eCx;
+    if(cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
+    return res; // TODO: burada russian roulette olmalı mı
 }
 
 Ray RaytracerThread::reflectionRay(Ray& ray, MaterialType type, HitRecord& hit_record)
@@ -592,7 +647,15 @@ Ray RaytracerThread::reflectionRay(Ray& ray, MaterialType type, HitRecord& hit_r
 
 Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord& hit_record, const Material& m1)
 {
-    if (depth > cam.MaxRecursionDepth) return getBackground(ray);
+    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
+    {
+        // TODO: burada russian roulette olmalı mı
+       /* real randprob = getRandom();
+        throughput = getThroughput(); // TODO
+        real q = std::min(max3(throughput.r, throughput.g, throughput.b), 0.99);
+        if (randprob < cam.pathData->prob)  return Color(0.0,0.0,0.0); // TODO: ya da background?*/
+    }
+    else if (depth > cam.MaxRecursionDepth) return getBackground(ray);
     //std::cout << "Reflecting" << std::endl;
 
 

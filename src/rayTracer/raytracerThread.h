@@ -78,16 +78,21 @@ public:
     Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
     bool isUnderShadow(Ray& shadow_ray, bool dist_inf);
-    Color getColourFromLight(Light* light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const Material& m1);
+    Color getColourFromLight(const Light* light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const Material& m1);
     Color computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
+    Color PathTraceLuminous(const Light* light, Vertex& light_point, HitRecord& hit_record, Ray& ray, const Material& m1);
+    Color PathTraceNonLuminous(HitRecord &hit_record, Ray &ray, const Material &m1, int depth, const std::array<real, 2>& light_sample);
+
+
     Vec3r getBouncedRayDir(HitRecord& hit_record);
+    Color ShadowTestLight(Light *light, HitRecord& hit_record, Ray& ray, const Material& m1, const std::array<real, 2>& light_sample);
+
     Color getBackground(Ray& ray);
-    static Color diffuseTerm(const HitRecord& hit_record, Color I_R_2, real cos_theta);
-    static Color specularTerm(const HitRecord &hit_record, const Ray &ray,Color I_R_2, Ray &shadow_ray);
 
     Color reflect(Ray &ray, int depth, MaterialType type, HitRecord &hit_record, const Material &m1);
     Color refract(Ray &ray, int depth, const Material &m1, const Material &m2, HitRecord &hit_record);
     Ray refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec3r n, real& Fr, real& Ft, real roughness);
+    Color getThroughput();
     Object::intersectResult traverse(const Ray &ray, const real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
 
 };

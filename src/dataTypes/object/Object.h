@@ -12,6 +12,7 @@
 #include "../matrix/transformation.h"
 #include "../object/BBox.h"
 #include "dataTypes/texture/TextureMap.h"
+#include "dataTypes/base/Material.h"
 
 inline bool ACCELERATE = false;
 
@@ -34,25 +35,26 @@ public:
     Texture *NormalTexture;
     Texture *AllTexture;
     bool visible;
-    virtual bool isLuminous() const {return false;}
     virtual ObjectType getObjectType() const = 0;
     virtual intersectResult checkIntersection(const Ray& r, const real& t_min, bool shadow_test, bool back_cull, real time, real dist = 1.0) const = 0;
     virtual Vec3r getNormal(const Vertex& v, uint32_t currTri, real time) const = 0;
     virtual ~Object();
     virtual Texel getTexel(const Vertex& v, real time, int triID)  const = 0;
-    Color diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
-    Color GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int
+    Color diffuseTerm(Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
+    Color GetColourAt(Color I_R_2, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time, int
                       triID, Texel& rate_of_change) const;
-    Color specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                       Ray& shadow_ray, Vertex& vert, Texel& t, real time, Texel rate_of_change) const;
+    real getMipMapLevel(Texel rate_of_change) const;
+    Color specularTerm(
+        Vertex& vert, Texel& t, Texel rate_of_change) const;
     Object(Material& m, uint32_t id, Vertex vMax, Vertex vMin, std::vector<Texture*> ts ,bool v = true);
     Color getTextureColorAt(Vertex& pos, real time, int triID, Texel rate_of_change) const;
-    virtual void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const = 0;
+    virtual void getBitan(const Vertex &v, Vec3r &pT, Vec3r &pB, int triID, bool normalize, real time) const = 0;
     real GrayScale(Color c) const;
     real h(Vertex v) const;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
     void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
     virtual Vertex getLocal(const Vertex& v, real time) const { return v;}
+    virtual bool isLuminous() const {return false;}
 };
 
 ///////////////////////////////////////////////

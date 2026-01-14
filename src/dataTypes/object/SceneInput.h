@@ -11,6 +11,8 @@
 
 struct SceneInput
 {
+
+    static constexpr real NEE_prob = 0.5;
     TraceType trace_type;
     bool NEE = false;
     bool importance_sampling = false;

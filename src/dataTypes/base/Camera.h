@@ -4,8 +4,10 @@
 #include "Vectors.h"
 #include "../../typedefs.h"
 #include "SceneData.h"
+#include "SceneData.h"
 #include <vector>
 #include <functional>
+#include "../../path/PathTracing.h"
 
 
 
@@ -110,6 +112,7 @@ struct ToneMap{
 
 class Camera{
 public:
+    TraceType trace_type;
     uint32_t _id;
     Vertex Position;
     Vec3r Gaze, Up, V;
@@ -119,13 +122,15 @@ public:
     std::vector<ToneMap> tonemaps;
     CameraSamples *sampleData;
     CameraImage *imageData;
+    PathTracer *pathData = nullptr;
 
     uint32_t MaxRecursionDepth;
-    uint32_t MinRecursionDepth = 0;
+    uint32_t MinRecursionDepth;
 
 
     Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
-        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness);
+        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms,
+        std::string handedness, PathTracer* path);
     Camera(const Camera& other);
     Camera& operator=(const Camera& other);
     ~Camera(){};

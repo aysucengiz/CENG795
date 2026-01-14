@@ -64,30 +64,45 @@ Color Object::getTextureColorAt(Vertex& pos, real time, int triID, Texel rate_of
 }
 
 
-Color Object::GetColourAt(Color I_R_2, real cos_theta, const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time,
+
+
+Color Object::GetColourAt(Color I_R_2,const Vec3r& normal, const Ray& ray, Ray& shadow_ray, real time,
                           int triID, Texel& rate_of_change) const
-{   if (I_R_2.isBlack()) return Color(0, 0, 0);
-    Texel tex = getTexel(shadow_ray.pos, time, triID);
-    Color diffuse = diffuseTerm(I_R_2, cos_theta, shadow_ray.pos, tex, time, rate_of_change);
-    Color specular = specularTerm(normal, ray, I_R_2, shadow_ray, shadow_ray.pos, tex, time, rate_of_change);
-    return diffuse + specular;
+{
+    if (I_R_2.isBlack()) return Color(0, 0, 0);
+
+    // get texel if needed
+    Texel tex = {0.0,0.0};
+    if(DiffuseTexture != nullptr || SpecularTexture != nullptr) tex = getTexel(shadow_ray.pos, time, triID);
+
+    // get kd and ks
+    Color kd = diffuseTerm(shadow_ray.pos, tex, time, rate_of_change);
+    Color ks = specularTerm(shadow_ray.pos, tex, rate_of_change);
+    real cos_theta = material.brdf->getCosTheta(normal,shadow_ray.dir);
+
+    // get brdf
+    Color f = material.brdf->Guards_BRDF_This_Man(kd, ks, material.PhongExponent, material.RefractionIndex, normal, ray.dir, shadow_ray.dir);
+
+    return f * cos_theta * I_R_2;
 }
 
-Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, real time, Texel rate_of_change) const
+real Object::getMipMapLevel(Texel rate_of_change) const
+{
+    MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
+    real a = rate_of_change.u * mip0.width;
+    real b = rate_of_change.v * mip0.height;
+    return 0.5 * log2(a * a + b * b);
+}
+
+Color Object::diffuseTerm(Vertex& vert, Texel& t, real time, Texel rate_of_change) const
 {
     Color kd = material.DiffuseReflectance;
     if (DiffuseTexture != nullptr)
     {
         real level = 0;
-        if (DiffuseTexture->IsMipMapped())
-        {
-            MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
-            real a = rate_of_change.u * mip0.width;
-            real b = rate_of_change.v * mip0.height;
-            level = 0.5 * log2(a * a + b * b);
-        }
-
+        if (DiffuseTexture->IsMipMapped()) level = getMipMapLevel(rate_of_change);
         Color tex_col = DiffuseTexture->TextureColor(vert, t, level);
+
         switch (DiffuseTexture->decalMode)
         {
         case DecalMode::REPLACE_KD:
@@ -98,39 +113,33 @@ Color Object::diffuseTerm(Color I_R_2, real cos_theta, Vertex& vert, Texel& t, r
             break;
         }
     }
+
     if (material.degamma)
     {
         kd.r = pow(kd.r,2.2);
         kd.g = pow(kd.g,2.2);
         kd.b = pow(kd.b,2.2);
     }
-    return kd * cos_theta * I_R_2;
+    return kd;
 }
 
-Color Object::specularTerm(const Vec3r& normal, const Ray& ray, Color I_R_2,
-                           Ray& shadow_ray, Vertex& vert, Texel& t, real time, Texel rate_of_change) const
+Color Object::specularTerm( Vertex& vert, Texel& t, Texel rate_of_change) const
 {
     Color ks = material.SpecularReflectance;
-
     if (SpecularTexture != nullptr)
     {
-        MipMap mip0 = dynamic_cast<ImageTexture*>(DiffuseTexture)->image->mipmaps[0];
-        real a = rate_of_change.u * mip0.width;
-        real b = rate_of_change.v * mip0.height;
-        real level = 0.5 * log2(a * a + b * b);
+        real level = 0;
+        if (SpecularTexture->IsMipMapped()) level = getMipMapLevel(rate_of_change);
         ks = SpecularTexture->TextureColor(vert, t, level) / 255.0;
     }
-    if (ks.isBlack()) return ks;
-    Vec3r h = (shadow_ray.dir.normalize() - ray.dir.normalize()).normalize();
-    real cos_alpha = dot_product(normal, h);
-    if (cos_alpha < 0) return Color(0.0, 0.0, 0.0);
+
     if (material.degamma)
     {
         ks.r = pow(ks.r,2.2);
         ks.g = pow(ks.g,2.2);
         ks.b = pow(ks.b,2.2);
     }
-    return ks * I_R_2 * pow(cos_alpha, material.PhongExponent);
+    return ks;
 }
 
 

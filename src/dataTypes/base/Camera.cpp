@@ -189,11 +189,12 @@ CameraSamples::CameraSamples(SamplingType st, uint32_t numSamples) : numSamples(
 
 Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double, 4> locs, real nd, uint32_t width,
                uint32_t height, std::string imname,
-               uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness)
+               uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness,
+               PathTracer* path)
     : _id(id),
       sampleData(new CameraSamples(st, numSamples)),
       imageData(new CameraImage(width, height, imname)),
-      Position(pos), nearDistance(nd), FocusDistance(focusDistance), ApertureSize(apertureSize)
+      Position(pos), nearDistance(nd), FocusDistance(focusDistance), ApertureSize(apertureSize), pathData(path)
 {
     if (tms.size() > 0)
     {
