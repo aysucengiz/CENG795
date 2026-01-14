@@ -8,7 +8,7 @@
 
 real BRDF::getCosTheta(const Vec3r& normal, const Vec3r& shadow_ray_dir) const
 {
-    real cos_theta = dot_product(shadow_ray_dir.normalize(), normal);
+    real cos_theta = dot_product(-shadow_ray_dir.normalize(), normal);
     return cos_theta;
 }
 
@@ -29,8 +29,6 @@ real BRDF::getCosAlphaR(const Vec3r& normal, const Vec3r& ray_dir, const Vec3r& 
 
 Color Phong::Guards_BRDF_This_Man(Color &kd, Color &ks, real phong, real refr, const Vec3r& normal, const Vec3r& ray_dir, const Vec3r& shadow_ray_dir) const
 {
-
-
     real cos_theta = getCosTheta(normal,ray_dir);
     if (cos_theta <= 0) return Color(0.0, 0.0, 0.0);
 
