@@ -11,11 +11,12 @@ OBJECT_FILES = $(wildcard src/dataTypes/object/*.cpp)
 FUNCTION_FILES = $(wildcard src/functions/*.cpp)
 DATA_FILES = $(MATRIX_FILES) $(TEXTURE_FILES) $(BASE_FILES) $(OBJECT_FILES) $(FUNCTION_FILES)
 FILE_FILES = $(wildcard src/fileManagement/*.cpp)
+PATH_FILES = $(wildcard src/path/*.cpp)
 PARALLEL = -fopenmp
 FLAGS = -Isrc  -O3 -std=c++20 $(PARALLEL)
 DEBUG_FLAGS = -Isrc -std=c++20  -g -Og
 
-SRC_FILES = $(DATA_FILES) $(FILE_FILES) $(RAYTRACER_FILES) $(ACC_FILES)
+SRC_FILES = $(DATA_FILES) $(PATH_FILES) $(FILE_FILES) $(RAYTRACER_FILES) $(ACC_FILES)
 TEST_FILES = $(TEST_FILE) $(SRC_FILES)
 RT_FILES = $(MAIN_FILE) $(SRC_FILES)
 

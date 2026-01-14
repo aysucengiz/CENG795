@@ -67,7 +67,15 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
         getTransformations(inp["Scene"]["Transformations"], sceneInput);
     }
 
-    getCameras(inp["Scene"]["Cameras"], sceneInput); // TOOD: max ve min recursion depth
+    getCameras(inp["Scene"]["Cameras"], sceneInput, MaxRecursionDepth); // TOOD: max ve min recursion depth
+
+    BRDF *brdf_ptr = new Phong(0,true,false,false,1);
+    sceneInput.BRDFs.push_back(brdf_ptr);
+
+    if (inp["Scene"].contains("BRDFs"))
+    {
+        getBRDFs(inp["Scene"]["BRDFs"], sceneInput);
+    }
     getMaterials(inp["Scene"]["Materials"]["Material"], sceneInput);
 
 
@@ -87,12 +95,53 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
 }
 
 
-void Parser::getCameras(json inp, SceneInput& sceneInput)
+void Parser::getCameras(json inp, SceneInput& sceneInput, uint32_t MaxRecDepth)
 {
     json& Cameras = inp["Camera"];
     int numCameras = Cameras.size();
-    if (Cameras.is_object()) addCamera(Cameras, sceneInput);
-    else for (int i = 0; i < numCameras; i++) addCamera(Cameras[i], sceneInput);
+    if (Cameras.is_object()) addCamera(Cameras, sceneInput,MaxRecDepth);
+    else for (int i = 0; i < numCameras; i++) addCamera(Cameras[i], sceneInput,MaxRecDepth);
+}
+
+void Parser::getBRDFs(json brdfs, SceneInput& sceneInput)
+{
+    if (brdfs.contains("OriginalBlinnPhong"))
+    {
+        json& BRDFs = brdfs["OriginalBlinnPhong"];
+        int numBRDFs = BRDFs.size();
+        if (BRDFs.is_object()) addBRDF(BRDFs, sceneInput, "OriginalBlinnPhong");
+        else for (int i = 0; i < numBRDFs; i++) addBRDF(BRDFs[i], sceneInput, "OriginalBlinnPhong");
+    }
+
+    if (brdfs.contains("OriginalPhong"))
+    {
+        json& BRDFs = brdfs["OriginalPhong"];
+        int numBRDFs = BRDFs.size();
+        if (BRDFs.is_object()) addBRDF(BRDFs, sceneInput, "OriginalPhong");
+        else for (int i = 0; i < numBRDFs; i++) addBRDF(BRDFs[i], sceneInput, "OriginalPhong");
+    }
+    if (brdfs.contains("ModifiedBlinnPhong"))
+    {
+        json& BRDFs = brdfs["ModifiedBlinnPhong"];
+        int numBRDFs = BRDFs.size();
+        if (BRDFs.is_object()) addBRDF(BRDFs, sceneInput, "ModifiedBlinnPhong");
+        else for (int i = 0; i < numBRDFs; i++) addBRDF(BRDFs[i], sceneInput, "ModifiedBlinnPhong");
+    }
+    if (brdfs.contains("ModifiedPhong"))
+    {
+        json& BRDFs = brdfs["ModifiedPhong"];
+        int numBRDFs = BRDFs.size();
+        if (BRDFs.is_object()) addBRDF(BRDFs, sceneInput, "ModifiedPhong");
+        else for (int i = 0; i < numBRDFs; i++) addBRDF(BRDFs[i], sceneInput, "ModifiedPhong");
+    }
+
+    if (brdfs.contains("TorranceSparrow"))
+    {
+        json& BRDFs = brdfs["TorranceSparrow"];
+        int numBRDFs = BRDFs.size();
+        if (BRDFs.is_object()) addBRDF(BRDFs, sceneInput, "TorranceSparrow");
+        else for (int i = 0; i < numBRDFs; i++) addBRDF(BRDFs[i], sceneInput, "TorranceSparrow");
+    }
 }
 
 
@@ -429,7 +478,7 @@ void Parser::getNearFromFovY(real FovY, double nearDistance, double aspect, std:
     nearPlane[3] = t;
 }
 
-void Parser::addCamera(json Cameras, SceneInput& sceneInput)
+void Parser::addCamera(json Cameras, SceneInput& sceneInput, uint32_t maxrecdep)
 {
     std::array<double, 4> nearPlane;
     Vec3r Gaze;
@@ -440,8 +489,10 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
     real aspect = width / height;
     TraceType ttype = TraceType::RAY;
     PathTracer* path = nullptr;
+    uint32_t maxdep = Cameras.contains("MaxRecursionDepth") ? getInt(Cameras["MaxRecursionDepth"]) : maxrecdep;
+    uint32_t mindep = Cameras.contains("MinRecursionDepth") ? getInt(Cameras["MinRecursionDepth"]) : 0;
 
-        if (Cameras.contains("Renderer") && Cameras["Renderer"].get<std::string>() == "PathTracing")
+    if (Cameras.contains("Renderer") && Cameras["Renderer"].get<std::string>() == "PathTracing")
     {
         ttype = TraceType::PATH;
         path = new PathTracer();
@@ -514,7 +565,9 @@ void Parser::addCamera(json Cameras, SceneInput& sceneInput)
         sceneInput.sampling_type,
         tonemaps,
         Cameras.contains("_handedness") ? Cameras["_handedness"].get<std::string>() : "right",
-        path
+        path,
+        mindep,
+        maxdep
     ));
     if (PRINTINIT) std::cout << sceneInput.Cameras[sceneInput.Cameras.size()] << std::endl;
 }
@@ -571,23 +624,63 @@ Scale Parser::getScaleFromStr(std::string transStr, std::vector<std::shared_ptr<
 void Parser::addMaterial(json inp, SceneInput& sceneInput)
 {
     std::string type = inp.contains("_type") ? inp["_type"].get<std::string>() : "";
+    BRDF *brdf_ptr = inp.contains("_BRDF") ? getBRDFFromID(getInt(inp["_BRDF"]),sceneInput.BRDFs) : sceneInput.BRDFs[0];
+    uint32_t phong = inp.contains("PhongExponent") ? getInt(inp["PhongExponent"]) : brdf_ptr->exponent;
     Material m(
         std::stoi(inp["_id"].get<std::string>()) - 1,
         Color(inp["AmbientReflectance"]),
         Color(inp["DiffuseReflectance"]),
         Color(inp["SpecularReflectance"]),
-        inp.contains("PhongExponent") ? std::stoi(inp["PhongExponent"].get<std::string>()) : 1.0,
+        phong,
         type,
         (type == "mirror" && inp.contains("MirrorReflectance")) ? Color(inp["MirrorReflectance"]) : Color(),
         inp.contains("AbsorptionCoefficient") ? Color(inp["AbsorptionCoefficient"]) : Color(),
         inp.contains("RefractionIndex") ? std::stod(inp["RefractionIndex"].get<std::string>()) : 0.0,
         inp.contains("AbsorptionIndex") ? std::stod(inp["AbsorptionIndex"].get<std::string>()) : 0.0,
         inp.contains("Roughness") ? std::stod(inp["Roughness"].get<std::string>()) : 0.0,
-        inp.contains("_degamma") ? inp["_degamma"].get<std::string>() : "false"
-    );
+        inp.contains("_degamma") ? inp["_degamma"].get<std::string>() : "false",
+        brdf_ptr);
     sceneInput.Materials.push_back(m);
 
     if (PRINTINIT) std::cout << m << std::endl;
+}
+
+
+void Parser::addBRDF(json inp, SceneInput& sceneInput, std::string type)
+{
+    BRDF *brdf_ptr = nullptr;
+    real exponent = getReal(inp["Exponent"]);
+    uint32_t id = getInt(inp["_id"]);
+
+    if (type == "OriginalBlinnPhong")
+    {
+        brdf_ptr = new Phong(id,true,false,false,exponent);
+    }
+    else if (type == "OriginalPhong")
+    {
+        brdf_ptr = new Phong(id,false,false,false,exponent);
+    }
+    else if (type == "ModifiedBlinnPhong")
+    {
+        brdf_ptr = new Phong(id,true,true,
+                        inp.contains("_normalized") ? inp["_normalized"] : "false"
+                        ,exponent);
+    }
+    else if (type == "ModifiedPhong")
+    {
+        brdf_ptr = new Phong(id,false,true,
+                        inp.contains("_normalized") ? inp["_normalized"] : "false"
+                        ,exponent);
+    }
+    else if (type == "TorranceSparrow")
+    {
+        brdf_ptr = new BRDF_TorranceSparrow(id,inp.contains("_kdfresnel") ? inp["_kdfresnel"] : "false"
+                        ,exponent);
+    }
+
+    sceneInput.BRDFs.push_back(brdf_ptr);
+
+    // if (PRINTINIT) std::cout << brdf_ptr << std::endl;
 }
 
 void Parser::addTriangle(json tri, SceneInput& sceneInput, uint32_t& curr_id)
@@ -953,6 +1046,16 @@ Image *Parser::getImageFromId(int id, SceneInput& scene)
     }
     std::cout << "Could not find the id!!!!: " << id << std::endl;
     return images[0];
+}
+
+BRDF* Parser::getBRDFFromID(uint32_t id, std::vector<BRDF*> BRDFs)
+{
+    for (int i = 0; i < BRDFs.size(); i++)
+    {
+        if (BRDFs[i]->id == id) return BRDFs[i];
+    }
+    std::cout << "Could not find the id!!!!: " << id << std::endl;
+    return BRDFs[0];
 }
 
 std::function<real(real)> Parser::getConversionFunc(json inp)

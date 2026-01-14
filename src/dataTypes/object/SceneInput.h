@@ -13,7 +13,6 @@ struct SceneInput
 {
 
     static constexpr real NEE_prob = 0.5;
-    TraceType trace_type;
     bool NEE = false;
     bool importance_sampling = false;
     bool MIS_BALANCE = false;
@@ -34,6 +33,7 @@ struct SceneInput
     uint32_t thread_add_endl_after;
 
     // materials and cam  info
+    std::vector<BRDF*> BRDFs;
     std::vector<Material> Materials;
     std::vector<Camera> Cameras;
 

@@ -190,11 +190,12 @@ CameraSamples::CameraSamples(SamplingType st, uint32_t numSamples) : numSamples(
 Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double, 4> locs, real nd, uint32_t width,
                uint32_t height, std::string imname,
                uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness,
-               PathTracer* path)
+               PathTracer* path, uint32_t mind, uint32_t maxd)
     : _id(id),
       sampleData(new CameraSamples(st, numSamples)),
       imageData(new CameraImage(width, height, imname)),
-      Position(pos), nearDistance(nd), FocusDistance(focusDistance), ApertureSize(apertureSize), pathData(path)
+      Position(pos), nearDistance(nd), FocusDistance(focusDistance), ApertureSize(apertureSize), pathData(path),
+        MaxRecursionDepth(maxd), MinRecursionDepth(mind)
 {
     if (tms.size() > 0)
     {
@@ -215,6 +216,8 @@ Camera::Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double, 4> 
     r = locs[1];
     b = locs[2];
     t = locs[3];
+
+    trace_type = path == nullptr ? TraceType::RAY : TraceType::PATH;
 }
 
 Camera::Camera(const Camera& other)
@@ -231,6 +234,9 @@ Camera::Camera(const Camera& other)
     nearDistance = other.nearDistance;
     FocusDistance = other.FocusDistance;
     ApertureSize = other.ApertureSize;
+    MinRecursionDepth = other.MinRecursionDepth;
+    MaxRecursionDepth = other.MaxRecursionDepth;
+    trace_type = other.trace_type;
 
     tonemaps.clear();
     for (int i = 0; i < other.tonemaps.size(); i++)
@@ -257,6 +263,9 @@ Camera& Camera::operator=(const Camera& other)
     nearDistance = other.nearDistance;
     FocusDistance = other.FocusDistance;
     ApertureSize = other.ApertureSize;
+    MinRecursionDepth = other.MinRecursionDepth;
+    MaxRecursionDepth = other.MaxRecursionDepth;
+    trace_type = other.trace_type;
     tonemaps.clear();
     for (int i = 0; i < other.tonemaps.size(); i++)
     {

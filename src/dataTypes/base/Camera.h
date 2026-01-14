@@ -128,9 +128,10 @@ public:
     uint32_t MinRecursionDepth;
 
 
-    Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double,4> locs, real nd, uint32_t width, uint32_t height, std::string imname,
-        uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms,
-        std::string handedness, PathTracer* path);
+    Camera(uint32_t id, Vertex pos, Vec3r g, Vec3r u, std::array<double, 4> locs, real nd, uint32_t width,
+               uint32_t height, std::string imname,
+               uint32_t numSamples, real focusDistance, real apertureSize, SamplingType st, std::vector<ToneMap> tms, std::string handedness,
+               PathTracer* path, uint32_t mind, uint32_t maxd);
     Camera(const Camera& other);
     Camera& operator=(const Camera& other);
     ~Camera(){};

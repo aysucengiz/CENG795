@@ -3,6 +3,8 @@
 //
 
 #include "PathTracing.h"
+#include "../functions/helpers.h"
+#include "../functions/overloads.h"
 
 real BRDF::getCosTheta(const Vec3r& normal, const Vec3r& shadow_ray_dir) const
 {
@@ -25,7 +27,7 @@ real BRDF::getCosAlphaR(const Vec3r& normal, const Vec3r& ray_dir, const Vec3r& 
 }
 
 
-Color Phong::Guards_BRDF_This_Man(Color kd, Color ks, real phong, real refr, const Vec3r& normal, const Vec3r& ray_dir, const Vec3r& shadow_ray_dir) const
+Color Phong::Guards_BRDF_This_Man(Color &kd, Color &ks, real phong, real refr, const Vec3r& normal, const Vec3r& ray_dir, const Vec3r& shadow_ray_dir) const
 {
 
 
@@ -34,7 +36,7 @@ Color Phong::Guards_BRDF_This_Man(Color kd, Color ks, real phong, real refr, con
 
     real cos_alpha;
     if (blinn) cos_alpha = getCosAlphaH(normal, ray_dir, shadow_ray_dir);
-    else       cos_alpha = getCosAlphaR(normal, ray_dir, shadow_ray_dir);
+    else       cos_alpha = getCosAlphaR(normal, ray_dir, shadow_ray_dir, cos_theta);
 
     Color f;
     if(!modified)           f = kd + ks * (pow(cos_alpha, phong)/ cos_theta);
@@ -75,23 +77,25 @@ Color BRDF_TorranceSparrow::Guards_BRDF_This_Man(Color &kd, Color &ks, real phon
 
     real angle1 = 2 * n_h * n_o / o_h;
     real angle2 = 2 * n_h * n_i / o_h;
-    real G = std::min(1.0, std::min(angle1, angle2));
+    real G = std::min((real)1.0, std::min(angle1, angle2));
 
     // get F
     real R0 = pow(refr - 1,2) / pow(refr + 1,2);
     real F = R0 + (1 - R0) * pow((1 - cos(o_h)),5);
 
     // combine
-    real f;
+
+    real cos_phi = getCosTheta(normal, wo);
+    Color f;
     if(kd_fresnel)  f = kd * one_pi * (1-F)+ ks * D * F * G / (4 * cos_theta * cos_phi);
-    real cos_phi =cos(); // TODO: ne bu
     else f = kd * one_pi + ks * D * F * G / (4 * cos_theta * cos_phi);
+    return f;
 }
 
 
 Vec3r PathTracer::getBouncedRayDir(real a, real b)
 {
-    constexpr pi2 = 2.0 * M_PI;
+    static constexpr real pi2 = 2.0 * M_PI;
     // TODO: random sampling functions go here
 
     if(importance_sampling)
@@ -111,11 +115,10 @@ Vec3r PathTracer::getBouncedRayDir(real a, real b)
 
 }
 
-
-Vec3r PathTracer::PDF(real a)
+real PathTracer::PDF(real a)
 {
-    constexpr one_pi = 1/ M_PI;
-    constexpr one_pi2 = 1/(2*M_PI);
+    static constexpr real one_pi = 1/ M_PI;
+    static constexpr real one_pi2 = 1/(2*M_PI);
 
     if(importance_sampling) return a * one_pi;
     else                    return one_pi2;

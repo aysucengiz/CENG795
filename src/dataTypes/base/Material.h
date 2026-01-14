@@ -23,13 +23,14 @@ struct Material{
     BRDF *brdf;
 
     Material(uint32_t id, Color ar, Color dr, Color sr, uint32_t pe,
-        std::string type = "",
-        Color mr = Color(),
-        Color ac = Color(1.0,1.0,1.0),
-        real refrIndex = 1.0,
-        real ai = 0,
-        real r = 0.0,
-        std::string degam = "false");
+        std::string type,
+        Color mr,
+        Color ac ,
+        real refrIndex ,
+        real ai ,
+        real r ,
+        std::string degam,
+        BRDF* brdf);
 };
 
 

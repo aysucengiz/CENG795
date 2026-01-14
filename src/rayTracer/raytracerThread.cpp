@@ -229,6 +229,19 @@ Color RaytracerThread::ShadowTestLight(Light *light, HitRecord& hit_record, Ray&
     return Color(0.0,0.0,0.0);
 }
 
+thread_local std::mt19937 gRandomGeneratorL(897);
+thread_local std::uniform_real_distribution<> gNURandomDistributionL(0, 0.99999f);
+
+real getRandomL()
+{
+    return gNURandomDistributionL(gRandomGeneratorL);
+}
+Light *RaytracerThread::getRandomLight()
+{
+    real r = getRandomL();
+    uint32_t index = std::floor(r * scene.numLights);
+    return scene.PointLights[index];
+}
 
 Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1,
                                     const std::array<real, 2>& light_sample)
@@ -256,7 +269,7 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
     }
 
     // TODO: NEE varken luminous objeleri hem lighta hem objeye ekle
-    if (scene.trace_type == TraceType::RAY)
+    if (cam.trace_type == TraceType::RAY)
     {
         curr_color += scene.AmbientLight * m.AmbientReflectance;
         for (int j = 0; j < scene.numLights; j++)
@@ -264,15 +277,15 @@ Color RaytracerThread::computeColor(HitRecord& hit_record, Ray& ray, int depth, 
             curr_color += ShadowTestLight(scene.PointLights[j], hit_record, ray, m1, light_sample);
         }
     }
-    else if (scene.trace_type == TraceType::PATH)
+    else if (cam.trace_type == TraceType::PATH)
     {
         Color path_result;
         if (cam.pathData && cam.pathData->NEE && getRandom() < scene.NEE_prob)
         {
             Light *light = getRandomLight();
             Color light_color = ShadowTestLight(light, hit_record, ray, m1, light_sample);
-            real p_x = scene.numLights  * light->area;
-            real pdf = p_x / dot_product(ray.dir, -light->getNormal(hit_record.intersection_point, 0, time));
+            real p_x = scene.numLights  * light->area_prob;
+            real pdf = p_x / dot_product(ray.dir, -light->getNormal(ray));
             curr_color += light_color / scene.NEE_prob / p_x;
         }
         else
@@ -346,7 +359,7 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
     real t_min = INFINITY;
     Color throughput = Color(0.0,0.0,0.0);
 
-    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
+    if(cam.pathData && cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
     {
         real randprob = getRandom();
         throughput = getThroughput(); // TODO
@@ -361,7 +374,7 @@ Color RaytracerThread::followRay(Ray& ray, int depth, const Material& m1, const 
         hit_record.obj->material.materialType != MaterialType::NONE)
     {
         Color res = computeColor(hit_record, ray, depth, m1, light_sample);
-        if(cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
+        if(cam.pathData && cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
         return res;
     }
 
@@ -549,7 +562,7 @@ Color RaytracerThread::getThroughput()
 Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Material& m2, HitRecord& hit_record)
 {
     Color throughput = Color(0.0,0.0,0.0);
-    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
+    if(cam.pathData && cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
     {
         real randprob = getRandom();
         throughput = getThroughput();
@@ -616,7 +629,7 @@ Color RaytracerThread::refract(Ray& ray, int depth, const Material& m1, const Ma
     if ((reflected + refracted - eCx).isBlack()) return eCx;
 
     Color res = (reflected + refracted) * eCx;
-    if(cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
+    if(cam.pathData && cam.pathData->RussianRoulette && depth >= cam.MinRecursionDepth)  res = res / throughput;
     return res; // TODO: burada russian roulette olmalı mı
 }
 
@@ -647,7 +660,7 @@ Ray RaytracerThread::reflectionRay(Ray& ray, MaterialType type, HitRecord& hit_r
 
 Color RaytracerThread::reflect(Ray& ray, int depth, MaterialType type, HitRecord& hit_record, const Material& m1)
 {
-    if(cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
+    if(cam.pathData && cam.pathData->RussianRoulette &&  depth >= cam.MinRecursionDepth)
     {
         // TODO: burada russian roulette olmalı mı
        /* real randprob = getRandom();

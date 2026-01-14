@@ -37,7 +37,7 @@ public:
 
 
     RaytracerThread(SceneInput &_scene, Camera &camID, BVH &_bvh) :
-    scene(_scene), cam(camID), bvh(_bvh), air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0)
+    scene(_scene), cam(camID), bvh(_bvh), air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0,1.0,1.0,"false",scene.BRDFs[0])
     {
 
         sampleIdxPixel.reserve(cam.sampleData->numSamples);
@@ -53,7 +53,7 @@ public:
         }
     }
 
-    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(0.0,0.0,0.0),Color(0.0,0.0,0.0),1.0)
+    RaytracerThread(const RaytracerThread &rt) : scene(rt.scene), cam(rt.cam), bvh(rt.bvh),  air(0,Color(),Color(),Color(),0, "",Color(),Color(0.0,0.0,0.0),1.0,1.0,1.0,"false",scene.BRDFs[0])
     {
 
         sampleIdxPixel.reserve(cam.sampleData->numSamples);
@@ -86,6 +86,7 @@ public:
 
     Vec3r getBouncedRayDir(HitRecord& hit_record);
     Color ShadowTestLight(Light *light, HitRecord& hit_record, Ray& ray, const Material& m1, const std::array<real, 2>& light_sample);
+    Light* getRandomLight();
 
     Color getBackground(Ray& ray);
 

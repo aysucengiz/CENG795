@@ -26,7 +26,7 @@ namespace Parser {
     std::vector<int> parseTrioFromString(std::string inp);
     json getJsonDataFromFile(std::string inpFile);
 
-    void getCameras(json inp, SceneInput &sceneInput);
+    void getCameras(json inp, SceneInput &sceneInput, uint32_t maxd);
     void getLights(json inp, SceneInput &sceneInput);
     void getMaterials(json inp, SceneInput &sceneInput);
     void getTransformations(json inp, SceneInput &sceneInput);
@@ -37,13 +37,15 @@ namespace Parser {
     void getImages(json& inp, SceneInput& sceneInput, std::string root);
     void getTextureMaps(json Textures, SceneInput& sceneInput);
     void getToneMaps(json inp, std::vector<ToneMap>& tonemaps, std::string& imname);
+    void getBRDFs(json brdfs, SceneInput& sceneInput);
 
+    void addBRDF(json brdf, SceneInput &sceneInput, std::string type);
     void addTriangle(json tri, SceneInput &sceneInput, uint32_t &curr_id);
     void addSphere(json s, SceneInput &sceneInput, uint32_t &curr_id);
     void addMesh(json mes, SceneInput &sceneInput, uint32_t &curr_id, std::string root);
     void addMaterial(json inp, SceneInput &sceneInput);
     void addLight(json pointLights, SceneInput &sceneInput, std::string type);
-    void addCamera(json Camera, SceneInput &sceneInput);
+    void addCamera(json Camera, SceneInput &sceneInput, uint32_t maxd);
     void addPlane(json p, SceneInput &sceneInput, uint32_t &curr_id);
     void addInstance(std::string transformations, Object* original, SceneInput& sceneInput, Vec3r motion);
     void addInstance(json p, SceneInput &sceneInput, uint32_t &curr_id);
@@ -66,6 +68,7 @@ namespace Parser {
     Image *getImageFromId(int id, SceneInput& scene);
     std::function<real(real)> getConversionFunc(json inp);
     void getRendererParams(std::string params, PathTracer* path);
+    BRDF* getBRDFFromID(uint32_t id, std::vector<BRDF*> BRDFs);
 
 };
 

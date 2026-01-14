@@ -5,9 +5,9 @@
 #include "Light.h"
 #include "../../functions/helpers.h"
 #include "../../functions/overloads.h"
-Light::Light(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens) {}
+Light::Light(uint32_t id, Vertex pos, Color intens) : _id(id), Position(pos), Intensity(intens), area_prob(1) {}
 
-Color Light::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection)
+Color Light::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) const
 {
     Vec3r wi = shadow_ray.dir.normalize();
     real cos_theta = dot_product(wi, n_surf.normalize());
@@ -40,6 +40,7 @@ LightType AreaLight::getLightType() {return LightType::AREA;}
 
 AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : Light(id, pos, intens), n(n.normalize()), size(s),A(s*s)
 {
+    area_prob = A;
     std::pair<Vec3r,Vec3r> u_v = getONB(n);
     u = u_v.first.normalize();
     v = u_v.second.normalize();
@@ -47,7 +48,7 @@ AreaLight::AreaLight(uint32_t id, Vertex pos, Color intens, Vec3r n, real s) : L
     // std::cout << "v: " << v << std::endl;
 }
 
-Color AreaLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection)
+Color AreaLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) const
 {
     Vec3r wi = shadow_ray.dir.normalize();
     real cos_light = dot_product(n,wi);
@@ -74,7 +75,7 @@ DirectionalLight::DirectionalLight(uint32_t id, Color intens, Vec3r d): Light(id
     Position = -Vertex(dir.i, dir.j, dir.k);
 }
 
-Color DirectionalLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection)
+Color DirectionalLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) const
 {
     return Intensity ;
 }
@@ -95,7 +96,7 @@ SpotLight::SpotLight(uint32_t id, Vertex pos, Color intens, Vec3r d, real ca, re
 
 LightType SpotLight::getLightType() {return LightType::SPOT;}
 
-Color SpotLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection)
+Color SpotLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) const
 {
     Vec3r normalized_shadow = shadow_ray.dir.normalize();
     real cos_theta = dot_product(-normalized_shadow, dir);
@@ -129,11 +130,12 @@ TextureLight::TextureLight(uint32_t id, Image* im, Sampler s, TextureLightType t
     Light(id, Vertex(0.0,0.0,0.0), Color(0.0,0.0,0.0)),
     sampler(s), type(type)
 {
+    area_prob = 4 * M_PI;
 }
 
 LightType TextureLight::getLightType() {return LightType::TEXTURE;}
 
-Color TextureLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection)
+Color TextureLight::getIrradianceAt(Vec3r n_surf, Ray& shadow_ray, const Vertex& intersection) const
 {
     Texel tex = getTexel(shadow_ray.dir);
     Vertex v(0.0,0.0,0.0);
@@ -231,3 +233,9 @@ Vec3r TextureLight::compute_shadow_ray_dir(const Vertex &pos, const Vec3r &norma
     Vec3r vec = getRandomVec(normal);
     return vec;
 }
+
+////////////////////////////////////////////////
+///////////////// ObjectLight ////////////////////
+////////////////////////////////////////////////
+
+// TODO

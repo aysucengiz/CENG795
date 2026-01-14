@@ -485,7 +485,7 @@ std::ostream& operator<<(std::ostream& os, const Plane& p)
 
 std::ostream& operator<<(std::ostream& os, const SceneInput& s)
 {
-    os << "MaxRecursionDepth: " << s.MaxRecursionDepth << "\n";
+    // os << "MaxRecursionDepth: " << s.MaxRecursionDepth << "\n";
     os << "BackgroundColor: " << s.BackgroundColor << "\n";
     os << "ShadowRayEpsilon: " << s.ShadowRayEpsilon << "\n";
     os << "IntersectionTestEpsilon: " << s.IntersectionTestEpsilon << "\n";
