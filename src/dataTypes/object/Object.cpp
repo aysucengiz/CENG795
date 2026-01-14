@@ -78,7 +78,7 @@ Color Object::GetColourAt(Color I_R_2,const Vec3r& normal, const Ray& ray, Ray& 
     // get kd and ks
     Color kd = diffuseTerm(shadow_ray.pos, tex, time, rate_of_change);
     Color ks = specularTerm(shadow_ray.pos, tex, rate_of_change);
-    real cos_theta = material.brdf->getCosTheta(normal,ray.dir);
+    real cos_theta = material.brdf->getCosTheta(normal,shadow_ray.dir);
 
     // get brdf
     Color f = material.brdf->Guards_BRDF_This_Man(kd, ks, material.PhongExponent, material.RefractionIndex, normal, ray.dir, shadow_ray.dir);
