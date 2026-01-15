@@ -45,16 +45,16 @@ struct BRDF_TorranceSparrow : public BRDF
 };
 
 
-
+// TODO: object lights ve area lights handling
 struct PathTracer
 {
-    uint32_t splitting_factor = 1;
-    bool importance_sampling = false;
-    bool NEE = false;
-    bool MIS_BALANCE = false;
-    bool RussianRoulette = false;
+    uint32_t splitting_factor = 1; // TODO: eklendi, renklerin nasıl toplanacağı ayarlanacak
+    bool importance_sampling = false; // eklendi
+    bool NEE = false; // eklendi
+    bool MIS_BALANCE = false; // eklendi
+    bool RussianRoulette = false; // eklendi
 
-    Vec3r getBouncedRayDir(real a, real b);
+    Vec3r getBouncedRayDir(real a, real b, const Vec3r& normal);
     real PDF(real a);
 };
 

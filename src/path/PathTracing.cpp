@@ -91,26 +91,31 @@ Color BRDF_TorranceSparrow::Guards_BRDF_This_Man(Color &kd, Color &ks, real phon
 }
 
 
-Vec3r PathTracer::getBouncedRayDir(real a, real b)
+Vec3r PathTracer::getBouncedRayDir(real a, real b, const Vec3r& n)
 {
     static constexpr real pi2 = 2.0 * M_PI;
-    // TODO: random sampling functions go here
+    real phi = pi2 * b;
+    real i,j,k, r;
 
     if(importance_sampling)
     {
-        real theta = acos(a);
-        real phi = pi2 * b;
-        Vec3r w = Vec3r(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
-        return w;
+        r = sqrt(a);
+        k = sqrt(1 - a);
     }
-    else
+    else // uniform
     {
-        real theta = asin(a);
-        real phi = pi2 * b;
-        Vec3r w = Vec3r(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
-        return w;
+        r = sqrt(1 - a * a);
+        k = a;
     }
 
+    i = r * cos(phi);
+    j = r * sin(phi);
+
+    std::pair<Vec3r, Vec3r> onb = getONB(n);
+    Vec3r u = onb.first;
+    Vec3r v = onb.second;
+    Vec3r w = u * i + v * j + n * k;
+    return w;
 }
 
 real PathTracer::PDF(real a)

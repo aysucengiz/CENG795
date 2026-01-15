@@ -121,6 +121,7 @@ void RayTracer::parseScene(std::string input_path){
     scene.images.clear();
     scene.textures.clear();
     scene.BRDFs.clear();
+    scene.objects_n_lights.clear();
     scene.BackgroundTexture = nullptr;
     scene.BackgroundLight = nullptr;
     // std::cout << "Loading " << input_path << std::endl;

@@ -13,6 +13,14 @@
 
 #include "acceleration/BVH.h"
 
+struct LightPDF
+{
+    Color color;
+    real pdf;
+
+    LightPDF() : color(0.0,0.0,0.0), pdf(1.0) {}
+}
+
 
 class RaytracerThread
 {
@@ -75,17 +83,18 @@ public:
     void drawRow(uint32_t ly);
     void drawBatch(uint32_t start_idx, uint32_t w, uint32_t h);
     Ray computeViewingRay(int x_loc, int y_loc);
-    Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
+    Color followRay(Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample, bool NEE_indirect = false);
     void checkObjIntersection(Ray &ray,real &t_min, HitRecord &hit_record, bool back_cull);
-    bool isUnderShadow(Ray& shadow_ray, bool dist_inf);
+    bool isUnderShadow(const Ray& shadow_ray, bool dist_inf);
     Color getColourFromLight(const Light* light, HitRecord& hit_record, Ray& shadow_ray, const Ray& ray, const Material& m1);
     Color computeColor(HitRecord& hit_record, Ray& ray, int depth, const Material& m1, const std::array<real, 2>& light_sample);
     Color PathTraceLuminous(const Light* light, Vertex& light_point, HitRecord& hit_record, Ray& ray, const Material& m1);
-    Color PathTraceNonLuminous(HitRecord &hit_record, Ray &ray, const Material &m1, int depth, const std::array<real, 2>& light_sample);
+    LightPDF PathTraceNonLumIndirect(HitRecord &hit_record, Ray &ray, const Material &m1, int depth, const std::array<real, 2>& light_sample);
+    LightPDF PathTraceNonLumDirect(HitRecord &hit_record, Ray &ray, const Material &m1, int depth, const std::array<real, 2>& light_sample);
 
 
     Vec3r getBouncedRayDir(HitRecord& hit_record);
-    Color ShadowTestLight(Light *light, HitRecord& hit_record, Ray& ray, const Material& m1, const std::array<real, 2>& light_sample);
+    Color ShadowTestLight(Light *light, HitRecord& hit_record, Ray& ray, const Material& m1, const Ray& shadow_ray);
     Light* getRandomLight();
 
     Color getBackground(Ray& ray);
@@ -95,6 +104,7 @@ public:
     Ray refractionRay(Ray& ray, real n1, real n2, Vertex point, Vec3r n, real& Fr, real& Ft, real roughness);
     Color getThroughput();
     Object::intersectResult traverse(const Ray &ray, const real &t_min, const std::deque<Object *> &objects, bool shadow_test , bool back_cull) const;
+    real getDomainSelectionProb();
 
 };
 
