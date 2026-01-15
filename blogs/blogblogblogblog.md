@@ -254,7 +254,7 @@ Initially the isOnWhite(real i) would perform the following:
 ```
 
 Which resulted in this in VeachAjar:
-![img_21.png](img_21.png)
+![img_21.png](blog4_images/img_21.png)
 
 To be honest I fixed it by trial and error and didn't really get what was wrong in the initial one at first. Apparently it is about the negative values. When I take the modulo, the result stays negative if the initial value is negative. This of course leads to more "false"s when I check for `== 1`.
 
@@ -276,8 +276,8 @@ Mine are the ones on the left.
 
 Side note: I still have not perfected my dielectrics but did not have time to check that this homework.
 
-![img_26.png](img_26.png)
-![img_27.png](img_27.png)
+![img_26.png](blog4_images/img_26.png)
+![img_27.png](blog4_images/img_27.png)
 
 
 
@@ -427,7 +427,7 @@ I also would like to note that I had **less** issues in this homework than in th
 There are some slight differences in the normal mapping. 
 There is no difference I saw in grayscale ones though, which is really interesting to me. 
 
-![img_37.png](img_37.png)
+![img_37.png](blog4_images/img_37.png)
 I guess my normal mapping looks flatter. I am not sure but since it does not show up on grayscale I'm choosing my eyesight.
 Which is already in terrible situation.
 
@@ -481,7 +481,7 @@ After long trial and error sessions I managed to find my issue. The main problem
 After fixing bump mapping in other scenes this scene also mostly got fixed. But somehow I ruined the background?
 I did fix it but don't remember what was the issue.
 
-![img_30.png](img_30.png)
+![img_30.png](blog4_images/img_30.png)
 Mine is on the left.
 
 - **Debugging Noise Textures**
@@ -531,7 +531,7 @@ This fixed it :)
 
 
 After this, I came across black patches on my dynamic galactica scene.
-![img_35.png](img_35.png)
+![img_35.png](blog4_images/img_35.png)
 Turns out I was not handling the case of zero determinant while computing my tangents and they were returned as nan as a result.
 I discarded the zero determinant cases and just returned the original normal for such cases.
 
