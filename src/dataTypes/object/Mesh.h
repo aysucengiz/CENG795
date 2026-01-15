@@ -17,18 +17,12 @@ public:
     BVH bvh;
 
     template <class T>
-    void LoadFacesFromPly(std::vector<std::vector<T>>& f, std::deque<CVertex>& vertices, std::vector<Texture*> ts,
-                          int start_index, bool computeVNormals);
-    Mesh(uint32_t id, std::string st, Material& m, std::string s,
-         bool read_from_file,
-         std::deque<CVertex>& vertices,
-         PivotType pt,
-         uint32_t maxobj,
-         std::vector<Texture*> ts,
-         bool v,
-         int start_index,
-         bool computeVNormals,
-         int vertex_offset, int texture_offset);
+    void LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>& vertices, std::deque<Texel>& TexCoords,  std::vector<Texture*> ts, int start_index,int start_index_tex,
+           bool computeVNormals);
+    Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,std::deque<Texel>& TexCoords,
+           PivotType pt,
+           uint32_t maxobj, std::vector<Texture*> ts, bool v, int start_index,int start_index_tex,
+           bool computeVNormals, int vertex_offset, int texture_offset);
 
 
     ObjectType getObjectType() const override;

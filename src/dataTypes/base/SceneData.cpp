@@ -68,8 +68,8 @@ Color Color::exponent()
 ////////////////////////////////////////////////
 
 
-CVertex::CVertex(uint32_t i, Vertex v, Vec3r n) : v(v), n(n),  id(i), t(0.0,0.0){}
-CVertex::CVertex(uint32_t i, const std::string& inp) : n(Vec3r()), id(i), t(0.0,0.0)
+CVertex::CVertex(uint32_t i, Vertex v, Vec3r n) : v(v), n(n),  id(i){}
+CVertex::CVertex(uint32_t i, const std::string& inp) : n(Vec3r()), id(i)
 {
     std::istringstream ss(inp);
     ss >> v.x >> v.y >> v.z;

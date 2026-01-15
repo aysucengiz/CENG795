@@ -35,7 +35,6 @@ struct CVertex
     uint32_t id;
     Vertex v;
     Vec3r n;
-    Texel t;
 
     CVertex(uint32_t i, Vertex v, Vec3r n);
     CVertex(uint32_t i, const std::string& inp);

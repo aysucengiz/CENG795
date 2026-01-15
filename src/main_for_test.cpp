@@ -21,8 +21,8 @@ int main(void) {
     json data = Parser::getJsonDataFromFile("configs.json");
     std::cout << data << std::endl;
     RayTracer raytracer(data["Configuration"]);;
-    raytracer.drawFile("jsonFiles/hw1/inputs/bunny.json");
-    raytracer.drawFile("jsonFiles/hw5/inputs/cube_point_hdr.json");
+    // raytracer.drawFile("jsonFiles/hw4/inputs/cube_wall.json");
+    raytracer.drawFile("jsonFiles/hw6/brdf/inputs/killeroo_torrancesparrow.json");
     // raytracer.drawAllFiles("jsonFiles/hw4/inputs/veach_ajar/");
     // raytracer.drawAllFiles("jsonFiles/hw5/inputs/veach_ajar/");
     // raytracer.drawFile("jsonFiles/hw5/inputs/head_env_light.json");

@@ -39,7 +39,7 @@ struct SceneInput
 
     // vertex info
     std::deque<CVertex> Vertices;
-    std::deque<std::pair<int,int>> TexCoords;
+    std::deque<Texel> TexCoords;
 
     // light info
     Color AmbientLight;

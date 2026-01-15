@@ -60,7 +60,7 @@ Color BRDF_TorranceSparrow::Guards_BRDF_This_Man(Color &kd, Color &ks, real phon
 {
     constexpr real one_pi = 1.0 / M_PI;
 
-    real cos_theta = getCosTheta(normal, wi);
+    real cos_theta = getCosTheta(normal, wo);
     if (cos_theta <= 0) return Color(0.0, 0.0, 0.0);
 
     real cos_alpha_h = getCosAlphaH(normal, wi, wo);
@@ -83,7 +83,7 @@ Color BRDF_TorranceSparrow::Guards_BRDF_This_Man(Color &kd, Color &ks, real phon
 
     // combine
 
-    real cos_phi = getCosTheta(normal, wo);
+    real cos_phi = getCosTheta(normal, wi);
     Color f;
     if(kd_fresnel)  f = kd * one_pi * (1-F)+ ks * D * F * G / (4 * cos_theta * cos_phi);
     else f = kd * one_pi + ks * D * F * G / (4 * cos_theta * cos_phi);

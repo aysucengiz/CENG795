@@ -86,6 +86,11 @@ void Parser::parseScene(std::string inpFile, SceneInput& sceneInput, uint32_t ma
     {
         getTexCoords(inp["Scene"]["TexCoordData"], sceneInput);
     }
+    else if (sceneInput.TexCoords.size() == 0)
+    {
+        sceneInput.TexCoords.push_back(Texel(0,0));
+    }
+
     if (inp["Scene"].contains("Textures"))
     {
         getTextures(inp["Scene"]["Textures"], sceneInput,root);
@@ -236,7 +241,7 @@ void Parser::addLight(json light, SceneInput& sceneInput, std::string type)
         pl = new AreaLight(
             std::stoi(light["_id"].get<std::string>()) - 1,
             (*t * Vec4r(Vertex(light["Position"]))).getVertex(),
-            Color(light["Radiance"]),
+            light.contains("Radiance") ? Color(light["Radiance"]) :  Color(light["Intensity"]) ,
             (t->normalTransform * Vec4r(Vec3r(light["Normal"]))).getVec3r(),
             std::stod(light["Size"].get<std::string>())
         );
@@ -674,8 +679,8 @@ void Parser::addBRDF(json inp, SceneInput& sceneInput, std::string type)
     }
     else if (type == "TorranceSparrow")
     {
-        brdf_ptr = new BRDF_TorranceSparrow(id,inp.contains("_kdfresnel") ? inp["_kdfresnel"] : "false"
-                        ,exponent);
+        std::string fresnel = inp.contains("_kdfresnel") ? inp["_kdfresnel"] : "false";
+        brdf_ptr = new BRDF_TorranceSparrow(id,fresnel == "true",exponent);
     }
 
     sceneInput.BRDFs.push_back(brdf_ptr);
@@ -687,17 +692,46 @@ void Parser::addTriangle(json tri, SceneInput& sceneInput, uint32_t& curr_id)
 {
     std::istringstream ss(tri["Indices"].get<std::string>());
     uint32_t ind[3];
+    uint32_t tex_ind[3] = {0,0,0};
     ss >> ind[0] >> ind[1] >> ind[2];
     if (ss.fail())
     {
         throw std::invalid_argument("Invalid triangle indices string: " + tri["Indices"].get<std::string>());
     }
 
+    if (sceneInput.TexCoords.size() > 0)
+    {
+
+        tex_ind[0] = ind[0];
+        tex_ind[1] = ind[1];
+        tex_ind[2] = ind[2];
+
+        if (tri.contains("_textureOffset"))
+        {
+            int i = getInt(tri["_textureOffset"]);
+            tex_ind[0] += i;
+            tex_ind[1] += i;
+            tex_ind[2] += i;
+        }
+    }
+    if (tri.contains("_vertexOffset"))
+    {
+        int i = getInt(tri["_vertexOffset"]);
+        ind[0] += i;
+        ind[1] += i;
+        ind[2] += i;
+    }
+
+
+
     if (ind[0] == ind[1] || ind[0] == ind[2] || ind[1] == ind[2]) return;
     Triangle* tempt = new Triangle(std::stoi(tri["_id"].get<std::string>()),
                                    sceneInput.Vertices[ind[0] - 1],
                                    sceneInput.Vertices[ind[1] - 1],
                                    sceneInput.Vertices[ind[2] - 1],
+                                   sceneInput.TexCoords[tex_ind[0] - 1],
+                                   sceneInput.TexCoords[tex_ind[1] - 1],
+                                   sceneInput.TexCoords[tex_ind[2] - 1],
                                    sceneInput.Materials[std::stoi(tri["Material"].get<std::string>()) - 1],
                                    tri.contains("Textures")
                                        ? getTexturesFromStr(tri["Textures"], sceneInput)
@@ -745,6 +779,7 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
         std::string dataLine;
         bool read_from_file;
         int numVerticesUntilNow = sceneInput.Vertices.size();
+        int numTexelsUntilNow = sceneInput.TexCoords.size();
         if (mes["Faces"].contains("_plyFile"))
         {
             read_from_file = true;
@@ -786,10 +821,10 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
             {
                 std::vector<float> us = vertexElem.getProperty<float>("u");
                 std::vector<float> vs = vertexElem.getProperty<float>("v");
-                for (int j = numVerticesUntilNow ; j < sceneInput.Vertices.size(); j++)
+                for (int j = 0 ; j < us.size(); j++)
                 {
                     // std::cout << us[j-numVerticesUntilNow] << " " << vs[j-numVerticesUntilNow] << std::endl;
-                    sceneInput.Vertices[j].t = Texel(us[j-numVerticesUntilNow], vs[j-numVerticesUntilNow]);
+                    sceneInput.TexCoords.push_back(Texel(us[j], vs[j])) ;
                     // std::cout << sceneInput.Vertices[j].t.u << " " << sceneInput.Vertices[j].t.v << std::endl;
                 }
             }
@@ -806,12 +841,12 @@ void Parser::addMesh(json mes, SceneInput& sceneInput, uint32_t& curr_id, std::s
                                    mes["Material"].get<std::string>()) - 1],
                                dataLine,
                                read_from_file,
-                               sceneInput.Vertices, sceneInput.pt, sceneInput.MaxObjCount,
+                               sceneInput.Vertices,sceneInput.TexCoords, sceneInput.pt, sceneInput.MaxObjCount,
                                mes.contains("Textures")
                                    ? getTexturesFromStr(mes["Textures"], sceneInput)
                                    : std::vector<Texture*>(),
                                true,
-                               numVerticesUntilNow, true, vertex_offset, texture_offset);
+                               numVerticesUntilNow, numTexelsUntilNow, true, vertex_offset, texture_offset);
         if (mes.contains("Transformations"))
             addInstance(mes["Transformations"].get<std::string>(), tempm, sceneInput,
                         mes.contains("MotionBlur") ? Vec3r(mes["MotionBlur"]) : Vec3r(0.0, 0.0, 0.0));
@@ -1000,7 +1035,7 @@ void Parser::getTexCoords(json TexCoords, SceneInput& sceneInput)
         for (int i = 0; i < sceneInput.Vertices.size(); i++)
         {
             ss >> t.u >> t.v;
-            sceneInput.Vertices[i].t = t;
+            sceneInput.TexCoords.push_back(t);
         }
     }
 }

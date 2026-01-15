@@ -240,12 +240,12 @@ Vec3r Object::getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int 
     return NewN;
 }
 
-void Object::ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n)
+void Object::ComputeBitan(CVertex& b, CVertex& a, CVertex& c,Texel& bt, Texel& at, Texel& ct, Vec3r& pT, Vec3r& pB, Vec3r& n)
 {
-    real cv_av = c.t.v - a.t.v;
-    real cu_au = c.t.u - a.t.u;
-    real bv_av = b.t.v - a.t.v;
-    real bu_au = b.t.u - a.t.u;
+    real cv_av = ct.v - at.v;
+    real cu_au = ct.u - at.u;
+    real bv_av = bt.v - at.v;
+    real bu_au = bt.u - at.u;
     real det = bu_au * cv_av - cu_au * bv_av;
     std::array<std::array<real,2>,2> M1{};
     if (std::abs(det) < 0.000001)
@@ -395,16 +395,16 @@ Texel Triangle::getTexel(const Vertex& v, real time, int triID) const
     BaryCentric(alpha, beta, gamma, v);
     // if (AllTexture)
     // std::cout << a.t.u << " " << a.t.v << " " << b.t.u << std::endl;
-    return alpha * a.t + beta * b.t + gamma * c.t;
+    return (alpha * at + beta * bt + gamma * ct) ;
 }
 
-Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,
+Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3,Texel& t1, Texel& t2, Texel& t3, Material& material,
                    std::vector<Texture*> ts, const ShadingType st, bool v, bool computeVNormals) :
     Object(material, id,
            maxVert3(v1.v, v2.v, v3.v),
            minVert3(v1.v, v2.v, v3.v), ts, v
     ),
-    shadingType(st), a(v1), b(v2), c(v3), a_b(a.v - b.v), a_c(a.v - c.v)
+    shadingType(st), a(v1), b(v2), c(v3), a_b(a.v - b.v), a_c(a.v - c.v), at(t1), bt(t2), ct(t3)
 {
     n = x_product((b.v - a.v), (c.v - a.v));
     if (computeVNormals)
@@ -417,7 +417,7 @@ Triangle::Triangle(const uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Mat
     main_center.x = (a.v + b.v + c.v).x / 3.0;
     main_center.y = (a.v + b.v + c.v).y / 3.0;
     main_center.z = (a.v + b.v + c.v).z / 3.0;
-    ComputeBitan(b, a, c, T, B, n);
+    ComputeBitan(b, a, c, bt, at, ct, T, B, n);
     T_norm = T.normalize();
     B_norm = B.normalize();
 }
@@ -674,7 +674,7 @@ Texel Instance::getTexel(const Vertex& v, real time, int triID) const
                 tri->BaryCentric(alpha, beta, gamma, localV);
                 std::swap(beta, gamma);
 
-                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                t = alpha * tri->at + beta * tri->bt + gamma * tri->ct;
                 return t;
                 break;
             }
@@ -684,7 +684,7 @@ Texel Instance::getTexel(const Vertex& v, real time, int triID) const
                 tri->BaryCentric(alpha, beta, gamma, localV);
                 // std::swap(beta, gamma);
 
-                t = alpha * tri->a.t + beta * tri->b.t + gamma * tri->c.t;
+                t = alpha * tri->at + beta * tri->bt + gamma * tri->ct;
                 return t;
             }
             break;

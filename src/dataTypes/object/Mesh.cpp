@@ -14,7 +14,7 @@
 //////////////////// MESH //////////////////////
 ////////////////////////////////////////////////
 template <typename T>
-void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>& vertices, std::vector<Texture*> ts, int start_index,
+void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>& vertices, std::deque<Texel>& TexCoords,  std::vector<Texture*> ts, int start_index,int start_index_tex,
            bool computeVNormals)
 {
     start_index -= std::min(f[0][0],std::min(f[0][1],f[0][2]));
@@ -38,6 +38,8 @@ void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>&
                 triangles.push_back(Triangle(triangles.size(),
                                              vertices[start_index + f[i][0]], vertices[start_index + f[i][1]],
                                              vertices[start_index + f[i][2]],
+                                             TexCoords[start_index_tex + f[i][0]], TexCoords[start_index_tex + f[i][1]],
+                                             TexCoords[start_index_tex + f[i][2]],
                                              material,
                                              ts,
                                              shadingtype,
@@ -56,6 +58,8 @@ void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>&
                 triangles.push_back(Triangle(triangles.size(),
                                              vertices[start_index + f[i][0]], vertices[start_index + f[i][2]],
                                              vertices[start_index + f[i][3]],
+                                             TexCoords[start_index_tex + f[i][0]], TexCoords[start_index_tex + f[i][2]],
+                                             TexCoords[start_index_tex + f[i][3]],
                                              material,
                                              ts,
                                              shadingtype,
@@ -65,9 +69,9 @@ void Mesh::LoadFacesFromPly(std::vector<std::vector<T>> &f, std::deque<CVertex>&
         }
 }
 
-Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,
+Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_from_file, std::deque<CVertex>& vertices,std::deque<Texel>& TexCoords,
            PivotType pt,
-           uint32_t maxobj, std::vector<Texture*> ts, bool v, int start_index,
+           uint32_t maxobj, std::vector<Texture*> ts, bool v, int start_index,int start_index_tex,
            bool computeVNormals, int vertex_offset, int texture_offset)
     : Object(m, id, Vertex(-INFINITY, -INFINITY, -INFINITY), Vertex(INFINITY,INFINITY,INFINITY), ts, v), bvh(pt, maxobj)
 {
@@ -91,14 +95,14 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
         try
         {
             std::vector<std::vector<int>> f = face.getListProperty<int>(vertices_str);
-            LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
+            LoadFacesFromPly(f,vertices,TexCoords, ts,start_index,start_index_tex, computeVNormals);
             // std::cout << "Vertices are ints" << std::endl;
         }
         catch (const std::exception&)
         {
             // std::cout << "Vertices are uints" << std::endl;
             std::vector<std::vector<unsigned int>> f = face.getListProperty<unsigned int>(vertices_str);
-            LoadFacesFromPly(f,vertices,ts,start_index,computeVNormals);
+            LoadFacesFromPly(f,vertices,TexCoords,ts,start_index,start_index_tex, computeVNormals);
         }
 
     }
@@ -106,6 +110,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
     {
         std::istringstream verticesStream(s);
         uint32_t vert[3];
+        uint32_t tex[3];
         bool init = true;
         bool index_from_one = true;
         while (verticesStream >> vert[0] >> vert[1] >> vert[2])
@@ -123,6 +128,9 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
                 vert[2]--;
             }
 
+            tex[0] = vert[0] + texture_offset;
+            tex[1] = vert[1] + texture_offset;
+            tex[2] = vert[2] + texture_offset;
             vert[0] += vertex_offset;
             vert[1] += vertex_offset;
             vert[2] += vertex_offset;
@@ -142,6 +150,7 @@ Mesh::Mesh(uint32_t id, std::string st, Material& m, std::string s, bool read_fr
 
                 triangles.push_back(Triangle(triangles.size(),
                                              vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
+                                             TexCoords[tex[0]],TexCoords[tex[1]],TexCoords[tex[2]],
                                              m, ts, shadingtype,
                                              v,
                                              computeVNormals));

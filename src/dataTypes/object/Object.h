@@ -52,7 +52,7 @@ public:
     real GrayScale(Color c) const;
     real h(Vertex v) const;
     Vec3r getTexturedNormal(const Vertex& v, const Vec3r& n, real time, int triID) const;
-    void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Vec3r& pT, Vec3r& pB, Vec3r& n);
+    void ComputeBitan(CVertex& b, CVertex& a, CVertex& c, Texel& bt, Texel& at, Texel& ct, Vec3r& pT, Vec3r& pB, Vec3r& n);
     virtual Vertex getLocal(const Vertex& v, real time) const { return v;}
     virtual bool isLuminous() const {return false;}
 };
@@ -62,7 +62,8 @@ public:
 class Triangle : public Object
 {
 public:
-    CVertex &a, &b, &c;
+    CVertex &a,  &b,  &c;
+    Texel   &at, &bt, &ct;
     Vec3r n;
     Vec3r a_b, a_c;
     ShadingType shadingType;
@@ -76,7 +77,7 @@ public:
     Texel getTexel(const Vertex& v, real time, int triID)  const override;
     void BaryCentric(real &alpha, real& beta, real& gamma, const Vertex& v) const;
     void getBitan(const Vertex& v, Vec3r& pT, Vec3r& pB, int triID, bool normalize, real time) const override;
-    Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3, Material& material,std::vector<Texture*> ts , ShadingType st = ShadingType::NONE,
+    Triangle(uint32_t id, CVertex& v1, CVertex& v2, CVertex& v3,Texel& t1, Texel& t2, Texel& t3, Material& material,std::vector<Texture*> ts , ShadingType st = ShadingType::NONE,
              bool v = true, bool computeVNormals = true);
 
 };
